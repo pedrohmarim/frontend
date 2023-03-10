@@ -9,13 +9,18 @@
     "lint": "next lint ."
   },
   "dependencies": {
+    "@types/antd": "^1.0.0",
+    "antd": "^4.21.4",
+    "feather-icons-react": "^0.5.0",
     "next": "13.1.6",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "styled-components": "^5.1.1"
   },
   "devDependencies": {
     "@types/node": "^18.13.0",
     "@types/react": "^18.0.27",
+    "@types/styled-components": "^5.1.2",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "eslint": "^8.33.0",
     "eslint-config-next": "^13.1.6",
