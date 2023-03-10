@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import { Button } from 'antd_components';
 import UserApi from 'services/User';
