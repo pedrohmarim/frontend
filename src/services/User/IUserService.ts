@@ -1,5 +1,5 @@
 export interface IUserRequest {
-  userId: number;
+  username: string;
 }
 
 export interface IUserResponse {
