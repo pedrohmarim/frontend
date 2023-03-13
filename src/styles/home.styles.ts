@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, Select as SelectAntd } from 'antd_components';
+import { Card, Select as SelectAntd, Row as RowAntd } from 'antd_components';
 
 export const AuthorName = styled.span`
   margin-left: 10px;
@@ -13,8 +13,7 @@ export const Message = styled(Card)`
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.colors.text};
-  background-color: ${(props) => props.theme.colors.primary};
-  border-color: ${(props) => props.theme.colors.text};
+  background-color: #17171a;
   border-radius: 4px;
   margin-bottom: 50px;
 `;
@@ -26,7 +25,28 @@ export const Container = styled.div`
   align-items: center;
 `;
 
+export const ColumnContainer = styled.div`
+  flex-direction: column;
+  text-align: center;
+`;
+
+export const Row = styled(RowAntd)`
+  margin-top: 20px;
+`;
+
 export const Span = styled.span`
+  color: ${(props) => props.theme.colors.text};
+`;
+
+export const HomeSpan = styled.span`
+  color: ${(props) => props.theme.colors.primary};
+`;
+
+export const Title = styled.h1`
+  color: ${(props) => props.theme.colors.text};
+`;
+
+export const Description = styled.span`
   color: ${(props) => props.theme.colors.text};
 `;
 
@@ -34,6 +54,6 @@ export const Select = styled(SelectAntd)`
   width: 300px;
 
   .ant-select-selection-placeholder {
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.background};
   }
 `;

@@ -26,6 +26,7 @@ export default function Home() {
   const [choosedMessage, setChoosedMessage] = useState<I.IMessage>();
   const [authors, setAuthors] = useState<string[]>();
   const [success, setSuccess] = useState<boolean>();
+  const [showGame, setShowGame] = useState<boolean>(false);
   const [form] = Form.useForm();
 
   const range = (start: number, end: number) => {
@@ -34,7 +35,7 @@ export default function Home() {
     return result;
   };
 
-  const times = range(1, 8);
+  const times = range(1, 5);
 
   const handleGetPreviousMessageArray = useCallback(
     async (message: I.IMessage) => {
@@ -148,7 +149,14 @@ export default function Home() {
         status={status}
         extra={
           <Row justify="center">
-            <Button type="primary" onClick={handleChooseOtherMessage}>
+            <Button
+              backgroundcolor={theme.colors.primary}
+              color={theme.colors.text}
+              width={undefined}
+              height={undefined}
+              margin={undefined}
+              onClick={handleChooseOtherMessage}
+            >
               Jogar novamente
             </Button>
           </Row>
@@ -193,13 +201,46 @@ export default function Home() {
       <Spin color={theme.colors.text} tip="Carregando uma linda mensagem ..." />
     );
 
+  const GameContainer = () => {
+    return success == undefined ? <GuessContainer /> : <ResultContainer />;
+  };
+
+  const HomeContainer = () => {
+    return (
+      <S.ColumnContainer>
+        <S.Title>
+          Bem vindo colega, ao jogo <S.HomeSpan> Guess the Idiot</S.HomeSpan>
+        </S.Title>
+
+        <S.Description>
+          Guess the Idiot resume-se em acertar quem escreveu uma frase gerada de
+          forma aleatória, retirada do servidor{' '}
+          <S.HomeSpan>Filminho</S.HomeSpan> do discord
+        </S.Description>
+
+        <S.Row justify="center">
+          <Button
+            onClick={() => setShowGame(true)}
+            backgroundcolor={theme.colors.primary}
+            color={theme.colors.text}
+            width={undefined}
+            height={undefined}
+            margin={undefined}
+          >
+            Jogar
+          </Button>
+        </S.Row>
+      </S.ColumnContainer>
+    );
+  };
+
   return (
     <S.Container>
       <Head>
         <title>Guess the Idiot | Home</title>
       </Head>
 
-      {success == undefined ? <GuessContainer /> : <ResultContainer />}
+      {!showGame ? <HomeContainer /> : <GameContainer />}
     </S.Container>
   );
 }
