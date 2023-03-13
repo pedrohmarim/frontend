@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import { Row, Select, Form, Image } from 'antd_components';
+import {
+  Row,
+  Select,
+  Form,
+  Image,
+  Spin,
+  Result,
+  Button,
+} from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import * as S from 'styles/home.styles';
 import * as I from 'services/DiscordMessages/IDiscordMessagesService';
@@ -11,78 +19,79 @@ import PodrePic from 'assets/podre.png';
 import LuisaPic from 'assets/luisa.png';
 import BiaPic from 'assets/bia.png';
 import CaoPic from 'assets/cao.png';
+import theme from 'globalStyles/theme';
 
 export default function Home() {
   const [messages, setMessages] = useState<I.IMessage[]>();
-  const [choosedMessage, setChoosedMessage] = useState({} as I.IMessage);
+  const [choosedMessage, setChoosedMessage] = useState<I.IMessage>();
   const [authors, setAuthors] = useState<string[]>();
+  const [success, setSuccess] = useState<boolean>();
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    DiscordMessagesApi.GetDiscordMessages().then((data) => {
-      setMessages(data);
-
-      const unique_authors = handleDistinctAuthorArray(data);
-
-      setAuthors(unique_authors);
-    });
-  }, []);
 
   const range = (start: number, end: number) => {
     const result = Math.floor(Math.random() * (end - start + 1)) + start;
-    console.log(start, end, 'saiu:', result);
 
     return result;
   };
 
-  const GetDiscordPreviousMessages = useCallback(
-    (id: string) => {
-      if (!messages?.length) return;
+  const times = range(1, 8);
 
-      return DiscordMessagesApi.GetDiscordPreviousMessages(id).then(
-        (data) => data
+  const handleGetPreviousMessageArray = useCallback(
+    async (message: I.IMessage) => {
+      return await DiscordMessagesApi.GetDiscordPreviousMessages(message.id);
+    },
+    []
+  );
+
+  async function getLastElementRecursive(
+    arr: I.IMessage[],
+    rangeNumber: number
+  ): Promise<I.IMessage> {
+    const message = arr[range(0, arr.length - 1)];
+
+    if (
+      rangeNumber === 0 &&
+      message.content.length > 20 &&
+      !message.content.includes('<@') &&
+      !message.content.includes('<:') &&
+      !message.content.includes('https://') &&
+      !message.content.split('').every((char) => char === message.content[0]) &&
+      !message.content.includes('||')
+    ) {
+      const unique_authors = handleDistinctAuthorArray(arr);
+      setAuthors(unique_authors);
+
+      return message;
+    } else {
+      const lastElement = arr[arr.length - 1];
+      const newArray = await handleGetPreviousMessageArray(lastElement);
+
+      return getLastElementRecursive(
+        newArray.slice(1),
+        rangeNumber === 0 ? times - 1 : rangeNumber - 1
       );
-    },
-    [messages]
-  );
-
-  const iteration = useCallback(
-    async (messages: I.IMessage[]) => {
-      let array: I.IMessage[] | undefined = [];
-
-      for (let index = 1; index < range(1, 15); index++) {
-        array = await GetDiscordPreviousMessages(
-          messages[messages.length - 1].id
-        );
-      }
-
-      return array;
-    },
-    [GetDiscordPreviousMessages]
-  );
-
-  const handleChoseMessage = useCallback(
-    async (messages: I.IMessage[]) => {
-      let array = await iteration(messages);
-
-      if (array?.length)
-        setChoosedMessage(array[range(0, messages?.length - 1)]);
-      else {
-        array = await iteration(messages);
-
-        if (array?.length)
-          setChoosedMessage(array[range(0, messages?.length - 1)]);
-      }
-    },
-    [iteration]
-  );
+    }
+  }
 
   useEffect(() => {
+    DiscordMessagesApi.GetDiscordMessages().then(async (data) =>
+      setMessages(data)
+    );
+  }, []);
+
+  const getLastElementRecursiveCallBack = useCallback(() => {
     if (!messages?.length) return;
 
-    const randomMessage = handleChoseMessage(messages);
-    console.log(randomMessage);
-  }, [handleChoseMessage, messages]);
+    getLastElementRecursive(messages, times).then((data) =>
+      setChoosedMessage(data)
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
+
+  useEffect(() => {
+    getLastElementRecursiveCallBack();
+  }, [getLastElementRecursiveCallBack, messages]);
 
   function handleUserPicture(author: string) {
     switch (author) {
@@ -116,47 +125,81 @@ export default function Home() {
     );
   }
 
-  const GuessContainer = () => (
-    <Form form={form} onFinish={() => console.log('')} layout="vertical">
-      <Row justify="center">
-        <S.Message>{choosedMessage.content || 'Carregando...'}</S.Message>
-      </Row>
+  function handleChooseOtherMessage() {
+    setSuccess(undefined);
+    setAuthors(undefined);
+    setChoosedMessage(undefined);
 
-      <Row align="middle" justify="center">
-        <Select
-          showSearch
-          style={{ width: '300px' }}
-          disabled={!authors?.length}
-          getPopupContainer={(trigger) => trigger.parentNode}
-          placeholder="Selecione um idiota"
-          onChange={(value) => alert(value)}
-        >
-          {authors?.map((author) => (
-            <Select.Option key={author}>
-              <Row align="middle">
-                <Image
-                  preview={false}
-                  src={handleUserPicture(author)}
-                  alt="profile-pic"
-                  height="40px"
-                  width="40px"
-                />
-                <S.AuthorName>{author}</S.AuthorName>
-              </Row>
-            </Select.Option>
-          ))}
-        </Select>
-      </Row>
-    </Form>
-  );
+    getLastElementRecursiveCallBack();
+  }
+
+  const ResultContainer = () => {
+    const title = success ? 'Acertou!' : 'Errou!';
+    const subTitle = success
+      ? 'Parabéns você realmente conhece seus colegas.'
+      : 'Você não é um bom colega...';
+
+    const status = success ? 'success' : 'error';
+
+    return (
+      <Result
+        title={<S.Span>{title}</S.Span>}
+        subTitle={<S.Span>{subTitle}</S.Span>}
+        status={status}
+        extra={
+          <Row justify="center">
+            <Button type="primary" onClick={handleChooseOtherMessage}>
+              Jogar novamente
+            </Button>
+          </Row>
+        }
+      />
+    );
+  };
+  const GuessContainer = () =>
+    authors && choosedMessage ? (
+      <Form form={form} onFinish={() => console.log('')} layout="vertical">
+        <Row justify="center">
+          <S.Message>{choosedMessage.content}</S.Message>
+        </Row>
+
+        <Row align="middle" justify="center">
+          <S.Select
+            disabled={!authors?.length}
+            getPopupContainer={(trigger) => trigger.parentNode}
+            placeholder="Selecione um idiota"
+            onChange={(value) =>
+              setSuccess(value == choosedMessage?.author.username)
+            }
+          >
+            {authors?.map((author) => (
+              <Select.Option key={author}>
+                <Row align="middle">
+                  <Image
+                    preview={false}
+                    src={handleUserPicture(author)}
+                    alt="profile-pic"
+                    height="30px"
+                    width="30px"
+                  />
+                  <S.AuthorName>{author}</S.AuthorName>
+                </Row>
+              </Select.Option>
+            ))}
+          </S.Select>
+        </Row>
+      </Form>
+    ) : (
+      <Spin color={theme.colors.text} tip="Carregando uma linda mensagem ..." />
+    );
 
   return (
-    <>
+    <S.Container>
       <Head>
         <title>Guess the Idiot | Home</title>
       </Head>
 
-      {authors && <GuessContainer />}
-    </>
+      {success == undefined ? <GuessContainer /> : <ResultContainer />}
+    </S.Container>
   );
 }

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { Spin as AntDesignSpin } from "antd";
+import styled from 'styled-components';
+import { Spin as AntDesignSpin } from 'antd';
 
 export const Spin = styled(AntDesignSpin)`
   position: fixed;

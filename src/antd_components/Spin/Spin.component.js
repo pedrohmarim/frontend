@@ -1,11 +1,7 @@
-import * as S from "./Spin.styled";
+import * as S from './Spin.styled';
 
-export default function Spin({ color }) {
+export default function Spin({ color, tip }) {
   return (
-    <S.Spin
-      tip={<S.SpinTip>Carregando...</S.SpinTip>}
-      size='large'
-      color={color}
-    />
+    <S.Spin tip={<S.SpinTip>{tip}</S.SpinTip>} size="large" color={color} />
   );
 }
