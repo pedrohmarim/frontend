@@ -135,7 +135,14 @@ export default function Home() {
   }
 
   const ResultContainer = () => {
-    const title = success ? 'Acertou!' : 'Errou!';
+    const title = success ? (
+      'Acertou!'
+    ) : (
+      <>
+        Errou! A resposta certa era
+        <S.HomeSpan> {choosedMessage?.author.username}</S.HomeSpan>
+      </>
+    );
     const subTitle = success
       ? 'Parabéns você realmente conhece seus colegas.'
       : 'Você não é um bom colega...';
