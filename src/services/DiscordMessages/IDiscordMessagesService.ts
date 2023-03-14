@@ -3,14 +3,23 @@ export interface IMessage {
   author: IAuthor;
   content: string;
   mentions: IMention[];
+  formattedMentions?: string[];
+  attachments: IAttachments[];
+  formattedAttachments?: JSX.Element[];
+  timestamp: string;
+}
+
+export interface IAttachments {
+  url: string;
+  height: number;
+  width: number;
 }
 
 export interface IAuthor {
-  id: number;
+  id: string;
   username: string;
 }
 
 export interface IMention {
-  id: number;
   username: string;
 }

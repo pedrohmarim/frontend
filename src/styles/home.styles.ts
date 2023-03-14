@@ -8,14 +8,24 @@ export const AuthorName = styled.span`
   color: #000;
 `;
 
+export const Date = styled.span`
+  font-size: 11pt;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 0 5px 5px 0;
+`;
+
 export const Message = styled(Card)`
+  padding: 25px;
   margin: 0 50px;
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.colors.text};
   background-color: #17171a;
   border-radius: 4px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
+  position: relative;
 `;
 
 export const Container = styled.div`

@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import {
-  Row,
-  Select,
-  Form,
-  Image,
-  Spin,
-  Result,
-  Button,
-} from 'antd_components';
+import { Row, Select, Image, Spin, Result, Button } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import * as S from 'styles/home.styles';
 import * as I from 'services/DiscordMessages/IDiscordMessagesService';
@@ -27,7 +19,6 @@ export default function Home() {
   const [authors, setAuthors] = useState<string[]>();
   const [success, setSuccess] = useState<boolean>();
   const [showGame, setShowGame] = useState<boolean>(false);
-  const [form] = Form.useForm();
 
   const range = (start: number, end: number) => {
     const result = Math.floor(Math.random() * (end - start + 1)) + start;
@@ -53,12 +44,47 @@ export default function Home() {
     if (
       rangeNumber === 0 &&
       message.content.length > 20 &&
-      !message.content.includes('<@') &&
       !message.content.includes('<:') &&
-      !message.content.includes('https://') &&
-      !message.content.split('').every((char) => char === message.content[0]) &&
-      !message.content.includes('||')
+      !message.content.split('').every((char) => char === message.content[0])
     ) {
+      const formattedAttachments: JSX.Element[] = [];
+
+      if (message.attachments.length) {
+        message.attachments.forEach(({ url, height, width }, index) => {
+          formattedAttachments.push(
+            <Image
+              preview={false}
+              src={url}
+              height={height}
+              width={width}
+              alt={`image_${index}`}
+            />
+          );
+        });
+      }
+
+      if (message.content.includes('https://'))
+        formattedAttachments.push(
+          <a href={message.content} key={1} target="_blank" rel="noreferrer">
+            {message.content}
+          </a>
+        );
+
+      message.formattedAttachments = formattedAttachments;
+
+      if (message.content.includes('<@')) {
+        const mentions: string[] = [];
+
+        message.mentions.forEach(({ username }) =>
+          mentions.push(`@${username} `)
+        );
+
+        message.formattedMentions = mentions;
+      }
+
+      if (message.content.includes('<@') && !message.attachments.length)
+        message.content = '';
+
       const unique_authors = handleDistinctAuthorArray(arr);
       setAuthors(unique_authors);
 
@@ -135,14 +161,15 @@ export default function Home() {
   }
 
   const ResultContainer = () => {
-    const title = success ? (
-      'Acertou!'
-    ) : (
+    const title = (
       <>
-        Errou! A resposta certa era
+        {success
+          ? 'Acertou! Quem mandou essa mensagem foi '
+          : 'Errou! A resposta certa era'}
         <S.HomeSpan> {choosedMessage?.author.username}</S.HomeSpan>
       </>
     );
+
     const subTitle = success
       ? 'Parabéns você realmente conhece seus colegas.'
       : 'Você não é um bom colega...';
@@ -171,12 +198,25 @@ export default function Home() {
       />
     );
   };
-  const GuessContainer = () =>
-    authors && choosedMessage ? (
-      <Form form={form} onFinish={() => console.log('')} layout="vertical">
-        <Row justify="center">
-          <S.Message>{choosedMessage.content}</S.Message>
-        </Row>
+
+  const GuessContainer = () => {
+    const content =
+      (choosedMessage?.formattedAttachments?.length &&
+        choosedMessage?.formattedAttachments.map((item) => <>{item}</>)) ||
+      choosedMessage?.content;
+
+    return authors && choosedMessage ? (
+      <S.ColumnContainer>
+        <S.Message>
+          {choosedMessage?.formattedMentions?.length &&
+            choosedMessage?.formattedMentions.map((item) => <>{item}</>)}
+
+          {content}
+
+          <S.Date>
+            {new Date(choosedMessage.timestamp).toLocaleString('pt-BR')}
+          </S.Date>
+        </S.Message>
 
         <Row align="middle" justify="center">
           <S.Select
@@ -203,10 +243,11 @@ export default function Home() {
             ))}
           </S.Select>
         </Row>
-      </Form>
+      </S.ColumnContainer>
     ) : (
-      <Spin color={theme.colors.text} tip="Carregando uma linda mensagem ..." />
+      <Spin color={theme.colors.text} tip="Escolhendo uma linda mensagem ..." />
     );
+  };
 
   const GameContainer = () => {
     return success == undefined ? <GuessContainer /> : <ResultContainer />;
@@ -222,7 +263,7 @@ export default function Home() {
         <S.Description>
           Guess the Idiot resume-se em acertar quem escreveu uma frase gerada de
           forma aleatória, retirada do servidor{' '}
-          <S.HomeSpan>Filminho</S.HomeSpan> do discord
+          <S.HomeSpan>Filminho</S.HomeSpan> do discord.
         </S.Description>
 
         <S.Row justify="center">
