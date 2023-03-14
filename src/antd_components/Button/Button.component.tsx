@@ -1,14 +1,15 @@
 import * as S from './Button.styled';
+import * as I from './IButton';
 
 export default function Button({
   color,
-  backgroundcolor,
   width,
   height,
   margin,
   children,
+  backgroundcolor,
   onClick,
-}) {
+}: I.IButton) {
   return (
     <S.Button
       color={color}
