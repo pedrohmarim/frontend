@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Row, Select, Image, Spin } from 'antd_components';
+import { Row, Select, Image, Spin, FeatherIcons } from 'antd_components';
 import * as I from 'services/DiscordMessages/IDiscordMessagesService';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
@@ -13,10 +13,18 @@ import BiaPic from 'assets/bia.png';
 import CaoPic from 'assets/cao.png';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import filterMessage from 'helpers/filter.message';
+import {
+  FilterMessageEnum,
+  IFilterMessageResponse,
+} from 'helpers/filterMessageEnum';
 
 export default function GameContainer() {
   const router = useRouter();
   const [messages, setMessages] = useState<I.IMessage[]>();
+  const [filterResponse, setFilterResponse] = useState(
+    {} as IFilterMessageResponse
+  );
   const [choosedMessage, setChoosedMessage] = useState<I.IMessage>();
   const [authors, setAuthors] = useState<string[]>();
 
@@ -53,48 +61,8 @@ export default function GameContainer() {
 
     const message = arr[randomPosition];
 
-    if (
-      rangeNumber === 0 &&
-      message.content.length > 20 &&
-      !message.content.includes('<:')
-    ) {
-      const formattedAttachments: JSX.Element[] = [];
-
-      if (message.attachments.length) {
-        message.attachments.forEach(({ url, height, width }, index) => {
-          formattedAttachments.push(
-            <Image
-              preview={false}
-              src={url}
-              height={height > 400 ? 400 : height}
-              width={width > 400 ? 400 : width}
-              alt={`image_${index}`}
-            />
-          );
-        });
-      }
-
-      if (message.content.includes('https://'))
-        formattedAttachments.push(
-          <a href={message.content} key={1} target="_blank" rel="noreferrer">
-            {message.content}
-          </a>
-        );
-
-      message.formattedAttachments = formattedAttachments;
-
-      if (message.content.includes('<@')) {
-        const mentions: string[] = [];
-
-        message.mentions.forEach(({ username }) =>
-          mentions.push(`@${username} `)
-        );
-
-        message.formattedMentions = mentions;
-      }
-
-      if (message.content.includes('<@') && !message.attachments.length)
-        message.content = '';
+    if (rangeNumber === 0) {
+      setFilterResponse(filterMessage(message));
 
       const unique_authors = handleDistinctAuthorArray(arr);
       setAuthors(unique_authors);
@@ -168,11 +136,6 @@ export default function GameContainer() {
     );
   }
 
-  const content =
-    (choosedMessage?.formattedAttachments?.length &&
-      choosedMessage?.formattedAttachments.map((item) => <>{item}</>)) ||
-    choosedMessage?.content;
-
   return (
     <>
       <Head>
@@ -181,16 +144,40 @@ export default function GameContainer() {
 
       {authors && choosedMessage ? (
         <S.ColumnContainer>
-          <S.Message>
-            {choosedMessage?.formattedMentions?.length &&
-              choosedMessage?.formattedMentions.map((item) => <>{item}</>)}
+          <S.MessageContainer>
+            <S.GameTitle>Guess the Idiot</S.GameTitle>
 
-            {content}
+            {filterResponse.message.content.length > 0 && (
+              <>
+                <S.Title>Mensagem:</S.Title>
 
-            <S.Date>
-              {new Date(choosedMessage.timestamp).toLocaleString('pt-BR')}
-            </S.Date>
-          </S.Message>
+                <S.Message>
+                  {filterResponse.message.content}
+                  {/* <S.Date>
+                    <FeatherIcons icon="user" size={20} />
+                    <S.Span>@Anônimo, na data</S.Span>
+
+                    {new Date(choosedMessage.timestamp).toLocaleString('pt-BR')}
+                  </S.Date> */}
+                </S.Message>
+              </>
+            )}
+
+            {filterResponse.formattedAttachs.length > 0 && (
+              <>
+                <S.Title marginTop="20px">
+                  {FilterMessageEnum.isLink === filterResponse.messageType
+                    ? 'Link:'
+                    : 'Imagem:'}
+                </S.Title>
+
+                <S.ImageContainer>
+                  {filterResponse.formattedAttachs &&
+                    filterResponse.formattedAttachs.map((item) => <>{item}</>)}
+                </S.ImageContainer>
+              </>
+            )}
+          </S.MessageContainer>
 
           <Row align="middle" justify="center">
             <S.Select

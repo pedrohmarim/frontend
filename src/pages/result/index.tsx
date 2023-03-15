@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Result, Button } from 'antd_components';
+import { Row, Result, Button, Spin } from 'antd_components';
 import theme from 'globalStyles/theme';
 import * as G from 'globalStyles/global';
 import * as S from './styles';
@@ -43,22 +43,26 @@ export default function ResultContainer() {
         <title>Guess the Idiot | Result</title>
       </Head>
 
-      <Result
-        title={<S.Span>{title}</S.Span>}
-        subTitle={<S.Span>{subTitle}</S.Span>}
-        status={status}
-        extra={
-          <Row justify="center">
-            <Button
-              backgroundcolor={theme.colors.primary}
-              color={theme.colors.text}
-              onClick={handleChooseOtherMessage}
-            >
-              Jogar novamente
-            </Button>
-          </Row>
-        }
-      />
+      {success && username ? (
+        <Result
+          title={<S.Span>{title}</S.Span>}
+          subTitle={<S.Span>{subTitle}</S.Span>}
+          status={status}
+          extra={
+            <Row justify="center">
+              <Button
+                backgroundcolor={theme.colors.primary}
+                color={theme.colors.text}
+                onClick={handleChooseOtherMessage}
+              >
+                Jogar novamente
+              </Button>
+            </Row>
+          }
+        />
+      ) : (
+        <Spin color={theme.colors.text} tip="Carregando ..." />
+      )}
     </>
   );
 }
