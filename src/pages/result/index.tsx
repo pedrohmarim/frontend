@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 export default function ResultContainer() {
   const router = useRouter();
 
-  const { success, username } = router.query;
+  const { success, authorMessage } = router.query;
 
   const correctAwnser = success === 'true' ? true : false;
 
@@ -27,7 +27,7 @@ export default function ResultContainer() {
       {correctAwnser
         ? 'Acertou! Quem mandou essa mensagem foi '
         : 'Errou! A resposta certa era '}
-      <G.HomeSpan>{username}</G.HomeSpan>
+      <G.HomeSpan>{authorMessage}</G.HomeSpan>
     </>
   );
 
@@ -43,7 +43,7 @@ export default function ResultContainer() {
         <title>Guess the Idiot | Result</title>
       </Head>
 
-      {success && username ? (
+      {success && authorMessage ? (
         <Result
           title={<S.Span>{title}</S.Span>}
           subTitle={<S.Span>{subTitle}</S.Span>}

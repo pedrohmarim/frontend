@@ -1,26 +1,16 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Row, Select, Image, Spin } from 'antd_components';
+import { Spin } from 'antd_components';
 import * as I from 'services/DiscordMessages/IDiscordMessagesService';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import theme from 'globalStyles/theme';
-import HugoPic from 'assets/hugo.jpg';
-import AfonsoPic from 'assets/afonso.png';
-import LuisPic from 'assets/luis.jpg';
-import PodrePic from 'assets/podre.png';
-import LuisaPic from 'assets/luisa.png';
-import BiaPic from 'assets/bia.png';
-import CaoPic from 'assets/cao.png';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import filterMessage from 'helpers/filter.message';
-import {
-  FilterMessageEnum,
-  IFilterMessageResponse,
-} from 'helpers/filterMessageEnum';
+import ChoosedMessage from './components/ChoosedMessage';
+import AuthorSelect from './components/AuthorSelect';
+import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
 
 export default function GameContainer() {
-  const router = useRouter();
   const [messages, setMessages] = useState<I.IMessage[]>();
   const [choosedMessage, setChoosedMessage] = useState<I.IMessage>();
   const [authors, setAuthors] = useState<string[]>();
@@ -123,42 +113,6 @@ export default function GameContainer() {
     getLastElementRecursiveCallBack();
   }, [getLastElementRecursiveCallBack, messages]);
 
-  function handleUserPicture(author: string) {
-    switch (author) {
-      case 'Hugo Manera':
-        return HugoPic.src;
-      case 'Koromelo':
-        return AfonsoPic.src;
-      case 'Edu':
-        return LuisPic.src;
-      case 'Gertrudes':
-        return LuisaPic.src;
-      case 'Beatriz':
-        return BiaPic.src;
-      case 'CãoFantasma':
-        return CaoPic.src;
-      default:
-        return PodrePic.src;
-    }
-  }
-
-  function handleVerifyAwnser(awnser: string) {
-    if (!choosedMessage) return;
-
-    const { username } = choosedMessage.author;
-
-    router.push(
-      {
-        pathname: '/result',
-        query: {
-          success: awnser === username,
-          username,
-        },
-      },
-      '/result'
-    );
-  }
-
   return (
     <>
       <Head>
@@ -167,60 +121,17 @@ export default function GameContainer() {
 
       {authors && choosedMessage ? (
         <S.ColumnContainer>
-          <S.MessageContainer>
-            <S.GameTitle>Guess the Idiot</S.GameTitle>
+          <ChoosedMessage
+            content={choosedMessage.content}
+            timestamp={choosedMessage.timestamp}
+            formattedAttachs={filterResponse.formattedAttachs}
+            messageType={filterResponse.messageType}
+          />
 
-            {filterResponse.message.content.length > 0 && (
-              <>
-                <S.Title>Mensagem:</S.Title>
-
-                <S.Message>{filterResponse.message.content}</S.Message>
-              </>
-            )}
-
-            {filterResponse.formattedAttachs.length > 0 && (
-              <>
-                <S.Title marginTop="20px">
-                  {FilterMessageEnum.isLink === filterResponse.messageType
-                    ? 'Link:'
-                    : 'Imagem:'}
-                </S.Title>
-
-                <S.ImageContainer>
-                  {filterResponse.formattedAttachs &&
-                    filterResponse.formattedAttachs.map((item) => <>{item}</>)}
-                </S.ImageContainer>
-              </>
-            )}
-
-            <S.Date justify="end">
-              {new Date(choosedMessage.timestamp).toLocaleString('pt-BR')}
-            </S.Date>
-          </S.MessageContainer>
-
-          <Row align="middle" justify="center">
-            <S.Select
-              disabled={!authors?.length}
-              getPopupContainer={(trigger) => trigger.parentNode}
-              placeholder="Selecione um idiota"
-              onChange={(value) => handleVerifyAwnser(String(value))}
-            >
-              {authors?.map((author) => (
-                <Select.Option key={author}>
-                  <Row align="middle">
-                    <Image
-                      preview={false}
-                      src={handleUserPicture(author)}
-                      alt="profile-pic"
-                      height="30px"
-                      width="30px"
-                    />
-                    <S.AuthorName>{author}</S.AuthorName>
-                  </Row>
-                </Select.Option>
-              ))}
-            </S.Select>
-          </Row>
+          <AuthorSelect
+            authorMessage={choosedMessage.author.username}
+            authorsOptions={authors}
+          />
         </S.ColumnContainer>
       ) : (
         <Spin

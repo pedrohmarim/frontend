@@ -3,13 +3,11 @@ import { FilterMessageEnum, IFilterMessageResponse } from './filterMessageEnum';
 import { Image } from 'antd_components';
 
 const emptyContent: JSX.Element[] = [];
-const emptyMessage = {} as IMessage;
 
 export default function filterMessage(message: IMessage) {
   const response: IFilterMessageResponse = {
     messageType: FilterMessageEnum.isText,
     formattedAttachs: emptyContent,
-    message: emptyMessage,
   };
 
   if (message.attachments.length) {
@@ -70,8 +68,6 @@ export default function filterMessage(message: IMessage) {
 
   if (response.messageType === FilterMessageEnum.isText)
     response.formattedAttachs = [];
-
-  response.message = message;
 
   return response;
 }
