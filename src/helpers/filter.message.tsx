@@ -5,13 +5,13 @@ import { Image } from 'antd_components';
 const emptyContent: JSX.Element[] = [];
 const emptyMessage = {} as IMessage;
 
-const response: IFilterMessageResponse = {
-  messageType: FilterMessageEnum.isText,
-  formattedAttachs: emptyContent,
-  message: emptyMessage,
-};
-
 export default function filterMessage(message: IMessage) {
+  const response: IFilterMessageResponse = {
+    messageType: FilterMessageEnum.isText,
+    formattedAttachs: emptyContent,
+    message: emptyMessage,
+  };
+
   if (message.attachments.length) {
     response.messageType = FilterMessageEnum.isImage;
 
@@ -39,11 +39,9 @@ export default function filterMessage(message: IMessage) {
   const link = 'https://' || 'http://';
 
   if (message.content.includes(link)) {
-    let url = message.content;
-
     const positions = message.content.split(' ');
 
-    url = positions.find((x) => x.includes(link)) || '';
+    const url = positions.find((x) => x.includes(link)) || '';
 
     if (message.content.includes('@')) {
       const mentions = positions.filter((x) => !x.includes(link));
@@ -59,6 +57,8 @@ export default function filterMessage(message: IMessage) {
         message.content = 'A mensagem selecionada se encontra no link abaixo.';
     }
 
+    response.formattedAttachs = [];
+
     response.messageType = FilterMessageEnum.isLink;
 
     response.formattedAttachs.push(
@@ -67,6 +67,9 @@ export default function filterMessage(message: IMessage) {
       </a>
     );
   }
+
+  if (response.messageType === FilterMessageEnum.isText)
+    response.formattedAttachs = [];
 
   response.message = message;
 
