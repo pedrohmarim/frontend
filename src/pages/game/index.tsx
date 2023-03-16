@@ -22,13 +22,13 @@ import {
 export default function GameContainer() {
   const router = useRouter();
   const [messages, setMessages] = useState<I.IMessage[]>();
+  const [choosedMessage, setChoosedMessage] = useState<I.IMessage>();
+  const [authors, setAuthors] = useState<string[]>();
   const [filterResponse, setFilterResponse] = useState(
     {} as IFilterMessageResponse
   );
-  const [choosedMessage, setChoosedMessage] = useState<I.IMessage>();
-  const [authors, setAuthors] = useState<string[]>();
 
-  const range = (start: number, end: number) =>
+  const range = (start: number, end: number): number =>
     Math.floor(Math.random() * (end - start + 1)) + start;
 
   const times = range(1, 5);
@@ -37,7 +37,7 @@ export default function GameContainer() {
     return await DiscordMessagesApi.GetDiscordPreviousMessages(id);
   }, []);
 
-  function handleDistinctAuthorArray(messages: I.IMessage[]) {
+  function handleDistinctAuthorArray(messages: I.IMessage[]): string[] {
     const authors: string[] = [];
 
     messages.forEach(({ author }) => {
@@ -50,7 +50,7 @@ export default function GameContainer() {
     );
   }
 
-  function verifyMessage(content: string) {
+  function verifyMessage(content: string): boolean {
     let allEqual = true;
 
     content.split('').forEach((caractere) => {
@@ -112,7 +112,7 @@ export default function GameContainer() {
   const getLastElementRecursiveCallBack = useCallback(() => {
     if (!messages?.length) return;
 
-    getLastElementRecursive(messages, 0).then((data) =>
+    getLastElementRecursive(messages, times).then((data) =>
       setChoosedMessage(data)
     );
 
