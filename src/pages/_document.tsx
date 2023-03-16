@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/google-font-display */
 import React from 'react';
+import { ServerStyleSheet } from 'styled-components';
 import Document, {
   DocumentInitialProps,
   DocumentContext,
@@ -7,7 +9,6 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
   static async getInitialProps(
@@ -24,6 +25,7 @@ export default class MyDocument extends Document {
         });
 
       const initialProps = await Document.getInitialProps(ctx);
+
       return {
         ...initialProps,
         styles: (

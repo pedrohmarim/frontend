@@ -4,6 +4,7 @@ export interface IMessage {
   content: string;
   mentions: IMention[];
   attachments: IAttachments[];
+  sticker_items: [];
   timestamp: string;
 }
 

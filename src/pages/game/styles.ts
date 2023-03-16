@@ -5,22 +5,22 @@ export const ColumnContainer = styled.div`
   flex-direction: column;
   text-align: center;
   max-width: 75%;
+  min-width: 35%;
 `;
 
 export const Title = styled.div<{ marginTop?: string }>`
   text-align: left;
-  font-size: 14pt;
+  font-size: 13pt;
   font-weight: 100;
   margin-bottom: 5px;
   margin-top: ${({ marginTop }) => marginTop};
 `;
 
 export const Message = styled.div`
-  padding: 15px;
+  padding: 5px 8px 5px 8px;
   text-align: left;
-  font-size: 13pt;
+  font-size: 12pt;
   font-weight: 1;
-  position: relative;
   background-color: ${(props) => props.theme.colors.background};
 `;
 
@@ -33,6 +33,7 @@ export const ImageContainer = styled.div`
   height: 300px;
   max-width: auto;
   width: auto;
+  padding: 10px;
 `;
 
 export const MessageContainer = styled(Card)`
@@ -48,17 +49,8 @@ export const MessageContainer = styled(Card)`
 `;
 
 export const Date = styled(Row)`
+  margin-top: 12px;
   font-size: 11pt;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 0 10px 10px 0;
-`;
-
-export const Span = styled.span`
-  margin-left: 5px;
-  margin-right: 5px;
-  font-weight: 500;
 `;
 
 export const GameTitle = styled.h2`

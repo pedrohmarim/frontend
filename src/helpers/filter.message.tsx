@@ -28,24 +28,44 @@ export default function filterMessage(message: IMessage) {
     });
   }
 
-  if (message.content.includes('https://')) {
-    response.messageType = FilterMessageEnum.isLink;
-
-    response.formattedAttachs.push(
-      <a href={message.content} key={1} target="_blank" rel="noreferrer">
-        {message.content}
-      </a>
-    );
-
-    message.content = 'A mensagem selecionada se encontrada no link abaixo.';
-  }
-
   if (message.content.includes('<@')) {
     response.messageType = FilterMessageEnum.isMention;
 
     message.mentions.map(({ username, id }) => {
-      message.content = message.content.replace(`<@${id}>`, `@${username}`);
+      message.content = message.content.replaceAll(`<@${id}>`, `@${username}`);
     });
+  }
+
+  const link = 'https://' || 'http://';
+
+  if (message.content.includes(link)) {
+    let url = message.content;
+
+    const positions = message.content.split(' ');
+
+    url = positions.find((x) => x.includes(link)) || '';
+
+    if (message.content.includes('@')) {
+      const mentions = positions.filter((x) => !x.includes(link));
+
+      message.content = mentions.toString().replaceAll(',', ' ');
+    } else {
+      const notUrlPositions = positions.filter((x) => !x.includes(link));
+      const hasMoreText = notUrlPositions.length > 0;
+
+      if (hasMoreText)
+        message.content = notUrlPositions.toString().replaceAll(',', ' ');
+      else
+        message.content = 'A mensagem selecionada se encontra no link abaixo.';
+    }
+
+    response.messageType = FilterMessageEnum.isLink;
+
+    response.formattedAttachs.push(
+      <a href={url} key={1} target="_blank" rel="noreferrer">
+        {url}
+      </a>
+    );
   }
 
   response.message = message;
