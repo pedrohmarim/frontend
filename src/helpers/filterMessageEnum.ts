@@ -5,6 +5,13 @@ export enum FilterMessageEnum {
   isImage = 4,
 }
 
+export enum MessageLevelEnum {
+  isPrevious = 1,
+  isConsecutive = 2,
+  isMain = 3,
+  dontExist = 4,
+}
+
 export interface IFilterMessageResponse {
   messageType: FilterMessageEnum;
   formattedAttachs: JSX.Element[];

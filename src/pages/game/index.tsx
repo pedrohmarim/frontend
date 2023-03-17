@@ -8,7 +8,10 @@ import Head from 'next/head';
 import filterMessage from 'helpers/filter.message';
 import ChoosedMessage from './components/ChoosedMessage';
 import AuthorSelect from './components/AuthorSelect';
-import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
+import {
+  IFilterMessageResponse,
+  MessageLevelEnum,
+} from 'helpers/filterMessageEnum';
 
 export default function GameContainer() {
   const [messages, setMessages] = useState<I.IMessage[]>();
@@ -122,8 +125,10 @@ export default function GameContainer() {
       {authors && choosedMessage ? (
         <S.ColumnContainer>
           <ChoosedMessage
+            messageLevel={MessageLevelEnum.isMain}
             content={choosedMessage.content}
             timestamp={choosedMessage.timestamp}
+            id={choosedMessage.id}
             formattedAttachs={filterResponse.formattedAttachs}
             messageType={filterResponse.messageType}
           />

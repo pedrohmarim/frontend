@@ -8,10 +8,14 @@ export default function Button({
   margin,
   children,
   backgroundcolor,
+  icon,
+  type,
   onClick,
 }: I.IButton) {
   return (
     <S.Button
+      type={type}
+      icon={icon}
       color={color}
       backgroundcolor={backgroundcolor}
       width={width}

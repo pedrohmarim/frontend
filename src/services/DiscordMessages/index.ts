@@ -32,6 +32,17 @@ const ApiAuth = {
     );
     return response.data;
   },
+  GetDiscordHints: async function (id: string) {
+    const response: AxiosResponse<I.IMessage[]> = await http.get(
+      `${baseURL}?around=${id}`,
+      {
+        headers: {
+          authorization,
+        },
+      }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;

@@ -11,41 +11,43 @@ export const MessageContainer = styled(Card)`
   border-radius: 4px;
   border-color: rgba(255, 255, 255, 0.1);
   margin-bottom: 30px;
-`;
-
-export const Message = styled.div`
-  padding: 5px 8px 5px 8px;
-  text-align: left;
-  font-size: 12pt;
-  font-weight: 1;
-  background-color: ${(props) => props.theme.colors.background};
+  position: relative;
 `;
 
 export const GameTitle = styled.h2`
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const Title = styled.div<{ marginTop?: string }>`
-  text-align: left;
-  font-size: 13pt;
-  font-weight: 100;
-  margin-bottom: 5px;
-  margin-top: ${({ marginTop }) => marginTop};
+export const Options = styled.div`
+  position: absolute;
+  margin: 18px 12px 0 0;
+  height: 25px;
+  right: 0;
+  top: 0;
 `;
 
-export const ImageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+export const OptionItem = styled(Row)`
+  padding: 5px 15px;
   background-color: ${(props) => props.theme.colors.background};
-  max-height: 300px;
-  height: 300px;
-  max-width: auto;
-  width: auto;
-  padding: 10px;
+  border: solid 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+
+  :hover {
+    opacity: 0.9;
+  }
 `;
 
-export const Date = styled(Row)`
-  margin-top: 12px;
-  font-size: 11pt;
+export const Hint = styled.span`
+  margin: 2px 0 0 5px;
+  font-size: 12pt;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.text};
+`;
+
+export const MainMessageContainer = styled.div`
+  border: solid 2px rgba(138, 0, 194, 0.4);
+  box-shadow: 0px 0px 15px 15px rgba(255, 255, 255, 0.08);
+  padding: 10px;
+  border-radius: 4px;
+  margin: 30px 0;
 `;
