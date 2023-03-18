@@ -26,7 +26,7 @@ export default function DisplayMessageContainer({
     FilterMessageEnum.isLink,
     FilterMessageEnum.isMention,
     FilterMessageEnum.isText,
-  ].some((value) => messageType?.includes(value));
+  ].some((value) => messageType.includes(value));
 
   return (
     <>
@@ -35,7 +35,7 @@ export default function DisplayMessageContainer({
           <S.Title>{titleMessage()}</S.Title>
 
           <S.Message>
-            {messageType?.includes(FilterMessageEnum.isLink) ? (
+            {messageType.includes(FilterMessageEnum.isLink) ? (
               <div dangerouslySetInnerHTML={{ __html: sanitize(content) }} />
             ) : (
               <>{content}</>
@@ -44,7 +44,7 @@ export default function DisplayMessageContainer({
         </>
       )}
 
-      {messageType?.includes(FilterMessageEnum.isImage) && (
+      {messageType.includes(FilterMessageEnum.isImage) && (
         <>
           <S.Title marginTop="20px">
             {!imageMessageIncludesText ? 'Imagem:' : 'Imagem da mensagem:'}
