@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Result, Button, Spin } from 'antd_components';
 import theme from 'globalStyles/theme';
 import * as G from 'globalStyles/global';
@@ -12,6 +12,16 @@ export default function ResultContainer() {
   const { success, authorMessage } = router.query;
 
   const correctAwnser = success === 'true' ? true : false;
+
+  useEffect(() => {
+    if (!Object.keys(router.query).length)
+      router.push(
+        {
+          pathname: '/home',
+        },
+        '/home'
+      );
+  }, [router, router.query]);
 
   function handleChooseOtherMessage() {
     router.push(
