@@ -13,6 +13,6 @@ export enum MessageLevelEnum {
 }
 
 export interface IFilterMessageResponse {
-  messageType: FilterMessageEnum;
+  messageType: FilterMessageEnum[];
   formattedAttachs: JSX.Element[];
 }

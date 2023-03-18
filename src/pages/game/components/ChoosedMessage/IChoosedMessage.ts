@@ -4,7 +4,7 @@ export interface IChoosedMessage {
   id: string;
   content: string;
   timestamp: string;
-  messageType: FilterMessageEnum;
+  messageType: FilterMessageEnum[];
   messageLevel: MessageLevelEnum;
   formattedAttachs: JSX.Element[];
 }

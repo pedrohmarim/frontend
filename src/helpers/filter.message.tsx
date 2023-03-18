@@ -2,16 +2,16 @@ import { IMessage } from 'services/DiscordMessages/IDiscordMessagesService';
 import { FilterMessageEnum, IFilterMessageResponse } from './filterMessageEnum';
 import { Image } from 'antd_components';
 
-const emptyContent: JSX.Element[] = [];
-
 export default function filterMessage(message: IMessage) {
+  const emptyContent: JSX.Element[] = [];
+
   const response: IFilterMessageResponse = {
-    messageType: FilterMessageEnum.isText,
+    messageType: [FilterMessageEnum.isText],
     formattedAttachs: emptyContent,
   };
 
   if (message.attachments.length) {
-    response.messageType = FilterMessageEnum.isImage;
+    response.messageType.push(FilterMessageEnum.isImage);
 
     message.attachments.forEach(({ url, height, width }, index) => {
       response.formattedAttachs.push(
@@ -27,7 +27,7 @@ export default function filterMessage(message: IMessage) {
   }
 
   if (message.content.includes('<@')) {
-    response.messageType = FilterMessageEnum.isMention;
+    response.messageType.push(FilterMessageEnum.isMention);
 
     message.mentions.map(({ username, id }) => {
       message.content = message.content.replaceAll(`<@${id}>`, `@${username}`);
@@ -37,6 +37,7 @@ export default function filterMessage(message: IMessage) {
   const link = 'https://' || 'http://';
 
   if (message.content.includes(link)) {
+    response.messageType.push(FilterMessageEnum.isLink);
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
     message.content = message.content.replace(urlRegex, function (url: string) {
@@ -54,8 +55,11 @@ export default function filterMessage(message: IMessage) {
     });
   }
 
-  if (response.messageType === FilterMessageEnum.isText)
-    response.formattedAttachs = [];
+  if (!message.content.length && message.attachments.length) {
+    response.messageType = response.messageType.filter(
+      (x) => x === FilterMessageEnum.isImage
+    );
+  }
 
   return response;
 }

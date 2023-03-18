@@ -55,6 +55,17 @@ export default function ChoosedMessage({
     });
   }
 
+  function handleFormattEmptyChoosedMessage(
+    emptyChoosedMessage: IChoosedMessage,
+    isPrevious: boolean
+  ) {
+    if (isPrevious)
+      emptyChoosedMessage.messageLevel = MessageLevelEnum.isPrevious;
+    else emptyChoosedMessage.messageLevel = MessageLevelEnum.isConsecutive;
+
+    return emptyChoosedMessage;
+  }
+
   function handleGetHints() {
     DiscordMessagesApi.GetDiscordHints(id).then((res) => {
       const messageIndex = res.findIndex((x) => x.id === id);
@@ -63,7 +74,7 @@ export default function ChoosedMessage({
         content: 'Não foi possível recuperar a mensagem.',
         formattedAttachs: [] as JSX.Element[],
         id: '',
-        messageType: FilterMessageEnum.isText,
+        messageType: [] as FilterMessageEnum[],
         timestamp: '',
         messageLevel: MessageLevelEnum.dontExist,
       };
@@ -83,7 +94,7 @@ export default function ChoosedMessage({
         filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
 
       const previousMessage: IChoosedMessage = !previousPosition
-        ? emptyChoosedMessage
+        ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
         : {
             content: previousPosition.content,
             formattedAttachs: filterResponsePreviousMessage.formattedAttachs,
@@ -94,7 +105,7 @@ export default function ChoosedMessage({
           };
 
       const consecutiveMessage: IChoosedMessage = !consecutivePosition
-        ? emptyChoosedMessage
+        ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
         : {
             content: consecutivePosition.content,
             formattedAttachs: filterResponseConsecutiveMessage.formattedAttachs,

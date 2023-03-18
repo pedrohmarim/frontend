@@ -17,38 +17,50 @@ export default function DisplayMessageContainer({
         return 'Mensagem anterior:';
       case MessageLevelEnum.isPrevious:
         return 'Próxima mensagem:';
-      case MessageLevelEnum.isMain:
-        return 'Mensagem:';
       default:
-        return 'Não foi possível recuperar a mensagem';
+        return 'Mensagem:';
     }
   }
 
-  if (!content.length && !formattedAttachs.length) return <></>;
+  const imageMessageIncludesText = [
+    FilterMessageEnum.isLink,
+    FilterMessageEnum.isMention,
+    FilterMessageEnum.isText,
+  ].some((value) => messageType.includes(value));
 
   return (
     <>
-      {FilterMessageEnum.isImage !== messageType && (
+      {imageMessageIncludesText && (
         <>
           <S.Title>{titleMessage()}</S.Title>
 
           <S.Message>
-            {FilterMessageEnum.isLink === messageType ? (
+            {messageType.includes(FilterMessageEnum.isLink) ? (
               <div dangerouslySetInnerHTML={{ __html: sanitize(content) }} />
             ) : (
-              content
+              <>{content}</>
             )}
           </S.Message>
         </>
       )}
 
-      {FilterMessageEnum.isImage === messageType && (
+      {messageType.includes(FilterMessageEnum.isImage) && (
         <>
-          <S.Title marginTop="20px">Imagem:</S.Title>
+          <S.Title marginTop="20px">
+            {!imageMessageIncludesText ? 'Imagem:' : 'Imagem da mensagem:'}
+          </S.Title>
 
           <S.ImageContainer>
             {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
           </S.ImageContainer>
+        </>
+      )}
+
+      {!messageType.length && (
+        <>
+          <S.Title>{titleMessage()}</S.Title>
+
+          <S.Message>{content}</S.Message>
         </>
       )}
 
