@@ -1,6 +1,7 @@
-import { FilterMessageEnum, MessageLevelEnum } from 'helpers/filterMessageEnum';
 import React from 'react';
+import { FilterMessageEnum, MessageLevelEnum } from 'helpers/filterMessageEnum';
 import { IChoosedMessage } from '../ChoosedMessage/IChoosedMessage';
+import { sanitize } from 'dompurify';
 import * as S from './styles';
 
 export default function DisplayMessageContainer({
@@ -23,21 +24,27 @@ export default function DisplayMessageContainer({
     }
   }
 
+  if (!content.length && !formattedAttachs.length) return <></>;
+
   return (
     <>
-      {content.length > 0 && (
+      {FilterMessageEnum.isImage !== messageType && (
         <>
           <S.Title>{titleMessage()}</S.Title>
 
-          <S.Message>{content}</S.Message>
+          <S.Message>
+            {FilterMessageEnum.isLink === messageType ? (
+              <div dangerouslySetInnerHTML={{ __html: sanitize(content) }} />
+            ) : (
+              content
+            )}
+          </S.Message>
         </>
       )}
 
-      {formattedAttachs.length > 0 && (
+      {FilterMessageEnum.isImage === messageType && (
         <>
-          <S.Title marginTop="20px">
-            {FilterMessageEnum.isLink === messageType ? 'Link:' : 'Imagem:'}
-          </S.Title>
+          <S.Title marginTop="20px">Imagem:</S.Title>
 
           <S.ImageContainer>
             {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
@@ -45,9 +52,11 @@ export default function DisplayMessageContainer({
         </>
       )}
 
-      <S.Date justify="end">
-        {new Date(timestamp).toLocaleString('pt-BR')}
-      </S.Date>
+      {timestamp && (
+        <S.Date justify="end">
+          {new Date(timestamp).toLocaleString('pt-BR')}
+        </S.Date>
+      )}
     </>
   );
 }

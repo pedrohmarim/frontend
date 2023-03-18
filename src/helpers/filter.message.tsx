@@ -18,7 +18,7 @@ export default function filterMessage(message: IMessage) {
         <Image
           preview={false}
           src={url}
-          height={height > 300 ? 300 : height}
+          height={height > 350 ? 350 : height}
           width={width > 500 ? 500 : width}
           alt={`image_${index}`}
         />
@@ -37,33 +37,21 @@ export default function filterMessage(message: IMessage) {
   const link = 'https://' || 'http://';
 
   if (message.content.includes(link)) {
-    const positions = message.content.split(' ');
+    const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
-    const url = positions.find((x) => x.includes(link)) || '';
-
-    if (message.content.includes('@')) {
-      const mentions = positions.filter((x) => !x.includes(link));
-
-      message.content = mentions.toString().replaceAll(',', ' ');
-    } else {
-      const notUrlPositions = positions.filter((x) => !x.includes(link));
-      const hasMoreText = notUrlPositions.length > 0;
-
-      if (hasMoreText)
-        message.content = notUrlPositions.toString().replaceAll(',', ' ');
-      else
-        message.content = 'A mensagem selecionada se encontra no link abaixo.';
-    }
-
-    response.formattedAttachs = [];
-
-    response.messageType = FilterMessageEnum.isLink;
-
-    response.formattedAttachs.push(
-      <a href={url} key={1} target="_blank" rel="noreferrer">
-        {url}
-      </a>
-    );
+    message.content = message.content.replace(urlRegex, function (url: string) {
+      let hyperlink = url;
+      if (!hyperlink.match('^https?://')) {
+        hyperlink = 'http://' + hyperlink;
+      }
+      return (
+        '<a href="' +
+        hyperlink +
+        '" target="_blank" rel="noopener noreferrer">' +
+        url +
+        '</a>'
+      );
+    });
   }
 
   if (response.messageType === FilterMessageEnum.isText)

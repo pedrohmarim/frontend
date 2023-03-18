@@ -22,11 +22,6 @@ export const ImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${(props) => props.theme.colors.background};
-  max-height: 300px;
-  height: 300px;
-  max-width: auto;
-  width: auto;
-  padding: 10px;
 `;
 
 export const Date = styled(Row)`
