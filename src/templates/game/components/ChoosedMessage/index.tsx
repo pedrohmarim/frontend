@@ -5,7 +5,7 @@ import type { MenuProps } from 'antd';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/filter.message';
-import DisplayMessageContainer from 'pages/game/components/DisplayMessageContainer';
+import DisplayMessageContainer from 'templates/game/components/DisplayMessageContainer';
 import { IChoosedMessage } from './IChoosedMessage';
 import {
   Button,
