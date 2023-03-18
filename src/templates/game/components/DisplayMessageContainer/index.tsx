@@ -1,8 +1,11 @@
 import React from 'react';
 import { FilterMessageEnum, MessageLevelEnum } from 'helpers/filterMessageEnum';
-import { IChoosedMessage } from '../ChoosedMessage/IChoosedMessage';
-import { sanitize } from 'dompurify';
 import * as S from './styles';
+import Link from 'next/link';
+import {
+  IChoosedMessage,
+  ILinkContainer,
+} from '../ChoosedMessage/IChoosedMessage';
 
 export default function DisplayMessageContainer({
   content,
@@ -10,6 +13,7 @@ export default function DisplayMessageContainer({
   messageType,
   timestamp,
   formattedAttachs,
+  urlLink,
 }: IChoosedMessage) {
   function titleMessage() {
     switch (messageLevel) {
@@ -22,47 +26,59 @@ export default function DisplayMessageContainer({
     }
   }
 
-  const imageMessageIncludesText = [
-    FilterMessageEnum.isLink,
-    FilterMessageEnum.isMention,
-    FilterMessageEnum.isText,
-  ].some((value) => messageType.includes(value));
+  const LinkContainer = ({ content, urlLink }: ILinkContainer) => {
+    const parts = content.split(urlLink);
+
+    return (
+      <>
+        {parts[0]}
+
+        <Link href={urlLink} target="_blank" rel="noopener noreferrer">
+          {urlLink}
+        </Link>
+
+        {parts[1]}
+      </>
+    );
+  };
 
   return (
     <>
-      {imageMessageIncludesText && (
-        <>
-          <S.Title>{titleMessage()}</S.Title>
+      <S.Title>{titleMessage()}</S.Title>
 
-          <S.Message>
-            {messageType.includes(FilterMessageEnum.isLink) ? (
-              <div dangerouslySetInnerHTML={{ __html: sanitize(content) }} />
-            ) : (
-              <>{content}</>
-            )}
-          </S.Message>
-        </>
-      )}
+      <S.Message>
+        {messageType === FilterMessageEnum.isText && <>{content}</>}
 
-      {messageType.includes(FilterMessageEnum.isImage) && (
-        <>
-          <S.Title marginTop="20px">
-            {!imageMessageIncludesText ? 'Imagem:' : 'Imagem da mensagem:'}
-          </S.Title>
+        {messageType === FilterMessageEnum.isLink && (
+          <LinkContainer content={content} urlLink={urlLink} />
+        )}
 
+        {messageType === FilterMessageEnum.isImage && (
           <S.ImageContainer>
             {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
           </S.ImageContainer>
-        </>
-      )}
+        )}
 
-      {!messageType.length && (
-        <>
-          <S.Title>{titleMessage()}</S.Title>
+        {messageType === FilterMessageEnum.isImageWithText && (
+          <>
+            <>{content}</>
 
-          <S.Message>{content}</S.Message>
-        </>
-      )}
+            <S.ImageContainer>
+              {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
+            </S.ImageContainer>
+          </>
+        )}
+
+        {messageType === FilterMessageEnum.isImageWithTextAndLink && (
+          <>
+            <LinkContainer content={content} urlLink={urlLink} />
+
+            <S.ImageContainer>
+              {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
+            </S.ImageContainer>
+          </>
+        )}
+      </S.Message>
 
       {timestamp && (
         <S.Date justify="end">

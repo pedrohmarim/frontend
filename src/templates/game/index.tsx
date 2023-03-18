@@ -119,12 +119,13 @@ export default function GameContainer() {
   return (
     <>
       <Head>
-        <title>Guess the Idiot | Game</title>
+        <title>Discordle - Guess the Idiot | Game</title>
       </Head>
 
       {authors && choosedMessage ? (
         <S.ColumnContainer>
           <ChoosedMessage
+            urlLink={filterResponse.urlLink}
             messageLevel={MessageLevelEnum.isMain}
             content={choosedMessage.content}
             timestamp={choosedMessage.timestamp}
@@ -141,7 +142,7 @@ export default function GameContainer() {
       ) : (
         <Spin
           color={theme.colors.text}
-          tip="Escolhendo uma linda mensagem ..."
+          spinText="Escolhendo uma linda mensagem ..."
         />
       )}
     </>

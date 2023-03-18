@@ -1,8 +1,10 @@
 export enum FilterMessageEnum {
   isText = 1,
-  isMention = 2,
   isLink = 3,
   isImage = 4,
+  isImageWithText = 5,
+  isImageWithTextAndLink = 6,
+  isImageWithLink = 7,
 }
 
 export enum MessageLevelEnum {
@@ -13,6 +15,7 @@ export enum MessageLevelEnum {
 }
 
 export interface IFilterMessageResponse {
-  messageType: FilterMessageEnum[];
+  messageType: FilterMessageEnum;
+  urlLink: string;
   formattedAttachs: JSX.Element[];
 }

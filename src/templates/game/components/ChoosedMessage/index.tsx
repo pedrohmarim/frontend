@@ -27,6 +27,7 @@ export default function ChoosedMessage({
   messageType,
   formattedAttachs,
   messageLevel,
+  urlLink,
 }: I.IChoosedMessage) {
   const mainMessage = {
     content,
@@ -35,7 +36,10 @@ export default function ChoosedMessage({
     messageType,
     formattedAttachs,
     messageLevel,
+    urlLink,
   };
+
+  const [loading, setLoading] = useState<boolean>(false);
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     mainMessage,
   ]);
@@ -45,7 +49,6 @@ export default function ChoosedMessage({
     popconfirm: false,
     dropdown: false,
   });
-  const [loading, setLoading] = useState<boolean>(false);
 
   function closeAll() {
     setStillOpen({
@@ -59,9 +62,15 @@ export default function ChoosedMessage({
     emptyChoosedMessage: IChoosedMessage,
     isPrevious: boolean
   ) {
-    if (isPrevious)
+    if (isPrevious) {
+      emptyChoosedMessage.content =
+        'Não existe uma mensagem consecutiva à escolhida.';
       emptyChoosedMessage.messageLevel = MessageLevelEnum.isPrevious;
-    else emptyChoosedMessage.messageLevel = MessageLevelEnum.isConsecutive;
+    } else {
+      emptyChoosedMessage.content =
+        'Não existe uma mensagem anterior à escolhida.';
+      emptyChoosedMessage.messageLevel = MessageLevelEnum.isConsecutive;
+    }
 
     return emptyChoosedMessage;
   }
@@ -71,44 +80,49 @@ export default function ChoosedMessage({
       const messageIndex = res.findIndex((x) => x.id === id);
 
       const emptyChoosedMessage: IChoosedMessage = {
-        content: 'Não foi possível recuperar a mensagem.',
+        content: '',
         formattedAttachs: [] as JSX.Element[],
         id: '',
-        messageType: [] as FilterMessageEnum[],
+        urlLink: '',
+        messageType: FilterMessageEnum.isText,
         timestamp: '',
         messageLevel: MessageLevelEnum.dontExist,
       };
 
       let filterResponsePreviousMessage: IFilterMessageResponse =
         {} as IFilterMessageResponse;
-      let filterResponseConsecutiveMessage: IFilterMessageResponse =
-        {} as IFilterMessageResponse;
 
       const previousPosition = res[messageIndex - 1];
-      const consecutivePosition = res[messageIndex + 1];
 
       if (previousPosition)
         filterResponsePreviousMessage = filterMessage(previousPosition);
-
-      if (consecutivePosition)
-        filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
 
       const previousMessage: IChoosedMessage = !previousPosition
         ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
         : {
             content: previousPosition.content,
             formattedAttachs: filterResponsePreviousMessage.formattedAttachs,
+            urlLink: filterResponsePreviousMessage.urlLink,
             id: previousPosition.id,
             messageType: filterResponsePreviousMessage.messageType,
             timestamp: previousPosition.timestamp,
             messageLevel: MessageLevelEnum.isPrevious,
           };
 
+      const consecutivePosition = res[messageIndex + 1];
+
+      let filterResponseConsecutiveMessage: IFilterMessageResponse =
+        {} as IFilterMessageResponse;
+
+      if (consecutivePosition)
+        filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
+
       const consecutiveMessage: IChoosedMessage = !consecutivePosition
         ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
         : {
             content: consecutivePosition.content,
             formattedAttachs: filterResponseConsecutiveMessage.formattedAttachs,
+            urlLink: filterResponseConsecutiveMessage.urlLink,
             id: consecutivePosition.id,
             messageType: filterResponseConsecutiveMessage.messageType,
             timestamp: consecutivePosition.timestamp,
@@ -206,36 +220,34 @@ export default function ChoosedMessage({
             timestamp,
             id,
             messageLevel,
+            urlLink,
           },
           index
-        ) => (
-          <>
-            {messageLevel === MessageLevelEnum.isMain &&
-            totalMessages.length > 1 ? (
-              <S.MainMessageContainer>
-                <DisplayMessageContainer
-                  key={index}
-                  id={id}
-                  content={content}
-                  timestamp={timestamp}
-                  messageType={messageType}
-                  formattedAttachs={formattedAttachs}
-                  messageLevel={messageLevel}
-                />
-              </S.MainMessageContainer>
-            ) : (
-              <DisplayMessageContainer
-                key={index}
-                id={id}
-                content={content}
-                timestamp={timestamp}
-                messageType={messageType}
-                formattedAttachs={formattedAttachs}
-                messageLevel={messageLevel}
-              />
-            )}
-          </>
-        )
+        ) => {
+          const props = {
+            content,
+            formattedAttachs,
+            messageType,
+            timestamp,
+            id,
+            messageLevel,
+            urlLink,
+            key: index,
+          };
+
+          return (
+            <>
+              {messageLevel === MessageLevelEnum.isMain &&
+              totalMessages.length > 1 ? (
+                <S.MainMessageContainer>
+                  <DisplayMessageContainer {...props} />
+                </S.MainMessageContainer>
+              ) : (
+                <DisplayMessageContainer {...props} />
+              )}
+            </>
+          );
+        }
       )}
     </S.MessageContainer>
   );

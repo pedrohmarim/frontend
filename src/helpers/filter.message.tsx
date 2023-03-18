@@ -6,12 +6,13 @@ export default function filterMessage(message: IMessage) {
   const emptyContent: JSX.Element[] = [];
 
   const response: IFilterMessageResponse = {
-    messageType: [FilterMessageEnum.isText],
+    messageType: FilterMessageEnum.isText,
     formattedAttachs: emptyContent,
+    urlLink: '',
   };
 
   if (message.attachments.length) {
-    response.messageType.push(FilterMessageEnum.isImage);
+    response.messageType = FilterMessageEnum.isImage;
 
     message.attachments.forEach(({ url, height, width }, index) => {
       response.formattedAttachs.push(
@@ -27,7 +28,7 @@ export default function filterMessage(message: IMessage) {
   }
 
   if (message.content.includes('<@')) {
-    response.messageType.push(FilterMessageEnum.isMention);
+    response.messageType = FilterMessageEnum.isText;
 
     message.mentions.map(({ username, id }) => {
       message.content = message.content.replaceAll(`<@${id}>`, `@${username}`);
@@ -37,29 +38,29 @@ export default function filterMessage(message: IMessage) {
   const link = 'https://' || 'http://';
 
   if (message.content.includes(link)) {
-    response.messageType.push(FilterMessageEnum.isLink);
+    response.messageType = FilterMessageEnum.isLink;
+
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
-    message.content = message.content.replace(urlRegex, function (url: string) {
-      let hyperlink = url;
-      if (!hyperlink.match('^https?://')) {
-        hyperlink = 'http://' + hyperlink;
-      }
-      return (
-        '<a href="' +
-        hyperlink +
-        '" target="_blank" rel="noopener noreferrer">' +
-        url +
-        '</a>'
-      );
+    message.content = message.content.replace(urlRegex, (content: string) => {
+      let hyperlink = content;
+
+      if (!hyperlink.match('^https?://')) hyperlink = 'http://' + hyperlink;
+
+      response.urlLink = hyperlink;
+
+      return hyperlink;
     });
   }
 
-  if (!message.content.length && message.attachments.length) {
-    response.messageType = response.messageType.filter(
-      (x) => x === FilterMessageEnum.isImage
-    );
-  }
+  if (message.attachments.length && message.content.length)
+    response.messageType = FilterMessageEnum.isImageWithText;
+
+  if (message.attachments.length && message.content.includes(link))
+    response.messageType = FilterMessageEnum.isImageWithTextAndLink;
+
+  if (!message.attachments.length && message.content.includes(link))
+    response.messageType = FilterMessageEnum.isImageWithTextAndLink;
 
   return response;
 }

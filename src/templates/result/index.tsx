@@ -50,7 +50,7 @@ export default function ResultContainer() {
   return (
     <>
       <Head>
-        <title>Guess the Idiot | Result</title>
+        <title>Discordle - Guess the Idiot | Result</title>
       </Head>
 
       {success && authorMessage ? (
@@ -71,7 +71,7 @@ export default function ResultContainer() {
           }
         />
       ) : (
-        <Spin color={theme.colors.text} tip="Carregando ..." />
+        <Spin color={theme.colors.text} spinText="Carregando ..." />
       )}
     </>
   );

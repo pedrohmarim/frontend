@@ -15,6 +15,7 @@ export const Message = styled.div`
   font-size: 12pt;
   font-weight: 1;
   background-color: ${(props) => props.theme.colors.background};
+  word-break: break-all;
 `;
 
 export const ImageContainer = styled.div`

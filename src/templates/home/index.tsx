@@ -10,18 +10,19 @@ export default function HomeContainer() {
   return (
     <>
       <Head>
-        <title>Guess the Idiot | Home</title>
+        <title>Discordle - Guess the Idiot | Home</title>
       </Head>
 
       <S.ColumnContainer>
         <S.Title>
-          Bem vindo colega, ao jogo <G.HomeSpan> Guess the Idiot</G.HomeSpan>
+          Bem vindo colega, ao jogo
+          <G.HomeSpan> Discordle - Guess the Idiot</G.HomeSpan>
         </S.Title>
 
         <S.Description>
           Guess the Idiot resume-se em acertar quem escreveu uma frase gerada de
-          forma aleatória, retirada do servidor{' '}
-          <G.HomeSpan>Filminho</G.HomeSpan> do Discord.
+          forma aleatória, retirada do servidor
+          <G.HomeSpan> Filminho</G.HomeSpan> do Discord.
         </S.Description>
 
         <S.Row justify="center">

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { Spin as AntDesignSpin } from 'antd';
+import { ISpin } from './ISpin';
 
-export const Spin = styled(AntDesignSpin)`
+export const Spin = styled(AntDesignSpin)<ISpin>`
   position: fixed;
   top: 0;
   width: 100%;
