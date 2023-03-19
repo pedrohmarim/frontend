@@ -10,8 +10,6 @@ export interface IMessage {
 
 export interface IAttachments {
   url: string;
-  height: number;
-  width: number;
 }
 
 export interface IAuthor {

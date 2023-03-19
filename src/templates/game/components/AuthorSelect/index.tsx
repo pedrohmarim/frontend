@@ -47,29 +47,27 @@ const AuthorSelect = ({ authorMessage, authorsOptions }: I.IAuthorSelect) => {
   }
 
   return (
-    <Row align="middle" justify="center">
-      <S.Select
-        disabled={!authorsOptions?.length}
-        getPopupContainer={(trigger) => trigger.parentNode}
-        placeholder="Selecione um idiota"
-        onChange={(value) => handleVerifyAwnser(String(value))}
-      >
-        {authorsOptions?.map((author) => (
-          <Select.Option key={author}>
-            <Row align="middle">
-              <Image
-                preview={false}
-                src={handleUserPicture(author)}
-                alt="profile-pic"
-                height="30px"
-                width="30px"
-              />
-              <S.AuthorName>{author}</S.AuthorName>
-            </Row>
-          </Select.Option>
-        ))}
-      </S.Select>
-    </Row>
+    <S.Select
+      disabled={!authorsOptions?.length}
+      getPopupContainer={(trigger) => trigger.parentNode}
+      placeholder="Selecione um idiota"
+      onChange={(value) => handleVerifyAwnser(String(value))}
+    >
+      {authorsOptions?.map((author) => (
+        <Select.Option key={author}>
+          <Row align="middle">
+            <Image
+              preview={false}
+              src={handleUserPicture(author)}
+              alt="profile-pic"
+              height="30px"
+              width="30px"
+            />
+            <S.AuthorName>{author}</S.AuthorName>
+          </Row>
+        </Select.Option>
+      ))}
+    </S.Select>
   );
 };
 

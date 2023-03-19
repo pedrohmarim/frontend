@@ -42,30 +42,36 @@ export default function DisplayMessageContainer({
     );
   };
 
+  const ImageContainer = () => (
+    <S.Carousel
+      infinite={false}
+      draggable
+      cursor={formattedAttachs.length > 1 ? 'grabbing' : 'context-menu'}
+    >
+      {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
+    </S.Carousel>
+  );
+
+  const DefaultContent = () => <>{content}</>;
+
   return (
     <>
       <S.Title>{titleMessage()}</S.Title>
 
       <S.Message>
-        {messageType === FilterMessageEnum.isText && <>{content}</>}
+        {messageType === FilterMessageEnum.isText && <DefaultContent />}
 
         {messageType === FilterMessageEnum.isLink && (
           <LinkContainer content={content} urlLink={urlLink} />
         )}
 
-        {messageType === FilterMessageEnum.isImage && (
-          <S.ImageContainer>
-            {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
-          </S.ImageContainer>
-        )}
+        {messageType === FilterMessageEnum.isImage && <ImageContainer />}
 
         {messageType === FilterMessageEnum.isImageWithText && (
           <>
-            <>{content}</>
+            <DefaultContent />
 
-            <S.ImageContainer>
-              {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
-            </S.ImageContainer>
+            <ImageContainer />
           </>
         )}
 
@@ -73,9 +79,7 @@ export default function DisplayMessageContainer({
           <>
             <LinkContainer content={content} urlLink={urlLink} />
 
-            <S.ImageContainer>
-              {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
-            </S.ImageContainer>
+            <ImageContainer />
           </>
         )}
       </S.Message>

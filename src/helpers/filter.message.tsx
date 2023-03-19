@@ -14,15 +14,9 @@ export default function filterMessage(message: IMessage) {
   if (message.attachments.length) {
     response.messageType = FilterMessageEnum.isImage;
 
-    message.attachments.forEach(({ url, height, width }, index) => {
+    message.attachments.forEach(({ url }, index) => {
       response.formattedAttachs.push(
-        <Image
-          preview={false}
-          src={url}
-          height={height > 350 ? 350 : height}
-          width={width > 500 ? 500 : width}
-          alt={`image_${index}`}
-        />
+        <Image preview={false} src={url} alt={`image_${index}`} />
       );
     });
   }

@@ -30,9 +30,11 @@ import Table from './Table/Table.component';
 import Progress from './Progress/Progress.component';
 import Popover from './Popover/Popover.component';
 import Result from './Result/Result.component';
+import Carousel from './Carousel/Carousel.component';
 
 export {
   Avatar,
+  Carousel,
   Table,
   Modal,
   Tag,

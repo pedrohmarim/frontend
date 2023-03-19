@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row } from 'antd_components';
+import { Row, Carousel as CarouselAntd } from 'antd_components';
 
 export const Title = styled.div<{ marginTop?: string }>`
   text-align: left;
@@ -28,4 +28,8 @@ export const ImageContainer = styled.div`
 export const Date = styled(Row)`
   font-size: 11pt;
   margin-top: 12px;
+`;
+
+export const Carousel = styled(CarouselAntd)<{ cursor: string }>`
+  cursor: ${({ cursor }) => cursor};
 `;
