@@ -76,61 +76,58 @@ export default function ChoosedMessage({
   }
 
   function handleGetHints() {
-    DiscordMessagesApi.GetDiscordHints(id).then((res) => {
-      const messageIndex = res.findIndex((x) => x.id === id);
+    DiscordMessagesApi.GetDiscordHints(id).then(
+      ({ consecutivePosition, previousPosition }) => {
+        const emptyChoosedMessage: IChoosedMessage = {
+          content: '',
+          formattedAttachs: [] as JSX.Element[],
+          id: '',
+          urlLink: '',
+          messageType: FilterMessageEnum.isText,
+          timestamp: '',
+          messageLevel: MessageLevelEnum.dontExist,
+        };
 
-      const emptyChoosedMessage: IChoosedMessage = {
-        content: '',
-        formattedAttachs: [] as JSX.Element[],
-        id: '',
-        urlLink: '',
-        messageType: FilterMessageEnum.isText,
-        timestamp: '',
-        messageLevel: MessageLevelEnum.dontExist,
-      };
+        let filterResponsePreviousMessage: IFilterMessageResponse =
+          {} as IFilterMessageResponse;
 
-      let filterResponsePreviousMessage: IFilterMessageResponse =
-        {} as IFilterMessageResponse;
+        if (previousPosition)
+          filterResponsePreviousMessage = filterMessage(previousPosition);
 
-      const previousPosition = res[messageIndex - 1];
+        const previousMessage: IChoosedMessage = !previousPosition
+          ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
+          : {
+              content: previousPosition.content,
+              formattedAttachs: filterResponsePreviousMessage.formattedAttachs,
+              urlLink: filterResponsePreviousMessage.urlLink,
+              id: previousPosition.id,
+              messageType: filterResponsePreviousMessage.messageType,
+              timestamp: previousPosition.timestamp,
+              messageLevel: MessageLevelEnum.isPrevious,
+            };
 
-      if (previousPosition)
-        filterResponsePreviousMessage = filterMessage(previousPosition);
+        let filterResponseConsecutiveMessage: IFilterMessageResponse =
+          {} as IFilterMessageResponse;
 
-      const previousMessage: IChoosedMessage = !previousPosition
-        ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
-        : {
-            content: previousPosition.content,
-            formattedAttachs: filterResponsePreviousMessage.formattedAttachs,
-            urlLink: filterResponsePreviousMessage.urlLink,
-            id: previousPosition.id,
-            messageType: filterResponsePreviousMessage.messageType,
-            timestamp: previousPosition.timestamp,
-            messageLevel: MessageLevelEnum.isPrevious,
-          };
+        if (consecutivePosition)
+          filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
 
-      const consecutivePosition = res[messageIndex + 1];
+        const consecutiveMessage: IChoosedMessage = !consecutivePosition
+          ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
+          : {
+              content: consecutivePosition.content,
+              formattedAttachs:
+                filterResponseConsecutiveMessage.formattedAttachs,
+              urlLink: filterResponseConsecutiveMessage.urlLink,
+              id: consecutivePosition.id,
+              messageType: filterResponseConsecutiveMessage.messageType,
+              timestamp: consecutivePosition.timestamp,
+              messageLevel: MessageLevelEnum.isConsecutive,
+            };
 
-      let filterResponseConsecutiveMessage: IFilterMessageResponse =
-        {} as IFilterMessageResponse;
-
-      if (consecutivePosition)
-        filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
-
-      const consecutiveMessage: IChoosedMessage = !consecutivePosition
-        ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
-        : {
-            content: consecutivePosition.content,
-            formattedAttachs: filterResponseConsecutiveMessage.formattedAttachs,
-            urlLink: filterResponseConsecutiveMessage.urlLink,
-            id: consecutivePosition.id,
-            messageType: filterResponseConsecutiveMessage.messageType,
-            timestamp: consecutivePosition.timestamp,
-            messageLevel: MessageLevelEnum.isConsecutive,
-          };
-
-      setTotalMessages([consecutiveMessage, mainMessage, previousMessage]);
-    });
+        setTotalMessages([consecutiveMessage, mainMessage, previousMessage]);
+      }
+    );
   }
 
   const confirm = () =>
