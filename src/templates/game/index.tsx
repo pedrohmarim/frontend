@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Spin } from 'antd_components';
-import * as I from 'services/DiscordMessages/IDiscordMessagesService';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import theme from 'globalStyles/theme';
@@ -14,18 +13,20 @@ import {
 } from 'helpers/filterMessageEnum';
 
 export default function GameContainer() {
-  const [choosedMessage, setChoosedMessage] = useState<I.IMessage>();
+  const [choosedMessages, setChoosedMessages] = useState<
+    IFilterMessageResponse[]
+  >([]);
   const [timer, setTimer] = useState<string>();
-  const [authors, setAuthors] = useState<string[]>();
-  const [filterResponse, setFilterResponse] = useState(
-    {} as IFilterMessageResponse
-  );
 
   useEffect(() => {
-    DiscordMessagesApi.GetDiscordMessages().then(({ authors, message }) => {
-      setChoosedMessage(message);
-      setFilterResponse(filterMessage(message));
-      setAuthors(authors);
+    DiscordMessagesApi.GetDiscordMessages().then((messages) => {
+      messages.forEach(({ message, authors }) => {
+        const filteredMessagesArray = [];
+
+        filteredMessagesArray.push(filterMessage(message, authors));
+
+        setChoosedMessages(filteredMessagesArray);
+      });
     });
   }, []);
 
@@ -52,7 +53,8 @@ export default function GameContainer() {
 
       if (tempoRestante < 0) {
         clearInterval(x);
-        console.log('O tempo acabou!');
+
+        DiscordMessagesApi.GetTimer().then((timer) => handleFormatDate(timer));
       }
     }, 1000);
   }, []);
@@ -67,27 +69,39 @@ export default function GameContainer() {
         <title>Discordle - Guess the Idiot | Game</title>
       </Head>
 
-      {authors && choosedMessage ? (
-        <S.ColumnContainer>
-          <ChoosedMessage
-            urlLink={filterResponse.urlLink}
-            messageLevel={MessageLevelEnum.isMain}
-            content={choosedMessage.content}
-            timestamp={choosedMessage.timestamp}
-            id={choosedMessage.id}
-            formattedAttachs={filterResponse.formattedAttachs}
-            messageType={filterResponse.messageType}
-          />
+      {choosedMessages.length ? (
+        choosedMessages.map(
+          (
+            { authors, message, formattedAttachs, messageType, urlLink },
+            index
+          ) => {
+            const { timestamp, content, id, author } = message;
 
-          <AuthorSelect
-            authorMessage={choosedMessage.author.username}
-            authorsOptions={authors}
-          />
-        </S.ColumnContainer>
+            return (
+              <S.ColumnContainer key={index}>
+                <ChoosedMessage
+                  content={content}
+                  timestamp={timestamp}
+                  id={id}
+                  messageLevel={MessageLevelEnum.isMain}
+                  urlLink={urlLink}
+                  formattedAttachs={formattedAttachs}
+                  messageType={messageType}
+                  authorsOptions={authors}
+                />
+
+                <AuthorSelect
+                  authorMessage={author.username}
+                  authorsOptions={authors}
+                />
+              </S.ColumnContainer>
+            );
+          }
+        )
       ) : (
         <Spin
           color={theme.colors.text}
-          spinText="Escolhendo uma linda mensagem ..."
+          spinText="Escolhendo lindas mensagens ..."
         />
       )}
     </>

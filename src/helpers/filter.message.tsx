@@ -2,13 +2,16 @@ import { IMessage } from 'services/DiscordMessages/IDiscordMessagesService';
 import { FilterMessageEnum, IFilterMessageResponse } from './filterMessageEnum';
 import { Image } from 'antd_components';
 
-export default function filterMessage(message: IMessage) {
+export default function filterMessage(message: IMessage, authors: string[]) {
   const emptyContent: JSX.Element[] = [];
+  const emptyMessage = {} as IMessage;
 
   const response: IFilterMessageResponse = {
     messageType: FilterMessageEnum.isText,
     formattedAttachs: emptyContent,
     urlLink: '',
+    authors: [],
+    message: emptyMessage,
   };
 
   if (message.attachments.length) {
@@ -55,6 +58,9 @@ export default function filterMessage(message: IMessage) {
 
   if (!message.attachments.length && message.content.includes(link))
     response.messageType = FilterMessageEnum.isImageWithTextAndLink;
+
+  response.message = message;
+  response.authors = authors;
 
   return response;
 }

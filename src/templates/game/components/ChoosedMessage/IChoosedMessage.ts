@@ -8,6 +8,7 @@ export interface IChoosedMessage {
   messageType: FilterMessageEnum;
   messageLevel: MessageLevelEnum;
   formattedAttachs: JSX.Element[];
+  authorsOptions: string[];
 }
 
 export interface ILinkContainer {

@@ -1,3 +1,5 @@
+import { IMessage } from 'services/DiscordMessages/IDiscordMessagesService';
+
 export enum FilterMessageEnum {
   isText = 1,
   isLink = 3,
@@ -15,6 +17,8 @@ export enum MessageLevelEnum {
 }
 
 export interface IFilterMessageResponse {
+  message: IMessage;
+  authors: string[];
   messageType: FilterMessageEnum;
   urlLink: string;
   formattedAttachs: JSX.Element[];

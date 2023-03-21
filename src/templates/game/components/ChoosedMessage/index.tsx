@@ -28,6 +28,7 @@ export default function ChoosedMessage({
   formattedAttachs,
   messageLevel,
   urlLink,
+  authorsOptions,
 }: I.IChoosedMessage) {
   const mainMessage = {
     content,
@@ -37,6 +38,7 @@ export default function ChoosedMessage({
     formattedAttachs,
     messageLevel,
     urlLink,
+    authorsOptions,
   };
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -86,13 +88,17 @@ export default function ChoosedMessage({
           messageType: FilterMessageEnum.isText,
           timestamp: '',
           messageLevel: MessageLevelEnum.dontExist,
+          authorsOptions: [] as string[],
         };
 
         let filterResponsePreviousMessage: IFilterMessageResponse =
           {} as IFilterMessageResponse;
 
         if (previousPosition)
-          filterResponsePreviousMessage = filterMessage(previousPosition);
+          filterResponsePreviousMessage = filterMessage(
+            previousPosition,
+            authorsOptions
+          );
 
         const previousMessage: IChoosedMessage = !previousPosition
           ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
@@ -104,13 +110,17 @@ export default function ChoosedMessage({
               messageType: filterResponsePreviousMessage.messageType,
               timestamp: previousPosition.timestamp,
               messageLevel: MessageLevelEnum.isPrevious,
+              authorsOptions: authorsOptions,
             };
 
         let filterResponseConsecutiveMessage: IFilterMessageResponse =
           {} as IFilterMessageResponse;
 
         if (consecutivePosition)
-          filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
+          filterResponseConsecutiveMessage = filterMessage(
+            consecutivePosition,
+            authorsOptions
+          );
 
         const consecutiveMessage: IChoosedMessage = !consecutivePosition
           ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
@@ -123,6 +133,7 @@ export default function ChoosedMessage({
               messageType: filterResponseConsecutiveMessage.messageType,
               timestamp: consecutivePosition.timestamp,
               messageLevel: MessageLevelEnum.isConsecutive,
+              authorsOptions: authorsOptions,
             };
 
         setTotalMessages([consecutiveMessage, mainMessage, previousMessage]);
@@ -218,6 +229,7 @@ export default function ChoosedMessage({
             id,
             messageLevel,
             urlLink,
+            authorsOptions,
           },
           index
         ) => {
@@ -229,6 +241,7 @@ export default function ChoosedMessage({
             id,
             messageLevel,
             urlLink,
+            authorsOptions,
             key: index,
           };
 

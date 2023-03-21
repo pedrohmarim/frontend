@@ -6,7 +6,7 @@ const http = baseService();
 
 const ApiAuth = {
   GetDiscordMessages: async function () {
-    const response: AxiosResponse<I.IGetDiscordMessagesResponse> =
+    const response: AxiosResponse<I.IGetDiscordMessagesResponse[]> =
       await http.get('/getChoosedMessages');
 
     return response.data;
