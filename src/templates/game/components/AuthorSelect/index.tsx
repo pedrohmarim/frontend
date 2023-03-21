@@ -11,11 +11,7 @@ import BiaPic from 'assets/bia.png';
 import CaoPic from 'assets/cao.png';
 import theme from 'globalStyles/theme';
 
-const AuthorSelect = ({
-  authorMessage,
-  authorsOptions,
-  setCurrent,
-}: I.IAuthorSelect) => {
+const AuthorSelect = ({ authorMessage, authorsOptions }: I.IAuthorSelect) => {
   function handleVerifyAwnser(awnser: string) {
     const success = awnser === authorMessage;
 
@@ -69,7 +65,7 @@ const AuthorSelect = ({
       placeholder="Selecione um idiota"
       onChange={(value) => {
         handleVerifyAwnser(String(value));
-        setCurrent((prev: number) => prev + 1);
+        // setActiveTabKey((prev: string) => String(prev + 1));
       }}
     >
       {authorsOptions?.map((author) => (

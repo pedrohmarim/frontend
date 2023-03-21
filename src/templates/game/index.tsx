@@ -18,8 +18,7 @@ export default function GameContainer() {
   >([]);
 
   const [timer, setTimer] = useState<string>();
-  const [current, setCurrent] = useState<number>(0);
-  const [activeTabKey, setActiveTabKey] = useState('0');
+  const [activeTabKey, setActiveTabKey] = useState<string>('1');
 
   const handleTabChange = (key: string) => setActiveTabKey(key);
 
@@ -76,7 +75,7 @@ export default function GameContainer() {
 
       {choosedMessages.length === 5 ? (
         <>
-          {current !== 5 ? (
+          {Number(activeTabKey) !== 5 ? (
             <S.ColumnContainer>
               <S.Tabs activeKey={activeTabKey} onChange={handleTabChange}>
                 {choosedMessages.map(
@@ -94,7 +93,11 @@ export default function GameContainer() {
                     const current = index + 1;
 
                     return (
-                      <S.TabsPane key={index} tab={`Pergunta ${current}`}>
+                      <S.TabsPane
+                        disabled={String(current) !== activeTabKey}
+                        key={String(current)}
+                        tab={`Pergunta ${current}`}
+                      >
                         <ChoosedMessage
                           key={index}
                           content={content}
@@ -108,7 +111,6 @@ export default function GameContainer() {
                         />
 
                         <AuthorSelect
-                          setCurrent={(value) => setCurrent(value)}
                           authorMessage={author.username}
                           authorsOptions={authors}
                         />

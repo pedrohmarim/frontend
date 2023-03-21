@@ -38,6 +38,11 @@ export default createGlobalStyle`
   .ant-tabs-ink-bar {
     background-color: ${(props) => props.theme.colors.primary} !important;
   }
+
+  .ant-tabs-tab-disabled{
+    color:${(props) => props.theme.colors.text} !important;
+    opacity: 0.6;
+  }
 `;
 
 export const HomeSpan = styled.span`
