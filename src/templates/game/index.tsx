@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Spin, Steps } from 'antd_components';
+import { Spin } from 'antd_components';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import theme from 'globalStyles/theme';
@@ -19,13 +19,9 @@ export default function GameContainer() {
 
   const [timer, setTimer] = useState<string>();
   const [current, setCurrent] = useState<number>(0);
-  const [steps, setSteps] = useState<
-    {
-      title: string;
-      key: number;
-      content: JSX.Element;
-    }[]
-  >([]);
+  const [activeTabKey, setActiveTabKey] = useState('0');
+
+  const handleTabChange = (key: string) => setActiveTabKey(key);
 
   useEffect(() => {
     DiscordMessagesApi.GetDiscordMessages().then((messages) => {
@@ -72,46 +68,6 @@ export default function GameContainer() {
     DiscordMessagesApi.GetTimer().then((timer) => handleFormatDate(timer));
   }, [handleFormatDate]);
 
-  useEffect(() => {
-    setSteps(
-      choosedMessages.map(
-        (
-          { authors, message, formattedAttachs, messageType, urlLink },
-          index
-        ) => {
-          const { timestamp, content, id, author } = message;
-          const current = index + 1;
-
-          return {
-            title: `Pergunta ${current}`,
-            key: index,
-            content: (
-              <>
-                <ChoosedMessage
-                  key={index}
-                  content={content}
-                  timestamp={timestamp}
-                  id={id}
-                  messageLevel={MessageLevelEnum.isMain}
-                  urlLink={urlLink}
-                  formattedAttachs={formattedAttachs}
-                  messageType={messageType}
-                  authorsOptions={authors}
-                />
-
-                <AuthorSelect
-                  setCurrent={(value) => setCurrent(value)}
-                  authorMessage={author.username}
-                  authorsOptions={authors}
-                />
-              </>
-            ),
-          };
-        }
-      )
-    );
-  }, [choosedMessages]);
-
   return (
     <>
       <Head>
@@ -122,12 +78,45 @@ export default function GameContainer() {
         <>
           {current !== 5 ? (
             <S.ColumnContainer>
-              <Steps
-                current={current}
-                steps={steps}
-                responsive
-                type="navigation"
-              />
+              <S.Tabs activeKey={activeTabKey} onChange={handleTabChange}>
+                {choosedMessages.map(
+                  (
+                    {
+                      authors,
+                      message,
+                      formattedAttachs,
+                      messageType,
+                      urlLink,
+                    },
+                    index
+                  ) => {
+                    const { timestamp, content, id, author } = message;
+                    const current = index + 1;
+
+                    return (
+                      <S.TabsPane key={index} tab={`Pergunta ${current}`}>
+                        <ChoosedMessage
+                          key={index}
+                          content={content}
+                          timestamp={timestamp}
+                          id={id}
+                          messageLevel={MessageLevelEnum.isMain}
+                          urlLink={urlLink}
+                          formattedAttachs={formattedAttachs}
+                          messageType={messageType}
+                          authorsOptions={authors}
+                        />
+
+                        <AuthorSelect
+                          setCurrent={(value) => setCurrent(value)}
+                          authorMessage={author.username}
+                          authorsOptions={authors}
+                        />
+                      </S.TabsPane>
+                    );
+                  }
+                )}
+              </S.Tabs>
             </S.ColumnContainer>
           ) : (
             <>acabou :)</>

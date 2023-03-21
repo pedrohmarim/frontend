@@ -25,6 +25,19 @@ export default createGlobalStyle`
     background-color: ${(props) => props.theme.colors.text} !important;
     border-color: ${(props) => props.theme.colors.text} !important;
   }
+
+  .ant-tabs-nav-wrap {
+    margin: auto !important;
+    flex: none !important;
+  }
+
+  .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color:${(props) => props.theme.colors.primary} !important;
+  }
+
+  .ant-tabs-ink-bar {
+    background-color: ${(props) => props.theme.colors.primary} !important;
+  }
 `;
 
 export const HomeSpan = styled.span`
