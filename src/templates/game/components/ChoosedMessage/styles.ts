@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { Card, Row } from 'antd_components';
 
 export const MessageContainer = styled(Card)`
-  padding: 25px;
-  margin: 0 50px;
+  padding: 40px;
+  margin: 0 auto;
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.colors.text};
@@ -12,6 +12,7 @@ export const MessageContainer = styled(Card)`
   border-color: rgba(255, 255, 255, 0.1);
   margin-bottom: 30px;
   position: relative;
+  max-width: 65%;
 `;
 
 export const GameTitle = styled.h2`

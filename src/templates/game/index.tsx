@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Spin } from 'antd_components';
+import { Spin, Steps } from 'antd_components';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import theme from 'globalStyles/theme';
@@ -16,13 +16,22 @@ export default function GameContainer() {
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
   >([]);
+
   const [timer, setTimer] = useState<string>();
+  const [current, setCurrent] = useState<number>(0);
+  const [steps, setSteps] = useState<
+    {
+      title: string;
+      key: number;
+      content: JSX.Element;
+    }[]
+  >([]);
 
   useEffect(() => {
     DiscordMessagesApi.GetDiscordMessages().then((messages) => {
-      messages.forEach(({ message, authors }) => {
-        const filteredMessagesArray = [];
+      const filteredMessagesArray: IFilterMessageResponse[] = [];
 
+      messages.forEach(({ message, authors }) => {
         filteredMessagesArray.push(filterMessage(message, authors));
 
         setChoosedMessages(filteredMessagesArray);
@@ -63,23 +72,23 @@ export default function GameContainer() {
     DiscordMessagesApi.GetTimer().then((timer) => handleFormatDate(timer));
   }, [handleFormatDate]);
 
-  return (
-    <>
-      <Head>
-        <title>Discordle - Guess the Idiot | Game</title>
-      </Head>
+  useEffect(() => {
+    setSteps(
+      choosedMessages.map(
+        (
+          { authors, message, formattedAttachs, messageType, urlLink },
+          index
+        ) => {
+          const { timestamp, content, id, author } = message;
+          const current = index + 1;
 
-      {choosedMessages.length ? (
-        choosedMessages.map(
-          (
-            { authors, message, formattedAttachs, messageType, urlLink },
-            index
-          ) => {
-            const { timestamp, content, id, author } = message;
-
-            return (
-              <S.ColumnContainer key={index}>
+          return {
+            title: `Pergunta ${current}`,
+            key: index,
+            content: (
+              <>
                 <ChoosedMessage
+                  key={index}
                   content={content}
                   timestamp={timestamp}
                   id={id}
@@ -91,13 +100,39 @@ export default function GameContainer() {
                 />
 
                 <AuthorSelect
+                  setCurrent={(value) => setCurrent(value)}
                   authorMessage={author.username}
                   authorsOptions={authors}
                 />
-              </S.ColumnContainer>
-            );
-          }
-        )
+              </>
+            ),
+          };
+        }
+      )
+    );
+  }, [choosedMessages]);
+
+  return (
+    <>
+      <Head>
+        <title>Discordle - Guess the Idiot | Game</title>
+      </Head>
+
+      {choosedMessages.length === 5 ? (
+        <>
+          {current !== 5 ? (
+            <S.ColumnContainer>
+              <Steps
+                current={current}
+                steps={steps}
+                responsive
+                type="navigation"
+              />
+            </S.ColumnContainer>
+          ) : (
+            <>acabou :)</>
+          )}
+        </>
       ) : (
         <Spin
           color={theme.colors.text}

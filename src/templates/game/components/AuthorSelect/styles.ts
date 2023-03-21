@@ -16,3 +16,7 @@ export const AuthorName = styled.span`
   font-weight: 500;
   color: #000;
 `;
+
+export const AuthorHighlight = styled.span`
+  color: #8a00c2;
+`;

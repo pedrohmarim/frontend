@@ -5,5 +5,5 @@ export const ColumnContainer = styled.div`
   text-align: center;
   max-height: 90%;
   max-width: 50%;
-  min-width: 35%;
+  min-width: 50%;
 `;

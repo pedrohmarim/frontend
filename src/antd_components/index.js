@@ -31,9 +31,11 @@ import Progress from './Progress/Progress.component';
 import Popover from './Popover/Popover.component';
 import Result from './Result/Result.component';
 import Carousel from './Carousel/Carousel.component';
+import Steps from './Steps/Steps.component';
 
 export {
   Avatar,
+  Steps,
   Carousel,
   Table,
   Modal,

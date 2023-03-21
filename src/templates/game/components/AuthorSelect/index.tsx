@@ -1,6 +1,5 @@
 import React from 'react';
-import { Row, Select, Image } from 'antd_components';
-import { useRouter } from 'next/router';
+import { Row, Select, Image, Notification } from 'antd_components';
 import * as S from './styles';
 import * as I from './IAuthorSelect';
 import HugoPic from 'assets/hugo.jpg';
@@ -10,21 +9,38 @@ import PodrePic from 'assets/podre.png';
 import LuisaPic from 'assets/luisa.png';
 import BiaPic from 'assets/bia.png';
 import CaoPic from 'assets/cao.png';
+import theme from 'globalStyles/theme';
 
-const AuthorSelect = ({ authorMessage, authorsOptions }: I.IAuthorSelect) => {
-  const router = useRouter();
-
+const AuthorSelect = ({
+  authorMessage,
+  authorsOptions,
+  setCurrent,
+}: I.IAuthorSelect) => {
   function handleVerifyAwnser(awnser: string) {
-    router.push(
-      {
-        pathname: '/result',
-        query: {
-          success: awnser === authorMessage,
-          authorMessage,
-        },
-      },
-      '/result'
+    const success = awnser === authorMessage;
+
+    const title: JSX.Element = (
+      <>
+        {success
+          ? 'Acertou! Quem mandou essa mensagem foi '
+          : 'Errou! A resposta certa era '}
+        <S.AuthorHighlight color={theme.colors.primary}>
+          {authorMessage}
+        </S.AuthorHighlight>
+      </>
     );
+
+    const description: string = success
+      ? 'Parabéns você realmente conhece seus colegas.'
+      : 'Você não é um bom colega...';
+
+    const duration = 5;
+
+    const config = { title, description, duration };
+
+    if (success) return Notification.success(config);
+
+    return Notification.error(config);
   }
 
   function handleUserPicture(author: string) {
@@ -51,7 +67,10 @@ const AuthorSelect = ({ authorMessage, authorsOptions }: I.IAuthorSelect) => {
       disabled={!authorsOptions?.length}
       getPopupContainer={(trigger) => trigger.parentNode}
       placeholder="Selecione um idiota"
-      onChange={(value) => handleVerifyAwnser(String(value))}
+      onChange={(value) => {
+        handleVerifyAwnser(String(value));
+        setCurrent((prev: number) => prev + 1);
+      }}
     >
       {authorsOptions?.map((author) => (
         <Select.Option key={author}>
