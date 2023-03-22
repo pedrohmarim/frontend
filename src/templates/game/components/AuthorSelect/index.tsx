@@ -10,17 +10,29 @@ import LuisaPic from 'assets/luisa.png';
 import BiaPic from 'assets/bia.png';
 import CaoPic from 'assets/cao.png';
 import theme from 'globalStyles/theme';
+import { IAwnser } from 'templates/game/IGame';
 
 const AuthorSelect = ({
   authorMessage,
   authorsOptions,
-  setScore,
+  activeTabKey,
+  usedHint,
   setActiveTabKey,
+  setAwnsers,
+  setUsedHint,
 }: I.IAuthorSelect) => {
   function handleVerifyAwnser(awnser: string) {
     const success = awnser === authorMessage;
 
-    if (success) setScore((prev: number) => prev + 1);
+    const score = success ? (usedHint ? 1 : 2) : 0;
+
+    const newAwnserDto: IAwnser = {
+      success,
+      tabKey: activeTabKey,
+      score,
+    };
+
+    setAwnsers((prevAwnsers) => [...prevAwnsers, newAwnserDto]);
 
     const title: JSX.Element = (
       <>
@@ -40,6 +52,8 @@ const AuthorSelect = ({
     const duration = 8;
 
     const config = { title, description, duration };
+
+    setUsedHint(false);
 
     if (success) return Notification.success(config);
 

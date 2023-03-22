@@ -1,6 +1,11 @@
+import { IAwnser } from 'templates/game/IGame';
+
 export interface IAuthorSelect {
   authorMessage: string;
   authorsOptions: string[];
-  setScore: React.Dispatch<React.SetStateAction<number>>;
+  activeTabKey: number;
+  usedHint: boolean;
+  setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
+  setAwnsers: React.Dispatch<React.SetStateAction<IAwnser[]>>;
 }

@@ -1,22 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MessageLevelEnum } from 'helpers/filterMessageEnum';
 import ChoosedMessage from '../ChoosedMessage';
 import AuthorSelect from '../AuthorSelect';
 import * as I from './IMessageTabs';
 import * as S from './styles';
 import { IChoosedMessage } from '../ChoosedMessage/IChoosedMessage';
+import { FeatherIcons, Row } from 'antd_components';
 
 export default function MessageTabs({
   activeTabKey,
   choosedMessages,
-  score,
+  awnsers,
   setActiveTabKey,
-  setScore,
+  setAwnsers,
 }: I.IMessageTabs) {
+  const [usedHint, setUsedHint] = useState<boolean>(false);
+
   const handleTabChange = (key: string) => setActiveTabKey(Number(key));
 
+  function handleIcon(index: number, current: number) {
+    let icon = '';
+    let color = '';
+
+    if (awnsers[index]?.success === undefined) return '';
+
+    if (awnsers[index]?.tabKey === current && awnsers[index]?.success) {
+      icon = 'check-circle';
+      color = awnsers[index]?.score === 2 ? '#009e3f' : '#d48a00';
+    } else {
+      icon = 'x-circle';
+      color = '#a61f1f';
+    }
+
+    return <FeatherIcons icon={icon} color={color} size={18} />;
+  }
+
+  const score = awnsers.reduce((accumulator, curValue) => {
+    return accumulator + curValue.score;
+  }, 0);
+
   return (
-    <S.Tabs activeKey={activeTabKey} onChange={handleTabChange}>
+    <S.Tabs activeKey={String(activeTabKey)} onChange={handleTabChange}>
       {choosedMessages.map(
         (
           { authors, message, formattedAttachs, messageType, urlLink },
@@ -38,17 +62,31 @@ export default function MessageTabs({
 
           return (
             <S.TabsPane
-              disabled={String(current) !== activeTabKey}
+              disabled={current !== activeTabKey}
               key={String(current)}
-              tab={`Pergunta ${current}`}
+              tab={
+                awnsers && (
+                  <Row>
+                    {handleIcon(index, current)}
+                    <S.MessageTabTitle>{`Mensagem ${current}`}</S.MessageTabTitle>
+                  </Row>
+                )
+              }
             >
-              <ChoosedMessage score={score} message={choosedMessage} />
+              <ChoosedMessage
+                setUsedHint={(value) => setUsedHint(value)}
+                message={choosedMessage}
+                score={score}
+              />
 
               <AuthorSelect
-                setScore={setScore}
-                setActiveTabKey={setActiveTabKey}
+                setUsedHint={(value) => setUsedHint(value)}
+                usedHint={usedHint}
+                setAwnsers={setAwnsers}
                 authorMessage={author.username}
                 authorsOptions={authors}
+                activeTabKey={activeTabKey}
+                setActiveTabKey={setActiveTabKey}
               />
             </S.TabsPane>
           );

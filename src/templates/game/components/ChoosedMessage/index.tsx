@@ -23,6 +23,7 @@ import {
 export default function ChoosedMessage({
   message,
   score,
+  setUsedHint,
 }: I.IChoosedMessageComponent) {
   const {
     content,
@@ -151,6 +152,7 @@ export default function ChoosedMessage({
       setLoading(true);
 
       setTimeout(() => {
+        setUsedHint(true);
         handleGetHints();
 
         setLoading(false);
@@ -190,7 +192,10 @@ export default function ChoosedMessage({
 
   return (
     <S.MessageContainer>
-      <S.Score>Pontuação: {score}/5</S.Score>
+      <S.ScoreContainer>
+        <FeatherIcons icon="award" size={18} />
+        <S.ScoreText> Pontuação: {score}/10</S.ScoreText>
+      </S.ScoreContainer>
 
       {totalMessages.length === 1 && (
         <Tooltip title="Opções" color="#17171a" open={stillOpen.tooltip}>

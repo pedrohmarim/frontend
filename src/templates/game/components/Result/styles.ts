@@ -1,0 +1,48 @@
+import styled from 'styled-components';
+import { Divider as DividerAntd } from 'antd_components';
+
+export const Subtitle = styled.span`
+  margin-left: 2px;
+  font-size: 12pt;
+  margin-bottom: 20px;
+`;
+
+export const Divider = styled(DividerAntd)`
+  border-color: ${(props) => props.theme.colors.text};
+  opacity: 0.2;
+`;
+
+export const MarginSpan = styled.span`
+  margin: 0 10px;
+`;
+
+export const Span = styled.span`
+  font-size: 12pt;
+`;
+
+export const TimerContainer = styled.div`
+  width: fit-content;
+  margin: auto;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
+  border: solid 2px rgba(138, 0, 194, 0.4);
+`;
+
+export const AwnserItem = styled.div<{
+  success: boolean | undefined;
+  score: number;
+}>`
+  box-shadow: 0px 0px 7px 7px rgba(255, 255, 255, 0.06);
+  background-color: ${({ success, score }) =>
+    success ? (score === 2 ? '#009e3f' : '#d48a00') : '#a61f1f'};
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  height: 35px;
+  width: 35px;
+  font-weight: bold;
+`;

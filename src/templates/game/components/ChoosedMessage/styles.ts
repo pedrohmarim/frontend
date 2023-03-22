@@ -5,6 +5,7 @@ export const MessageContainer = styled(Card)`
   padding: 40px;
   font-size: 15pt;
   font-weight: 500;
+  text-align: center;
   color: ${(props) => props.theme.colors.text};
   background-color: #17171a;
   border-radius: 4px;
@@ -25,7 +26,7 @@ export const Options = styled.div`
   top: 0;
 `;
 
-export const Score = styled.div`
+export const ScoreContainer = styled(Row)`
   color: ${(props) => props.theme.colors.text};
   font-size: 11pt;
   position: absolute;
@@ -33,6 +34,11 @@ export const Score = styled.div`
   height: 25px;
   left: 0;
   top: 0;
+`;
+
+export const ScoreText = styled.span`
+  margin-top: -1px;
+  margin-left: 4px;
 `;
 
 export const OptionItem = styled(Row)`

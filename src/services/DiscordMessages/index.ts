@@ -23,6 +23,10 @@ const ApiAuth = {
     const response: AxiosResponse<string> = await http.get('/getTimer');
     return response.data;
   },
+  SaveScore: async function (data: I.IPostSaveScore) {
+    const response: AxiosResponse = await http.post('/saveScore', data);
+    return response.data;
+  },
 };
 
 export default ApiAuth;

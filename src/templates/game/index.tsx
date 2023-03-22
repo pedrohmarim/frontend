@@ -1,23 +1,25 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Spin } from 'antd_components';
 import * as S from './styles';
+import * as I from './IGame';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import theme from 'globalStyles/theme';
 import Head from 'next/head';
 import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/filter.message';
 import formatDate from 'helpers/formatDate';
-
+import Result from './components/Result';
 import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
+import { IPostSaveScore } from 'services/DiscordMessages/IDiscordMessagesService';
 
 export default function GameContainer() {
+  const [activeTabKey, setActiveTabKey] = useState<number>(1);
+  const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
   >([]);
 
-  const [score, setScore] = useState<number>(0);
   const [timer, setTimer] = useState<string>();
-  const [activeTabKey, setActiveTabKey] = useState<number>(1);
 
   useEffect(() => {
     DiscordMessagesApi.GetDiscordMessages().then((messages) => {
@@ -39,6 +41,18 @@ export default function GameContainer() {
     DiscordMessagesApi.GetTimer().then((timer) => handleFormatDate(timer));
   }, [handleFormatDate]);
 
+  useEffect(() => {
+    if (awnsers.length === 5) {
+      const dto: IPostSaveScore = {
+        awnsers,
+        date: new Date().toLocaleDateString(),
+        userId: '123', //isso vai mudar,
+      };
+
+      DiscordMessagesApi.SaveScore(dto);
+    }
+  }, [awnsers]);
+
   return (
     <>
       <Head>
@@ -47,18 +61,18 @@ export default function GameContainer() {
 
       {choosedMessages.length === 5 ? (
         <>
-          {activeTabKey < 6 ? (
+          {awnsers.length < 5 ? (
             <S.ColumnContainer>
               <MessageTabs
-                score={score}
-                setScore={(value) => setScore(value)}
-                setActiveTabKey={(value) => setActiveTabKey(value)}
-                activeTabKey={String(activeTabKey)}
+                activeTabKey={activeTabKey}
+                awnsers={awnsers}
+                setAwnsers={setAwnsers}
                 choosedMessages={choosedMessages}
+                setActiveTabKey={setActiveTabKey}
               />
             </S.ColumnContainer>
           ) : (
-            <>{timer}</>
+            <Result awnsers={awnsers} timer={timer} />
           )}
         </>
       ) : (

@@ -1,9 +1,10 @@
 import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
+import { IAwnser } from 'templates/game/IGame';
 
 export interface IMessageTabs {
-  activeTabKey: string;
+  activeTabKey: number;
   choosedMessages: IFilterMessageResponse[];
-  score: number;
-  setScore: React.Dispatch<React.SetStateAction<number>>;
+  awnsers: IAwnser[];
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
+  setAwnsers: React.Dispatch<React.SetStateAction<IAwnser[]>>;
 }

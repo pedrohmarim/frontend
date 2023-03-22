@@ -1,3 +1,5 @@
+import { IAwnser } from 'templates/game/IGame';
+
 export interface IGetDiscordMessagesResponse {
   message: IMessage;
   authors: string[];
@@ -30,4 +32,10 @@ export interface IAuthor {
 export interface IMention {
   username: string;
   id: string;
+}
+
+export interface IPostSaveScore {
+  awnsers: IAwnser[];
+  date: string;
+  userId: string;
 }
