@@ -21,15 +21,20 @@ import {
 } from 'helpers/filterMessageEnum';
 
 export default function ChoosedMessage({
-  content,
-  timestamp,
-  id,
-  messageType,
-  formattedAttachs,
-  messageLevel,
-  urlLink,
-  authorsOptions,
-}: I.IChoosedMessage) {
+  message,
+  score,
+}: I.IChoosedMessageComponent) {
+  const {
+    content,
+    timestamp,
+    id,
+    messageType,
+    formattedAttachs,
+    messageLevel,
+    urlLink,
+    authorsOptions,
+  } = message;
+
   const mainMessage = {
     content,
     timestamp,
@@ -185,6 +190,8 @@ export default function ChoosedMessage({
 
   return (
     <S.MessageContainer>
+      <S.Score>Pontuação: {score}/5</S.Score>
+
       {totalMessages.length === 1 && (
         <Tooltip title="Opções" color="#17171a" open={stillOpen.tooltip}>
           <S.Options>

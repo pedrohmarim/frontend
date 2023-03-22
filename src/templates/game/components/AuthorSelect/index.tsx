@@ -11,9 +11,16 @@ import BiaPic from 'assets/bia.png';
 import CaoPic from 'assets/cao.png';
 import theme from 'globalStyles/theme';
 
-const AuthorSelect = ({ authorMessage, authorsOptions }: I.IAuthorSelect) => {
+const AuthorSelect = ({
+  authorMessage,
+  authorsOptions,
+  setScore,
+  setActiveTabKey,
+}: I.IAuthorSelect) => {
   function handleVerifyAwnser(awnser: string) {
     const success = awnser === authorMessage;
+
+    if (success) setScore((prev: number) => prev + 1);
 
     const title: JSX.Element = (
       <>
@@ -30,7 +37,7 @@ const AuthorSelect = ({ authorMessage, authorsOptions }: I.IAuthorSelect) => {
       ? 'Parabéns você realmente conhece seus colegas.'
       : 'Você não é um bom colega...';
 
-    const duration = 5;
+    const duration = 8;
 
     const config = { title, description, duration };
 
@@ -65,7 +72,7 @@ const AuthorSelect = ({ authorMessage, authorsOptions }: I.IAuthorSelect) => {
       placeholder="Selecione um idiota"
       onChange={(value) => {
         handleVerifyAwnser(String(value));
-        // setActiveTabKey((prev: string) => String(prev + 1));
+        setActiveTabKey((prev: number) => prev + 1);
       }}
     >
       {authorsOptions?.map((author) => (

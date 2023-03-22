@@ -1,5 +1,10 @@
 import { FilterMessageEnum, MessageLevelEnum } from 'helpers/filterMessageEnum';
 
+export interface IChoosedMessageComponent {
+  score: number;
+  message: IChoosedMessage;
+}
+
 export interface IChoosedMessage {
   id: string;
   urlLink: string;

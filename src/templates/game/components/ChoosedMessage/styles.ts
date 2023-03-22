@@ -25,6 +25,16 @@ export const Options = styled.div`
   top: 0;
 `;
 
+export const Score = styled.div`
+  color: ${(props) => props.theme.colors.text};
+  font-size: 11pt;
+  position: absolute;
+  margin: 25px 0 0 20px;
+  height: 25px;
+  left: 0;
+  top: 0;
+`;
+
 export const OptionItem = styled(Row)`
   padding: 5px 15px;
   background-color: ${(props) => props.theme.colors.background};
