@@ -16,6 +16,7 @@ export const Button = styled(AntDesignButton)<I.IButton>`
   opacity: 1;
   display: flex;
   justify-content: center;
+  box-shadow: ${({ boxshadow }) => boxshadow};
   align-items: center;
 
   &&:hover,

@@ -10,10 +10,13 @@ export default function Button({
   backgroundcolor,
   icon,
   type,
+  boxshadow,
+  htmlType,
   onClick,
 }: I.IButton) {
   return (
     <S.Button
+      boxshadow={boxshadow}
       type={type}
       icon={icon}
       color={color}
@@ -21,6 +24,7 @@ export default function Button({
       width={width}
       height={height}
       margin={margin}
+      htmlType={htmlType}
       onClick={onClick}
     >
       {children}

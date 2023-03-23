@@ -1234,6 +1234,11 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
+cookiejs@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/cookiejs/-/cookiejs-2.1.2.tgz#51af70368e22064321b3b91159517d5bf6bef189"
+  integrity sha512-FXsQ2Ub/bTjlt2aXiJsiT33g6iEXdYTIKabJa9Jn5CZjOyzszJjOGKWyqs+silY+xYmA9eiif2vGAxv2pJndcg==
+
 copy-to-clipboard@^3.2.0:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.3.tgz#55ac43a1db8ae639a4bd99511c148cdd1b83a1b0"

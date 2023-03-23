@@ -39,3 +39,8 @@ export interface IPostSaveScore {
   date: string;
   userId: string;
 }
+
+export interface ICreateDiscordleInstancePost {
+  authToken: string;
+  channelId: string;
+}

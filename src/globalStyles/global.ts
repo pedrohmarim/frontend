@@ -43,6 +43,21 @@ export default createGlobalStyle`
     color:${(props) => props.theme.colors.text} !important;
     opacity: 0.6;
   }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  label, .ant-form-item-tooltip {
+    color: ${(props) => props.theme.colors.text} !important;
+    font-weight: 500;
+  }
+
+  .ant-input:placeholder-shown {
+    font-weight: bold !important;
+  }
 `;
 
 export const HomeSpan = styled.span`

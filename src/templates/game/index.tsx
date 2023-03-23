@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd_components';
 import * as S from './styles';
 import * as I from './IGame';
+import Cookie from 'cookiejs';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import theme from 'globalStyles/theme';
 import Head from 'next/head';
@@ -19,7 +20,9 @@ export default function GameContainer() {
   >([]);
 
   useEffect(() => {
-    DiscordMessagesApi.GetDiscordMessages().then((messages) => {
+    const channelId = Cookie.get('channelId').toString();
+
+    DiscordMessagesApi.GetDiscordMessages(channelId).then((messages) => {
       const filteredMessagesArray: IFilterMessageResponse[] = [];
 
       messages.forEach(({ message, authors }) => {
