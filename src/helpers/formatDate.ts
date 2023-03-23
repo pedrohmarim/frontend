@@ -2,7 +2,7 @@ import DiscordMessagesApi from 'services/DiscordMessages';
 
 export default function formatDate(
   timer: string,
-  setTimer: React.Dispatch<React.SetStateAction<string | undefined>>
+  setTimer: React.Dispatch<React.SetStateAction<string>>
 ) {
   const hour = Number(timer.split(':')[0]);
   const minute = Number(timer.split(':')[1]);

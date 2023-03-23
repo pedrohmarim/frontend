@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spin } from 'antd_components';
 import * as S from './styles';
 import * as I from './IGame';
@@ -7,7 +7,6 @@ import theme from 'globalStyles/theme';
 import Head from 'next/head';
 import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/filter.message';
-import formatDate from 'helpers/formatDate';
 import Result from './components/Result';
 import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
 import { IPostSaveScore } from 'services/DiscordMessages/IDiscordMessagesService';
@@ -18,8 +17,6 @@ export default function GameContainer() {
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
   >([]);
-
-  const [timer, setTimer] = useState<string>();
 
   useEffect(() => {
     DiscordMessagesApi.GetDiscordMessages().then((messages) => {
@@ -32,14 +29,6 @@ export default function GameContainer() {
       });
     });
   }, []);
-
-  const handleFormatDate = useCallback((timer: string) => {
-    formatDate(timer, setTimer);
-  }, []);
-
-  useEffect(() => {
-    DiscordMessagesApi.GetTimer().then((timer) => handleFormatDate(timer));
-  }, [handleFormatDate]);
 
   useEffect(() => {
     if (awnsers.length === 5) {
@@ -72,7 +61,7 @@ export default function GameContainer() {
               />
             </S.ColumnContainer>
           ) : (
-            <Result awnsers={awnsers} timer={timer} />
+            <Result awnsers={awnsers} />
           )}
         </>
       ) : (
