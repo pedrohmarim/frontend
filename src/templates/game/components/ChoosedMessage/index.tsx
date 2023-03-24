@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import type { MenuProps } from 'antd';
@@ -7,6 +7,7 @@ import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/filter.message';
 import DisplayMessageContainer from 'templates/game/components/DisplayMessageContainer';
 import { IChoosedMessage } from './IChoosedMessage';
+import Cookie from 'cookiejs';
 import {
   Button,
   FeatherIcons,
@@ -48,6 +49,7 @@ export default function ChoosedMessage({
   };
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [channelId, setChannelId] = useState<string>('');
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     mainMessage,
   ]);
@@ -84,7 +86,7 @@ export default function ChoosedMessage({
   }
 
   function handleGetHints() {
-    DiscordMessagesApi.GetDiscordHints(id).then(
+    DiscordMessagesApi.GetDiscordHints(id, channelId).then(
       ({ consecutivePosition, previousPosition }) => {
         const emptyChoosedMessage: IChoosedMessage = {
           content: '',
@@ -146,6 +148,11 @@ export default function ChoosedMessage({
       }
     );
   }
+
+  useEffect(() => {
+    const channelId = Cookie.get('channelId').toString();
+    setChannelId(channelId);
+  }, []);
 
   const confirm = () =>
     new Promise(() => {

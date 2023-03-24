@@ -22,7 +22,7 @@ export default function GameContainer() {
   useEffect(() => {
     const channelId = Cookie.get('channelId').toString();
 
-    DiscordMessagesApi.GetDiscordMessages(channelId).then((messages) => {
+    DiscordMessagesApi.GetDiscordMessages(channelId).then(({ messages }) => {
       const filteredMessagesArray: IFilterMessageResponse[] = [];
 
       messages.forEach(({ message, authors }) => {

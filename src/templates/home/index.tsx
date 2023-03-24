@@ -8,22 +8,30 @@ import Head from 'next/head';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { Form, Input } from 'antd_components';
 import { MessageContainer } from 'templates/game/components/ChoosedMessage/styles';
+import { LoadingOutlined } from '@ant-design/icons';
 import { ButtonHTMLType } from 'antd/lib/button';
 import { ICreateDiscordleInstancePost } from 'services/DiscordMessages/IDiscordMessagesService';
 
 export default function HomeContainer() {
   const [showInputs, setShowInpts] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    const channelId = Cookie.get('channelId').toString();
+  function toGame(channelId: string) {
+    router.push(
+      {
+        pathname: '/game',
+        search: channelId,
+      },
+      '/game'
+    );
+  }
 
-    if (channelId.length)
-      () =>
-        router.push('/game', {
-          search: channelId,
-        });
+  useEffect(() => {
+    const channelId = Cookie.get('channelId');
+
+    if (channelId) toGame(channelId.toString());
   }, []);
 
   const CenterButton = (
@@ -37,8 +45,9 @@ export default function HomeContainer() {
         boxshadow="0px 0px 10px 10px rgba(255, 255, 255, 0.08)"
         backgroundcolor={theme.colors.primary}
         color={theme.colors.text}
-        width={125}
+        width={145}
         height={35}
+        icon={loading && <LoadingOutlined spin />}
         htmlType={type}
       >
         {buttonText}
@@ -64,11 +73,13 @@ export default function HomeContainer() {
   );
 
   async function onFinish(values: ICreateDiscordleInstancePost) {
+    setLoading(true);
     await DiscordMessagesApi.CreateDiscordleInstance(values);
 
     Cookie.set('channelId', values.channelId);
+    setLoading(false);
 
-    router.push('/game');
+    toGame(values.channelId);
   }
 
   const InputsContainer = () => (
@@ -87,6 +98,8 @@ export default function HomeContainer() {
         </S.Title>
 
         <Form.Item
+          required
+          rules={[{ required: true, message: 'Campo obrigatório.' }]}
           label={<S.Label>ID Canal de Texto</S.Label>}
           name="channelId"
           tooltip="ID do Canal de Texto que terá as mensagens consumidas para organizar o Discordle."
@@ -95,6 +108,8 @@ export default function HomeContainer() {
         </Form.Item>
 
         <Form.Item
+          required
+          rules={[{ required: true, message: 'Campo obrigatório.' }]}
           label={<S.Label>AuthToken</S.Label>}
           name="authToken"
           tooltip="Token de autorização de um dos membros presente do canal de texto escolhido."
