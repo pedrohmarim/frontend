@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 const http = baseService();
 
 const ApiAuth = {
-  GetDiscordMessages: async function (channelId: string) {
+  GetChoosedMessages: async function (channelId: string) {
     const response: AxiosResponse<I.IMessageInstance> = await http.get(
       '/getChoosedMessages',
       {

@@ -5,6 +5,7 @@ export interface IMessageTabs {
   activeTabKey: number;
   choosedMessages: IFilterMessageResponse[];
   awnsers: IAwnser[];
+  serverName: string;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
   setAwnsers: React.Dispatch<React.SetStateAction<IAwnser[]>>;
 }

@@ -17,6 +17,7 @@ export default function GameContainer() {
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
   const [channelId, setChannelId] = useState<boolean>();
+  const [serverName, setServerName] = useState<string>('');
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
@@ -29,8 +30,10 @@ export default function GameContainer() {
     if (!channelId) {
       router.push('/home');
     } else {
-      DiscordMessagesApi.GetDiscordMessages(channelId.toString()).then(
-        ({ messages }) => {
+      DiscordMessagesApi.GetChoosedMessages(channelId.toString()).then(
+        ({ messages, serverName }) => {
+          setServerName(serverName);
+
           const filteredMessagesArray: IFilterMessageResponse[] = [];
 
           messages.forEach(({ message, authors }) => {
@@ -89,6 +92,7 @@ export default function GameContainer() {
           {awnsers.length < 5 && !alreadyAwnsered ? (
             <S.ColumnContainer>
               <MessageTabs
+                serverName={serverName}
                 activeTabKey={activeTabKey}
                 awnsers={awnsers}
                 setAwnsers={setAwnsers}

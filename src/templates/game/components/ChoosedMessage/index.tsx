@@ -14,6 +14,7 @@ import {
   Tooltip,
   Dropdown,
   PopConfirm,
+  Col,
 } from 'antd_components';
 import {
   FilterMessageEnum,
@@ -24,6 +25,7 @@ import {
 export default function ChoosedMessage({
   message,
   score,
+  serverName,
   setUsedHint,
 }: I.IChoosedMessageComponent) {
   const {
@@ -237,6 +239,8 @@ export default function ChoosedMessage({
       )}
 
       <S.GameTitle>Guess the Idiot</S.GameTitle>
+
+      <Col span={24}>{serverName}</Col>
 
       {totalMessages.map(
         (

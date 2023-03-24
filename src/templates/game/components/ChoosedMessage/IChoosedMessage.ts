@@ -3,6 +3,7 @@ import { FilterMessageEnum, MessageLevelEnum } from 'helpers/filterMessageEnum';
 export interface IChoosedMessageComponent {
   score: number;
   message: IChoosedMessage;
+  serverName: string;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

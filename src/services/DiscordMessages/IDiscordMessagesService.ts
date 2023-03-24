@@ -3,6 +3,7 @@ import { IAwnser } from 'templates/game/IGame';
 export interface IMessageInstance {
   messages: IGetDiscordMessagesResponse[];
   channelId: string;
+  serverName: string;
 }
 
 export interface IGetDiscordMessagesResponse {
