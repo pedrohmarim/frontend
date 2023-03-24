@@ -3,7 +3,6 @@ import formatDate from 'helpers/formatDate';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { Row, FeatherIcons } from 'antd_components';
 import { MessageContainer, GameTitle } from '../ChoosedMessage/styles';
-import Cookie from 'cookiejs';
 import * as S from './styles';
 import * as I from './IResult';
 
@@ -19,11 +18,7 @@ export default function Result({ awnsers }: I.IResult) {
   }, []);
 
   useEffect(() => {
-    const channelId = Cookie.get('channelId').toString();
-
-    DiscordMessagesApi.GetTimer(channelId).then((timer) =>
-      handleFormatDate(timer)
-    );
+    DiscordMessagesApi.GetTimer().then((timer) => handleFormatDate(timer));
   }, [handleFormatDate]);
 
   return (

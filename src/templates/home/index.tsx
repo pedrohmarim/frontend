@@ -18,20 +18,14 @@ export default function HomeContainer() {
 
   const [form] = Form.useForm();
 
-  function toGame(channelId: string) {
-    router.push(
-      {
-        pathname: '/game',
-        search: channelId,
-      },
-      '/game'
-    );
+  function toGame() {
+    router.push('/game');
   }
 
   useEffect(() => {
     const channelId = Cookie.get('channelId');
 
-    if (channelId) toGame(channelId.toString());
+    if (channelId) toGame();
   }, []);
 
   const CenterButton = (
@@ -45,7 +39,7 @@ export default function HomeContainer() {
         boxshadow="0px 0px 10px 10px rgba(255, 255, 255, 0.08)"
         backgroundcolor={theme.colors.primary}
         color={theme.colors.text}
-        width={145}
+        width={165}
         height={35}
         icon={loading && <LoadingOutlined spin />}
         htmlType={type}
@@ -77,9 +71,8 @@ export default function HomeContainer() {
     await DiscordMessagesApi.CreateDiscordleInstance(values);
 
     Cookie.set('channelId', values.channelId);
-    setLoading(false);
 
-    toGame(values.channelId);
+    toGame();
   }
 
   const InputsContainer = () => (
@@ -120,7 +113,7 @@ export default function HomeContainer() {
           />
         </Form.Item>
 
-        {CenterButton('submit', 'Criar Instância')}
+        {CenterButton('submit', `${loading ? 'Criando' : 'Criar'} Instância`)}
       </Form>
     </MessageContainer>
   );

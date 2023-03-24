@@ -10,40 +10,71 @@ import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/filter.message';
 import Result from './components/Result';
 import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
-import { IPostSaveScore } from 'services/DiscordMessages/IDiscordMessagesService';
+import { IScoreInstance } from 'services/DiscordMessages/IDiscordMessagesService';
+import router from 'next/router';
 
 export default function GameContainer() {
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
+  const [channelId, setChannelId] = useState<boolean>();
+  const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
   >([]);
 
   useEffect(() => {
-    const channelId = Cookie.get('channelId').toString();
+    const channelId = Cookie.get('channelId');
+    setChannelId(Boolean(channelId));
 
-    DiscordMessagesApi.GetDiscordMessages(channelId).then(({ messages }) => {
-      const filteredMessagesArray: IFilterMessageResponse[] = [];
+    if (!channelId) {
+      router.push('/home');
+    } else {
+      DiscordMessagesApi.GetDiscordMessages(channelId.toString()).then(
+        ({ messages }) => {
+          const filteredMessagesArray: IFilterMessageResponse[] = [];
 
-      messages.forEach(({ message, authors }) => {
-        filteredMessagesArray.push(filterMessage(message, authors));
+          messages.forEach(({ message, authors }) => {
+            filteredMessagesArray.push(filterMessage(message, authors));
 
-        setChoosedMessages(filteredMessagesArray);
-      });
-    });
+            setChoosedMessages(filteredMessagesArray);
+          });
+        }
+      );
+    }
   }, []);
 
+  const userId = '123';
+
   useEffect(() => {
+    const channelId = Cookie.get('channelId').toString();
+
     if (awnsers.length === 5) {
-      const dto: IPostSaveScore = {
-        awnsers,
-        date: new Date().toLocaleDateString(),
-        userId: '123', //isso vai mudar,
+      const dto: IScoreInstance = {
+        channelId,
+        userId,
+        scores: {
+          date: new Date().toLocaleDateString(),
+          scoreDetails: awnsers,
+        },
       };
+
+      setAlreadyAwnsered(true);
 
       DiscordMessagesApi.SaveScore(dto);
     }
   }, [awnsers]);
+
+  useEffect(() => {
+    DiscordMessagesApi.VerifyAlreadyAwnsered(userId).then((res) => {
+      if (res.length === 1) {
+        setAlreadyAwnsered(true);
+        const { scoreDetails } = res[0];
+        setAwnsers(scoreDetails);
+      }
+    });
+  }, []);
+
+  if (!channelId) return <></>;
 
   return (
     <>
@@ -51,9 +82,11 @@ export default function GameContainer() {
         <title>Discordle - Guess the Idiot | Game</title>
       </Head>
 
-      {choosedMessages.length === 5 ? (
+      {choosedMessages.length !== 5 ? (
+        <Spin color={theme.colors.text} spinText="Carregando..." />
+      ) : (
         <>
-          {awnsers.length < 5 ? (
+          {awnsers.length < 5 && !alreadyAwnsered ? (
             <S.ColumnContainer>
               <MessageTabs
                 activeTabKey={activeTabKey}
@@ -67,11 +100,6 @@ export default function GameContainer() {
             <Result awnsers={awnsers} />
           )}
         </>
-      ) : (
-        <Spin
-          color={theme.colors.text}
-          spinText="Escolhendo lindas mensagens ..."
-        />
       )}
     </>
   );
