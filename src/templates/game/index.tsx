@@ -27,9 +27,8 @@ export default function GameContainer() {
     const channelId = Cookie.get('channelId');
     setChannelId(Boolean(channelId));
 
-    if (!channelId) {
-      router.push('/home');
-    } else {
+    if (!channelId) router.push('/home');
+    else {
       DiscordMessagesApi.GetChoosedMessages(channelId.toString()).then(
         ({ messages, serverName }) => {
           setServerName(serverName);

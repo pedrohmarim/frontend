@@ -14,8 +14,8 @@ import { ICreateDiscordleInstancePost } from 'services/DiscordMessages/IDiscordM
 
 export default function HomeContainer() {
   const [showInputs, setShowInpts] = useState(false);
+  const [showHome, setShowHome] = useState(true);
   const [loading, setLoading] = useState(false);
-
   const [form] = Form.useForm();
 
   function toGame() {
@@ -25,7 +25,10 @@ export default function HomeContainer() {
   useEffect(() => {
     const channelId = Cookie.get('channelId');
 
-    if (channelId) toGame();
+    if (channelId) {
+      setShowHome(false);
+      toGame();
+    }
   }, []);
 
   const CenterButton = (
@@ -124,9 +127,11 @@ export default function HomeContainer() {
         <title>Discordle - Guess the Idiot | Home</title>
       </Head>
 
-      <S.ColumnContainer>
-        {!showInputs ? <GamePresentation /> : <InputsContainer />}
-      </S.ColumnContainer>
+      {showHome && (
+        <S.ColumnContainer>
+          {!showInputs ? <GamePresentation /> : <InputsContainer />}
+        </S.ColumnContainer>
+      )}
     </>
   );
 }
