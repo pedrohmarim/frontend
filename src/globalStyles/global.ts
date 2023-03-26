@@ -55,6 +55,11 @@ export default createGlobalStyle`
     font-weight: 500;
   }
 
+  .ant-input {
+    background-color: ${(props) => props.theme.colors.text} !important;
+    border-color: ${(props) => props.theme.colors.text} !important;
+  }
+
   .ant-input:placeholder-shown {
     font-weight: bold !important;
   }
