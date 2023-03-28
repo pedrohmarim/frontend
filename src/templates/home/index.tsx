@@ -6,7 +6,7 @@ import theme from 'globalStyles/theme';
 import { Select } from 'templates/game/components/AuthorSelect/styles';
 import Cookie from 'cookiejs';
 import Head from 'next/head';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
 import {
@@ -15,24 +15,27 @@ import {
 } from 'templates/game/components/ChoosedMessage/styles';
 
 export default function HomeContainer() {
-  const [whichRender, setWhichRender] = useState('gamePresentation');
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [whichRender, setWhichRender] = useState<string>('gamePresentation');
+  const [guildId, setGuildId] = useState<string>('');
+  const [loadHome, setLoadHome] = useState<boolean>(false);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
-  const router = useRouter();
 
   useEffect(() => {
     const channelId = Cookie.get('channelId');
+    const guildId = Cookie.get('guildId');
 
-    if (channelId) {
-      router.push('/game');
-    }
+    if (channelId && guildId) router.push('/chooseProfile');
+
+    setLoadHome(!channelId || !guildId);
   }, [router]);
 
   useEffect(() => {
     if (router.query.guild_id) {
       const guildId = router.query.guild_id.toString();
+      setGuildId(guildId);
 
       DiscordMessagesApi.GetInstanceChannels(guildId).then(({ channels }) =>
         setInstanceChannels(channels)
@@ -83,6 +86,15 @@ export default function HomeContainer() {
     </>
   );
 
+  function onChange(channelId: string) {
+    DiscordMessagesApi.CreateDiscordleInstance(channelId).then(() => {
+      Cookie.set('channelId', channelId);
+      Cookie.set('guildId', guildId);
+
+      router.push('/chooseProfile');
+    });
+  }
+
   const FormDiscordleInstance = () => (
     <MessageContainer>
       <GameTitle>Discordle - Guess the Idiot | Criar Instância</GameTitle>
@@ -91,17 +103,7 @@ export default function HomeContainer() {
         disabled={!instanceChannels.length}
         getPopupContainer={(trigger) => trigger.parentNode}
         placeholder="Selecione um canal"
-        onChange={(value) => {
-          const channelId = String(value);
-          setLoading(true);
-
-          DiscordMessagesApi.CreateDiscordleInstance(channelId).then(() => {
-            Cookie.set('channelId', channelId);
-
-            setLoading(false);
-            router.push('/game');
-          });
-        }}
+        onChange={(channelId) => onChange(String(channelId))}
       >
         {instanceChannels.length &&
           instanceChannels.map(({ channelId, channelName }) => (
@@ -112,13 +114,6 @@ export default function HomeContainer() {
             </Select.Option>
           ))}
       </Select>
-
-      {loading && (
-        <S.MarginRow justify="center" align="middle">
-          <LoadingOutlined spin />
-          <S.LoadingText>Carregando...</S.LoadingText>
-        </S.MarginRow>
-      )}
     </MessageContainer>
   );
 
@@ -161,7 +156,11 @@ export default function HomeContainer() {
         <title>Discordle - Guess the Idiot | Home</title>
       </Head>
 
-      <S.ColumnContainer>{WhichRender()}</S.ColumnContainer>
+      {loadHome ? (
+        <S.ColumnContainer>{WhichRender()}</S.ColumnContainer>
+      ) : (
+        <Spin color={theme.colors.text} spinText="Carregando..." />
+      )}
     </>
   );
 }

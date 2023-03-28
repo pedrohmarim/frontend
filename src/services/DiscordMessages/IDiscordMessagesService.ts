@@ -43,6 +43,7 @@ export interface IMention {
 export interface IScoreInstance {
   scores: IPostSaveScore;
   channelId: string;
+  guildId: string;
 }
 
 export interface IPostSaveScore {
@@ -70,4 +71,5 @@ export interface IInstanceChannels {
 export interface IMember {
   id: string;
   username: string;
+  avatarUrl: string;
 }

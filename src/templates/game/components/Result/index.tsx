@@ -32,7 +32,7 @@ export default function Result({ awnsers }: I.IResult) {
         <S.Subtitle>Pontuação final: {score}/10</S.Subtitle>
       </Row>
 
-      <Row>
+      <Row justify="center">
         {awnsers &&
           awnsers.map(({ score, success, tabKey }, index) => (
             <S.AwnserItem success={success} score={score} key={index}>

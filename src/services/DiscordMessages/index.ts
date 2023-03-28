@@ -1,6 +1,7 @@
 import * as I from './IDiscordMessagesService';
 import baseService from '../api';
 import { AxiosResponse } from 'axios';
+import { IAwnser } from 'templates/game/IGame';
 
 const http = baseService();
 
@@ -11,6 +12,19 @@ const ApiAuth = {
       {
         params: {
           channelId,
+        },
+      }
+    );
+
+    return response.data;
+  },
+  GetChannelMembers: async function (channelId: string, guildId: string) {
+    const response: AxiosResponse<I.IMember[]> = await http.get(
+      '/getChannelMembers',
+      {
+        params: {
+          channelId,
+          guildId,
         },
       }
     );
@@ -35,12 +49,13 @@ const ApiAuth = {
     const response: AxiosResponse = await http.post('/saveScore', data);
     return response.data;
   },
-  VerifyAlreadyAwnsered: async function (userId: string) {
-    const response: AxiosResponse<I.IPostSaveScore[]> = await http.get(
+  VerifyAlreadyAwnsered: async function (userId: string, channelId: string) {
+    const response: AxiosResponse<IAwnser[]> = await http.get(
       '/verifyAlreadyAwnsered',
       {
         params: {
           userId,
+          channelId,
         },
       }
     );
