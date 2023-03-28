@@ -41,7 +41,6 @@ export interface IMention {
 }
 
 export interface IScoreInstance {
-  userId: string;
   scores: IPostSaveScore;
   channelId: string;
 }
@@ -49,6 +48,7 @@ export interface IScoreInstance {
 export interface IPostSaveScore {
   scoreDetails: IAwnser[];
   date: string;
+  userId: string;
 }
 
 export interface ICreateDiscordleInstancePost {

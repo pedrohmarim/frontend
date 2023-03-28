@@ -53,8 +53,8 @@ export default function GameContainer() {
     if (awnsers.length === 5) {
       const dto: IScoreInstance = {
         channelId,
-        userId,
         scores: {
+          userId,
           date: new Date().toLocaleDateString(),
           scoreDetails: awnsers,
         },

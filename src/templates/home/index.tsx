@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
-import { Spin } from 'antd_components';
 import theme from 'globalStyles/theme';
 import { Select } from 'templates/game/components/AuthorSelect/styles';
 import Cookie from 'cookiejs';
 import Head from 'next/head';
-import DiscordMessagesApi from 'services/DiscordMessages';
 import { LoadingOutlined } from '@ant-design/icons';
+import DiscordMessagesApi from 'services/DiscordMessages';
 import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
 import {
   GameTitle,
@@ -17,11 +16,19 @@ import {
 
 export default function HomeContainer() {
   const [whichRender, setWhichRender] = useState('gamePresentation');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
   const router = useRouter();
+
+  useEffect(() => {
+    const channelId = Cookie.get('channelId');
+
+    if (channelId) {
+      router.push('/game');
+    }
+  }, [router]);
 
   useEffect(() => {
     if (router.query.guild_id) {
@@ -33,15 +40,6 @@ export default function HomeContainer() {
 
       setWhichRender('formDiscordleInstance');
     }
-
-    // const channelId = Cookie.get('channelId');
-
-    // if (channelId) {
-    //   setShowHome(false);
-    //   toGame();
-    // }
-
-    setLoading(false);
   }, [router.query]);
 
   const CenterButton = (
@@ -58,7 +56,6 @@ export default function HomeContainer() {
         width={165}
         height={35}
         margin={margin}
-        icon={loading && <LoadingOutlined spin />}
       >
         {buttonText}
       </S.Button>
@@ -91,29 +88,37 @@ export default function HomeContainer() {
       <GameTitle>Discordle - Guess the Idiot | Criar Instância</GameTitle>
 
       <Select
-        disabled={false}
+        disabled={!instanceChannels.length}
         getPopupContainer={(trigger) => trigger.parentNode}
         placeholder="Selecione um canal"
         onChange={(value) => {
           const channelId = String(value);
+          setLoading(true);
 
           DiscordMessagesApi.CreateDiscordleInstance(channelId).then(() => {
-            setLoading(true);
-
             Cookie.set('channelId', channelId);
 
+            setLoading(false);
             router.push('/game');
           });
         }}
       >
-        {instanceChannels.map(({ channelId, channelName }) => (
-          <Select.Option key={channelId}>
-            <S.Row align="middle">
-              <span>{channelName}</span>
-            </S.Row>
-          </Select.Option>
-        ))}
+        {instanceChannels.length &&
+          instanceChannels.map(({ channelId, channelName }) => (
+            <Select.Option key={channelId}>
+              <S.Row align="middle">
+                <span>{channelName}</span>
+              </S.Row>
+            </Select.Option>
+          ))}
       </Select>
+
+      {loading && (
+        <S.MarginRow justify="center" align="middle">
+          <LoadingOutlined spin />
+          <S.LoadingText>Carregando...</S.LoadingText>
+        </S.MarginRow>
+      )}
     </MessageContainer>
   );
 
@@ -128,7 +133,7 @@ export default function HomeContainer() {
       </S.Description>
 
       {CenterButton(
-        `${loading ? 'Criando Instância' : 'Convidar bot'} `,
+        'Convidar bot',
         () =>
           window.open(
             'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=1024&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
@@ -150,7 +155,7 @@ export default function HomeContainer() {
     }
   };
 
-  return !loading ? (
+  return (
     <>
       <Head>
         <title>Discordle - Guess the Idiot | Home</title>
@@ -158,7 +163,5 @@ export default function HomeContainer() {
 
       <S.ColumnContainer>{WhichRender()}</S.ColumnContainer>
     </>
-  ) : (
-    <Spin color={theme.colors.text} spinText="Carregando..." />
   );
 }
