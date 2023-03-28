@@ -19,6 +19,9 @@ export default function ChooseProfile() {
   useEffect(() => {
     const channelId = Cookie.get('channelId');
     const guildId = Cookie.get('guildId');
+    const userId = Cookie.get('userId');
+
+    if (userId) router.push('/game');
 
     if (channelId && guildId)
       DiscordMessagesApi.GetChannelMembers(
