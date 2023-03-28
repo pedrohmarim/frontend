@@ -55,3 +55,19 @@ export interface ICreateDiscordleInstancePost {
   authToken: string;
   channelId: string;
 }
+
+export interface IInstanceChannelsGetDto {
+  _id: string;
+  channels: IInstanceChannels[];
+}
+
+export interface IInstanceChannels {
+  channelName: string;
+  channelId: string;
+  members: IMember[];
+}
+
+export interface IMember {
+  id: string;
+  username: string;
+}

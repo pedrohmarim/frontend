@@ -1,40 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
-import router from 'next/router';
+import { useRouter } from 'next/router';
+import { Spin } from 'antd_components';
 import theme from 'globalStyles/theme';
+import { Select } from 'templates/game/components/AuthorSelect/styles';
 import Cookie from 'cookiejs';
 import Head from 'next/head';
 import DiscordMessagesApi from 'services/DiscordMessages';
-import { Form, Input } from 'antd_components';
-import { MessageContainer } from 'templates/game/components/ChoosedMessage/styles';
 import { LoadingOutlined } from '@ant-design/icons';
-import { ButtonHTMLType } from 'antd/lib/button';
-import { ICreateDiscordleInstancePost } from 'services/DiscordMessages/IDiscordMessagesService';
+import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
+import {
+  GameTitle,
+  MessageContainer,
+} from 'templates/game/components/ChoosedMessage/styles';
 
 export default function HomeContainer() {
-  const [showInputs, setShowInpts] = useState(false);
-  const [showHome, setShowHome] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
-
-  function toGame() {
-    router.push('/game');
-  }
+  const [whichRender, setWhichRender] = useState('gamePresentation');
+  const [loading, setLoading] = useState(true);
+  const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
+    []
+  );
+  const router = useRouter();
 
   useEffect(() => {
-    const channelId = Cookie.get('channelId');
+    if (router.query.guild_id) {
+      const guildId = router.query.guild_id.toString();
 
-    if (channelId) {
-      setShowHome(false);
-      toGame();
+      DiscordMessagesApi.GetInstanceChannels(guildId).then(({ channels }) =>
+        setInstanceChannels(channels)
+      );
+
+      setWhichRender('formDiscordleInstance');
     }
-  }, []);
+
+    // const channelId = Cookie.get('channelId');
+
+    // if (channelId) {
+    //   setShowHome(false);
+    //   toGame();
+    // }
+
+    setLoading(false);
+  }, [router.query]);
 
   const CenterButton = (
-    type: ButtonHTMLType,
     buttonText: string,
-    onClick?: () => void
+    onClick?: () => void,
+    margin?: string
   ) => (
     <S.Row justify="center">
       <S.Button
@@ -44,8 +57,8 @@ export default function HomeContainer() {
         color={theme.colors.text}
         width={165}
         height={35}
+        margin={margin}
         icon={loading && <LoadingOutlined spin />}
-        htmlType={type}
       >
         {buttonText}
       </S.Button>
@@ -65,73 +78,87 @@ export default function HomeContainer() {
         <G.HomeSpan> Discord</G.HomeSpan>
       </S.Description>
 
-      {CenterButton('button', 'Começar', () => setShowInpts(true))}
+      {CenterButton(
+        'Começar',
+        () => setWhichRender('botButtonContainer'),
+        '25px 0 0 0'
+      )}
     </>
   );
 
-  async function onFinish(values: ICreateDiscordleInstancePost) {
-    setLoading(true);
-    await DiscordMessagesApi.CreateDiscordleInstance(values);
-
-    Cookie.set('channelId', values.channelId);
-
-    toGame();
-  }
-
-  const InputsContainer = () => (
+  const FormDiscordleInstance = () => (
     <MessageContainer>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={{ channelId: null, authToken: '' }}
+      <GameTitle>Discordle - Guess the Idiot | Criar Instância</GameTitle>
+
+      <Select
+        disabled={false}
+        getPopupContainer={(trigger) => trigger.parentNode}
+        placeholder="Selecione um canal"
+        onChange={(value) => {
+          const channelId = String(value);
+
+          DiscordMessagesApi.CreateDiscordleInstance(channelId).then(() => {
+            setLoading(true);
+
+            Cookie.set('channelId', channelId);
+
+            router.push('/game');
+          });
+        }}
       >
-        <S.Title>
-          <G.HomeSpan>
-            {' '}
-            Discordle - Guess the Idiot | Criar Instância
-          </G.HomeSpan>
-        </S.Title>
-
-        <Form.Item
-          required
-          rules={[{ required: true, message: 'Campo obrigatório.' }]}
-          label={<S.Label>ID Canal de Texto</S.Label>}
-          name="channelId"
-          tooltip="ID do Canal de Texto que terá as mensagens consumidas para organizar o Discordle."
-        >
-          <Input type="text" placeholder="Ex.: 790633545788324618" />
-        </Form.Item>
-
-        <Form.Item
-          required
-          rules={[{ required: true, message: 'Campo obrigatório.' }]}
-          label={<S.Label>AuthToken</S.Label>}
-          name="authToken"
-          tooltip="Token de autorização de um dos membros presente do canal de texto escolhido."
-        >
-          <Input
-            type="text"
-            placeholder="Ex.: NTkwNKG8YTc5Nzg1NjA1MTIw.GIKTQ8.jQltZga3JVCZsHfgG-XvE_SANDaUw1aJUl9pZ"
-          />
-        </Form.Item>
-
-        {CenterButton('submit', `${loading ? 'Criando' : 'Criar'} Instância`)}
-      </Form>
+        {instanceChannels.map(({ channelId, channelName }) => (
+          <Select.Option key={channelId}>
+            <S.Row align="middle">
+              <span>{channelName}</span>
+            </S.Row>
+          </Select.Option>
+        ))}
+      </Select>
     </MessageContainer>
   );
 
-  return (
+  const BotButtonContainer = () => (
+    <MessageContainer>
+      <GameTitle>Discordle - Guess the Idiot</GameTitle>
+
+      <S.Description>
+        Primeiro, convite o bot para seu servidor (primeiramente certifique-se
+        que você está logado como a conta <G.HomeSpan>owner </G.HomeSpan> do
+        servidor que deseje usar)
+      </S.Description>
+
+      {CenterButton(
+        `${loading ? 'Criando Instância' : 'Convidar bot'} `,
+        () =>
+          window.open(
+            'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=1024&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
+            '_self'
+          ),
+        '25px 0 0 0'
+      )}
+    </MessageContainer>
+  );
+
+  const WhichRender = () => {
+    switch (whichRender) {
+      case 'gamePresentation':
+        return <GamePresentation />;
+      case 'botButtonContainer':
+        return <BotButtonContainer />;
+      default:
+        return <FormDiscordleInstance />;
+    }
+  };
+
+  return !loading ? (
     <>
       <Head>
         <title>Discordle - Guess the Idiot | Home</title>
       </Head>
 
-      {showHome && (
-        <S.ColumnContainer>
-          {!showInputs ? <GamePresentation /> : <InputsContainer />}
-        </S.ColumnContainer>
-      )}
+      <S.ColumnContainer>{WhichRender()}</S.ColumnContainer>
     </>
+  ) : (
+    <Spin color={theme.colors.text} spinText="Carregando..." />
   );
 }

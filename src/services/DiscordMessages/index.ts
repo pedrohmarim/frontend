@@ -46,12 +46,23 @@ const ApiAuth = {
     );
     return response.data;
   },
-  CreateDiscordleInstance: async function (
-    data: I.ICreateDiscordleInstancePost
-  ) {
+  GetInstanceChannels: async function (guildId: string) {
+    const response: AxiosResponse<I.IInstanceChannelsGetDto> = await http.get(
+      '/getInstanceChannels',
+      {
+        params: {
+          guildId,
+        },
+      }
+    );
+    return response.data;
+  },
+  CreateDiscordleInstance: async function (channelId: string) {
     const response: AxiosResponse = await http.post(
       '/createDiscordleInstance',
-      data
+      {
+        channelId,
+      }
     );
     return response.data;
   },

@@ -20,9 +20,7 @@ export const Label = styled.span`
   font-size: 13pt;
 `;
 
-export const Row = styled(RowAntd)`
-  margin-top: 35px;
-`;
+export const Row = styled(RowAntd)``;
 
 export const Button = styled(AntdButton)`
   color: ${(props) => props.theme.colors.text};

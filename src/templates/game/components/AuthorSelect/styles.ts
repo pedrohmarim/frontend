@@ -6,7 +6,7 @@ export const Select = styled(SelectAntd)`
 
   .ant-select-selection-placeholder {
     font-weight: 500;
-    color: ${(props) => props.theme.colors.background};
+    color: ${(props) => props.theme.colors.background} !important;
   }
 `;
 
