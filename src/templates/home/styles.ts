@@ -14,6 +14,7 @@ export const Title = styled.h1`
 export const Description = styled.span`
   color: ${(props) => props.theme.colors.text};
   font-size: 13pt;
+  font-weight: normal;
 `;
 
 export const Label = styled.span`

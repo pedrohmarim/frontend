@@ -85,7 +85,7 @@ export default function GameContainer() {
   return (
     <>
       <Head>
-        <title>Discordle - Guess the Idiot | Game</title>
+        <title>Discordle | Game</title>
       </Head>
 
       {loadGame ? (

@@ -69,12 +69,12 @@ export default function HomeContainer() {
     <>
       <S.Title>
         Bem vindo ao
-        <G.HomeSpan> Discordle - Guess the Idiot</G.HomeSpan>
+        <G.HomeSpan> Discordle</G.HomeSpan>
       </S.Title>
 
       <S.Description>
-        Guess the Idiot resume-se em acertar quem escreveu uma frase gerada de
-        forma aleatória, retirada de um canal de texto de um servidor do{' '}
+        Esse jogo resume-se em acertar quem escreveu uma frase gerada de forma
+        aleatória, retirada de um canal de texto de um servidor do{' '}
         <G.HomeSpan> Discord</G.HomeSpan>
       </S.Description>
 
@@ -97,7 +97,7 @@ export default function HomeContainer() {
 
   const FormDiscordleInstance = () => (
     <MessageContainer>
-      <GameTitle>Discordle - Guess the Idiot | Criar Instância</GameTitle>
+      <GameTitle>Discordle | Criar Instância</GameTitle>
 
       <Select
         disabled={!instanceChannels.length}
@@ -119,7 +119,7 @@ export default function HomeContainer() {
 
   const BotButtonContainer = () => (
     <MessageContainer>
-      <GameTitle>Discordle - Guess the Idiot</GameTitle>
+      <GameTitle>Discordle</GameTitle>
 
       <S.Description>
         Primeiro, convite o bot para seu servidor (primeiramente certifique-se
@@ -131,7 +131,7 @@ export default function HomeContainer() {
         'Convidar bot',
         () =>
           window.open(
-            'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=1024&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
+            'https://discord.com/oauth2/authorize?client_id=1089918362311733378&permissions=3088&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
             '_self'
           ),
         '25px 0 0 0'
@@ -153,7 +153,7 @@ export default function HomeContainer() {
   return (
     <>
       <Head>
-        <title>Discordle - Guess the Idiot | Home</title>
+        <title>Discordle | Home</title>
       </Head>
 
       {loadHome ? (

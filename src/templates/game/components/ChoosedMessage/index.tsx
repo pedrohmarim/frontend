@@ -238,7 +238,7 @@ export default function ChoosedMessage({
         </Tooltip>
       )}
 
-      <S.GameTitle>Guess the Idiot</S.GameTitle>
+      <S.GameTitle>Discordle</S.GameTitle>
 
       <Col span={24}>{serverName}</Col>
 

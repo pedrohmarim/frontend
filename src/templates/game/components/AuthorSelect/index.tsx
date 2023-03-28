@@ -83,7 +83,7 @@ const AuthorSelect = ({
     <S.Select
       disabled={!authorsOptions?.length}
       getPopupContainer={(trigger) => trigger.parentNode}
-      placeholder="Selecione um idiota"
+      placeholder="Selecione um membro"
       onChange={(value) => {
         handleVerifyAwnser(String(value));
         setActiveTabKey((prev: number) => prev + 1);
