@@ -131,7 +131,7 @@ export default function HomeContainer() {
         'Convidar bot',
         () =>
           window.open(
-            'https://discord.com/oauth2/authorize?client_id=1089918362311733378&permissions=3088&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
+            'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=2064&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
             '_self'
           ),
         '25px 0 0 0'
