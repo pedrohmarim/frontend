@@ -64,11 +64,11 @@ export default function GameContainer() {
         },
       };
 
-      setAlreadyAwnsered(true);
+      if (!alreadyAwnsered) DiscordMessagesApi.SaveScore(dto);
 
-      DiscordMessagesApi.SaveScore(dto);
+      setAlreadyAwnsered(true);
     }
-  }, [awnsers]);
+  }, [alreadyAwnsered, awnsers]);
 
   useEffect(() => {
     const userId = Cookie.get('userId').toString();
