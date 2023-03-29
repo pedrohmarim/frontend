@@ -26,8 +26,18 @@ export default function GameContainer() {
 
   useEffect(() => {
     if (router.isReady) {
-      const userId = Cookie.get('userId').toString();
+      const userId = Cookie.get('userId');
+
       const { channelId, guildId } = router.query;
+
+      if (!userId)
+        router.push({
+          pathname: '/chooseProfile',
+          query: {
+            channelId,
+            guildId,
+          },
+        });
 
       const loadParameters = Boolean(channelId && guildId && userId);
 
@@ -64,7 +74,7 @@ export default function GameContainer() {
             setAwnsers(data);
           })
           .catch(() => router.push('/'));
-      } else router.push('/home');
+      } else router.push('/');
     }
   }, [router]);
 

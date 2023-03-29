@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
+import { LoadingOutlined } from '@ant-design/icons';
 import theme from 'globalStyles/theme';
 import { Select } from 'templates/game/components/AuthorSelect/styles';
 import Head from 'next/head';
-import { Spin } from 'antd_components';
+import { Spin, Row } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
 import {
@@ -17,6 +18,7 @@ export default function HomeContainer() {
   const router = useRouter();
   const [whichRender, setWhichRender] = useState<string>('gamePresentation');
   const [guildId, setGuildId] = useState<string>('');
+  const [loadingInstance, setLoadingInstance] = useState<boolean>(false);
   const [loadHome, setLoadHome] = useState<boolean>(true);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
@@ -82,15 +84,19 @@ export default function HomeContainer() {
   );
 
   function onChange(channelId: string) {
-    DiscordMessagesApi.CreateDiscordleInstance(channelId).then(() => {
-      router.push({
-        pathname: '/chooseProfile',
-        query: {
-          channelId,
-          guildId,
-        },
-      });
-    });
+    setLoadingInstance(true);
+
+    DiscordMessagesApi.CreateDiscordleInstance(channelId)
+      .then(() => {
+        router.push({
+          pathname: '/chooseProfile',
+          query: {
+            channelId,
+            guildId,
+          },
+        });
+      })
+      .catch(() => router.push('/'));
   }
 
   const FormDiscordleInstance = () => (
@@ -112,6 +118,14 @@ export default function HomeContainer() {
             </Select.Option>
           ))}
       </Select>
+
+      {loadingInstance && (
+        <Row justify="center">
+          <S.Description>
+            Carregando... <LoadingOutlined spin />
+          </S.Description>
+        </Row>
+      )}
     </MessageContainer>
   );
 

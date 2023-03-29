@@ -4,7 +4,7 @@ import Cookie from 'cookiejs';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { ColumnContainer } from 'templates/game/styles';
-import { Image, Row, Spin } from 'antd_components';
+import { Image, Spin } from 'antd_components';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import {
@@ -15,6 +15,7 @@ import {
 export default function ChooseProfile() {
   const router = useRouter();
   const [members, setMembers] = useState<IMember[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (router.isReady) {
@@ -22,7 +23,7 @@ export default function ChooseProfile() {
 
       const userId = Cookie.get('userId');
 
-      if (userId)
+      if (Boolean(userId)) {
         router.push({
           pathname: '/game',
           query: {
@@ -30,15 +31,17 @@ export default function ChooseProfile() {
             guildId,
           },
         });
-
-      if (guildId && channelId)
-        DiscordMessagesApi.GetChannelMembers(
-          channelId.toString(),
-          guildId.toString()
-        )
-          .then((members) => setMembers(members))
-          .catch(() => router.push('/'));
-      else router.push('/');
+      } else {
+        if (guildId && channelId)
+          DiscordMessagesApi.GetChannelMembers(
+            channelId.toString(),
+            guildId.toString()
+          )
+            .then((members) => setMembers(members))
+            .catch(() => router.push('/'))
+            .finally(() => setLoading(false));
+        else router.push('/');
+      }
     }
   }, [router]);
 
@@ -56,12 +59,12 @@ export default function ChooseProfile() {
     });
   }
 
-  return members.length ? (
+  return !loading ? (
     <ColumnContainer>
       <MessageContainer>
         <GameTitle>Escolha seu Perfil</GameTitle>
 
-        <Row justify="center">
+        <S.MemberRow className="parent">
           {members.map(({ avatarUrl, id, username }) => (
             <S.Card key={id} onClick={() => handleSaveUser(id)}>
               <Image
@@ -73,7 +76,7 @@ export default function ChooseProfile() {
               <S.Username>{username}</S.Username>
             </S.Card>
           ))}
-        </Row>
+        </S.MemberRow>
       </MessageContainer>
     </ColumnContainer>
   ) : (

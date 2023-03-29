@@ -23,3 +23,22 @@ export const Username = styled.span`
   margin-top: 10px;
   font-size: 14pt;
 `;
+
+export const MemberRow = styled.div`
+  overflow-x: auto;
+  padding: 15px;
+  width: 100%;
+  display: flex;
+
+  ::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${(props) => props.theme.colors.text};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme.colors.primary};
+  }
+`;
