@@ -6,34 +6,54 @@ import DiscordMessagesApi from 'services/DiscordMessages';
 import { ColumnContainer } from 'templates/game/styles';
 import { Image, Row, Spin } from 'antd_components';
 import { useRouter } from 'next/router';
+import theme from 'globalStyles/theme';
 import {
   GameTitle,
   MessageContainer,
 } from 'templates/game/components/ChoosedMessage/styles';
-import theme from 'globalStyles/theme';
 
 export default function ChooseProfile() {
   const router = useRouter();
   const [members, setMembers] = useState<IMember[]>([]);
 
   useEffect(() => {
-    const channelId = Cookie.get('channelId');
-    const guildId = Cookie.get('guildId');
-    const userId = Cookie.get('userId');
+    if (router.isReady) {
+      const { guildId, channelId } = router.query;
 
-    if (userId) router.push('/game');
+      const userId = Cookie.get('userId');
 
-    if (channelId && guildId)
-      DiscordMessagesApi.GetChannelMembers(
-        channelId.toString(),
-        guildId.toString()
-      ).then((members) => setMembers(members));
-    else router.push('/home');
+      if (userId)
+        router.push({
+          pathname: '/game',
+          query: {
+            channelId,
+            guildId,
+          },
+        });
+
+      if (guildId && channelId)
+        DiscordMessagesApi.GetChannelMembers(
+          channelId.toString(),
+          guildId.toString()
+        )
+          .then((members) => setMembers(members))
+          .catch(() => router.push('/'));
+      else router.push('/');
+    }
   }, [router]);
 
   function handleSaveUser(userId: string) {
+    const { guildId, channelId } = router.query;
+
     Cookie.set('userId', userId);
-    router.push('/game');
+
+    router.push({
+      pathname: '/game',
+      query: {
+        channelId,
+        guildId,
+      },
+    });
   }
 
   return members.length ? (

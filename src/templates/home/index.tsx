@@ -4,7 +4,6 @@ import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { Select } from 'templates/game/components/AuthorSelect/styles';
-import Cookie from 'cookiejs';
 import Head from 'next/head';
 import { Spin } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
@@ -18,32 +17,28 @@ export default function HomeContainer() {
   const router = useRouter();
   const [whichRender, setWhichRender] = useState<string>('gamePresentation');
   const [guildId, setGuildId] = useState<string>('');
-  const [loadHome, setLoadHome] = useState<boolean>(false);
+  const [loadHome, setLoadHome] = useState<boolean>(true);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
 
   useEffect(() => {
-    const channelId = Cookie.get('channelId');
-    const guildId = Cookie.get('guildId');
+    if (router.isReady) {
+      const { guild_id } = router.query;
 
-    if (channelId && guildId) router.push('/chooseProfile');
+      if (guild_id) {
+        setGuildId(guild_id.toString());
 
-    setLoadHome(!channelId || !guildId);
-  }, [router]);
-
-  useEffect(() => {
-    if (router.query.guild_id) {
-      const guildId = router.query.guild_id.toString();
-      setGuildId(guildId);
-
-      DiscordMessagesApi.GetInstanceChannels(guildId).then(({ channels }) =>
-        setInstanceChannels(channels)
-      );
-
-      setWhichRender('formDiscordleInstance');
+        DiscordMessagesApi.GetInstanceChannels(guild_id.toString())
+          .then(({ channels }) => {
+            setInstanceChannels(channels);
+            setWhichRender('formDiscordleInstance');
+          })
+          .catch(() => router.push('/'))
+          .finally(() => setLoadHome(false));
+      } else setLoadHome(false);
     }
-  }, [router.query]);
+  }, [router]);
 
   const CenterButton = (
     buttonText: string,
@@ -88,10 +83,13 @@ export default function HomeContainer() {
 
   function onChange(channelId: string) {
     DiscordMessagesApi.CreateDiscordleInstance(channelId).then(() => {
-      Cookie.set('channelId', channelId);
-      Cookie.set('guildId', guildId);
-
-      router.push('/chooseProfile');
+      router.push({
+        pathname: '/chooseProfile',
+        query: {
+          channelId,
+          guildId,
+        },
+      });
     });
   }
 
@@ -150,17 +148,16 @@ export default function HomeContainer() {
     }
   };
 
+  if (loadHome)
+    return <Spin color={theme.colors.text} spinText="Carregando..." />;
+
   return (
     <>
       <Head>
         <title>Discordle | Home</title>
       </Head>
 
-      {loadHome ? (
-        <S.ColumnContainer>{WhichRender()}</S.ColumnContainer>
-      ) : (
-        <Spin color={theme.colors.text} spinText="Carregando..." />
-      )}
+      <S.ColumnContainer>{WhichRender()}</S.ColumnContainer>
     </>
   );
 }

@@ -25,62 +25,73 @@ export default function GameContainer() {
   >([]);
 
   useEffect(() => {
-    const channelId = Cookie.get('channelId');
-    const guildId = Cookie.get('guildId');
-    const userId = Cookie.get('userId');
+    if (router.isReady) {
+      const userId = Cookie.get('userId').toString();
+      const { channelId, guildId } = router.query;
 
-    setLoadGame(Boolean(channelId && guildId && userId));
+      const loadParameters = Boolean(channelId && guildId && userId);
 
-    if (channelId && guildId && userId)
-      DiscordMessagesApi.GetChoosedMessages(channelId.toString()).then(
-        ({ messages, serverName }) => {
-          setServerName(serverName);
-
-          const filteredMessagesArray: IFilterMessageResponse[] = [];
-
-          messages.forEach(({ message, authors }) => {
-            filteredMessagesArray.push(filterMessage(message, authors));
-
-            setChoosedMessages(filteredMessagesArray);
-          });
-        }
-      );
-    else router.push('/home');
+      loadParameters ? setLoadGame(loadParameters) : router.push('/');
+    }
   }, [router]);
 
   useEffect(() => {
-    const channelId = Cookie.get('channelId').toString();
-    const guildId = Cookie.get('guildId').toString();
-    const userId = Cookie.get('userId').toString();
+    if (router.isReady) {
+      const { channelId } = router.query;
 
-    if (awnsers.length === 5) {
-      const dto: IScoreInstance = {
-        channelId,
-        guildId,
-        scores: {
-          userId,
-          date: new Date().toLocaleDateString(),
-          scoreDetails: awnsers,
-        },
-      };
+      if (channelId) {
+        DiscordMessagesApi.GetChoosedMessages(channelId.toString())
+          .then(({ messages, serverName }) => {
+            setServerName(serverName);
 
-      if (!alreadyAwnsered) DiscordMessagesApi.SaveScore(dto);
+            const filteredMessagesArray: IFilterMessageResponse[] = [];
 
-      setAlreadyAwnsered(true);
+            messages.forEach(({ message, authors }) => {
+              filteredMessagesArray.push(filterMessage(message, authors));
+
+              setChoosedMessages(filteredMessagesArray);
+            });
+          })
+          .catch(() => router.push('/'));
+
+        const userId = Cookie.get('userId').toString();
+
+        DiscordMessagesApi.VerifyAlreadyAwnsered(userId, channelId.toString())
+          .then((data) => {
+            if (!data.length) return;
+
+            setAlreadyAwnsered(true);
+            setAwnsers(data);
+          })
+          .catch(() => router.push('/'));
+      } else router.push('/home');
     }
-  }, [alreadyAwnsered, awnsers]);
+  }, [router]);
 
   useEffect(() => {
-    const userId = Cookie.get('userId').toString();
-    const channelId = Cookie.get('channelId').toString();
+    if (router.isReady) {
+      const userId = Cookie.get('userId').toString();
 
-    DiscordMessagesApi.VerifyAlreadyAwnsered(userId, channelId).then((data) => {
-      if (!data.length) return;
+      const { channelId, guildId } = router.query;
 
-      setAlreadyAwnsered(true);
-      setAwnsers(data);
-    });
-  }, []);
+      if (awnsers.length === 5 && channelId && guildId) {
+        const dto: IScoreInstance = {
+          channelId: channelId.toString(),
+          guildId: guildId.toString(),
+          scores: {
+            userId,
+            date: new Date().toLocaleDateString(),
+            scoreDetails: awnsers,
+          },
+        };
+
+        if (!alreadyAwnsered)
+          DiscordMessagesApi.SaveScore(dto)
+            .then(() => setAlreadyAwnsered(true))
+            .catch(() => router.push('/'));
+      }
+    }
+  }, [alreadyAwnsered, awnsers, router]);
 
   return (
     <>
