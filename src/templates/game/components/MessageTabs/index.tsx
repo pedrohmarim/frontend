@@ -12,6 +12,7 @@ export default function MessageTabs({
   choosedMessages,
   awnsers,
   serverName,
+  serverIcon,
   setActiveTabKey,
   setAwnsers,
 }: I.IMessageTabs) {
@@ -76,6 +77,7 @@ export default function MessageTabs({
             >
               <ChoosedMessage
                 serverName={serverName}
+                serverIcon={serverIcon}
                 setUsedHint={(value) => setUsedHint(value)}
                 message={choosedMessage}
                 score={score}

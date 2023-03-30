@@ -18,11 +18,14 @@ export default function GameContainer() {
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
   const [loadGame, setLoadGame] = useState<boolean>(false);
-  const [serverName, setServerName] = useState<string>('');
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
   >([]);
+  const [serverInfos, setServerInfos] = useState<{
+    serverName: string;
+    serverIcon: string;
+  }>({} as { serverName: string; serverIcon: string });
 
   useEffect(() => {
     if (router.isReady) {
@@ -46,13 +49,20 @@ export default function GameContainer() {
   }, [router]);
 
   useEffect(() => {
+    function handleReset() {
+      Cookie.remove('guildId');
+      Cookie.remove('userId');
+      Cookie.remove('channelId');
+      router.push('/');
+    }
+
     if (router.isReady) {
       const { channelId } = router.query;
 
       if (channelId) {
         DiscordMessagesApi.GetChoosedMessages(channelId.toString())
-          .then(({ messages, serverName }) => {
-            setServerName(serverName);
+          .then(({ messages, serverName, serverIcon }) => {
+            setServerInfos({ serverName, serverIcon });
 
             const filteredMessagesArray: IFilterMessageResponse[] = [];
 
@@ -62,7 +72,7 @@ export default function GameContainer() {
               setChoosedMessages(filteredMessagesArray);
             });
           })
-          .catch(() => router.push('/'));
+          .catch(() => handleReset());
 
         const userId = Cookie.get('userId').toString();
 
@@ -73,12 +83,19 @@ export default function GameContainer() {
             setAlreadyAwnsered(true);
             setAwnsers(data);
           })
-          .catch(() => router.push('/'));
+          .catch(() => handleReset());
       } else router.push('/');
     }
   }, [router]);
 
   useEffect(() => {
+    function handleReset() {
+      Cookie.remove('guildId');
+      Cookie.remove('userId');
+      Cookie.remove('channelId');
+      router.push('/');
+    }
+
     if (router.isReady) {
       const userId = Cookie.get('userId').toString();
 
@@ -98,7 +115,7 @@ export default function GameContainer() {
         if (!alreadyAwnsered)
           DiscordMessagesApi.SaveScore(dto)
             .then(() => setAlreadyAwnsered(true))
-            .catch(() => router.push('/'));
+            .catch(() => handleReset());
       }
     }
   }, [alreadyAwnsered, awnsers, router]);
@@ -118,7 +135,8 @@ export default function GameContainer() {
               {awnsers.length < 5 && !alreadyAwnsered ? (
                 <S.ColumnContainer>
                   <MessageTabs
-                    serverName={serverName}
+                    serverName={serverInfos.serverName}
+                    serverIcon={serverInfos.serverIcon}
                     activeTabKey={activeTabKey}
                     awnsers={awnsers}
                     setAwnsers={setAwnsers}

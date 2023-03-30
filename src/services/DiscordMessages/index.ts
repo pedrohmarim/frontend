@@ -70,11 +70,12 @@ const ApiAuth = {
     );
     return response.data;
   },
-  CreateDiscordleInstance: async function (channelId: string) {
+  CreateDiscordleInstance: async function (channelId: string, guildId: string) {
     const response: AxiosResponse = await http.post(
       '/createDiscordleInstance',
       {
         channelId,
+        guildId,
       }
     );
     return response.data;

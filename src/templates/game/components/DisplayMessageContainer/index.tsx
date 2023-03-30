@@ -56,7 +56,7 @@ export default function DisplayMessageContainer({
 
   return (
     <>
-      <S.Title>{titleMessage()}</S.Title>
+      <S.Title marginTop="15px">{titleMessage()}</S.Title>
 
       <S.Message>
         {messageType === FilterMessageEnum.isText && <DefaultContent />}

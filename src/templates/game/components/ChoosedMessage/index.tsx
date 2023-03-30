@@ -14,7 +14,8 @@ import {
   Tooltip,
   Dropdown,
   PopConfirm,
-  Col,
+  Avatar,
+  Row,
 } from 'antd_components';
 import {
   FilterMessageEnum,
@@ -26,6 +27,7 @@ export default function ChoosedMessage({
   message,
   score,
   serverName,
+  serverIcon,
   setUsedHint,
 }: I.IChoosedMessageComponent) {
   const {
@@ -240,7 +242,10 @@ export default function ChoosedMessage({
 
       <S.GameTitle>Discordle</S.GameTitle>
 
-      <Col span={24}>{serverName}</Col>
+      <Row justify="center" align="middle">
+        <Avatar src={serverIcon} />
+        <S.ServerName>{serverName}</S.ServerName>
+      </Row>
 
       {totalMessages.map(
         (

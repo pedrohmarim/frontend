@@ -4,6 +4,7 @@ export interface IMessageInstance {
   messages: IGetDiscordMessagesResponse[];
   channelId: string;
   serverName: string;
+  serverIcon: string;
 }
 
 export interface IGetDiscordMessagesResponse {
@@ -52,9 +53,9 @@ export interface IPostSaveScore {
   userId: string;
 }
 
-export interface ICreateDiscordleInstancePost {
-  authToken: string;
+export interface IGetQueryParamsByUserIdResponse {
   channelId: string;
+  guildId: string;
 }
 
 export interface IInstanceChannelsGetDto {

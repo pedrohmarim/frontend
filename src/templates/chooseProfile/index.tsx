@@ -18,6 +18,13 @@ export default function ChooseProfile() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    function handleReset() {
+      Cookie.remove('guildId');
+      Cookie.remove('userId');
+      Cookie.remove('channelId');
+      router.push('/');
+    }
+
     if (router.isReady) {
       const { guildId, channelId } = router.query;
 
@@ -38,9 +45,9 @@ export default function ChooseProfile() {
             guildId.toString()
           )
             .then((members) => setMembers(members))
-            .catch(() => router.push('/'))
+            .catch(() => handleReset())
             .finally(() => setLoading(false));
-        else router.push('/');
+        else handleReset();
       }
     }
   }, [router]);
@@ -49,6 +56,8 @@ export default function ChooseProfile() {
     const { guildId, channelId } = router.query;
 
     Cookie.set('userId', userId);
+    Cookie.set('guildId', guildId?.toString());
+    Cookie.set('channelId', channelId?.toString());
 
     router.push({
       pathname: '/game',

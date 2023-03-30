@@ -3,6 +3,7 @@ import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
 import { LoadingOutlined } from '@ant-design/icons';
+import Cookie from 'cookiejs';
 import theme from 'globalStyles/theme';
 import { Select } from 'templates/game/components/AuthorSelect/styles';
 import Head from 'next/head';
@@ -26,6 +27,13 @@ export default function HomeContainer() {
   );
 
   useEffect(() => {
+    function handleReset() {
+      Cookie.remove('guildId');
+      Cookie.remove('userId');
+      Cookie.remove('channelId');
+      router.push('/');
+    }
+
     if (router.isReady) {
       const { guild_id } = router.query;
 
@@ -37,9 +45,28 @@ export default function HomeContainer() {
             setInstanceChannels(channels);
             setWhichRender('formDiscordleInstance');
           })
-          .catch(() => router.push('/'))
+          .catch(() => handleReset())
           .finally(() => setLoadHome(false));
-      } else setLoadHome(false);
+      } else {
+        const userId = Cookie.get('userId');
+
+        if (Boolean(userId)) {
+          const channelId = Cookie.get('channelId');
+          const guildId = Cookie.get('guildId');
+
+          router.push({
+            pathname: '/game',
+            query: {
+              channelId,
+              guildId,
+            },
+          });
+        } else {
+          setLoadHome(false);
+          Cookie.remove('guildId');
+          Cookie.remove('channelId');
+        }
+      }
     }
   }, [router]);
 
@@ -90,10 +117,17 @@ export default function HomeContainer() {
     </>
   );
 
+  function handleReset() {
+    Cookie.remove('guildId');
+    Cookie.remove('userId');
+    Cookie.remove('channelId');
+    router.push('/');
+  }
+
   function onChange(channelId: string) {
     setLoadingInstance(true);
 
-    DiscordMessagesApi.CreateDiscordleInstance(channelId)
+    DiscordMessagesApi.CreateDiscordleInstance(channelId, guildId)
       .then(() => {
         router.push({
           pathname: '/chooseProfile',
@@ -103,7 +137,7 @@ export default function HomeContainer() {
           },
         });
       })
-      .catch(() => router.push('/'));
+      .catch(() => handleReset());
   }
 
   const FormDiscordleInstance = () => (

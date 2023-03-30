@@ -59,6 +59,11 @@ export const Hint = styled.span`
   color: ${(props) => props.theme.colors.text};
 `;
 
+export const ServerName = styled.span`
+  margin-top: 2px;
+  margin-left: 8px;
+`;
+
 export const MainMessageContainer = styled.div`
   border: solid 2px rgba(138, 0, 194, 0.4);
   box-shadow: 0px 0px 15px 15px rgba(255, 255, 255, 0.08);
