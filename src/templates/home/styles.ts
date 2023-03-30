@@ -11,9 +11,13 @@ export const Title = styled.h1`
   color: ${(props) => props.theme.colors.text};
 `;
 
-export const Description = styled.span`
+export const Description = styled.span<{
+  fontSize?: string;
+  fontStyle?: string;
+}>`
   color: ${(props) => props.theme.colors.text};
-  font-size: 13pt;
+  font-size: ${({ fontSize }) => fontSize || '13pt'};
+  font-style: ${({ fontStyle }) => fontStyle || 'normal'};
   font-weight: normal;
 `;
 
@@ -25,7 +29,9 @@ export const LoadingText = styled.span`
   margin-left: 10px;
 `;
 
-export const Row = styled(RowAntd)``;
+export const Row = styled(RowAntd)`
+  margin-top: 15px;
+`;
 
 export const MarginRow = styled(RowAntd)`
   margin-top: 25px;

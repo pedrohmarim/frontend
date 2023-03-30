@@ -9,6 +9,7 @@ import Head from 'next/head';
 import { Spin, Row } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
+import { Divider } from 'templates/game/components/Result/styles';
 import {
   GameTitle,
   MessageContainer,
@@ -42,26 +43,6 @@ export default function HomeContainer() {
     }
   }, [router]);
 
-  const CenterButton = (
-    buttonText: string,
-    onClick?: () => void,
-    margin?: string
-  ) => (
-    <S.Row justify="center">
-      <S.Button
-        onClick={onClick}
-        boxshadow="0px 0px 10px 10px rgba(255, 255, 255, 0.08)"
-        backgroundcolor={theme.colors.primary}
-        color={theme.colors.text}
-        width={165}
-        height={35}
-        margin={margin}
-      >
-        {buttonText}
-      </S.Button>
-    </S.Row>
-  );
-
   const GamePresentation = () => (
     <>
       <S.Title>
@@ -75,11 +56,37 @@ export default function HomeContainer() {
         <G.HomeSpan> Discord</G.HomeSpan>
       </S.Description>
 
-      {CenterButton(
-        'Começar',
-        () => setWhichRender('botButtonContainer'),
-        '25px 0 0 0'
-      )}
+      <Divider />
+
+      <S.Description>
+        Primeiro, convite o bot para o servidor desejado
+      </S.Description>
+
+      <Row justify="center">
+        <S.Button
+          onClick={() =>
+            window.open(
+              'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=2064&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
+              '_self'
+            )
+          }
+          boxshadow="0px 0px 10px 10px rgba(255, 255, 255, 0.08)"
+          backgroundcolor={theme.colors.primary}
+          color={theme.colors.text}
+          width={165}
+          height={35}
+          margin="25px 0 55px 0"
+        >
+          Convidar bot
+        </S.Button>
+      </Row>
+
+      <Row justify="end">
+        <S.Description fontSize="10.5pt" fontStyle="italic">
+          *Certifique-se de estar logado na conta de cargo
+          <G.HomeSpan> Dono </G.HomeSpan> do servidor que deseje usar.
+        </S.Description>
+      </Row>
     </>
   );
 
@@ -112,41 +119,19 @@ export default function HomeContainer() {
         {instanceChannels.length &&
           instanceChannels.map(({ channelId, channelName }) => (
             <Select.Option key={channelId}>
-              <S.Row align="middle">
+              <Row align="middle">
                 <span>{channelName}</span>
-              </S.Row>
+              </Row>
             </Select.Option>
           ))}
       </Select>
 
       {loadingInstance && (
-        <Row justify="center">
-          <S.Description>
+        <S.Row justify="center">
+          <S.Description fontSize="12pt">
             Carregando... <LoadingOutlined spin />
           </S.Description>
-        </Row>
-      )}
-    </MessageContainer>
-  );
-
-  const BotButtonContainer = () => (
-    <MessageContainer>
-      <GameTitle>Discordle</GameTitle>
-
-      <S.Description>
-        Primeiro, convite o bot para seu servidor (primeiramente certifique-se
-        que você está logado como a conta <G.HomeSpan>owner </G.HomeSpan> do
-        servidor que deseje usar)
-      </S.Description>
-
-      {CenterButton(
-        'Convidar bot',
-        () =>
-          window.open(
-            'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=2064&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
-            '_self'
-          ),
-        '25px 0 0 0'
+        </S.Row>
       )}
     </MessageContainer>
   );
@@ -155,8 +140,6 @@ export default function HomeContainer() {
     switch (whichRender) {
       case 'gamePresentation':
         return <GamePresentation />;
-      case 'botButtonContainer':
-        return <BotButtonContainer />;
       default:
         return <FormDiscordleInstance />;
     }

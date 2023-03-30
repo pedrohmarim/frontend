@@ -15,7 +15,6 @@ const ApiAuth = {
         },
       }
     );
-
     return response.data;
   },
   GetChannelMembers: async function (channelId: string, guildId: string) {
@@ -28,7 +27,6 @@ const ApiAuth = {
         },
       }
     );
-
     return response.data;
   },
   GetDiscordHints: async function (id: string, channelId: string) {
