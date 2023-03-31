@@ -11,7 +11,7 @@ export const Button = styled(AntDesignButton)<I.IButton>`
   height: ${({ height }) => height}px;
   margin: ${({ margin }) => margin};
   border-radius: 4px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 12pt;
   opacity: 1;
   display: flex;

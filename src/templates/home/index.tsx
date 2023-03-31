@@ -11,10 +11,7 @@ import { Spin, Row } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
 import { Divider } from 'templates/game/components/Result/styles';
-import {
-  GameTitle,
-  MessageContainer,
-} from 'templates/game/components/ChoosedMessage/styles';
+import { GameTitle } from 'templates/game/components/ChoosedMessage/styles';
 
 export default function HomeContainer() {
   const router = useRouter();
@@ -141,7 +138,7 @@ export default function HomeContainer() {
   }
 
   const FormDiscordleInstance = () => (
-    <MessageContainer>
+    <>
       <GameTitle>Discordle | Criar Instância</GameTitle>
 
       <Select
@@ -154,7 +151,7 @@ export default function HomeContainer() {
           instanceChannels.map(({ channelId, channelName }) => (
             <Select.Option key={channelId}>
               <Row align="middle">
-                <span>{channelName}</span>
+                <span>#{channelName}</span>
               </Row>
             </Select.Option>
           ))}
@@ -174,7 +171,7 @@ export default function HomeContainer() {
           <G.HomeSpan> cinco </G.HomeSpan> mensagens não serão listados.
         </S.Description>
       </S.Row>
-    </MessageContainer>
+    </>
   );
 
   const WhichRender = () => {
@@ -187,7 +184,11 @@ export default function HomeContainer() {
   };
 
   if (loadHome)
-    return <Spin color={theme.colors.text} spinText="Carregando..." />;
+    return (
+      <Row justify="center">
+        <Spin color={theme.colors.text} />
+      </Row>
+    );
 
   return (
     <>
@@ -195,7 +196,7 @@ export default function HomeContainer() {
         <title>Discordle | Home</title>
       </Head>
 
-      <S.ColumnContainer>{WhichRender()}</S.ColumnContainer>
+      <>{WhichRender()}</>
     </>
   );
 }

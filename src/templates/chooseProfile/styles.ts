@@ -25,9 +25,10 @@ export const Username = styled.span`
 `;
 
 export const MemberRow = styled.div`
+  margin: -20px 0 -5px 0;
   overflow-x: auto;
   padding: 15px;
-  width: 100%;
+  width: 720px;
   display: flex;
 
   ::-webkit-scrollbar {

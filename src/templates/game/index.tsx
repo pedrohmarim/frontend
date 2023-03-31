@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin } from 'antd_components';
-import * as S from './styles';
+import { Spin, Row } from 'antd_components';
 import * as I from './IGame';
 import Cookie from 'cookiejs';
 import DiscordMessagesApi from 'services/DiscordMessages';
@@ -33,7 +32,7 @@ export default function GameContainer() {
 
       const { channelId, guildId } = router.query;
 
-      if (!userId)
+      if (!userId) {
         router.push({
           pathname: '/chooseProfile',
           query: {
@@ -41,10 +40,11 @@ export default function GameContainer() {
             guildId,
           },
         });
+      } else {
+        const loadParameters = Boolean(channelId && guildId && userId);
 
-      const loadParameters = Boolean(channelId && guildId && userId);
-
-      loadParameters ? setLoadGame(loadParameters) : router.push('/');
+        loadParameters ? setLoadGame(loadParameters) : router.push('/');
+      }
     }
   }, [router]);
 
@@ -129,21 +129,19 @@ export default function GameContainer() {
       {loadGame ? (
         <>
           {choosedMessages.length !== 5 ? (
-            <Spin color={theme.colors.text} spinText="Carregando..." />
+            <Spin color={theme.colors.text} />
           ) : (
             <>
               {awnsers.length < 5 && !alreadyAwnsered ? (
-                <S.ColumnContainer>
-                  <MessageTabs
-                    serverName={serverInfos.serverName}
-                    serverIcon={serverInfos.serverIcon}
-                    activeTabKey={activeTabKey}
-                    awnsers={awnsers}
-                    setAwnsers={setAwnsers}
-                    choosedMessages={choosedMessages}
-                    setActiveTabKey={setActiveTabKey}
-                  />
-                </S.ColumnContainer>
+                <MessageTabs
+                  serverName={serverInfos.serverName}
+                  serverIcon={serverInfos.serverIcon}
+                  activeTabKey={activeTabKey}
+                  awnsers={awnsers}
+                  setAwnsers={setAwnsers}
+                  choosedMessages={choosedMessages}
+                  setActiveTabKey={setActiveTabKey}
+                />
               ) : (
                 <Result awnsers={awnsers} />
               )}
@@ -151,7 +149,9 @@ export default function GameContainer() {
           )}
         </>
       ) : (
-        <Spin color={theme.colors.text} spinText="Carregando..." />
+        <Row justify="center">
+          <Spin color={theme.colors.text} />
+        </Row>
       )}
     </>
   );

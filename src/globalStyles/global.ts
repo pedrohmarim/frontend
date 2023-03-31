@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import { Card } from 'antd_components';
 
 export default createGlobalStyle`
   * {
@@ -29,6 +30,10 @@ export default createGlobalStyle`
   .ant-tabs-nav-wrap {
     margin: auto !important;
     flex: none !important;
+  }
+
+  .ant-tabs-top >.ant-tabs-nav::before {
+    border-color: rgba(255,255,255,0.29)
   }
 
   .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -74,4 +79,20 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const ColumnContainer = styled.div`
+  text-align: center;
+  flex-direction: column;
+  max-height: 90%;
+`;
+
+export const MessageContainer = styled(Card)`
+  font-size: 15pt;
+  font-weight: 500;
+  color: ${(props) => props.theme.colors.text};
+  background-color: #17171a;
+  border-radius: 4px;
+  border-color: rgba(255, 255, 255, 0.1);
+  max-width: 700px;
 `;

@@ -202,9 +202,9 @@ export default function ChoosedMessage({
   ];
 
   return (
-    <S.MessageContainer>
+    <S.PaddingContainer>
       <S.ScoreContainer>
-        <FeatherIcons icon="award" size={18} />
+        <FeatherIcons icon="star" size={18} />
         <S.ScoreText> Pontuação: {score}/10</S.ScoreText>
       </S.ScoreContainer>
 
@@ -240,7 +240,7 @@ export default function ChoosedMessage({
         </Tooltip>
       )}
 
-      <S.GameTitle>Discordle</S.GameTitle>
+      <S.BiggerGameTitle>Discordle</S.BiggerGameTitle>
 
       <Row justify="center" align="middle">
         <Avatar src={serverIcon} />
@@ -287,6 +287,6 @@ export default function ChoosedMessage({
           );
         }
       )}
-    </S.MessageContainer>
+    </S.PaddingContainer>
   );
 }

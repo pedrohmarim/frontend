@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Divider as DividerAntd } from 'antd_components';
 
 export const Subtitle = styled.span`
-  margin-left: 2px;
+  margin-left: 5px;
   font-size: 12pt;
   margin-bottom: 20px;
 `;
@@ -12,8 +12,8 @@ export const Divider = styled(DividerAntd)`
   opacity: 0.2;
 `;
 
-export const MarginSpan = styled.span`
-  margin: 0 10px;
+export const MarginSpan = styled.span<{ margin: string }>`
+  margin: ${({ margin }) => margin};
 `;
 
 export const Span = styled.span`
@@ -24,7 +24,7 @@ export const TimerContainer = styled.div`
   width: fit-content;
   margin: auto;
   padding: 10px;
-  margin-top: 20px;
+  margin: 20px auto 35px auto;
   border-radius: 4px;
   box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
   border: solid 2px rgba(138, 0, 194, 0.4);

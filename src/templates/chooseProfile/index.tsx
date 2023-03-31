@@ -3,14 +3,10 @@ import { IMember } from 'services/DiscordMessages/IDiscordMessagesService';
 import Cookie from 'cookiejs';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
-import { ColumnContainer } from 'templates/game/styles';
-import { Image, Spin } from 'antd_components';
+import { Image, Spin, Row } from 'antd_components';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
-import {
-  GameTitle,
-  MessageContainer,
-} from 'templates/game/components/ChoosedMessage/styles';
+import { GameTitle } from 'templates/game/components/ChoosedMessage/styles';
 
 export default function ChooseProfile() {
   const router = useRouter();
@@ -30,7 +26,7 @@ export default function ChooseProfile() {
 
       const userId = Cookie.get('userId');
 
-      if (Boolean(userId)) {
+      if (userId) {
         router.push({
           pathname: '/game',
           query: {
@@ -69,26 +65,26 @@ export default function ChooseProfile() {
   }
 
   return !loading ? (
-    <ColumnContainer>
-      <MessageContainer>
-        <GameTitle>Escolha seu Perfil</GameTitle>
+    <>
+      <GameTitle>Escolha seu Perfil</GameTitle>
 
-        <S.MemberRow className="parent">
-          {members.map(({ avatarUrl, id, username }) => (
-            <S.Card key={id} onClick={() => handleSaveUser(id)}>
-              <Image
-                alt="avatarUrl"
-                src={avatarUrl}
-                preview={false}
-                width={130}
-              />
-              <S.Username>{username}</S.Username>
-            </S.Card>
-          ))}
-        </S.MemberRow>
-      </MessageContainer>
-    </ColumnContainer>
+      <S.MemberRow className="parent">
+        {members.map(({ avatarUrl, id, username }) => (
+          <S.Card key={id} onClick={() => handleSaveUser(id)}>
+            <Image
+              alt="avatarUrl"
+              src={avatarUrl}
+              preview={false}
+              width={130}
+            />
+            <S.Username>{username}</S.Username>
+          </S.Card>
+        ))}
+      </S.MemberRow>
+    </>
   ) : (
-    <Spin color={theme.colors.text} spinText="Carregando..." />
+    <Row justify="center">
+      <Spin color={theme.colors.text} />
+    </Row>
   );
 }

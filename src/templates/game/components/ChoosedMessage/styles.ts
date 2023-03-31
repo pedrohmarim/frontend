@@ -1,26 +1,16 @@
 import styled from 'styled-components';
-import { Card, Row } from 'antd_components';
-
-export const MessageContainer = styled(Card)`
-  padding: 40px;
-  font-size: 15pt;
-  font-weight: 500;
-  text-align: center;
-  color: ${(props) => props.theme.colors.text};
-  background-color: #17171a;
-  border-radius: 4px;
-  border-color: rgba(255, 255, 255, 0.1);
-  margin-bottom: 30px;
-  position: relative;
-`;
+import { Row } from 'antd_components';
 
 export const GameTitle = styled.h2`
   color: ${(props) => props.theme.colors.primary};
 `;
 
+export const BiggerGameTitle = styled.h1`
+  color: ${(props) => props.theme.colors.primary};
+`;
+
 export const Options = styled.div`
   position: absolute;
-  margin: 18px 12px 0 0;
   height: 25px;
   right: 0;
   top: 0;
@@ -30,7 +20,7 @@ export const ScoreContainer = styled(Row)`
   color: ${(props) => props.theme.colors.text};
   font-size: 11pt;
   position: absolute;
-  margin: 25px 0 0 20px;
+  margin-top: 15px;
   height: 25px;
   left: 0;
   top: 0;
@@ -70,4 +60,8 @@ export const MainMessageContainer = styled.div`
   padding: 10px;
   border-radius: 4px;
   margin: 30px 0;
+`;
+
+export const PaddingContainer = styled.div`
+  padding: 50px 0;
 `;

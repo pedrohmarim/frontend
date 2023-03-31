@@ -10,7 +10,11 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={theme}>
       <G.Container>
-        <Component {...pageProps} />
+        <G.ColumnContainer>
+          <G.MessageContainer>
+            <Component {...pageProps} />
+          </G.MessageContainer>
+        </G.ColumnContainer>
       </G.Container>
       <GlobalStyle />
     </ThemeProvider>
