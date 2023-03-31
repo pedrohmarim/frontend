@@ -167,6 +167,13 @@ export default function HomeContainer() {
           </S.Description>
         </S.Row>
       )}
+
+      <S.Row justify="center">
+        <S.Description fontSize="10pt" fontStyle="italic">
+          Canais de texto que não possuem pelo menos
+          <G.HomeSpan> cinco </G.HomeSpan> mensagens não serão listados.
+        </S.Description>
+      </S.Row>
     </MessageContainer>
   );
 

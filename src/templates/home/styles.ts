@@ -30,7 +30,7 @@ export const LoadingText = styled.span`
 `;
 
 export const Row = styled(RowAntd)`
-  margin-top: 15px;
+  margin-top: 20px;
 `;
 
 export const MarginRow = styled(RowAntd)`
