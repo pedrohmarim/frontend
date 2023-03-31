@@ -74,3 +74,18 @@ export interface IMember {
   username: string;
   avatarUrl: string;
 }
+
+export interface IRankingTableData {
+  key: number;
+  member: {
+    avatarUrl: string;
+    username: string;
+    userId: string;
+  };
+  totalScore: number;
+}
+
+export interface IUserScoreDetail {
+  scoreDetails: IAwnser[];
+  date: string;
+}

@@ -70,6 +70,29 @@ const ApiAuth = {
     );
     return response.data;
   },
+  GetDiscordleHistory: async function (channelId: string) {
+    const response: AxiosResponse<I.IRankingTableData[]> = await http.get(
+      '/getDiscordleHistory',
+      {
+        params: {
+          channelId,
+        },
+      }
+    );
+    return response.data;
+  },
+  GetUserScoreDetail: async function (userId: string, channelId: string) {
+    const response: AxiosResponse<I.IUserScoreDetail> = await http.get(
+      '/getUserScoreDetail',
+      {
+        params: {
+          userId,
+          channelId,
+        },
+      }
+    );
+    return response.data;
+  },
   CreateDiscordleInstance: async function (channelId: string, guildId: string) {
     const response: AxiosResponse = await http.post(
       '/createDiscordleInstance',
