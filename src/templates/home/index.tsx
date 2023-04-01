@@ -90,7 +90,7 @@ export default function HomeContainer() {
         <S.Button
           onClick={() =>
             window.open(
-              'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=2064&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fhome&response_type=code&scope=bot%20connections',
+              'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=2064&redirect_uri=https%3A%2F%2Fdiscordlle.vercel.app%2F&response_type=code&scope=connections%20bot',
               '_self'
             )
           }
