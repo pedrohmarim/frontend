@@ -2,5 +2,4 @@
 module.exports = {
   reactStrictMode: false,
   pageExtensions: ['tsx'],
-  trailingSlash: false,
 };
