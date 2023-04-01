@@ -152,7 +152,13 @@ export default function Ranking() {
         size="small"
         columns={columns}
         dataSource={dataSource}
-        pagination={false}
+        pagination={{
+          size: 10,
+          hideOnSinglePage: true,
+          style: { color: theme.colors.text },
+          total: dataSource?.scoreDetails?.length,
+          showTotal: (total) => `Total de ${total} registros`,
+        }}
       />
 
       <S.Modal
