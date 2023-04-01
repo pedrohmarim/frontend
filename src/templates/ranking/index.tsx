@@ -7,6 +7,11 @@ import DiscordMessagesApi from 'services/DiscordMessages';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { IAwnser } from 'templates/game/IGame';
+import { MarginRow } from 'templates/home/styles';
+import {
+  IRankingTableData,
+  IUserScoreDetail,
+} from 'services/DiscordMessages/IDiscordMessagesService';
 import {
   Row,
   Avatar,
@@ -14,12 +19,8 @@ import {
   Tooltip,
   Button,
   Empty,
+  Table,
 } from 'antd_components';
-import {
-  IRankingTableData,
-  IUserScoreDetail,
-} from 'services/DiscordMessages/IDiscordMessagesService';
-import { MarginRow } from 'templates/home/styles';
 
 export default function Ranking() {
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
@@ -27,9 +28,7 @@ export default function Ranking() {
   const [open, setOpen] = useState<boolean>(false);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
   const router = useRouter();
-  const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail>(
-    {} as IUserScoreDetail
-  );
+  const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
 
   useEffect(() => {
     function handleReset() {
@@ -165,7 +164,7 @@ export default function Ranking() {
     <S.TableContainer>
       <GameTitle>Discordle | Ranking - #geral</GameTitle>
 
-      <S.Table
+      <Table
         loading={loading}
         size="small"
         columns={columns}
@@ -176,7 +175,7 @@ export default function Ranking() {
           pageSize: 10,
           hideOnSinglePage: true,
           style: { color: theme.colors.text },
-          total: dataSource?.scoreDetails?.length,
+          total: dataSource.length,
           showTotal: (total) => `Total de ${total} registros`,
         }}
       />
@@ -196,7 +195,7 @@ export default function Ranking() {
           },
         }}
       >
-        <S.Table
+        <Table
           loading={loading}
           locale={{ emptyText: <Empty description="Sem registros" /> }}
           size="small"
@@ -207,7 +206,7 @@ export default function Ranking() {
             pageSize: 3,
             hideOnSinglePage: true,
             style: { color: theme.colors.text },
-            total: scoreDetail?.scoreDetails?.length,
+            total: scoreDetail.length,
             showTotal: (total) => `Total de ${total} registros`,
           }}
         />

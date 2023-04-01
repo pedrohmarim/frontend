@@ -68,6 +68,45 @@ export default createGlobalStyle`
   .ant-input:placeholder-shown {
     font-weight: bold !important;
   }
+
+  .ant-table-placeholder {
+    background-color: ${(props) => props.theme.colors.background} !important;
+    pointer-events: none;
+  }
+
+  .ant-empty-description {
+    color: ${(props) => props.theme.colors.text} !important;
+  }
+
+  .stylePagination,
+  .ant-pagination-item a,
+  .ant-pagination-item-link {
+    color: ${(props) => props.theme.colors.text} !important;
+  }
+
+  .ant-pagination-item-active {
+    background-color: ${(props) => props.theme.colors.background} !important;
+    border-color: rgba(138, 0, 194, 0.4) !important;
+  }
+
+  && tbody > tr:hover > td {
+    background: rgba(225, 225, 225, 0.1) !important;
+  }
+
+  .ant-pagination-item .ant-pagination-next {
+    color: ${(props) => props.theme.colors.text} !important;
+  }
+
+  .ant-table-tbody,
+  th {
+    background-color: ${(props) => props.theme.colors.background} !important;
+    color: ${(props) => props.theme.colors.text} !important;
+    border-color: rgba(138, 0, 194, 0.4) !important;
+  }
+
+  td {
+    border-color: rgba(138, 0, 194, 0.4) !important;
+  }
 `;
 
 export const HomeSpan = styled.span`

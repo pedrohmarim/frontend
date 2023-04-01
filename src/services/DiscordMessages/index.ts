@@ -91,7 +91,7 @@ const ApiAuth = {
     return response.data;
   },
   GetUserScoreDetail: async function (userId: string, channelId: string) {
-    const response: AxiosResponse<I.IUserScoreDetail> = await http.get(
+    const response: AxiosResponse<I.IUserScoreDetail[]> = await http.get(
       '/getUserScoreDetail',
       {
         params: {
