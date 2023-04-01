@@ -123,7 +123,9 @@ export default function Ranking() {
           <Row align="middle" key={key}>
             <S.UserSpan>{tabKey}º Pergunta -</S.UserSpan>
             <S.UserSpan>Pontuação: {score} -</S.UserSpan>
-            <S.UserSpan>{success ? 'Acertou' : 'Errou'}</S.UserSpan>
+            <S.UserSpan>
+              {success ? `Acertou ${score === 1 ? '(dica)' : ''}` : 'Errou'}
+            </S.UserSpan>
           </Row>
         )),
     },
