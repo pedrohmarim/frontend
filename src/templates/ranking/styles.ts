@@ -29,16 +29,21 @@ export const UserSpan = styled.span`
   margin-left: 5px;
 `;
 
-export const Reload = styled(AntdRow)`
-  margin-left: 8px;
-`;
-
 export const ModalTitle = styled.span`
   color: ${(props) => props.theme.colors.primary};
 `;
 
 export const Table = styled(AntdTable)`
   margin-top: 20px;
+
+  .ant-table-placeholder {
+    background-color: ${(props) => props.theme.colors.background} !important;
+    pointer-events: none;
+  }
+
+  .ant-empty-description {
+    color: ${(props) => props.theme.colors.text} !important;
+  }
 
   .stylePagination,
   .ant-pagination-item a,

@@ -88,6 +88,7 @@ export const ColumnContainer = styled.div`
 `;
 
 export const MessageContainer = styled(Card)`
+  margin: 10px auto 0 auto;
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.colors.text};

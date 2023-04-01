@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Avatar, FeatherIcons, Tooltip, Button } from 'antd_components';
 import { GameTitle } from 'templates/game/components/ChoosedMessage/styles';
 import { ColumnsType } from 'antd/es/table';
 import Cookie from 'cookiejs';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
+import { useRouter } from 'next/router';
+import theme from 'globalStyles/theme';
+import { IAwnser } from 'templates/game/IGame';
+import {
+  Row,
+  Avatar,
+  FeatherIcons,
+  Tooltip,
+  Button,
+  Empty,
+} from 'antd_components';
 import {
   IRankingTableData,
   IUserScoreDetail,
 } from 'services/DiscordMessages/IDiscordMessagesService';
-import { useRouter } from 'next/router';
-import theme from 'globalStyles/theme';
-import { IAwnser } from 'templates/game/IGame';
+import { MarginRow } from 'templates/home/styles';
 
 export default function Ranking() {
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
+  const [nameModalTitle, setNameModalTitle] = useState<string>('');
+  const router = useRouter();
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail>(
     {} as IUserScoreDetail
   );
-  const [loading, setLoading] = useState<boolean>(true);
-  const [open, setOpen] = useState<boolean>(false);
-  const router = useRouter();
 
   useEffect(() => {
     function handleReset() {
@@ -60,7 +69,7 @@ export default function Ranking() {
   const columns: ColumnsType<IRankingTableData> = [
     {
       title: 'Posição',
-      dataIndex: 'key',
+      dataIndex: 'position',
       render: (value) => <>{value}</>,
     },
     {
@@ -85,7 +94,13 @@ export default function Ranking() {
       render: ({ member }) => {
         return (
           <Tooltip title="Ver detalhes">
-            <S.Row justify="center" onClick={() => showDetails(member.userId)}>
+            <S.Row
+              justify="center"
+              onClick={() => {
+                setNameModalTitle(member.username);
+                showDetails(member.userId);
+              }}
+            >
               <FeatherIcons icon="eye" size={18} />
             </S.Row>
           </Tooltip>
@@ -132,28 +147,31 @@ export default function Ranking() {
     }
   }
 
+  function toGame() {
+    const { channelId, guildId } = router.query;
+
+    router.push({
+      pathname: '/game',
+      query: {
+        channelId,
+        guildId,
+      },
+    });
+  }
+
   return (
     <S.TableContainer>
       <GameTitle>Discordle | Ranking - #geral</GameTitle>
-
-      <Row justify="end" align="middle">
-        <Button
-          onClick={gridReload}
-          backgroundcolor={theme.colors.primary}
-          color={theme.colors.text}
-          icon={<FeatherIcons icon="rotate-cw" size={18} />}
-        >
-          <S.Reload>Recarregar</S.Reload>
-        </Button>
-      </Row>
 
       <S.Table
         loading={loading}
         size="small"
         columns={columns}
         dataSource={dataSource}
+        rowKey={(record: IRankingTableData) => record.rowId}
+        locale={{ emptyText: <Empty description="Sem registros" /> }}
         pagination={{
-          size: 10,
+          pageSize: 10,
           hideOnSinglePage: true,
           style: { color: theme.colors.text },
           total: dataSource?.scoreDetails?.length,
@@ -163,26 +181,28 @@ export default function Ranking() {
 
       <S.Modal
         open={open}
-        title={<S.ModalTitle>Detalhes de CãoFantasma</S.ModalTitle>}
+        title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
         onCancel={() => setOpen(false)}
         onOk={() => setOpen(false)}
         bodyStyle={{ backgroundColor: theme.colors.background }}
         okText="Voltar"
+        cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{
           style: {
             backgroundColor: theme.colors.primary,
             color: theme.colors.text,
           },
         }}
-        cancelButtonProps={{ style: { display: 'none' } }}
       >
         <S.Table
           loading={loading}
+          locale={{ emptyText: <Empty description="Sem registros" /> }}
           size="small"
           columns={modalColumns}
           dataSource={scoreDetail}
+          rowKey={(record: IUserScoreDetail) => record.rowId}
           pagination={{
-            size: 10,
+            pageSize: 3,
             hideOnSinglePage: true,
             style: { color: theme.colors.text },
             total: scoreDetail?.scoreDetails?.length,
@@ -190,6 +210,28 @@ export default function Ranking() {
           }}
         />
       </S.Modal>
+
+      <MarginRow justify="space-between" align="middle">
+        <Button
+          onClick={toGame}
+          backgroundcolor={theme.colors.primary}
+          color={theme.colors.text}
+          icon={<FeatherIcons icon="arrow-left" size={18} />}
+        >
+          <S.UserSpan>Voltar</S.UserSpan>
+        </Button>
+
+        <Row justify="end" align="middle">
+          <Button
+            onClick={gridReload}
+            backgroundcolor={theme.colors.primary}
+            color={theme.colors.text}
+            icon={<FeatherIcons icon="rotate-cw" size={18} />}
+          >
+            <S.UserSpan>Recarregar</S.UserSpan>
+          </Button>
+        </Row>
+      </MarginRow>
     </S.TableContainer>
   );
 }

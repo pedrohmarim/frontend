@@ -32,8 +32,10 @@ import Popover from './Popover/Popover.component';
 import Result from './Result/Result.component';
 import Carousel from './Carousel/Carousel.component';
 import Steps from './Steps/Steps.component';
+import Empty from './Empty/Empty.component';
 
 export {
+  Empty,
   Avatar,
   Steps,
   Carousel,

@@ -29,6 +29,15 @@ const ApiAuth = {
     );
     return response.data;
   },
+  VerifyUser: async function (guildId: string, userId: string) {
+    const response: AxiosResponse<boolean> = await http.get('/verifyUser', {
+      params: {
+        guildId,
+        userId,
+      },
+    });
+    return response.data;
+  },
   GetDiscordHints: async function (id: string, channelId: string) {
     const response: AxiosResponse<I.IGetDiscordHintsResponse> = await http.get(
       '/getHints',

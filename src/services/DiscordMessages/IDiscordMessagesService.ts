@@ -76,7 +76,8 @@ export interface IMember {
 }
 
 export interface IRankingTableData {
-  key: number;
+  rowId: string;
+  position: number;
   member: {
     avatarUrl: string;
     username: string;
@@ -88,4 +89,5 @@ export interface IRankingTableData {
 export interface IUserScoreDetail {
   scoreDetails: IAwnser[];
   date: string;
+  rowId: string;
 }
