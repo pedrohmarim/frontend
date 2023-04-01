@@ -19,7 +19,13 @@ export default function filterMessage(message: IMessage, authors: string[]) {
 
     message.attachments.forEach(({ url }, index) => {
       response.formattedAttachs.push(
-        <Image preview={false} src={url} alt={`image_${index}`} />
+        <Image
+          preview={false}
+          src={url}
+          alt={`image_${index}`}
+          height={500}
+          width="100%"
+        />
       );
     });
   }

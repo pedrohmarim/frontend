@@ -32,4 +32,8 @@ export const Date = styled(Row)`
 
 export const Carousel = styled(CarouselAntd)<{ cursor: string }>`
   cursor: ${({ cursor }) => cursor};
+
+  img {
+    object-fit: contain;
+  }
 `;
