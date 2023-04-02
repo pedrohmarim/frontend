@@ -25,6 +25,7 @@ import {
 export default function Ranking() {
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadPage, setLoadPage] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
   const router = useRouter();
@@ -39,13 +40,28 @@ export default function Ranking() {
     }
 
     if (router.isReady) {
-      const { channelId } = router.query;
+      const userId = Cookie.get('userId');
+
+      const { channelId, guildId } = router.query;
+
+      if (!userId) {
+        router.push({
+          pathname: '/chooseProfile',
+          query: {
+            channelId,
+            guildId,
+          },
+        });
+      }
 
       if (channelId) {
         DiscordMessagesApi.GetDiscordleHistory(channelId.toString())
           .then((dataSource) => setDataSource(dataSource))
           .catch(() => handleReset())
-          .finally(() => setLoading(false));
+          .finally(() => {
+            setLoadPage(false);
+            setLoading(false);
+          });
       }
     }
   }, [router]);
@@ -161,78 +177,82 @@ export default function Ranking() {
   }
 
   return (
-    <S.TableContainer>
-      <GameTitle>Discordle | Ranking - #geral</GameTitle>
+    <>
+      {!loadPage && (
+        <S.TableContainer>
+          <GameTitle>Discordle | Ranking - #geral</GameTitle>
 
-      <Table
-        loading={loading}
-        size="small"
-        columns={columns}
-        dataSource={dataSource}
-        rowKey={(record: IRankingTableData) => record.rowId}
-        locale={{ emptyText: <Empty description="Sem registros" /> }}
-        pagination={{
-          pageSize: 10,
-          hideOnSinglePage: true,
-          style: { color: theme.colors.text },
-          total: dataSource.length,
-          showTotal: (total) => `Total de ${total} registros`,
-        }}
-      />
+          <Table
+            loading={loading}
+            size="small"
+            columns={columns}
+            dataSource={dataSource}
+            rowKey={(record: IRankingTableData) => record.rowId}
+            locale={{ emptyText: <Empty description="Sem registros" /> }}
+            pagination={{
+              pageSize: 10,
+              hideOnSinglePage: true,
+              style: { color: theme.colors.text },
+              total: dataSource.length,
+              showTotal: (total) => `Total de ${total} registros`,
+            }}
+          />
 
-      <S.Modal
-        open={open}
-        title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
-        onCancel={() => setOpen(false)}
-        onOk={() => setOpen(false)}
-        bodyStyle={{ backgroundColor: theme.colors.background }}
-        okText="Voltar"
-        cancelButtonProps={{ style: { display: 'none' } }}
-        okButtonProps={{
-          style: {
-            backgroundColor: theme.colors.primary,
-            color: theme.colors.text,
-          },
-        }}
-      >
-        <Table
-          loading={loading}
-          locale={{ emptyText: <Empty description="Sem registros" /> }}
-          size="small"
-          columns={modalColumns}
-          dataSource={scoreDetail}
-          rowKey={(record: IUserScoreDetail) => record.rowId}
-          pagination={{
-            pageSize: 3,
-            hideOnSinglePage: true,
-            style: { color: theme.colors.text },
-            total: scoreDetail.length,
-            showTotal: (total) => `Total de ${total} registros`,
-          }}
-        />
-      </S.Modal>
-
-      <MarginRow justify="space-between" align="middle">
-        <Button
-          onClick={toGame}
-          backgroundcolor={theme.colors.primary}
-          color={theme.colors.text}
-          icon={<FeatherIcons icon="arrow-left" size={18} />}
-        >
-          <S.UserSpan>Voltar</S.UserSpan>
-        </Button>
-
-        <Row justify="end" align="middle">
-          <Button
-            onClick={gridReload}
-            backgroundcolor={theme.colors.primary}
-            color={theme.colors.text}
-            icon={<FeatherIcons icon="rotate-cw" size={18} />}
+          <S.Modal
+            open={open}
+            title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
+            onCancel={() => setOpen(false)}
+            onOk={() => setOpen(false)}
+            bodyStyle={{ backgroundColor: theme.colors.background }}
+            okText="Voltar"
+            cancelButtonProps={{ style: { display: 'none' } }}
+            okButtonProps={{
+              style: {
+                backgroundColor: theme.colors.primary,
+                color: theme.colors.text,
+              },
+            }}
           >
-            <S.UserSpan>Recarregar</S.UserSpan>
-          </Button>
-        </Row>
-      </MarginRow>
-    </S.TableContainer>
+            <Table
+              loading={loading}
+              locale={{ emptyText: <Empty description="Sem registros" /> }}
+              size="small"
+              columns={modalColumns}
+              dataSource={scoreDetail}
+              rowKey={(record: IUserScoreDetail) => record.rowId}
+              pagination={{
+                pageSize: 3,
+                hideOnSinglePage: true,
+                style: { color: theme.colors.text },
+                total: scoreDetail.length,
+                showTotal: (total) => `Total de ${total} registros`,
+              }}
+            />
+          </S.Modal>
+
+          <MarginRow justify="space-between" align="middle">
+            <Button
+              onClick={toGame}
+              backgroundcolor={theme.colors.primary}
+              color={theme.colors.text}
+              icon={<FeatherIcons icon="arrow-left" size={18} />}
+            >
+              <S.UserSpan>Voltar</S.UserSpan>
+            </Button>
+
+            <Row justify="end" align="middle">
+              <Button
+                onClick={gridReload}
+                backgroundcolor={theme.colors.primary}
+                color={theme.colors.text}
+                icon={<FeatherIcons icon="rotate-cw" size={18} />}
+              >
+                <S.UserSpan>Recarregar</S.UserSpan>
+              </Button>
+            </Row>
+          </MarginRow>
+        </S.TableContainer>
+      )}
+    </>
   );
 }

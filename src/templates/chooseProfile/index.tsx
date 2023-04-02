@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { IMember } from 'services/DiscordMessages/IDiscordMessagesService';
 import Cookie from 'cookiejs';
 import * as S from './styles';
@@ -64,11 +64,41 @@ export default function ChooseProfile() {
     });
   }
 
+  const memberRowRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    if (memberRowRef.current) {
+      memberRowRef.current.style.cursor = 'grabbing';
+      const startX = e.pageX - memberRowRef.current.offsetLeft;
+      const scrollLeftStart = memberRowRef.current.scrollLeft;
+
+      const handleMouseMove = (e: MouseEvent) => {
+        if (memberRowRef.current) {
+          const x = e.pageX - memberRowRef.current.offsetLeft;
+          const scrollLeftDelta = (x - startX) * 2;
+          memberRowRef.current.scrollLeft = scrollLeftStart - scrollLeftDelta;
+        }
+      };
+
+      const handleMouseUp = () => {
+        if (memberRowRef.current) {
+          memberRowRef.current.style.cursor = 'grab';
+          document.removeEventListener('mousemove', handleMouseMove);
+          document.removeEventListener('mouseup', handleMouseUp);
+        }
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    }
+  };
+
   return !loading ? (
     <>
       <GameTitle>Escolha seu Perfil</GameTitle>
 
-      <S.MemberRow className="parent">
+      <S.MemberRow ref={memberRowRef} onMouseDown={handleMouseDown}>
         {members.map(({ avatarUrl, id, username }) => (
           <S.Card key={id} onClick={() => handleSaveUser(id)}>
             <Image

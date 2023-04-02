@@ -28,8 +28,10 @@ export const MemberRow = styled.div`
   margin: -20px 0 -5px 0;
   overflow-x: auto;
   padding: 15px;
-  width: 720px;
+  width: 100%;
   display: flex;
+  scroll-snap-type: x mandatory;
+  transition: scroll-left 0.5s ease-out;
 
   ::-webkit-scrollbar {
     height: 10px;

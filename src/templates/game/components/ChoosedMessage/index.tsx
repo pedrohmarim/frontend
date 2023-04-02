@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import type { MenuProps } from 'antd';
@@ -274,7 +274,7 @@ export default function ChoosedMessage({
           };
 
           return (
-            <>
+            <Fragment key={index}>
               {messageLevel === MessageLevelEnum.isMain &&
               totalMessages.length > 1 ? (
                 <S.MainMessageContainer>
@@ -283,7 +283,7 @@ export default function ChoosedMessage({
               ) : (
                 <DisplayMessageContainer {...props} />
               )}
-            </>
+            </Fragment>
           );
         }
       )}

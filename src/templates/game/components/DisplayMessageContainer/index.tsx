@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { FilterMessageEnum, MessageLevelEnum } from 'helpers/filterMessageEnum';
 import * as S from './styles';
 import Link from 'next/link';
@@ -48,7 +48,10 @@ export default function DisplayMessageContainer({
       draggable
       cursor={formattedAttachs.length > 1 ? 'grabbing' : 'context-menu'}
     >
-      {formattedAttachs && formattedAttachs.map((item) => <>{item}</>)}
+      {formattedAttachs &&
+        formattedAttachs.map((item, index) => (
+          <Fragment key={index}>{item}</Fragment>
+        ))}
     </S.Carousel>
   );
 
