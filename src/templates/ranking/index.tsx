@@ -20,6 +20,7 @@ import {
   Button,
   Empty,
   Table,
+  Spin,
 } from 'antd_components';
 
 export default function Ranking() {
@@ -178,7 +179,7 @@ export default function Ranking() {
 
   return (
     <>
-      {!loadPage && (
+      {!loadPage ? (
         <S.TableContainer>
           <GameTitle>Discordle | Ranking - #geral</GameTitle>
 
@@ -252,6 +253,10 @@ export default function Ranking() {
             </Row>
           </MarginRow>
         </S.TableContainer>
+      ) : (
+        <Row justify="center">
+          <Spin color={theme.colors.text} />
+        </Row>
       )}
     </>
   );

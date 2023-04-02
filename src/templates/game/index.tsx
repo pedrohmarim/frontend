@@ -43,7 +43,7 @@ export default function GameContainer() {
       } else {
         const loadParameters = Boolean(channelId && guildId && userId);
 
-        loadParameters ? setLoadGame(loadParameters) : router.push('/');
+        if (!loadParameters) router.push('/');
       }
     }
   }, [router]);
@@ -83,7 +83,8 @@ export default function GameContainer() {
             setAlreadyAwnsered(true);
             setAwnsers(data);
           })
-          .catch(() => handleReset());
+          .catch(() => handleReset())
+          .finally(() => setLoadGame(true));
       } else router.push('/');
     }
   }, [router]);
@@ -128,24 +129,18 @@ export default function GameContainer() {
 
       {loadGame ? (
         <>
-          {choosedMessages.length !== 5 ? (
-            <Spin color={theme.colors.text} />
+          {awnsers.length < 5 && !alreadyAwnsered ? (
+            <MessageTabs
+              serverName={serverInfos.serverName}
+              serverIcon={serverInfos.serverIcon}
+              activeTabKey={activeTabKey}
+              awnsers={awnsers}
+              setAwnsers={setAwnsers}
+              choosedMessages={choosedMessages}
+              setActiveTabKey={setActiveTabKey}
+            />
           ) : (
-            <>
-              {awnsers.length < 5 && !alreadyAwnsered ? (
-                <MessageTabs
-                  serverName={serverInfos.serverName}
-                  serverIcon={serverInfos.serverIcon}
-                  activeTabKey={activeTabKey}
-                  awnsers={awnsers}
-                  setAwnsers={setAwnsers}
-                  choosedMessages={choosedMessages}
-                  setActiveTabKey={setActiveTabKey}
-                />
-              ) : (
-                <Result awnsers={awnsers} />
-              )}
-            </>
+            <Result awnsers={awnsers} />
           )}
         </>
       ) : (
