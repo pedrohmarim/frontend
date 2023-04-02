@@ -99,8 +99,8 @@ export default function ChooseProfile() {
       <GameTitle>Escolha seu Perfil</GameTitle>
 
       <S.MemberRow ref={memberRowRef} onMouseDown={handleMouseDown}>
-        {members.map(({ avatarUrl, id, username }) => (
-          <S.Card key={id} onClick={() => handleSaveUser(id)}>
+        {members.map(({ avatarUrl, id, username }, index) => (
+          <S.Card key={index} onClick={() => handleSaveUser(id)}>
             <Image
               alt="avatarUrl"
               src={avatarUrl}

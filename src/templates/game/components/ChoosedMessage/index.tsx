@@ -214,6 +214,7 @@ export default function ChoosedMessage({
             <Dropdown
               menu={{ items }}
               placement="bottomRight"
+              trigger={window.innerWidth < 450 ? ['click'] : ['hover', 'click']}
               open={stillOpen.dropdown || loading}
               onOpenChange={(open) =>
                 setStillOpen({

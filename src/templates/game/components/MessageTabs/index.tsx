@@ -5,7 +5,7 @@ import AuthorSelect from '../AuthorSelect';
 import * as I from './IMessageTabs';
 import * as S from './styles';
 import { IChoosedMessage } from '../ChoosedMessage/IChoosedMessage';
-import { FeatherIcons, Row } from 'antd_components';
+import { FeatherIcons } from 'antd_components';
 
 export default function MessageTabs({
   activeTabKey,
@@ -68,10 +68,10 @@ export default function MessageTabs({
               key={String(current)}
               tab={
                 awnsers && (
-                  <Row>
+                  <S.Row>
                     {handleIcon(index, current)}
                     <S.MessageTabTitle>{`Mensagem ${current}`}</S.MessageTabTitle>
-                  </Row>
+                  </S.Row>
                 )
               }
             >

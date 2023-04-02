@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 import { Row as AntdRow, Modal as AntdModal } from 'antd_components';
 
-export const TableContainer = styled.div`
-  min-height: 600px;
-  min-width: 600px;
-`;
+export const TableContainer = styled.div``;
 
 export const Row = styled(AntdRow)`
   cursor: pointer;

@@ -38,7 +38,7 @@ export default function HomeContainer() {
         setGuildId(guild_id.toString());
 
         DiscordMessagesApi.GetInstanceChannels(guild_id.toString())
-          .then(({ channels }) => {
+          .then((channels) => {
             setInstanceChannels(channels);
             setWhichRender('formDiscordleInstance');
           })

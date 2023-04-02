@@ -45,10 +45,12 @@ export default function Result({ awnsers }: I.IResult) {
       <GameTitle>
         🥳🎉<S.MarginSpan margin="0 10px">Resultado</S.MarginSpan>🎉🥳
       </GameTitle>
+
       <Row justify="center">
         <FeatherIcons icon="star" size={21} />
         <S.Subtitle>Pontuação final: {score}/10</S.Subtitle>
       </Row>
+
       <Row justify="center">
         {awnsers &&
           awnsers.map(({ score, success, tabKey }, index) => (
@@ -57,21 +59,28 @@ export default function Result({ awnsers }: I.IResult) {
             </S.AwnserItem>
           ))}
       </Row>
+
       <S.Divider />
+
       <S.Span>Próxima atualização em:</S.Span>
+
       <S.TimerContainer>{timer}</S.TimerContainer>
+
       <Row justify="end">
         <Description fontSize="10.5pt" fontStyle="italic">
           Atualização todos os dias ás
           <HomeSpan> 23:59 </HomeSpan>
         </Description>
       </Row>
+
       <Row justify="end">
         <Description fontSize="10.5pt" fontStyle="italic">
           América/São_Paulo
         </Description>
       </Row>
+
       <S.Divider />
+
       <Row justify="center">
         <Button
           width={150}

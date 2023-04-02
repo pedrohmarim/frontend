@@ -28,6 +28,10 @@ export default createGlobalStyle`
   }
 
   .ant-tabs-nav-wrap {
+    @media screen and (max-width: 606px) {
+      width: 100%;
+    }
+
     margin: auto !important;
     flex: none !important;
   }
@@ -126,13 +130,12 @@ export const ColumnContainer = styled.div`
   max-height: 90%;
 `;
 
-export const MessageContainer = styled(Card)`
-  margin: 10px auto 0 auto;
+export const MessageContainer = styled(Card)<{ width: string }>`
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.colors.text};
   background-color: #17171a;
   border-radius: 4px;
   border-color: rgba(255, 255, 255, 0.1);
-  max-width: 700px;
+  width: ${({ width }) => width};
 `;

@@ -69,7 +69,7 @@ const ApiAuth = {
     return response.data;
   },
   GetInstanceChannels: async function (guildId: string) {
-    const response: AxiosResponse<I.IInstanceChannelsGetDto> = await http.get(
+    const response: AxiosResponse<I.IInstanceChannels[]> = await http.get(
       '/getInstanceChannels',
       {
         params: {
