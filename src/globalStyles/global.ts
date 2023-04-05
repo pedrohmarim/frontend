@@ -111,6 +111,12 @@ export default createGlobalStyle`
   td {
     border-color: rgba(138, 0, 194, 0.4) !important;
   }
+
+  .active-item-row {
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
+    scale: calc(1);
+  }
 `;
 
 export const HomeSpan = styled.span`

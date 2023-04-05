@@ -29,6 +29,15 @@ const ApiAuth = {
     );
     return response.data;
   },
+  ValidateToken: async function (token: string, userId: string) {
+    const response: AxiosResponse<boolean> = await http.get('/validateToken', {
+      params: {
+        userId,
+        token,
+      },
+    });
+    return response.data;
+  },
   VerifyUser: async function (guildId: string, userId: string) {
     const response: AxiosResponse<boolean> = await http.get('/verifyUser', {
       params: {
