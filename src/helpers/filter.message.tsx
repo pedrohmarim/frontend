@@ -38,9 +38,10 @@ export default function filterMessage(message: IMessage, authors: string[]) {
     });
   }
 
-  const link = 'https://' || 'http://';
+  const includeLink =
+    message.content.includes('https://') || message.content.includes('http://');
 
-  if (message.content.includes(link)) {
+  if (includeLink) {
     response.messageType = FilterMessageEnum.isLink;
 
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
@@ -59,10 +60,10 @@ export default function filterMessage(message: IMessage, authors: string[]) {
   if (message.attachments.length && message.content.length)
     response.messageType = FilterMessageEnum.isImageWithText;
 
-  if (message.attachments.length && message.content.includes(link))
+  if (message.attachments.length && includeLink)
     response.messageType = FilterMessageEnum.isImageWithTextAndLink;
 
-  if (!message.attachments.length && message.content.includes(link))
+  if (!message.attachments.length && includeLink)
     response.messageType = FilterMessageEnum.isImageWithTextAndLink;
 
   response.message = message;
