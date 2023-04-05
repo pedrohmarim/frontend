@@ -67,6 +67,7 @@ export interface IInstanceChannels {
   channelName: string;
   channelId: string;
   members: IMember[];
+  notListed: boolean;
 }
 
 export interface IMember {

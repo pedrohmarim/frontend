@@ -33,10 +33,26 @@ export const Row = styled(RowAntd)`
   margin-top: 20px;
 `;
 
+export const NegativeMarginRow = styled(RowAntd)`
+  margin-right: -30px;
+`;
+
 export const MarginRow = styled(RowAntd)`
   margin-top: 25px;
 `;
 
 export const Button = styled(AntdButton)`
   color: ${(props) => props.theme.colors.text};
+`;
+
+export const NewHighlight = styled.div`
+  color: red;
+  margin-left: 5px;
+  font-weight: 500;
+`;
+
+export const ReloadContainer = styled.div`
+  margin-left: 10px;
+  margin-top: 10px;
+  cursor: pointer;
 `;

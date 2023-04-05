@@ -7,7 +7,7 @@ import Cookie from 'cookiejs';
 import theme from 'globalStyles/theme';
 import { Select } from 'templates/game/components/AuthorSelect/styles';
 import Head from 'next/head';
-import { Spin, Row } from 'antd_components';
+import { Spin, Row, FeatherIcons, Tooltip } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
 import { Divider } from 'templates/game/components/Result/styles';
@@ -137,25 +137,52 @@ export default function HomeContainer() {
       .catch(() => handleReset());
   }
 
+  function handleReload() {
+    setLoadingInstance(true);
+
+    const { guild_id } = router.query;
+
+    if (guild_id) {
+      DiscordMessagesApi.GetInstanceChannels(guild_id.toString())
+        .then((channels) => {
+          setInstanceChannels(channels);
+          setWhichRender('formDiscordleInstance');
+        })
+        .catch(() => handleReset())
+        .finally(() => setLoadingInstance(false));
+    }
+  }
+
   const FormDiscordleInstance = () => (
     <>
       <GameTitle>Discordle | Criar Instância</GameTitle>
 
-      <Select
-        disabled={!instanceChannels.length}
-        getPopupContainer={(trigger) => trigger.parentNode}
-        placeholder="Selecione um canal"
-        onChange={(channelId) => onChange(String(channelId))}
-      >
-        {instanceChannels.length &&
-          instanceChannels.map(({ channelId, channelName }) => (
-            <Select.Option key={channelId}>
-              <Row align="middle">
-                <span>#{channelName}</span>
-              </Row>
-            </Select.Option>
-          ))}
-      </Select>
+      <S.NegativeMarginRow justify="center" align="middle">
+        <Select
+          disabled={!instanceChannels.length}
+          getPopupContainer={(trigger) => trigger.parentNode}
+          placeholder="Selecione um canal"
+          onChange={(channelId) => onChange(String(channelId))}
+        >
+          {instanceChannels.length &&
+            instanceChannels.map(({ channelId, channelName, notListed }) => (
+              <Select.Option key={channelId}>
+                <Row align="middle">
+                  <Row justify="center" align="middle">
+                    #{channelName}
+                    {notListed && <S.NewHighlight> (Novo!)</S.NewHighlight>}
+                  </Row>
+                </Row>
+              </Select.Option>
+            ))}
+        </Select>
+
+        <Tooltip title="Recarregar" placement="right">
+          <S.ReloadContainer onClick={handleReload}>
+            <FeatherIcons icon="rotate-ccw" size={20} />
+          </S.ReloadContainer>
+        </Tooltip>
+      </S.NegativeMarginRow>
 
       {loadingInstance && (
         <S.Row justify="center">
@@ -165,10 +192,25 @@ export default function HomeContainer() {
         </S.Row>
       )}
 
-      <S.Row justify="center">
-        <S.Description fontSize="10pt" fontStyle="italic">
+      <Divider />
+
+      <S.Row justify="end">
+        <S.Description fontSize="12pt">
+          <G.HomeSpan>Informações adicionais:</G.HomeSpan>
+        </S.Description>
+      </S.Row>
+
+      <S.Row justify="end">
+        <S.Description fontSize="11pt">
+          Para canais <G.HomeSpan>privados</G.HomeSpan> serem listados, adicione
+          o bot ao canal desejado e clique em &quot;Recarregar&quot;.
+        </S.Description>
+      </S.Row>
+
+      <S.Row justify="end">
+        <S.Description fontSize="11pt">
           Canais de texto que não possuem pelo menos
-          <G.HomeSpan> cinco </G.HomeSpan> mensagens não serão listados.
+          <G.HomeSpan> cinco</G.HomeSpan> mensagens não serão listados.
         </S.Description>
       </S.Row>
     </>
