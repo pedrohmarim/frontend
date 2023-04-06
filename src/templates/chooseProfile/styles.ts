@@ -24,6 +24,12 @@ export const Username = styled.span`
   font-size: 14pt;
 `;
 
+export const InvalidText = styled.span`
+  color: red;
+  opacity: 0.75;
+  font-weight: 400;
+`;
+
 export const MemberRow = styled.div`
   margin: -20px 0 -5px 0;
   overflow-x: auto;

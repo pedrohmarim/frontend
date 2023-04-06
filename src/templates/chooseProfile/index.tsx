@@ -189,6 +189,8 @@ export default function ChooseProfile() {
               />
               {loadingValidateToken && <LoadingOutlined spin />}
             </Col>
+
+            {!validToken && <S.InvalidText>Codigo Inválido!</S.InvalidText>}
           </Row>
         </>
       )}
