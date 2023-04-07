@@ -159,12 +159,12 @@ export default function HomeContainer() {
 
       <S.NegativeMarginRow justify="center" align="middle">
         <Select
-          disabled={!instanceChannels.length}
+          disabled={!instanceChannels?.length}
           getPopupContainer={(trigger) => trigger.parentNode}
           placeholder="Selecione um canal"
           onChange={(channelId) => onChange(String(channelId))}
         >
-          {instanceChannels.length &&
+          {instanceChannels?.length &&
             instanceChannels.map(({ channelId, channelName, notListed }) => (
               <Select.Option key={channelId}>
                 <Row align="middle">

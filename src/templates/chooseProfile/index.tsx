@@ -170,7 +170,7 @@ export default function ChooseProfile() {
           <Row justify="center" align="middle" gutter={[16, 16]}>
             <Col span={24}>
               <Description>
-                Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto
+                Digite o comando <HomeSpan>/getcode</HomeSpan> no canal de texto
                 <HomeSpan> #daily-discordle</HomeSpan>
               </Description>
 
@@ -187,10 +187,17 @@ export default function ChooseProfile() {
                 onChange={handleSaveUser}
                 fields={5}
               />
-              {loadingValidateToken && <LoadingOutlined spin />}
             </Col>
 
-            {!validToken && <S.InvalidText>Codigo Inválido!</S.InvalidText>}
+            {!validToken ? (
+              <S.InvalidText>Codigo Inválido!</S.InvalidText>
+            ) : (
+              loadingValidateToken && (
+                <>
+                  Validando... <LoadingOutlined spin />
+                </>
+              )
+            )}
           </Row>
         </>
       )}
