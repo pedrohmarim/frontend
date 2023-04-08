@@ -170,7 +170,7 @@ export default function ChooseProfile() {
           <Row justify="center" align="middle" gutter={[16, 16]}>
             <Col span={24}>
               <Description>
-                Digite o comando <HomeSpan>/getcode</HomeSpan> no canal de texto
+                Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto
                 <HomeSpan> #daily-discordle</HomeSpan>
               </Description>
 
