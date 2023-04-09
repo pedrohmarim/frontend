@@ -25,8 +25,16 @@ export default function Result({ awnsers }: I.IResult) {
   }, []);
 
   useEffect(() => {
-    DiscordMessagesApi.GetTimer().then((timer) => handleFormatDate(timer));
-  }, [handleFormatDate]);
+    if (router.isReady) {
+      const { channelId, guildId } = router.query;
+
+      if (channelId && guildId)
+        DiscordMessagesApi.GetTimer(
+          channelId.toString(),
+          guildId.toString()
+        ).then((timer) => handleFormatDate(timer));
+    }
+  }, [handleFormatDate, router]);
 
   function toRanking() {
     const { channelId, guildId } = router.query;

@@ -57,8 +57,10 @@ const ApiAuth = {
 
     return response.data;
   },
-  GetTimer: async function () {
-    const response: AxiosResponse<string> = await http.get('/getTimer');
+  GetTimer: async function (channelId: string, guildId: string) {
+    const response: AxiosResponse<string> = await http.get('/getTimer', {
+      params: { guildId, channelId },
+    });
     return response.data;
   },
   SaveScore: async function (data: I.IScoreInstance) {
