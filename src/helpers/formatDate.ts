@@ -2,6 +2,8 @@ import DiscordMessagesApi from 'services/DiscordMessages';
 
 export default function formatDate(
   timer: string,
+  channelId: string,
+  guildId: string,
   setTimer: React.Dispatch<React.SetStateAction<string>>
 ) {
   const hour = Number(timer.split(':')[0]);
@@ -27,9 +29,9 @@ export default function formatDate(
     if (tempoRestante < 0) {
       clearInterval(x);
 
-      const timer = await DiscordMessagesApi.GetTimer();
+      const timer = await DiscordMessagesApi.GetTimer(channelId, guildId);
 
-      return formatDate(timer, setTimer);
+      return formatDate(timer, channelId, guildId, setTimer);
     }
   }, 1000);
 }

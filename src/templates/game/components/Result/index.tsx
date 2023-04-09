@@ -20,9 +20,12 @@ export default function Result({ awnsers }: I.IResult) {
 
   const [timer, setTimer] = useState<string>('Carregando...');
 
-  const handleFormatDate = useCallback((timer: string) => {
-    formatDate(timer, setTimer);
-  }, []);
+  const handleFormatDate = useCallback(
+    (timer: string, channelId: string, guildId: string) => {
+      formatDate(timer, channelId, guildId, setTimer);
+    },
+    []
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -32,7 +35,9 @@ export default function Result({ awnsers }: I.IResult) {
         DiscordMessagesApi.GetTimer(
           channelId.toString(),
           guildId.toString()
-        ).then((timer) => handleFormatDate(timer));
+        ).then((timer) =>
+          handleFormatDate(timer, channelId.toString(), guildId.toString())
+        );
     }
   }, [handleFormatDate, router]);
 
