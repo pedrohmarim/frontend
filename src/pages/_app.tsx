@@ -5,8 +5,11 @@ import 'antd/dist/reset.css';
 import * as G from 'globalStyles/global';
 import GlobalStyle from 'globalStyles/global';
 import theme from 'globalStyles/theme';
+import { useRouter } from 'next/router';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+  const router = useRouter();
+
   function useWindowSize() {
     const [windowSize, setWindowSize] = useState<number>(0);
 
@@ -31,7 +34,15 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
     <ThemeProvider theme={theme}>
       <G.Container>
         <G.ColumnContainer>
-          <G.MessageContainer width={`${size > 750 ? 750 : size}px`}>
+          <G.MessageContainer
+            width={
+              router.pathname === '/game'
+                ? 'fit-content'
+                : size > 750
+                ? `${750}px`
+                : `${size}px`
+            }
+          >
             <Component {...pageProps} />
           </G.MessageContainer>
         </G.ColumnContainer>
