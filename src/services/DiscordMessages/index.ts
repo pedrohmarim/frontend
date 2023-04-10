@@ -90,11 +90,12 @@ const ApiAuth = {
     );
     return response.data;
   },
-  GetDiscordleHistory: async function (channelId: string) {
-    const response: AxiosResponse<I.IRankingTableData[]> = await http.get(
+  GetDiscordleHistory: async function (channelId: string, guildId: string) {
+    const response: AxiosResponse<I.IGetTableResponse> = await http.get(
       '/getDiscordleHistory',
       {
         params: {
+          guildId,
           channelId,
         },
       }

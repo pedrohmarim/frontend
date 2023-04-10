@@ -29,6 +29,7 @@ export default function Ranking() {
   const [loadPage, setLoadPage] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
+  const [channelName, setChannelName] = useState<string>('');
   const router = useRouter();
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
 
@@ -55,9 +56,15 @@ export default function Ranking() {
         });
       }
 
-      if (channelId) {
-        DiscordMessagesApi.GetDiscordleHistory(channelId.toString())
-          .then((dataSource) => setDataSource(dataSource))
+      if (channelId && guildId) {
+        DiscordMessagesApi.GetDiscordleHistory(
+          channelId.toString(),
+          guildId.toString()
+        )
+          .then(({ channelName, rankingTableData }) => {
+            setChannelName(channelName);
+            setDataSource(rankingTableData);
+          })
           .catch(() => handleReset())
           .finally(() => {
             setLoadPage(false);
@@ -150,11 +157,17 @@ export default function Ranking() {
   function gridReload() {
     setLoading(true);
 
-    const { channelId } = router.query;
+    const { channelId, guildId } = router.query;
 
-    if (channelId) {
-      DiscordMessagesApi.GetDiscordleHistory(channelId.toString())
-        .then((dataSource) => setDataSource(dataSource))
+    if (channelId && guildId) {
+      DiscordMessagesApi.GetDiscordleHistory(
+        channelId.toString(),
+        guildId.toString()
+      )
+        .then(({ channelName, rankingTableData }) => {
+          setChannelName(channelName);
+          setDataSource(rankingTableData);
+        })
         .catch(() => {
           Cookie.remove('guildId');
           Cookie.remove('userId');
@@ -181,7 +194,7 @@ export default function Ranking() {
     <>
       {!loadPage ? (
         <S.TableContainer>
-          <GameTitle>Discordle | Ranking - #geral</GameTitle>
+          <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
 
           <Table
             loading={loading}

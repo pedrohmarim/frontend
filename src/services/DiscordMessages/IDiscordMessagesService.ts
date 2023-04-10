@@ -76,6 +76,11 @@ export interface IMember {
   avatarUrl: string;
 }
 
+export interface IGetTableResponse {
+  channelName: string;
+  rankingTableData: IRankingTableData[];
+}
+
 export interface IRankingTableData {
   rowId: string;
   position: number;
