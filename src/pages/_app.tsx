@@ -36,7 +36,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <G.ColumnContainer>
           <G.MessageContainer
             width={
-              router.pathname === '/game'
+              router.pathname === '/game' && size > 750
                 ? 'fit-content'
                 : size > 750
                 ? `${750}px`
