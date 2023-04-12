@@ -4,6 +4,10 @@ import { Select as SelectAntd } from 'antd_components';
 export const Select = styled(SelectAntd)`
   width: 300px;
 
+  @media screen and (max-width: 380px) {
+    width: 100%;
+  }
+
   .ant-select-selection-placeholder {
     font-weight: 500;
     color: ${(props) => props.theme.colors.background} !important;

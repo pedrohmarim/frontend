@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import type { MenuProps } from 'antd';
@@ -9,6 +9,11 @@ import DisplayMessageContainer from 'templates/game/components/DisplayMessageCon
 import { IChoosedMessage } from './IChoosedMessage';
 import Cookie from 'cookiejs';
 import {
+  FilterMessageEnum,
+  IFilterMessageResponse,
+  MessageLevelEnum,
+} from 'helpers/filterMessageEnum';
+import {
   Button,
   FeatherIcons,
   Tooltip,
@@ -17,11 +22,6 @@ import {
   Avatar,
   Row,
 } from 'antd_components';
-import {
-  FilterMessageEnum,
-  IFilterMessageResponse,
-  MessageLevelEnum,
-} from 'helpers/filterMessageEnum';
 
 export default function ChoosedMessage({
   message,
@@ -275,7 +275,7 @@ export default function ChoosedMessage({
           };
 
           return (
-            <Fragment key={index}>
+            <S.Container key={index}>
               {messageLevel === MessageLevelEnum.isMain &&
               totalMessages.length > 1 ? (
                 <S.MainMessageContainer>
@@ -284,7 +284,7 @@ export default function ChoosedMessage({
               ) : (
                 <DisplayMessageContainer {...props} />
               )}
-            </Fragment>
+            </S.Container>
           );
         }
       )}

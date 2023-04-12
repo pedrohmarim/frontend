@@ -49,6 +49,14 @@ export const Hint = styled.span`
   color: ${(props) => props.theme.colors.text};
 `;
 
+export const Container = styled.div`
+  max-width: 650px;
+
+  @media screen and (min-width: 750px) {
+    min-width: 650px;
+  }
+`;
+
 export const ServerName = styled.span`
   margin-top: 2px;
   margin-left: 8px;

@@ -28,7 +28,7 @@ export default createGlobalStyle`
   }
 
   .ant-tabs-nav-wrap {
-    @media screen and (max-width: 606px) {
+    @media screen and (max-width: 770px) {
       width: 100%;
     }
 

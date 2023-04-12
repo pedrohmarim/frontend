@@ -7,10 +7,6 @@ export const Tabs = styled(TabsAntd)`
 
 export const TabsPane = styled(TabsAntd.TabPane)``;
 
-export const Row = styled.div`
-  display: flex;
-`;
-
 export const MessageTabTitle = styled.span`
   margin-top: -1px;
   margin-left: 4px;

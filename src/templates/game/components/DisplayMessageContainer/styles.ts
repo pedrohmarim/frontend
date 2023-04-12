@@ -16,11 +16,6 @@ export const Message = styled.div`
   font-weight: 1;
   background-color: ${(props) => props.theme.colors.background};
   word-break: break-all;
-
-  @media screen and (min-width: 750px) {
-    max-width: 750px;
-    min-width: 750px;
-  }
 `;
 
 export const ImageContainer = styled.div`
