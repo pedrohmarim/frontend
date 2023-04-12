@@ -110,6 +110,7 @@ export default createGlobalStyle`
 
   td {
     border-color: rgba(138, 0, 194, 0.4) !important;
+    background-color: ${(props) => props.theme.colors.background} !important;
   }
 
   .active-item-row {

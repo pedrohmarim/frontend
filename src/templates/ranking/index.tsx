@@ -92,6 +92,7 @@ export default function Ranking() {
   const columns: ColumnsType<IRankingTableData> = [
     {
       title: 'Posição',
+      align: 'center',
       dataIndex: 'position',
       render: (value) => <>{value}</>,
     },
@@ -107,13 +108,13 @@ export default function Ranking() {
     },
     {
       title: 'Total de pontos',
+      align: 'center',
       dataIndex: 'totalScore',
     },
     {
       title: 'Ações',
       align: 'center',
       key: 'operation',
-      width: 100,
       render: ({ member }) => {
         return (
           <Tooltip title="Ver detalhes">
@@ -197,6 +198,7 @@ export default function Ranking() {
           <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
 
           <Table
+            scroll={{ x: 600 }}
             loading={loading}
             size="small"
             columns={columns}
@@ -228,6 +230,7 @@ export default function Ranking() {
             }}
           >
             <Table
+              scroll={{ x: 450 }}
               loading={loading}
               locale={{ emptyText: <Empty description="Sem registros" /> }}
               size="small"
