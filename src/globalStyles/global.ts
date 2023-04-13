@@ -118,6 +118,11 @@ export default createGlobalStyle`
     box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
     scale: calc(1.001);
   }
+
+  .ant-table-small {
+    height: 420px !important;
+    background-color: ${(props) => props.theme.colors.background} !important;
+  }
 `;
 
 export const HomeSpan = styled.span`

@@ -137,6 +137,7 @@ export default function Ranking() {
     {
       title: 'Data',
       dataIndex: 'date',
+      align: 'center',
       render: (value) => <>{value}</>,
     },
     {
@@ -200,7 +201,7 @@ export default function Ranking() {
           <Table
             scroll={{ x: 600 }}
             loading={loading}
-            size="small"
+            size="middle"
             columns={columns}
             dataSource={dataSource}
             rowKey={(record: IRankingTableData) => record.rowId}
