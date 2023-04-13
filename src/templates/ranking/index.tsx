@@ -136,6 +136,7 @@ export default function Ranking() {
   const modalColumns: ColumnsType<IUserScoreDetail> = [
     {
       title: 'Data',
+      width: 100,
       dataIndex: 'date',
       align: 'center',
       render: (value) => <>{value}</>,
