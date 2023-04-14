@@ -93,6 +93,7 @@ export default function Ranking() {
     {
       title: 'Posição',
       align: 'center',
+      width: 80,
       dataIndex: 'position',
       render: (value) => <>{value}</>,
     },
@@ -109,11 +110,14 @@ export default function Ranking() {
     {
       title: 'Total de pontos',
       align: 'center',
+      width: 100,
       dataIndex: 'totalScore',
     },
     {
       title: 'Ações',
       align: 'center',
+      fixed: 'right',
+      width: 60,
       key: 'operation',
       render: ({ member }) => {
         return (
