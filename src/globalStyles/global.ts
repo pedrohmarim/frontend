@@ -10,7 +10,7 @@ export default createGlobalStyle`
   }
   
   body {
-    background: ${(props) => props.theme.colors.background};
+    background-image: url("https://images4.alphacoders.com/909/909912.png")
   }
 
   .ant-dropdown-menu-item {
@@ -147,7 +147,8 @@ export const MessageContainer = styled(Card)<{ width: string }>`
   font-weight: 500;
   color: ${(props) => props.theme.colors.text};
   background-color: #17171a;
-  border-radius: 4px;
-  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
   width: ${({ width }) => width};
 `;
