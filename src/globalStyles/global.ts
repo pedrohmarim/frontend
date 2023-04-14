@@ -141,8 +141,11 @@ export const ColumnContainer = styled.div`
   flex-direction: column;
   max-height: 90%;
 `;
+export const DynamicWidth = styled.div<{ width: string }>`
+  width: ${({ width }) => width};
+`;
 
-export const MessageContainer = styled(Card)<{ width: string }>`
+export const MessageContainer = styled(Card)`
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.colors.text};
@@ -150,5 +153,4 @@ export const MessageContainer = styled(Card)<{ width: string }>`
   border-radius: 8px;
   border-color: rgba(255, 255, 255, 0.09);
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-  width: ${({ width }) => width};
 `;

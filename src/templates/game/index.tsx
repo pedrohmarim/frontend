@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Row } from 'antd_components';
 import * as I from './IGame';
 import Cookie from 'cookiejs';
 import DiscordMessagesApi from 'services/DiscordMessages';
-import theme from 'globalStyles/theme';
 import Head from 'next/head';
 import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/filter.message';
@@ -11,6 +9,8 @@ import Result from './components/Result';
 import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
 import { IScoreInstance } from 'services/DiscordMessages/IDiscordMessagesService';
 import { useRouter } from 'next/router';
+import { MessageContainer } from 'globalStyles/global';
+import DiscordLoad from 'templates/load';
 
 export default function GameContainer() {
   const router = useRouter();
@@ -131,7 +131,7 @@ export default function GameContainer() {
       </Head>
 
       {loadGame ? (
-        <>
+        <MessageContainer>
           {awnsers.length < 5 && !alreadyAwnsered ? (
             <MessageTabs
               serverName={serverInfos.serverName}
@@ -147,11 +147,9 @@ export default function GameContainer() {
           ) : (
             <Result awnsers={awnsers} />
           )}
-        </>
+        </MessageContainer>
       ) : (
-        <Row justify="center">
-          <Spin color={theme.colors.text} />
-        </Row>
+        <DiscordLoad />
       )}
     </>
   );

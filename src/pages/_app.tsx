@@ -34,7 +34,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
     <ThemeProvider theme={theme}>
       <G.Container>
         <G.ColumnContainer>
-          <G.MessageContainer
+          <G.DynamicWidth
             width={
               router.pathname === '/game' && size > 750
                 ? 'fit-content'
@@ -44,7 +44,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
             }
           >
             <Component {...pageProps} />
-          </G.MessageContainer>
+          </G.DynamicWidth>
         </G.ColumnContainer>
       </G.Container>
       <GlobalStyle />

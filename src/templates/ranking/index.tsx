@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { IAwnser } from 'templates/game/IGame';
 import { MarginRow } from 'templates/home/styles';
+import DiscordLoad from 'templates/load';
+import { MessageContainer } from 'globalStyles/global';
 import {
   IRankingTableData,
   IUserScoreDetail,
@@ -20,7 +22,6 @@ import {
   Button,
   Empty,
   Table,
-  Spin,
 } from 'antd_components';
 
 export default function Ranking() {
@@ -200,86 +201,86 @@ export default function Ranking() {
   return (
     <>
       {!loadPage ? (
-        <S.TableContainer>
-          <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
+        <MessageContainer>
+          <S.TableContainer>
+            <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
 
-          <Table
-            scroll={{ x: 600 }}
-            loading={loading}
-            size="middle"
-            columns={columns}
-            dataSource={dataSource}
-            rowKey={(record: IRankingTableData) => record.rowId}
-            locale={{ emptyText: <Empty description="Sem registros" /> }}
-            pagination={{
-              pageSize: 10,
-              hideOnSinglePage: true,
-              style: { color: theme.colors.text },
-              total: dataSource.length,
-              showTotal: (total) => `Total de ${total} registros`,
-            }}
-          />
-
-          <S.Modal
-            destroyOnClose
-            open={open}
-            title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
-            onCancel={() => setOpen(false)}
-            onOk={() => setOpen(false)}
-            bodyStyle={{ backgroundColor: theme.colors.background }}
-            okText="Voltar"
-            cancelButtonProps={{ style: { display: 'none' } }}
-            okButtonProps={{
-              style: {
-                backgroundColor: theme.colors.primary,
-                color: theme.colors.text,
-              },
-            }}
-          >
             <Table
-              scroll={{ x: 450 }}
+              scroll={{ x: 600 }}
               loading={loading}
+              size="middle"
+              columns={columns}
+              dataSource={dataSource}
+              rowKey={(record: IRankingTableData) => record.rowId}
               locale={{ emptyText: <Empty description="Sem registros" /> }}
-              size="small"
-              columns={modalColumns}
-              dataSource={scoreDetail}
-              rowKey={(record: IUserScoreDetail) => record.rowId}
               pagination={{
-                pageSize: 3,
+                pageSize: 10,
                 hideOnSinglePage: true,
                 style: { color: theme.colors.text },
-                total: scoreDetail.length,
+                total: dataSource.length,
                 showTotal: (total) => `Total de ${total} registros`,
               }}
             />
-          </S.Modal>
 
-          <MarginRow justify="space-between" align="middle">
-            <Button
-              onClick={toGame}
-              backgroundcolor={theme.colors.primary}
-              color={theme.colors.text}
-              icon={<FeatherIcons icon="arrow-left" size={18} />}
+            <S.Modal
+              destroyOnClose
+              open={open}
+              title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
+              onCancel={() => setOpen(false)}
+              onOk={() => setOpen(false)}
+              bodyStyle={{ backgroundColor: theme.colors.background }}
+              okText="Voltar"
+              cancelButtonProps={{ style: { display: 'none' } }}
+              okButtonProps={{
+                style: {
+                  backgroundColor: theme.colors.primary,
+                  color: theme.colors.text,
+                },
+              }}
             >
-              <S.UserSpan>Voltar</S.UserSpan>
-            </Button>
+              <Table
+                scroll={{ x: 450 }}
+                loading={loading}
+                locale={{ emptyText: <Empty description="Sem registros" /> }}
+                size="small"
+                columns={modalColumns}
+                dataSource={scoreDetail}
+                rowKey={(record: IUserScoreDetail) => record.rowId}
+                pagination={{
+                  pageSize: 3,
+                  hideOnSinglePage: true,
+                  style: { color: theme.colors.text },
+                  total: scoreDetail.length,
+                  showTotal: (total) => `Total de ${total} registros`,
+                }}
+              />
+            </S.Modal>
 
-            <Row justify="end" align="middle">
+            <MarginRow justify="space-between" align="middle">
               <Button
-                onClick={gridReload}
+                onClick={toGame}
                 backgroundcolor={theme.colors.primary}
                 color={theme.colors.text}
-                icon={<FeatherIcons icon="rotate-cw" size={18} />}
+                icon={<FeatherIcons icon="arrow-left" size={18} />}
               >
-                <S.UserSpan>Recarregar</S.UserSpan>
+                <S.UserSpan>Voltar</S.UserSpan>
               </Button>
-            </Row>
-          </MarginRow>
-        </S.TableContainer>
+
+              <Row justify="end" align="middle">
+                <Button
+                  onClick={gridReload}
+                  backgroundcolor={theme.colors.primary}
+                  color={theme.colors.text}
+                  icon={<FeatherIcons icon="rotate-cw" size={18} />}
+                >
+                  <S.UserSpan>Recarregar</S.UserSpan>
+                </Button>
+              </Row>
+            </MarginRow>
+          </S.TableContainer>
+        </MessageContainer>
       ) : (
-        <Row justify="center">
-          <Spin color={theme.colors.text} />
-        </Row>
+        <DiscordLoad />
       )}
     </>
   );

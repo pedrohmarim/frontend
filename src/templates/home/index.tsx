@@ -7,11 +7,12 @@ import Cookie from 'cookiejs';
 import theme from 'globalStyles/theme';
 import { Select } from 'templates/game/components/AuthorSelect/styles';
 import Head from 'next/head';
-import { Spin, Row, FeatherIcons, Tooltip } from 'antd_components';
+import { Row, FeatherIcons, Tooltip } from 'antd_components';
 import DiscordMessagesApi from 'services/DiscordMessages';
 import { IInstanceChannels } from 'services/DiscordMessages/IDiscordMessagesService';
 import { Divider } from 'templates/game/components/Result/styles';
 import { GameTitle } from 'templates/game/components/ChoosedMessage/styles';
+import DiscordLoad from 'templates/load';
 
 export default function HomeContainer() {
   const router = useRouter();
@@ -225,12 +226,7 @@ export default function HomeContainer() {
     }
   };
 
-  if (loadHome)
-    return (
-      <Row justify="center">
-        <Spin color={theme.colors.text} />
-      </Row>
-    );
+  if (loadHome) return <DiscordLoad />;
 
   return (
     <>
@@ -238,7 +234,7 @@ export default function HomeContainer() {
         <title>Discordle | Home</title>
       </Head>
 
-      <>{WhichRender()}</>
+      <G.MessageContainer>{WhichRender()}</G.MessageContainer>
     </>
   );
 }

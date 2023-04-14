@@ -3,14 +3,14 @@ import { IMember } from 'services/DiscordMessages/IDiscordMessagesService';
 import Cookie from 'cookiejs';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordMessages';
-import { Image, Spin, Row, Col } from 'antd_components';
+import { Image, Row, Col } from 'antd_components';
 import { useRouter } from 'next/router';
-import theme from 'globalStyles/theme';
+import DiscordLoad from 'templates/load';
 import { GameTitle } from 'templates/game/components/ChoosedMessage/styles';
 import dynamic from 'next/dynamic';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Description } from 'templates/home/styles';
-import { HomeSpan } from 'globalStyles/global';
+import { HomeSpan, MessageContainer } from 'globalStyles/global';
 import { Divider } from 'templates/game/components/Result/styles';
 const ReactCodeInput = dynamic(import('react-code-input'));
 
@@ -132,7 +132,7 @@ export default function ChooseProfile() {
   };
 
   return !loading ? (
-    <>
+    <MessageContainer>
       <GameTitle>Escolha seu Perfil</GameTitle>
 
       <S.MemberRow ref={memberRowRef} onMouseDown={handleMouseDown}>
@@ -201,10 +201,8 @@ export default function ChooseProfile() {
           </Row>
         </>
       )}
-    </>
+    </MessageContainer>
   ) : (
-    <Row justify="center">
-      <Spin color={theme.colors.text} />
-    </Row>
+    <DiscordLoad />
   );
 }
