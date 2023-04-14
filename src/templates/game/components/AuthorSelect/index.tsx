@@ -14,7 +14,7 @@ import { IAwnser } from 'templates/game/IGame';
 
 const AuthorSelect = ({
   authorMessage,
-  authorsOptions,
+  authors,
   activeTabKey,
   usedHint,
   saveScore,
@@ -84,7 +84,7 @@ const AuthorSelect = ({
 
   return (
     <S.Select
-      disabled={!authorsOptions?.length}
+      disabled={!authors?.length}
       getPopupContainer={(trigger) => trigger.parentNode}
       placeholder="Selecione um membro"
       onChange={(value) => {
@@ -92,7 +92,7 @@ const AuthorSelect = ({
         setActiveTabKey((prev: number) => prev + 1);
       }}
     >
-      {authorsOptions?.map((author) => (
+      {authors?.map((author) => (
         <Select.Option key={author}>
           <Row align="middle">
             <Image

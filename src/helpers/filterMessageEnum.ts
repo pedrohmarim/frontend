@@ -18,7 +18,6 @@ export enum MessageLevelEnum {
 
 export interface IFilterMessageResponse {
   message: IMessage;
-  authors: string[];
   messageType: FilterMessageEnum;
   urlLink: string;
   formattedAttachs: JSX.Element[];

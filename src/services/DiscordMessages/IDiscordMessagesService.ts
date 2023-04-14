@@ -1,15 +1,11 @@
 import { IAwnser } from 'templates/game/IGame';
 
 export interface IMessageInstance {
-  messages: IGetDiscordMessagesResponse[];
+  messages: IMessage[];
+  authors: string[];
   channelId: string;
   serverName: string;
   serverIcon: string;
-}
-
-export interface IGetDiscordMessagesResponse {
-  message: IMessage;
-  authors: string[];
 }
 
 export interface IGetDiscordHintsResponse {

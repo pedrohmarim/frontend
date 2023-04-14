@@ -2,7 +2,7 @@ import { IAwnser } from 'templates/game/IGame';
 
 export interface IAuthorSelect {
   authorMessage: string;
-  authorsOptions: string[];
+  authors: string[];
   activeTabKey: number;
   usedHint: boolean;
   saveScore: (awnser: IAwnser) => void;

@@ -2,7 +2,7 @@ import { IMessage } from 'services/DiscordMessages/IDiscordMessagesService';
 import { FilterMessageEnum, IFilterMessageResponse } from './filterMessageEnum';
 import { Image } from 'antd_components';
 
-export default function filterMessage(message: IMessage, authors: string[]) {
+export default function filterMessage(message: IMessage) {
   const emptyContent: JSX.Element[] = [];
   const emptyMessage = {} as IMessage;
 
@@ -10,7 +10,6 @@ export default function filterMessage(message: IMessage, authors: string[]) {
     messageType: FilterMessageEnum.isText,
     formattedAttachs: emptyContent,
     urlLink: '',
-    authors: [],
     message: emptyMessage,
   };
 
@@ -67,7 +66,6 @@ export default function filterMessage(message: IMessage, authors: string[]) {
     response.messageType = FilterMessageEnum.isImageWithTextAndLink;
 
   response.message = message;
-  response.authors = authors;
 
   return response;
 }

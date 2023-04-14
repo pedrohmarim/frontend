@@ -12,6 +12,7 @@ export default function MessageTabs({
   activeTabKey,
   choosedMessages,
   awnsers,
+  authors,
   serverName,
   serverIcon,
   saveScore,
@@ -46,10 +47,7 @@ export default function MessageTabs({
   return (
     <S.Tabs activeKey={String(activeTabKey)} onChange={handleTabChange}>
       {choosedMessages.map(
-        (
-          { authors, message, formattedAttachs, messageType, urlLink },
-          index
-        ) => {
+        ({ message, formattedAttachs, messageType, urlLink }, index) => {
           const { timestamp, content, id, author } = message;
           const current = index + 1;
 
@@ -61,7 +59,6 @@ export default function MessageTabs({
             urlLink,
             formattedAttachs,
             messageType,
-            authorsOptions: authors,
           };
 
           return (
@@ -102,7 +99,7 @@ export default function MessageTabs({
                 usedHint={usedHint}
                 setAwnsers={setAwnsers}
                 authorMessage={author.username}
-                authorsOptions={authors}
+                authors={authors}
                 activeTabKey={activeTabKey}
                 setActiveTabKey={setActiveTabKey}
               />

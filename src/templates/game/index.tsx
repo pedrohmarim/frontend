@@ -16,6 +16,7 @@ export default function GameContainer() {
   const router = useRouter();
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
+  const [authors, setAuthors] = useState<string[]>([]);
   const [loadGame, setLoadGame] = useState<boolean>(false);
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<
@@ -61,13 +62,14 @@ export default function GameContainer() {
 
       if (channelId) {
         DiscordMessagesApi.GetChoosedMessages(channelId.toString())
-          .then(({ messages, serverName, serverIcon }) => {
+          .then(({ messages, serverName, serverIcon, authors }) => {
+            setAuthors(authors);
             setServerInfos({ serverName, serverIcon });
 
             const filteredMessagesArray: IFilterMessageResponse[] = [];
 
-            messages.forEach(({ message, authors }) => {
-              filteredMessagesArray.push(filterMessage(message, authors));
+            messages.forEach((message) => {
+              filteredMessagesArray.push(filterMessage(message));
 
               setChoosedMessages(filteredMessagesArray);
             });
@@ -138,6 +140,7 @@ export default function GameContainer() {
               awnsers={awnsers}
               saveScore={saveScore}
               setAwnsers={setAwnsers}
+              authors={authors}
               choosedMessages={choosedMessages}
               setActiveTabKey={setActiveTabKey}
             />
