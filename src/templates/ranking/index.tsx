@@ -221,6 +221,7 @@ export default function Ranking() {
           />
 
           <S.Modal
+            destroyOnClose
             open={open}
             title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
             onCancel={() => setOpen(false)}
