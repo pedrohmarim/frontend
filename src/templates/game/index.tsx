@@ -43,7 +43,7 @@ export default function GameContainer() {
       } else {
         const loadParameters = Boolean(channelId && guildId && userId);
 
-        loadParameters ? setLoadGame(loadParameters) : router.push('/');
+        !loadParameters && router.push('/');
       }
     }
   }, [router]);
