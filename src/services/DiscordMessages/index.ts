@@ -64,7 +64,10 @@ const ApiAuth = {
     return response.data;
   },
   SaveScore: async function (data: I.IScoreInstance) {
-    const response: AxiosResponse = await http.post('/saveScore', data);
+    const response: AxiosResponse<boolean> = await http.post(
+      '/saveScore',
+      data
+    );
     return response.data;
   },
   VerifyAlreadyAwnsered: async function (userId: string, channelId: string) {

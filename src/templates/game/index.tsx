@@ -78,9 +78,12 @@ export default function GameContainer() {
 
         DiscordMessagesApi.VerifyAlreadyAwnsered(userId, channelId.toString())
           .then((data) => {
+            setActiveTabKey(data.length + 1);
+
             if (!data.length) return;
 
-            setAlreadyAwnsered(true);
+            if (data.length === 5) setAlreadyAwnsered(true);
+
             setAwnsers(data);
           })
           .catch(() => handleReset())
@@ -89,37 +92,35 @@ export default function GameContainer() {
     }
   }, [router]);
 
-  useEffect(() => {
-    function handleReset() {
-      Cookie.remove('guildId');
-      Cookie.remove('userId');
-      Cookie.remove('channelId');
-      router.push('/');
+  function handleReset() {
+    Cookie.remove('guildId');
+    Cookie.remove('userId');
+    Cookie.remove('channelId');
+    router.push('/');
+  }
+
+  function saveScore(awnser: I.IAwnser) {
+    const userId = Cookie.get('userId').toString();
+
+    const { channelId, guildId } = router.query;
+
+    if (channelId && guildId) {
+      const dto: IScoreInstance = {
+        channelId: channelId.toString(),
+        guildId: guildId.toString(),
+        scores: {
+          userId,
+          date: new Date().toLocaleDateString(),
+          scoreDetails: awnser,
+        },
+      };
+
+      if (!alreadyAwnsered)
+        DiscordMessagesApi.SaveScore(dto)
+          .then((alreadyAwnsered) => setAlreadyAwnsered(alreadyAwnsered))
+          .catch(() => handleReset());
     }
-
-    if (router.isReady) {
-      const userId = Cookie.get('userId').toString();
-
-      const { channelId, guildId } = router.query;
-
-      if (awnsers.length === 5 && channelId && guildId) {
-        const dto: IScoreInstance = {
-          channelId: channelId.toString(),
-          guildId: guildId.toString(),
-          scores: {
-            userId,
-            date: new Date().toLocaleDateString(),
-            scoreDetails: awnsers,
-          },
-        };
-
-        if (!alreadyAwnsered)
-          DiscordMessagesApi.SaveScore(dto)
-            .then(() => setAlreadyAwnsered(true))
-            .catch(() => handleReset());
-      }
-    }
-  }, [alreadyAwnsered, awnsers, router]);
+  }
 
   return (
     <>
@@ -135,6 +136,7 @@ export default function GameContainer() {
               serverIcon={serverInfos.serverIcon}
               activeTabKey={activeTabKey}
               awnsers={awnsers}
+              saveScore={saveScore}
               setAwnsers={setAwnsers}
               choosedMessages={choosedMessages}
               setActiveTabKey={setActiveTabKey}

@@ -48,7 +48,7 @@ export interface IScoreInstance {
 }
 
 export interface IPostSaveScore {
-  scoreDetails: IAwnser[];
+  scoreDetails: IAwnser;
   date: string;
   userId: string;
 }

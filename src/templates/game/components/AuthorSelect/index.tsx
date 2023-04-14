@@ -17,6 +17,7 @@ const AuthorSelect = ({
   authorsOptions,
   activeTabKey,
   usedHint,
+  saveScore,
   setActiveTabKey,
   setAwnsers,
   setUsedHint,
@@ -31,6 +32,8 @@ const AuthorSelect = ({
       tabKey: activeTabKey,
       score,
     };
+
+    saveScore(newAwnserDto);
 
     setAwnsers((prevAwnsers) => [...prevAwnsers, newAwnserDto]);
 

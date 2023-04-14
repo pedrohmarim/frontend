@@ -14,6 +14,7 @@ export default function MessageTabs({
   awnsers,
   serverName,
   serverIcon,
+  saveScore,
   setActiveTabKey,
   setAwnsers,
 }: I.IMessageTabs) {
@@ -96,6 +97,7 @@ export default function MessageTabs({
               />
 
               <AuthorSelect
+                saveScore={saveScore}
                 setUsedHint={(value) => setUsedHint(value)}
                 usedHint={usedHint}
                 setAwnsers={setAwnsers}
