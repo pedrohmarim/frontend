@@ -18,6 +18,8 @@ const AuthorSelect = ({
   function handleVerifyAwnser(awnserId: string) {
     const success = awnserId === authorMessage.id;
 
+    const username = authors.find(({ id }) => id === awnserId)?.username;
+
     const score = success ? (usedHint ? 1 : 2) : 0;
 
     const newAwnserDto: IAwnser = {
@@ -36,7 +38,7 @@ const AuthorSelect = ({
           ? 'Acertou! Quem mandou essa mensagem foi '
           : 'Errou! A resposta certa era '}
         <S.AuthorHighlight color={theme.colors.primary}>
-          {authorMessage.username}
+          {username || authorMessage.username}
         </S.AuthorHighlight>
       </>
     );
