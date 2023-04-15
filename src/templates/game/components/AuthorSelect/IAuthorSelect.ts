@@ -1,8 +1,9 @@
+import { IAuthor } from 'services/DiscordMessages/IDiscordMessagesService';
 import { IAwnser } from 'templates/game/IGame';
 
 export interface IAuthorSelect {
-  authorMessage: string;
-  authors: string[];
+  authorMessage: IAuthor;
+  authors: IAuthor[];
   activeTabKey: number;
   usedHint: boolean;
   saveScore: (awnser: IAwnser) => void;

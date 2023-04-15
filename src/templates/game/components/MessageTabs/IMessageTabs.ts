@@ -1,4 +1,5 @@
 import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
+import { IAuthor } from 'services/DiscordMessages/IDiscordMessagesService';
 import { IAwnser } from 'templates/game/IGame';
 
 export interface IMessageTabs {
@@ -6,7 +7,7 @@ export interface IMessageTabs {
   choosedMessages: IFilterMessageResponse[];
   awnsers: IAwnser[];
   serverName: string;
-  authors: string[];
+  authors: IAuthor[];
   serverIcon: string;
   saveScore: (awnser: IAwnser) => void;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;

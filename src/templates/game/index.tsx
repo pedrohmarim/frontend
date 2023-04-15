@@ -7,7 +7,10 @@ import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/filter.message';
 import Result from './components/Result';
 import { IFilterMessageResponse } from 'helpers/filterMessageEnum';
-import { IScoreInstance } from 'services/DiscordMessages/IDiscordMessagesService';
+import {
+  IAuthor,
+  IScoreInstance,
+} from 'services/DiscordMessages/IDiscordMessagesService';
 import { useRouter } from 'next/router';
 import { MessageContainer } from 'globalStyles/global';
 import DiscordLoad from 'templates/load';
@@ -16,7 +19,7 @@ export default function GameContainer() {
   const router = useRouter();
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
-  const [authors, setAuthors] = useState<string[]>([]);
+  const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [loadGame, setLoadGame] = useState<boolean>(false);
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<

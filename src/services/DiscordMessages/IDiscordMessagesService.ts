@@ -2,7 +2,7 @@ import { IAwnser } from 'templates/game/IGame';
 
 export interface IMessageInstance {
   messages: IMessage[];
-  authors: string[];
+  authors: IAuthor[];
   channelId: string;
   serverName: string;
   serverIcon: string;
@@ -30,6 +30,7 @@ export interface IAttachments {
 export interface IAuthor {
   id: string;
   username: string;
+  avatarUrl: string;
 }
 
 export interface IMention {

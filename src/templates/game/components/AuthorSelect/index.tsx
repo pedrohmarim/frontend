@@ -2,13 +2,6 @@ import React from 'react';
 import { Row, Select, Image, Notification } from 'antd_components';
 import * as S from './styles';
 import * as I from './IAuthorSelect';
-import HugoPic from 'assets/hugo.jpg';
-import AfonsoPic from 'assets/afonso.png';
-import LuisPic from 'assets/luis.jpg';
-import PodrePic from 'assets/podre.png';
-import LuisaPic from 'assets/luisa.png';
-import BiaPic from 'assets/bia.png';
-import CaoPic from 'assets/cao.png';
 import theme from 'globalStyles/theme';
 import { IAwnser } from 'templates/game/IGame';
 
@@ -22,8 +15,8 @@ const AuthorSelect = ({
   setAwnsers,
   setUsedHint,
 }: I.IAuthorSelect) => {
-  function handleVerifyAwnser(awnser: string) {
-    const success = awnser === authorMessage;
+  function handleVerifyAwnser(awnserId: string) {
+    const success = awnserId === authorMessage.id;
 
     const score = success ? (usedHint ? 1 : 2) : 0;
 
@@ -43,7 +36,7 @@ const AuthorSelect = ({
           ? 'Acertou! Quem mandou essa mensagem foi '
           : 'Errou! A resposta certa era '}
         <S.AuthorHighlight color={theme.colors.primary}>
-          {authorMessage}
+          {authorMessage.username}
         </S.AuthorHighlight>
       </>
     );
@@ -63,25 +56,6 @@ const AuthorSelect = ({
     return Notification.error(config);
   }
 
-  function handleUserPicture(author: string) {
-    switch (author) {
-      case 'Hugo Manera':
-        return HugoPic.src;
-      case 'Koromelo':
-        return AfonsoPic.src;
-      case 'Edu':
-        return LuisPic.src;
-      case 'Gertrudes':
-        return LuisaPic.src;
-      case 'Beatriz':
-        return BiaPic.src;
-      case 'CãoFantasma':
-        return CaoPic.src;
-      default:
-        return PodrePic.src;
-    }
-  }
-
   return (
     <S.Select
       disabled={!authors?.length}
@@ -92,17 +66,18 @@ const AuthorSelect = ({
         setActiveTabKey((prev: number) => prev + 1);
       }}
     >
-      {authors?.map((author) => (
-        <Select.Option key={author}>
+      {authors?.map(({ avatarUrl, username, id }) => (
+        <Select.Option key={id}>
           <Row align="middle">
             <Image
+              style={{ borderRadius: '4px' }}
               preview={false}
-              src={handleUserPicture(author)}
+              src={avatarUrl}
               alt="profile-pic"
               height="30px"
               width="30px"
             />
-            <S.AuthorName>{author}</S.AuthorName>
+            <S.AuthorName>{username}</S.AuthorName>
           </Row>
         </Select.Option>
       ))}
