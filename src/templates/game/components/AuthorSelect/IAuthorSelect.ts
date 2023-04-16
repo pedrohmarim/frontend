@@ -2,7 +2,7 @@ import { IAuthor } from 'services/DiscordMessages/IDiscordMessagesService';
 import { IAwnser } from 'templates/game/IGame';
 
 export interface IAuthorSelect {
-  authorMessage: IAuthor;
+  authorMessageId: string;
   authors: IAuthor[];
   activeTabKey: number;
   usedHint: boolean;

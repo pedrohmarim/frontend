@@ -98,7 +98,7 @@ export default function MessageTabs({
                 setUsedHint={(value) => setUsedHint(value)}
                 usedHint={usedHint}
                 setAwnsers={setAwnsers}
-                authorMessage={author}
+                authorMessageId={author.id}
                 authors={authors}
                 activeTabKey={activeTabKey}
                 setActiveTabKey={setActiveTabKey}

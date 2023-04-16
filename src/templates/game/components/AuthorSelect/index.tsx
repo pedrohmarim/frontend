@@ -6,7 +6,7 @@ import theme from 'globalStyles/theme';
 import { IAwnser } from 'templates/game/IGame';
 
 const AuthorSelect = ({
-  authorMessage,
+  authorMessageId,
   authors,
   activeTabKey,
   usedHint,
@@ -16,9 +16,9 @@ const AuthorSelect = ({
   setUsedHint,
 }: I.IAuthorSelect) => {
   function handleVerifyAwnser(awnserId: string) {
-    const success = awnserId === authorMessage.id;
+    const success = awnserId === authorMessageId;
 
-    const username = authors.find(({ id }) => id === awnserId)?.username;
+    const username = authors.find(({ id }) => id === authorMessageId)?.username;
 
     const score = success ? (usedHint ? 1 : 2) : 0;
 
@@ -38,7 +38,7 @@ const AuthorSelect = ({
           ? 'Acertou! Quem mandou essa mensagem foi '
           : 'Errou! A resposta certa era '}
         <S.AuthorHighlight color={theme.colors.primary}>
-          {username || authorMessage.username}
+          {username}
         </S.AuthorHighlight>
       </>
     );
