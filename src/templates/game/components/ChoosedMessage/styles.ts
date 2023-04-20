@@ -52,8 +52,8 @@ export const Hint = styled.span`
 export const Container = styled.div`
   max-width: 650px;
 
-  @media screen and (min-width: 750px) {
-    min-width: 650px;
+  @media screen and (min-width: 700px) {
+    min-width: 600px;
   }
 `;
 

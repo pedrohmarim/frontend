@@ -36,10 +36,10 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         <G.ColumnContainer>
           <G.DynamicWidth
             width={
-              router.pathname === '/game' && size > 750
+              router.pathname === '/game' && size > 700
                 ? 'fit-content'
-                : size > 750
-                ? `${750}px`
+                : size > 700
+                ? `${700}px`
                 : `${size}px`
             }
           >

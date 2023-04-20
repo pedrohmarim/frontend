@@ -4,7 +4,7 @@ import { Select as SelectAntd } from 'antd_components';
 export const Select = styled(SelectAntd)`
   width: 300px;
 
-  @media screen and (max-width: 380px) {
+  @media screen and (max-width: 350px) {
     width: 100%;
   }
 
