@@ -1,9 +1,10 @@
-export interface IUserRequest {
-  username: string;
+export interface ICreateUserRequest {
+  Username: string;
+  Email: string;
+  Password: string;
 }
 
-export interface IUserResponse {
-  name: string;
-  age: number;
-  username: string;
+export interface IValidateEmailResponse {
+  Message: string;
+  IsValid: boolean;
 }

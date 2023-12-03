@@ -1,5 +1,4 @@
-import React from 'react';
-import Home from 'pages/home';
+import Home from 'templates/home';
 
 export default function HomeContainer() {
   return <Home />;
