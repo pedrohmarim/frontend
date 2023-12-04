@@ -2,11 +2,12 @@ import React, { useCallback, useState } from 'react';
 import * as S from './styles';
 import { Form } from 'antd';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
-import UserApi from 'services/User';
+import AccountApi from 'services/Account';
 import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
-import * as I from '../../services/User/IUserService';
+import * as I from '../../services/Account/IAccountService';
 import { Notification } from 'antd_components';
+import { RuleObject } from 'antd/lib/form';
 import {
   Form as CustomizedForm,
   Input,
@@ -25,8 +26,10 @@ export default function RegisterContainer() {
     isValid: false,
   });
 
-  function onFinish(values: I.ICreateUserRequest) {
-    UserApi.RegisterUser(values).then(() => {
+  function onFinish(values: I.ICreateAccountRequest) {
+    if (!validationState.isValid) return;
+
+    AccountApi.CreateAccount(values).then(() => {
       Notification.success({
         message: 'Sucesso!',
         description: 'Usuário criado.',
@@ -44,7 +47,7 @@ export default function RegisterContainer() {
     setLoading(true);
 
     setTimeout(() => {
-      UserApi.ValidateEmail(email)
+      AccountApi.ValidateEmail(email)
         .then(({ IsValid, Message }) =>
           setValidationState({ isValid: IsValid, message: Message })
         )
@@ -82,6 +85,32 @@ export default function RegisterContainer() {
 
     debouncedSearch(value);
   };
+
+  function validatePassword(
+    _: RuleObject,
+    value: string,
+    callback: (error?: string) => void
+  ) {
+    const { ConfirmPassword } = form.getFieldsValue();
+
+    if (ConfirmPassword && ConfirmPassword !== value)
+      return Promise.reject('As senhas devem ser iguais.');
+
+    return callback();
+  }
+
+  function validateConfirmPassword(
+    _: RuleObject,
+    value: string,
+    callback: (error?: string) => void
+  ) {
+    const { Password } = form.getFieldsValue();
+
+    if (Password && Password !== value)
+      return Promise.reject('As senhas devem ser iguais.');
+
+    return callback();
+  }
 
   return (
     <S.FormContainer>
@@ -131,7 +160,19 @@ export default function RegisterContainer() {
           <Input type="date" placeholder="Data Nascimento" />
         </Form.Item>
 
-        <Form.Item name="Password" label="Senha" rules={[requiredRules]}>
+        <Form.Item
+          name="Password"
+          label="Senha"
+          rules={[requiredRules, { validator: validatePassword }]}
+        >
+          <Input type="password" placeholder="Senha" />
+        </Form.Item>
+
+        <Form.Item
+          name="ConfirmPassword"
+          label="Confirmar Senha"
+          rules={[requiredRules, { validator: validateConfirmPassword }]}
+        >
           <Input type="password" placeholder="Senha" />
         </Form.Item>
 

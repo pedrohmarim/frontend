@@ -1,7 +1,12 @@
 import React from 'react';
 import * as S from './styles';
+import * as I from 'services/Login/ILoginService';
 import { Form } from 'antd';
-import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
+import LoginApi from 'services/Login';
+import {
+  emailRegex,
+  requiredRules,
+} from 'antd_components/Form/formItem.rules.constants';
 import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
 import {
@@ -13,10 +18,11 @@ import {
 } from 'antd_components';
 
 export default function LoginContainer() {
+  const [form] = Form.useForm();
   const router = useRouter();
 
-  function onFinish() {
-    // UserApi.GetUser({ id: 1 }).then((data) => console.log(data));
+  function onFinish(values: I.ILoginRequest) {
+    LoginApi.Login(values).then((data) => console.log(data));
   }
 
   function toRegister() {
@@ -29,9 +35,14 @@ export default function LoginContainer() {
         title="Formulário Login"
         onFinish={onFinish}
         width="400px"
+        form={form}
       >
-        <Form.Item name="username" label="Usuário" rules={[requiredRules]}>
-          <Input type="text" />
+        <Form.Item
+          name="email"
+          label="E-mail"
+          rules={[requiredRules, emailRegex]}
+        >
+          <Input type="email" />
         </Form.Item>
 
         <Form.Item name="password" label="Senha" rules={[requiredRules]}>
