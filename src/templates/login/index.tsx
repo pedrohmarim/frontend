@@ -36,7 +36,8 @@ export default function LoginContainer() {
         });
 
       window.localStorage.setItem('token', Token);
-      updateLoggedUser(LoginGetDto);
+
+      updateLoggedUser(Token);
 
       Notification.success({
         message: 'Logado com sucesso!',

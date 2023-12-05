@@ -13,3 +13,8 @@ export interface ILoginResponse {
   Token: string;
   LoginGetDto: ILoggedUser;
 }
+
+export interface ILogoutResponse {
+  Message: string;
+  Success: boolean;
+}

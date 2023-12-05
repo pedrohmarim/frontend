@@ -1,34 +1,29 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { ILoggedUser } from 'services/Login/ILoginService';
+import * as I from './IContext';
+import LoginApi from 'services/Login/';
 
-interface MyContextProps {
-  loggedUser: ILoggedUser | null;
-  updateLoggedUser: (loggedUser: ILoggedUser) => void;
-}
+const MyContext = createContext<I.IContextProps | undefined>(undefined);
 
-const MyContext = createContext<MyContextProps | undefined>(undefined);
-
-interface ContextProviderProps {
-  children: ReactNode;
-}
-
-export const ContextProvider: React.FC<ContextProviderProps> = ({
+export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   children,
 }) => {
-  const [loggedUser, setLoggedUser] = useState<ILoggedUser>({} as ILoggedUser);
+  const [loggedUser, setLoggedUser] = useState<ILoggedUser | null>(null);
 
-  const updateLoggedUser = (loggedUser: ILoggedUser) => {
-    setLoggedUser(loggedUser);
-  };
+  function updateLoggedUser(token: string) {
+    LoginApi.GetUserByToken(token).then((loggedUser) =>
+      setLoggedUser(loggedUser)
+    );
+  }
 
   return (
-    <MyContext.Provider value={{ loggedUser, updateLoggedUser }}>
+    <MyContext.Provider value={{ loggedUser, updateLoggedUser, setLoggedUser }}>
       {children}
     </MyContext.Provider>
   );
 };
 
-export const useMyContext = (): MyContextProps => {
+export const useMyContext = (): I.IContextProps => {
   const context = useContext(MyContext);
   if (!context) {
     throw new Error('useMyContext must be used within a MyContextProvider');

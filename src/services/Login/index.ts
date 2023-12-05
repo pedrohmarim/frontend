@@ -13,6 +13,17 @@ const ApiAuth = {
     );
     return response.data;
   },
+  Logout: async function (tokenParam: string | null) {
+    const response: AxiosResponse<I.ILogoutResponse> = await http.get(
+      `${baseURL}/logout`,
+      {
+        params: {
+          tokenParam,
+        },
+      }
+    );
+    return response.data;
+  },
   ValidateToken: async function (token: string) {
     const response: AxiosResponse<boolean> = await http.get(
       `${baseURL}/validateToken`,
@@ -20,6 +31,19 @@ const ApiAuth = {
         params: { token },
       }
     );
+    return response.data;
+  },
+  GetUserByToken: async function (tokenParam: string) {
+    const response: AxiosResponse<I.ILoggedUser> = await http.get(
+      `${baseURL}/getUserByToken`,
+      {
+        params: { tokenParam },
+      }
+    );
+    return response.data;
+  },
+  Seila: async function () {
+    const response: AxiosResponse<boolean> = await http.get(`${baseURL}/Seila`);
     return response.data;
   },
 };
