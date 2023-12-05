@@ -3,26 +3,49 @@ import * as S from './styles';
 import * as I from 'services/Login/ILoginService';
 import { Form } from 'antd';
 import LoginApi from 'services/Login';
+import theme from 'globalStyles/theme';
+import { useRouter } from 'next/router';
+import { useMyContext } from 'Context';
 import {
   emailRegex,
   requiredRules,
 } from 'antd_components/Form/formItem.rules.constants';
-import theme from 'globalStyles/theme';
-import { useRouter } from 'next/router';
 import {
   Form as CustomizedForm,
   Input,
   Button,
   Row,
   Checkbox,
+  Notification,
+  FeatherIcons,
 } from 'antd_components';
 
 export default function LoginContainer() {
+  const { updateLoggedUser } = useMyContext();
   const [form] = Form.useForm();
   const router = useRouter();
 
   function onFinish(values: I.ILoginRequest) {
-    LoginApi.Login(values).then((data) => console.log(data));
+    LoginApi.Login(values).then(({ Token, Message, LoginGetDto }) => {
+      if (!LoginGetDto)
+        return Notification.error({
+          message: 'Erro!',
+          description: Message,
+          icon: <FeatherIcons icon="x" color="red" />,
+          duration: 3.5,
+        });
+
+      window.localStorage.setItem('token', Token);
+      updateLoggedUser(LoginGetDto);
+
+      Notification.success({
+        message: 'Logado com sucesso!',
+        icon: <FeatherIcons icon="check" color="green" />,
+        duration: 3.5,
+      });
+
+      router.push('/home');
+    });
   }
 
   function toRegister() {

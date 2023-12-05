@@ -1,9 +1,16 @@
+import React, { Fragment } from 'react';
 import { Button } from 'antd_components';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { useMyContext } from 'Context';
 
 export default function Home() {
+  const { loggedUser } = useMyContext();
   const router = useRouter();
 
-  return <Button onClick={() => router.push('/login')}>logar</Button>;
+  return (
+    <Fragment>
+      <Button onClick={() => router.push('/login')}>logar</Button>
+      {loggedUser && <span>{loggedUser.Username}</span>}
+    </Fragment>
+  );
 }
