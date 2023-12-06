@@ -16,6 +16,8 @@ function DisableLoading() {
 
 function RedirectLogin() {
   window.localStorage.removeItem('login');
+
+  if (typeof window !== 'undefined') window.location.href = '/login';
 }
 
 export const responseInterceptor = (responseConfig: AxiosResponse) => {
