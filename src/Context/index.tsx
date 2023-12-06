@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ILoggedUser } from 'services/Login/ILoginService';
 import * as I from './IContext';
 import LoginApi from 'services/Login/';
@@ -11,10 +11,18 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   const [loggedUser, setLoggedUser] = useState<ILoggedUser | null>(null);
 
   function updateLoggedUser(token: string) {
-    LoginApi.GetUserByToken(token).then((loggedUser) =>
-      setLoggedUser(loggedUser)
-    );
+    LoginApi.GetUserByToken(token).then((loggedUser) => {
+      setLoggedUser(loggedUser);
+      window.localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+    });
   }
+
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem('loggedUser') ?? '';
+
+    if (loggedUser !== 'null' && loggedUser !== '')
+      setLoggedUser(JSON.parse(loggedUser) as ILoggedUser);
+  }, []);
 
   return (
     <MyContext.Provider value={{ loggedUser, updateLoggedUser, setLoggedUser }}>

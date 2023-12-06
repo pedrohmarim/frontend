@@ -22,6 +22,8 @@ export default function Home() {
   function handleLogout() {
     LoginApi.Logout(token).then(({ Message, Success }) => {
       if (Success) {
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('loggedUser');
         setLoggedUser(null);
 
         return Notification.success({

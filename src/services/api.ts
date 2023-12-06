@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import { errorMiddleware } from 'Middleware/errorNotification.middleware';
 
 export default function baseService(
   contentType = 'application/json',
@@ -14,6 +15,8 @@ export default function baseService(
     },
     timeout: 120000,
   });
+
+  api.interceptors.response.use((response) => response, errorMiddleware);
 
   return api;
 }
