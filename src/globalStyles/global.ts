@@ -7,7 +7,11 @@ export default createGlobalStyle`
     font-size: 12pt;
     box-sizing: border-box;
   }
-
+  
+  nextjs-portal {
+    display: none;
+  }
+  
   body {
     background: ${(props) => props.theme.colors.mainBackground};
     color: ${(props) => props.theme.colors.textWhite} ;

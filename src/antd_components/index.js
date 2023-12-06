@@ -22,6 +22,7 @@ import Notification from './Notification/Notification.component';
 import Layout from './Layout/Layout.component';
 import Menu from './Menu/Menu.component';
 import Upload from './Upload/Upload.component';
+import Loading from './Loading';
 import Dropdown from './Dropdown/Dropdown.component';
 import Tag from './Tag/Tag.component';
 import PopConfirm from './PopConfirm/PopConfirm.component';
@@ -35,6 +36,7 @@ export {
   Table,
   Modal,
   Tag,
+  Loading,
   Button,
   Spin,
   BackTop,

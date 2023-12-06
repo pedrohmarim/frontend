@@ -5,6 +5,8 @@ export interface IContextProps {
   loggedUser: ILoggedUser | null;
   updateLoggedUser: (token: string) => void;
   setLoggedUser: React.Dispatch<React.SetStateAction<ILoggedUser | null>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
 }
 
 export interface IContextProviderProps {
