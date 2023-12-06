@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Button } from 'antd_components';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
@@ -6,25 +6,18 @@ import LoginApi from 'services/Login';
 import { Notification, FeatherIcons } from 'antd_components';
 
 export default function Home() {
-  const [token, setToken] = useState<string | null>(null);
-  const { loggedUser, setLoggedUser } = useMyContext();
+  const { login, setLogin } = useMyContext();
   const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window !== 'undefined')
-      setToken(window.localStorage.getItem('token'));
-  }, []);
 
   function handleSeila() {
     LoginApi.Seila().then((data) => console.log(data));
   }
 
   function handleLogout() {
-    LoginApi.Logout(token).then(({ Message, Success }) => {
+    LoginApi.Logout().then(({ Message, Success }) => {
       if (Success) {
-        window.localStorage.removeItem('token');
-        window.localStorage.removeItem('loggedUser');
-        setLoggedUser(null);
+        window.localStorage.removeItem('login');
+        setLogin(null);
 
         return Notification.success({
           message: 'Succeso!',
@@ -45,10 +38,10 @@ export default function Home() {
 
   return (
     <Fragment>
-      {loggedUser ? (
+      {login ? (
         <Fragment>
           <Button onClick={handleLogout}>deslogar</Button>
-          <span>{loggedUser.Username}</span>
+          <span>{login.Account.Id}</span>
           <Button onClick={handleSeila}>fazer outra req</Button>
         </Fragment>
       ) : (

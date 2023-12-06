@@ -1,5 +1,5 @@
 import { Notification } from 'antd_components';
-
+import { getUser } from 'utils/localStorage/User';
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 function ActiveLoading() {
@@ -15,11 +15,7 @@ function DisableLoading() {
 }
 
 function RedirectLogin() {
-  if (typeof window !== 'undefined') {
-    window.localStorage.removeItem('token');
-    window.localStorage.removeItem('loggedUser');
-    window.location.href = '/login';
-  }
+  window.localStorage.removeItem('login');
 }
 
 export const responseInterceptor = (responseConfig: AxiosResponse) => {
@@ -30,6 +26,16 @@ export const responseInterceptor = (responseConfig: AxiosResponse) => {
 export const requestInterceptor = (
   requestConfig: InternalAxiosRequestConfig
 ) => {
+  const user = getUser();
+
+  if (user?.Token) {
+    const Authorization = `Bearer ${user?.Token}`;
+
+    requestConfig.headers = requestConfig.headers || {};
+
+    requestConfig.headers['Authorization'] = Authorization as string;
+  }
+
   ActiveLoading();
   return requestConfig;
 };
@@ -45,19 +51,19 @@ export const errorResponseInterceptor = (error: AxiosError) => {
   const description = error.response?.data ?? 'Erro inesperado';
   const statusCode = error.response?.status ?? '';
 
-  Notification.error({
-    message: 'Erro!',
-    description: `(${statusCode}) - ${description}`,
-  });
-
   switch (statusCode) {
     case 401:
       RedirectLogin();
       break;
-
     default:
       break;
   }
+
+  Notification.error({
+    message: 'Erro!',
+    description: `(${statusCode}) - ${description}`,
+    duration: 2,
+  });
 
   return Promise.reject(error);
 };

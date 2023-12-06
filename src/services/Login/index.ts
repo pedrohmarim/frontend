@@ -13,28 +13,14 @@ const ApiAuth = {
     );
     return response.data;
   },
-  Logout: async function (tokenParam: string | null) {
+  Logout: async function () {
     const response: AxiosResponse<I.ILogoutResponse> = await http.get(
-      `${baseURL}/logout`,
-      {
-        params: {
-          tokenParam,
-        },
-      }
-    );
-    return response.data;
-  },
-  ValidateToken: async function (token: string) {
-    const response: AxiosResponse<boolean> = await http.get(
-      `${baseURL}/validateToken`,
-      {
-        params: { token },
-      }
+      `${baseURL}/logout`
     );
     return response.data;
   },
   GetUserByToken: async function (tokenParam: string) {
-    const response: AxiosResponse<I.ILoggedUser> = await http.get(
+    const response: AxiosResponse<I.IGetUserByTokenResponse> = await http.get(
       `${baseURL}/getUserByToken`,
       {
         params: { tokenParam },

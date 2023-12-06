@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ILoggedUser } from 'services/Login/ILoginService';
+import { IGetUserByTokenResponse } from 'services/Login/ILoginService';
 import * as I from './IContext';
 import LoginApi from 'services/Login/';
 
@@ -8,24 +8,24 @@ const MyContext = createContext<I.IContextProps | undefined>(undefined);
 export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   children,
 }) => {
-  const [loggedUser, setLoggedUser] = useState<ILoggedUser | null>(null);
+  const [login, setLogin] = useState<IGetUserByTokenResponse | null>(null);
 
-  function updateLoggedUser(token: string) {
-    LoginApi.GetUserByToken(token).then((loggedUser) => {
-      setLoggedUser(loggedUser);
-      window.localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
+  function updateLogin(token: string) {
+    LoginApi.GetUserByToken(token).then((login) => {
+      setLogin(login);
+      window.localStorage.setItem('login', JSON.stringify(login));
     });
   }
 
   useEffect(() => {
-    const loggedUser = window.localStorage.getItem('loggedUser') ?? '';
+    const login = window.localStorage.getItem('login') ?? '';
 
-    if (loggedUser !== 'null' && loggedUser !== '')
-      setLoggedUser(JSON.parse(loggedUser) as ILoggedUser);
+    if (login !== 'null' && login !== '')
+      setLogin(JSON.parse(login) as IGetUserByTokenResponse);
   }, []);
 
   return (
-    <MyContext.Provider value={{ loggedUser, updateLoggedUser, setLoggedUser }}>
+    <MyContext.Provider value={{ login, updateLogin, setLogin }}>
       {children}
     </MyContext.Provider>
   );
@@ -33,8 +33,8 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
 
 export const useMyContext = (): I.IContextProps => {
   const context = useContext(MyContext);
-  if (!context) {
+  if (!context)
     throw new Error('useMyContext must be used within a MyContextProvider');
-  }
+
   return context;
 };

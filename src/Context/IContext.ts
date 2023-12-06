@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { ILoggedUser } from 'services/Login/ILoginService';
+import { IGetUserByTokenResponse } from 'services/Login/ILoginService';
 
 export interface IContextProps {
-  loggedUser: ILoggedUser | null;
-  updateLoggedUser: (token: string) => void;
-  setLoggedUser: React.Dispatch<React.SetStateAction<ILoggedUser | null>>;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  loading: boolean;
+  login: IGetUserByTokenResponse | null;
+  updateLogin: (token: string) => void;
+  setLogin: React.Dispatch<
+    React.SetStateAction<IGetUserByTokenResponse | null>
+  >;
 }
 
 export interface IContextProviderProps {

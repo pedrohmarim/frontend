@@ -4,6 +4,10 @@ export interface ICreateAccountRequest {
   Password: string;
 }
 
+export interface IAccountResponse {
+  Id: number;
+}
+
 export interface IValidateEmailResponse {
   Message: string;
   IsValid: boolean;
