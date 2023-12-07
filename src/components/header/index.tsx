@@ -1,10 +1,17 @@
 import React from 'react';
-import { FeatherIcons, Menu, Popover, Notification } from 'antd_components';
 import * as S from './styles';
 import LoginApi from 'services/Login';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
 import { MenuProps } from 'antd';
+import theme from 'globalStyles/theme';
+import {
+  FeatherIcons,
+  Menu,
+  Notification,
+  Button,
+  Popover,
+} from 'antd_components';
 
 export default function Header() {
   const router = useRouter();
@@ -54,23 +61,33 @@ export default function Header() {
   }
 
   const items: MenuItem[] = [
-    !login
-      ? getItem('Entrar', '1', <FeatherIcons icon="log-in" />, handleLogin)
-      : getItem('Sair', '2', <FeatherIcons icon="log-out" />, handleLogout),
+    getItem('Sair', '2', <FeatherIcons icon="log-out" />, handleLogout),
   ];
 
   const content = <Menu mode="inline" theme="dark" items={items} />;
 
   return (
     <S.Header>
-      <span>afsaf</span>
+      <span>Seila123</span>
 
-      <Popover content={content}>
-        <S.Avatar
-          src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=3"
-          size={40}
-        />
-      </Popover>
+      {login ? (
+        <Popover content={content}>
+          <S.Avatar
+            src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=3"
+            size={40}
+          />
+        </Popover>
+      ) : (
+        <Button
+          color={theme.colors.primary}
+          backgroundcolor={theme.colors.textWhite}
+          width="auto"
+          onClick={handleLogin}
+          icon={<FeatherIcons icon="user" />}
+        >
+          Entrar
+        </Button>
+      )}
     </S.Header>
   );
 }
