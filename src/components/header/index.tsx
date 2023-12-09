@@ -61,7 +61,7 @@ export default function Header() {
   }
 
   const items: MenuItem[] = [
-    getItem('Sair', '2', <FeatherIcons icon="log-out" />, handleLogout),
+    getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout),
   ];
 
   const content = <Menu mode="inline" theme="dark" items={items} />;

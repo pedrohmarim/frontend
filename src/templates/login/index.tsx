@@ -81,7 +81,7 @@ export default function LoginContainer() {
         <Button
           htmlType="submit"
           marginTop="20px"
-          color={theme.colors.textPurple}
+          color={theme.colors.primary}
           backgroundcolor={theme.colors.mainBackground}
         >
           Entrar

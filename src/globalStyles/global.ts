@@ -30,30 +30,31 @@ export default createGlobalStyle`
     font-size: 12pt;
   }
 
-  .ant-menu{
-    background-color: ${(props) => props.theme.colors.primary} !important;
+  .ant-menu {
+    background-color: ${(props) =>
+      props.theme.colors.mainBackground} !important;
+    border: solid 1px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
   }
 
+  /* 
   .ant-menu-item:first-child {
     border-radius: 8px 8px 0 0;
-  }
+  } */
   
   .ant-menu-item:last-child {
-    border-radius: 0 0 8px 8px;
+    border-bottom: none;
   }
 
-  .ant-menu-item{
+  .ant-menu-item {
     margin: 0 !important;
-    border-radius: 8px;
-    padding-top: 22px !important;
-    padding-bottom: 22px !important;
-    border-bottom: solid 1px gray;
-    color: ${(props) => props.theme.colors.textWhite} !important;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+    color: ${(props) => props.theme.colors.primary} !important;
     font-weight: 500 !important;
 
-    :hover{
+    :hover {
       color: ${(props) => props.theme.colors.textPurple} !important;
+      background-color: rgba(0, 0, 0, 0.1) !important;
     }
   }
 

@@ -34,7 +34,6 @@ export const Button = styled(AntDesignButton)<BtnProps>`
   :disabled,
   &&:hover,
   &&:focus {
-    color: ${({ color }) => color} !important;
     background-color: ${({ backgroundcolor }) => backgroundcolor} !important;
     border: none;
     opacity: 0.9;
