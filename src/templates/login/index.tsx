@@ -65,11 +65,19 @@ export default function LoginContainer() {
           label="E-mail"
           rules={[requiredRules, emailRegex]}
         >
-          <Input type="email" />
+          <Input
+            type="email"
+            placeholder="E-mail"
+            prefix={<FeatherIcons icon="mail" color="#cecfd3" size={18} />}
+          />
         </Form.Item>
 
         <Form.Item name="password" label="Senha" rules={[requiredRules]}>
-          <Input type="password" />
+          <Input.Password
+            type="password"
+            placeholder="Senha"
+            prefix={<FeatherIcons icon="lock" color="#cecfd3" size={18} />}
+          />
         </Form.Item>
 
         <Row justify="space-between">

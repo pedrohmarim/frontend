@@ -18,7 +18,7 @@ export default createGlobalStyle`
     font: 400 16px Roboto, sans-serif;
   }
 
-  .ant-input{
+  .ant-input, .ant-input-password, .ant-input-affix-wrapper {
     background-color: ${(props) => props.theme.colors.mainBackground};
   }
 
