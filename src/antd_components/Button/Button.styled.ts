@@ -6,10 +6,10 @@ type BtnProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'htmlType'> & {
   backgroundcolor?: string;
   width?: string;
   height?: string;
-  marginTop?: string;
-  marginBottom?: string;
-  marginLeft?: string;
-  marginRight?: string;
+  margintop?: string;
+  marginbottom?: string;
+  marginleft?: string;
+  marginright?: string;
 };
 
 export const Button = styled(AntDesignButton)<BtnProps>`
@@ -19,10 +19,10 @@ export const Button = styled(AntDesignButton)<BtnProps>`
   outline: none !important;
   width: ${({ width }) => width ?? '100%'};
   height: ${({ height }) => height};
-  margin-bottom: ${({ marginBottom }) => marginBottom};
-  margin-top: ${({ marginTop }) => marginTop};
-  margin-left: ${({ marginLeft }) => marginLeft};
-  margin-right: ${({ marginRight }) => marginRight};
+  margin-bottom: ${({ marginbottom }) => marginbottom};
+  margin-top: ${({ margintop }) => margintop};
+  margin-left: ${({ marginleft }) => marginleft};
+  margin-right: ${({ marginright }) => marginright};
   border-radius: 4px;
   font-weight: 500;
   font-size: 12pt;

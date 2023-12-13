@@ -79,8 +79,8 @@ export default function Header() {
         </Popover>
       ) : (
         <Button
-          color={theme.colors.primary}
-          backgroundcolor={theme.colors.textWhite}
+          color={theme.colors.background}
+          backgroundcolor={theme.colors.textSecondary}
           width="auto"
           onClick={handleLogin}
           icon={<FeatherIcons icon="user" />}

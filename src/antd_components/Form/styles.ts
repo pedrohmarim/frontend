@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 import { Form as FormComponent } from 'antd';
 
-export const Form = styled(FormComponent)<{ width: string }>`
+export const Form = styled(FormComponent)<{ width: string; heigth?: string }>`
   padding: 20px;
-  color: ${(props) => props.theme.colors.textWhite};
+  color: ${(props) => props.theme.colors.textSecondary};
   border-radius: 5px;
-  background-color: ${(props) => props.theme.colors.primary};
+  background-color: ${(props) => props.theme.colors.background};
   width: ${(props) => props.width};
+  height: ${(props) => props.heigth};
   position: relative;
 `;
 
-export const FormTitle = styled.span`
+export const FormHeader = styled.span`
   font-weight: bold;
-  color: ${(props) => props.theme.colors.textPurple};
+  color: ${(props) => props.theme.colors.textPrimary};
   font-size: 25pt;
 `;

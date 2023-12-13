@@ -37,8 +37,8 @@ const Spin = keyframes`
 export const Loader = styled.div`
   border: 8px solid transparent;
   border-radius: 50%;
-  border-top: 10px solid ${(props) => props.theme.colors.textPurple};
-  border-bottom: 10px solid ${(props) => props.theme.colors.textPurple};
+  border-top: 10px solid ${(props) => props.theme.colors.textPrimary};
+  border-bottom: 10px solid ${(props) => props.theme.colors.textPrimary};
   width: 80px;
   height: 80px;
   animation: ${Spin} 1.5s linear infinite;

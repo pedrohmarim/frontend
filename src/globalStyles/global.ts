@@ -13,13 +13,17 @@ export default createGlobalStyle`
   }
   
   body {
-    background: ${(props) => props.theme.colors.mainBackground};
-    color: ${(props) => props.theme.colors.textWhite};
+    background: ${(props) => props.theme.colors.background};
+    color: ${(props) => props.theme.colors.textSecondary};
     font: 400 16px Roboto, sans-serif;
   }
+  
+  .ant-divider-inner-text{
+    color: ${(props) => props.theme.colors.textSecondary};
+  }
 
-  .ant-input, .ant-input-password, .ant-input-affix-wrapper {
-    background-color: ${(props) => props.theme.colors.mainBackground};
+  .ant-input, .ant-input-password, .ant-input-affix-wrapper{
+    background-color: ${(props) => props.theme.colors.textSecondary} !important;
   }
 
   .ant-form-item-explain-error{
@@ -31,8 +35,7 @@ export default createGlobalStyle`
   }
 
   .ant-menu {
-    background-color: ${(props) =>
-      props.theme.colors.mainBackground} !important;
+    background-color: ${(props) => props.theme.colors.textSecondary} !important;
     border: solid 1px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
   }
@@ -49,11 +52,11 @@ export default createGlobalStyle`
   .ant-menu-item {
     margin: 0 !important;
     border-bottom: solid 1px rgba(0, 0, 0, 0.2);
-    color: ${(props) => props.theme.colors.primary} !important;
+    color: ${(props) => props.theme.colors.background} !important;
     font-weight: 500 !important;
 
     :hover {
-      color: ${(props) => props.theme.colors.textPurple} !important;
+      color: ${(props) => props.theme.colors.textPrimary} !important;
       background-color: rgba(0, 0, 0, 0.1) !important;
     }
   }
@@ -67,6 +70,6 @@ export default createGlobalStyle`
   }
 
   .ant-form-item-required, .ant-checkbox-wrapper span {
-    color: ${(props) => props.theme.colors.textWhite} !important;
+    color: ${(props) => props.theme.colors.textSecondary} !important;
   }
 `;

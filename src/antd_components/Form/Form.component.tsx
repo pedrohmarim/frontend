@@ -1,22 +1,24 @@
 import React from 'react';
-import { Row, Divider } from 'antd';
 import * as S from './styles';
 import * as I from './IForm';
 
 export default function Form({
-  title,
+  formHeader,
   children,
   width,
+  heigth,
   form,
   onFinish,
 }: I.IForm) {
   return (
-    <S.Form layout="vertical" onFinish={onFinish} width={width} form={form}>
-      <Row justify="center">
-        <S.FormTitle>{title}</S.FormTitle>
-      </Row>
-
-      <Divider style={{ borderColor: 'white', marginTop: '3px' }} />
+    <S.Form
+      layout="vertical"
+      onFinish={onFinish}
+      width={width}
+      heigth={heigth}
+      form={form}
+    >
+      {formHeader && <S.FormHeader>{formHeader}</S.FormHeader>}
 
       {children}
     </S.Form>

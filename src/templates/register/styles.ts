@@ -12,20 +12,20 @@ export const HoverSpan = styled.span`
 
   &&:hover {
     transition: all 0.2s;
-    color: ${(props) => props.theme.colors.textPurple};
+    color: ${(props) => props.theme.colors.textPrimary};
     text-decoration: underline;
   }
 `;
 
 export const BackButton = styled.span`
   cursor: pointer;
-  margin: 33.5px 0 0 15px;
+  margin: 33.5px 0 0 -15px;
   position: absolute;
   top: 0;
   left: 0;
 `;
 
 export const SpanValidateEmail = styled.span`
-  color: ${(props) => props.color || props.theme.colors.textPurple};
+  color: ${(props) => props.color || props.theme.colors.textPrimary};
   font-size: 10pt;
 `;

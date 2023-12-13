@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from './styles';
 import * as I from 'services/Login/ILoginService';
 import { Form } from 'antd';
@@ -6,6 +6,7 @@ import LoginApi from 'services/Login';
 import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
+import ImageLogin from 'assets/loginImg.png';
 import {
   emailRegex,
   requiredRules,
@@ -17,10 +18,16 @@ import {
   Row,
   Checkbox,
   Notification,
+  Image,
   FeatherIcons,
+  Layout,
+  Col,
+  Divider,
 } from 'antd_components';
 
 export default function LoginContainer() {
+  const [showImage, setShowImage] = useState(true);
+  const { Sider, Content } = Layout;
   const { updateLogin } = useMyContext();
   const [form] = Form.useForm();
   const router = useRouter();
@@ -52,59 +59,140 @@ export default function LoginContainer() {
     router.push('/register');
   }
 
+  function toRecover() {
+    router.push('/recoverpassword');
+  }
+
+  const contentStyle: React.CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.background,
+  };
+
+  const siderStyle: React.CSSProperties = {
+    backgroundColor: theme.colors.background,
+    height: 'auto',
+  };
+
+  const layoutStyle: React.CSSProperties = {
+    padding: '3px',
+    backgroundColor: theme.colors.background,
+    borderRadius: '10px',
+  };
+
+  const formHeader: JSX.Element = (
+    <Row gutter={[16, 16]} align="middle" justify="start">
+      <Col>
+        <S.HeaderSpan>Entre com</S.HeaderSpan>
+      </Col>
+
+      <Col>
+        <S.SocialContainer>
+          <FeatherIcons
+            icon="facebook"
+            size={25}
+            color={theme.colors.textSecondary}
+          />
+        </S.SocialContainer>
+      </Col>
+
+      <Col>
+        <S.SocialContainer>
+          <FeatherIcons
+            icon="twitter"
+            size={25}
+            color={theme.colors.textSecondary}
+          />
+        </S.SocialContainer>
+      </Col>
+
+      <Col>
+        <S.SocialContainer>
+          <FeatherIcons
+            icon="linkedin"
+            size={25}
+            color={theme.colors.textSecondary}
+          />
+        </S.SocialContainer>
+      </Col>
+
+      <Divider style={{ borderColor: 'white' }}>
+        <span>Ou</span>
+      </Divider>
+    </Row>
+  );
+
   return (
-    <S.FormContainer>
-      <CustomizedForm
-        title="Formulário Login"
-        onFinish={onFinish}
-        width="400px"
-        form={form}
+    <Layout hasSider style={layoutStyle}>
+      <Sider
+        hidden={showImage}
+        style={siderStyle}
+        width="40vw"
+        breakpoint="xl"
+        onBreakpoint={(broken) => setShowImage(broken)}
       >
-        <Form.Item
-          name="email"
-          label="E-mail"
-          rules={[requiredRules, emailRegex]}
+        <Image
+          src={ImageLogin.src}
+          alt="Login_img"
+          preview={false}
+          height="100%"
+          width="100%"
+        />
+      </Sider>
+
+      <Content style={contentStyle}>
+        <CustomizedForm
+          formHeader={formHeader}
+          onFinish={onFinish}
+          width="100%"
+          heigth="fit-content"
+          form={form}
         >
-          <Input
-            type="email"
-            placeholder="E-mail"
-            prefix={<FeatherIcons icon="mail" color="#cecfd3" size={18} />}
-          />
-        </Form.Item>
+          <Form.Item
+            name="email"
+            label="E-mail"
+            rules={[requiredRules, emailRegex]}
+          >
+            <Input
+              type="email"
+              placeholder="E-mail"
+              prefix={<FeatherIcons icon="mail" color="#cecfd3" size={18} />}
+            />
+          </Form.Item>
 
-        <Form.Item name="password" label="Senha" rules={[requiredRules]}>
-          <Input.Password
-            type="password"
-            placeholder="Senha"
-            prefix={<FeatherIcons icon="lock" color="#cecfd3" size={18} />}
-          />
-        </Form.Item>
+          <Form.Item name="password" label="Senha" rules={[requiredRules]}>
+            <Input.Password
+              type="password"
+              placeholder="Senha"
+              prefix={<FeatherIcons icon="lock" color="#cecfd3" size={18} />}
+            />
+          </Form.Item>
 
-        <Row justify="space-between">
-          <Checkbox>Lembrar senha</Checkbox>
+          <Row justify="space-between">
+            <Checkbox>Lembrar senha</Checkbox>
 
-          <S.HoverSpan>Esqueci minha senha</S.HoverSpan>
-        </Row>
+            <S.HoverSpan onClick={toRecover}>Esqueci minha senha</S.HoverSpan>
+          </Row>
 
-        <Button
-          htmlType="submit"
-          marginTop="20px"
-          color={theme.colors.primary}
-          backgroundcolor={theme.colors.mainBackground}
-        >
-          Entrar
-        </Button>
+          <Row justify="center">
+            <Button
+              htmlType="submit"
+              margintop="20px"
+              marginbottom="20px"
+              backgroundcolor={theme.colors.textPrimary}
+              color={theme.colors.textSecondary}
+            >
+              Entrar
+            </Button>
+          </Row>
 
-        <Button
-          onClick={toRegister}
-          htmlType="button"
-          backgroundcolor={theme.colors.textPurple}
-          color={theme.colors.textWhite}
-          marginTop="10px"
-        >
-          Registrar
-        </Button>
-      </CustomizedForm>
-    </S.FormContainer>
+          <Row>
+            Não possui uma conta?
+            <S.RegisterButton onClick={toRegister}>Registrar</S.RegisterButton>
+          </Row>
+        </CustomizedForm>
+      </Content>
+    </Layout>
   );
 }

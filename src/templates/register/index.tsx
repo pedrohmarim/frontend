@@ -113,85 +113,75 @@ export default function RegisterContainer() {
   }
 
   return (
-    <S.FormContainer>
-      <CustomizedForm
-        form={form}
-        title="Formulário Registro"
-        onFinish={onFinish}
-        width="400px"
+    <CustomizedForm
+      form={form}
+      formHeader="Formulário Registro"
+      onFinish={onFinish}
+      width="400px"
+    >
+      <Form.Item name="Username" label="Nome Completo" rules={[requiredRules]}>
+        <Input type="text" placeholder="Nome Completo" />
+      </Form.Item>
+
+      <Form.Item
+        name="Email"
+        label="E-mail"
+        rules={[requiredRules]}
+        validateStatus={loading ? 'validating' : ''}
+        help={
+          loading ? (
+            <S.SpanValidateEmail>Validando E-mail...</S.SpanValidateEmail>
+          ) : !loading && validationState.message.length > 0 ? (
+            <S.SpanValidateEmail
+              color={validationState.isValid ? 'lightgreen' : 'red'}
+            >
+              {validationState.message}
+            </S.SpanValidateEmail>
+          ) : null
+        }
       >
-        <Form.Item
-          name="Username"
-          label="Nome Completo"
-          rules={[requiredRules]}
-        >
-          <Input type="text" placeholder="Nome Completo" />
-        </Form.Item>
+        <Input type="email" placeholder="E-mail" onChange={handleInputChange} />
+      </Form.Item>
 
-        <Form.Item
-          name="Email"
-          label="E-mail"
-          rules={[requiredRules]}
-          validateStatus={loading ? 'validating' : ''}
-          help={
-            loading ? (
-              <S.SpanValidateEmail>Validando E-mail...</S.SpanValidateEmail>
-            ) : !loading && validationState.message.length > 0 ? (
-              <S.SpanValidateEmail
-                color={validationState.isValid ? 'lightgreen' : 'red'}
-              >
-                {validationState.message}
-              </S.SpanValidateEmail>
-            ) : null
-          }
-        >
-          <Input
-            type="email"
-            placeholder="E-mail"
-            onChange={handleInputChange}
-          />
-        </Form.Item>
+      <Form.Item
+        name="Birthday"
+        label="Data Nascimento"
+        rules={[requiredRules]}
+      >
+        <Input type="date" placeholder="Data Nascimento" />
+      </Form.Item>
 
-        <Form.Item
-          name="Birthday"
-          label="Data Nascimento"
-          rules={[requiredRules]}
-        >
-          <Input type="date" placeholder="Data Nascimento" />
-        </Form.Item>
+      <Form.Item
+        name="Password"
+        label="Senha"
+        rules={[requiredRules, { validator: validatePassword }]}
+      >
+        <Input type="password" placeholder="Senha" />
+      </Form.Item>
 
-        <Form.Item
-          name="Password"
-          label="Senha"
-          rules={[requiredRules, { validator: validatePassword }]}
-        >
-          <Input type="password" placeholder="Senha" />
-        </Form.Item>
+      <Form.Item
+        name="ConfirmPassword"
+        label="Confirmar Senha"
+        rules={[requiredRules, { validator: validateConfirmPassword }]}
+      >
+        <Input type="password" placeholder="Senha" />
+      </Form.Item>
 
-        <Form.Item
-          name="ConfirmPassword"
-          label="Confirmar Senha"
-          rules={[requiredRules, { validator: validateConfirmPassword }]}
-        >
-          <Input type="password" placeholder="Senha" />
-        </Form.Item>
+      <Button
+        disabled={loading}
+        htmlType="submit"
+        backgroundcolor={theme.colors.textPrimary}
+        color={theme.colors.textSecondary}
+        margintop="10px"
+      >
+        Registrar
+      </Button>
 
-        <Button
-          disabled={loading}
-          htmlType="submit"
-          backgroundcolor={theme.colors.textPurple}
-          color={theme.colors.textWhite}
-          marginTop="10px"
-        >
-          Registrar
-        </Button>
-
-        <Tooltip title="Voltar" color={theme.colors.textPurple}>
-          <S.BackButton onClick={() => router.push('/login')}>
-            <FeatherIcons icon="chevron-left" />
-          </S.BackButton>
-        </Tooltip>
-      </CustomizedForm>
-    </S.FormContainer>
+      <Tooltip title="Voltar" color={theme.colors.textPrimary}>
+        <S.BackButton onClick={() => router.push('/login')}>
+          <FeatherIcons icon="chevron-left" />
+        </S.BackButton>
+      </Tooltip>
+    </CustomizedForm>
   );
 }
