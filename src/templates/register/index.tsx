@@ -12,8 +12,8 @@ import {
   Form as CustomizedForm,
   Input,
   Button,
-  Tooltip,
   FeatherIcons,
+  Row,
 } from 'antd_components';
 
 export default function RegisterContainer() {
@@ -112,10 +112,16 @@ export default function RegisterContainer() {
     return callback();
   }
 
+  const formHeader = (
+    <Row justify="center">
+      <S.FormHeaderTitle>Formulário Registro</S.FormHeaderTitle>
+    </Row>
+  );
+
   return (
     <CustomizedForm
       form={form}
-      formHeader="Formulário Registro"
+      formHeader={formHeader}
       onFinish={onFinish}
       width="400px"
     >
@@ -164,7 +170,7 @@ export default function RegisterContainer() {
         label="Confirmar Senha"
         rules={[requiredRules, { validator: validateConfirmPassword }]}
       >
-        <Input type="password" placeholder="Senha" />
+        <Input type="password" placeholder="Confirmar Senha" />
       </Form.Item>
 
       <Button
@@ -177,11 +183,15 @@ export default function RegisterContainer() {
         Registrar
       </Button>
 
-      <Tooltip title="Voltar" color={theme.colors.textPrimary}>
-        <S.BackButton onClick={() => router.push('/login')}>
-          <FeatherIcons icon="chevron-left" />
-        </S.BackButton>
-      </Tooltip>
+      <Button
+        htmlType="button"
+        backgroundcolor={theme.colors.textSecondary}
+        color={theme.colors.textPrimary}
+        margintop="10px"
+        onClick={() => router.push('/login')}
+      >
+        Voltar
+      </Button>
     </CustomizedForm>
   );
 }

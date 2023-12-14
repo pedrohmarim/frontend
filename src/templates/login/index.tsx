@@ -75,12 +75,6 @@ export default function LoginContainer() {
     height: 'auto',
   };
 
-  const layoutStyle: React.CSSProperties = {
-    padding: '3px',
-    backgroundColor: theme.colors.background,
-    borderRadius: '10px',
-  };
-
   const formHeader: JSX.Element = (
     <Row gutter={[16, 16]} align="middle" justify="start">
       <Col>
@@ -124,7 +118,7 @@ export default function LoginContainer() {
   );
 
   return (
-    <Layout hasSider style={layoutStyle}>
+    <Layout hasSider>
       <Sider
         hidden={showImage}
         style={siderStyle}

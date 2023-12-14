@@ -17,15 +17,14 @@ export const HoverSpan = styled.span`
   }
 `;
 
-export const BackButton = styled.span`
-  cursor: pointer;
-  margin: 33.5px 0 0 -15px;
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
 export const SpanValidateEmail = styled.span`
   color: ${(props) => props.color || props.theme.colors.textPrimary};
   font-size: 10pt;
+`;
+
+export const FormHeaderTitle = styled.span`
+  font-size: 25pt;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: ${(props) => props.color || props.theme.colors.textPrimary};
 `;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import * as S from './styles';
 import * as I from './IForm';
 
@@ -18,7 +18,7 @@ export default function Form({
       heigth={heigth}
       form={form}
     >
-      {formHeader && <S.FormHeader>{formHeader}</S.FormHeader>}
+      <Fragment>{formHeader}</Fragment>
 
       {children}
     </S.Form>

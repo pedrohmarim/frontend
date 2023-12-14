@@ -30,6 +30,26 @@ export default createGlobalStyle`
     font-size: 10pt;
   }
 
+  .codeInput {
+    background-color: ${(props) => props.theme.colors.textSecondary};
+    border-radius: 5px;
+  }
+
+  input[type="tel"][data-id="0"],
+  input[type="tel"][data-id="1"],
+  input[type="tel"][data-id="2"],
+  input[type="tel"][data-id="3"],
+  input[type="tel"][data-id="4"],
+  input[type="tel"][data-id="5"]
+  {
+    background-color: ${(props) => props.theme.colors.textSecondary};
+    cursor: pointer;
+
+    :disabled{
+      cursor: not-allowed;
+    }
+  }
+
   .ant-form-item-label label{
     font-size: 12pt;
   }

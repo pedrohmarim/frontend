@@ -28,10 +28,6 @@ const ApiAuth = {
     );
     return response.data;
   },
-  Seila: async function () {
-    const response: AxiosResponse<boolean> = await http.get(`${baseURL}/Seila`);
-    return response.data;
-  },
 };
 
 export default ApiAuth;

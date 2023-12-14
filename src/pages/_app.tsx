@@ -12,7 +12,8 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const renderCentered =
     router.pathname == '/login' ||
     router.pathname == '/register' ||
-    router.pathname == '/recoverpassword';
+    router.pathname == '/recoverpassword' ||
+    router.pathname == '/resetpassword';
 
   return (
     <ThemeProvider theme={theme}>

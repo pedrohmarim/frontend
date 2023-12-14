@@ -10,9 +10,3 @@ export const Form = styled(FormComponent)<{ width: string; heigth?: string }>`
   height: ${(props) => props.heigth};
   position: relative;
 `;
-
-export const FormHeader = styled.span`
-  font-weight: bold;
-  color: ${(props) => props.theme.colors.textPrimary};
-  font-size: 25pt;
-`;
