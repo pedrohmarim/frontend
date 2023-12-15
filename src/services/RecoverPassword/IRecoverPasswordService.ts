@@ -9,10 +9,9 @@ export interface ISendChangePasswordUrlRequest {
 
 export interface IValidateResetPasswordTokenRequest {
   Token: string;
-  SecretKey: string;
 }
 
 export interface IResetPasswordRequest {
   Password: string;
-  SecretKey: string;
+  Token: string;
 }

@@ -14,24 +14,23 @@ import {
 } from 'services/RecoverPassword/IRecoverPasswordService';
 
 export default function RecoverPasswordContainer() {
-  const [secretKey, setSecretKey] = useState('');
+  const [token, setToken] = useState('');
   const router = useRouter();
   const [form] = Form.useForm();
 
   useEffect(() => {
     if (!router.isReady) return;
-    const { token, hash } = router.query;
+    const { token } = router.query;
 
-    if (!token || !hash) {
+    if (!token) {
       router.push('/login');
       return Notification.error('Token inválido!');
     }
 
-    setSecretKey(hash?.toString());
+    setToken(token?.toString());
 
     const dto: IValidateResetPasswordTokenRequest = {
       Token: token?.toString(),
-      SecretKey: hash?.toString(),
     };
 
     RecoverPasswordApi.ValidateResetPasswordToken(dto).then(
@@ -78,7 +77,7 @@ export default function RecoverPasswordContainer() {
 
   function onFinish(values: IResetPasswordRequest) {
     const dto: IResetPasswordRequest = {
-      SecretKey: secretKey,
+      Token: token,
       Password: values.Password,
     };
 
