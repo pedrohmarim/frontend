@@ -8,5 +8,4 @@ export const Form = styled(FormComponent)<{ width: string; heigth?: string }>`
   background-color: ${(props) => props.theme.colors.background};
   width: ${(props) => props.width};
   height: ${(props) => props.heigth};
-  position: relative;
 `;

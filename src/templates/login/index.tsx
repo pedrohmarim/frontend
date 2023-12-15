@@ -140,7 +140,7 @@ export default function LoginContainer() {
   );
 
   return (
-    <Layout hasSider>
+    <Layout>
       <Sider
         hidden={showImage}
         style={siderStyle}
