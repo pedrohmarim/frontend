@@ -3,6 +3,7 @@ import { IAccountResponse } from 'services/Account/IAccountService';
 export interface ILoginRequest {
   Email: string;
   Password: string;
+  Rememberme: boolean | undefined;
 }
 
 export interface IUser {

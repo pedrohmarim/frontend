@@ -27,20 +27,10 @@ export default function Header() {
         window.localStorage.removeItem('login');
         setLogin(null);
 
-        return Notification.success({
-          message: 'Succeso!',
-          description: Message,
-          icon: <FeatherIcons icon="check" color="green" />,
-          duration: 3.5,
-        });
+        return Notification.success(Message);
       }
 
-      return Notification.error({
-        message: 'Erro!',
-        description: Message,
-        icon: <FeatherIcons icon="x" color="red" />,
-        duration: 3.5,
-      });
+      return Notification.error(Message);
     });
   }
 

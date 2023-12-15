@@ -8,13 +8,7 @@ import { useRouter } from 'next/router';
 import * as I from '../../services/Account/IAccountService';
 import { Notification } from 'antd_components';
 import { RuleObject } from 'antd/lib/form';
-import {
-  Form as CustomizedForm,
-  Input,
-  Button,
-  FeatherIcons,
-  Row,
-} from 'antd_components';
+import { Form as CustomizedForm, Input, Button, Row } from 'antd_components';
 
 export default function RegisterContainer() {
   const [form] = Form.useForm();
@@ -29,16 +23,11 @@ export default function RegisterContainer() {
   function onFinish(values: I.ICreateAccountRequest) {
     if (!validationState.isValid) return;
 
-    AccountApi.CreateAccount(values).then(() => {
-      Notification.success({
-        message: 'Sucesso!',
-        description: 'Usuário criado.',
-        icon: <FeatherIcons icon="check" color="green" />,
-        duration: 3.5,
-      });
+    AccountApi.CreateAccount(values).then(({ Message, Success }) => {
+      if (!Success) return Notification.error(Message);
 
       form.resetFields();
-
+      Notification.success(Message);
       router.push('/login');
     });
   }

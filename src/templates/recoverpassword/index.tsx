@@ -16,7 +16,6 @@ import {
 import {
   Form as CustomizedForm,
   Row,
-  FeatherIcons,
   Input,
   Button,
   Notification,
@@ -33,19 +32,6 @@ export default function RecoverPasswordContainer() {
     disabled: false,
     leftTime: 0,
   });
-
-  function returnNotification(message: string, success: boolean) {
-    return Notification.success({
-      message: success ? 'Succeso!' : 'Erro',
-      description: message,
-      icon: success ? (
-        <FeatherIcons icon="check" color="green" />
-      ) : (
-        <FeatherIcons icon="x" color="red" />
-      ),
-      duration: 5,
-    });
-  }
 
   useEffect(() => {
     if (codeInputState.leftTime == 0) return;
@@ -84,9 +70,10 @@ export default function RecoverPasswordContainer() {
           leftTime: Success ? 0 : 10,
         });
 
-        returnNotification(Message, Success);
+        if (!Success) return Notification.error(Message);
 
-        if (Success) router.push('/login');
+        Notification.success(Message);
+        router.push('/login');
       })
       .catch(() =>
         setCodeInputState({
@@ -135,7 +122,9 @@ export default function RecoverPasswordContainer() {
     RecoverPasswordApi.SendCodeToEmail(values).then(({ Message, Success }) => {
       setShowCodeInput(true);
 
-      return returnNotification(Message, Success);
+      if (!Success) return Notification.error(Message);
+
+      return Notification.success(Message);
     });
   }
 

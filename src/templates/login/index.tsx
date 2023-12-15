@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import * as I from 'services/Login/ILoginService';
 import { Form } from 'antd';
@@ -32,24 +32,42 @@ export default function LoginContainer() {
   const [form] = Form.useForm();
   const router = useRouter();
 
+  useEffect(() => {
+    if (router.isReady) {
+      const localStorageRememberMeDto =
+        window.localStorage.getItem('rememberme');
+
+      if (localStorageRememberMeDto) {
+        const parsed: I.ILoginRequest = JSON.parse(localStorageRememberMeDto);
+
+        console.log(parsed);
+
+        form.setFieldsValue({ Email: parsed.Email, Password: parsed.Password });
+      }
+    }
+  }, [form, router]);
+
+  function handleRememberme(values: I.ILoginRequest) {
+    window.localStorage.removeItem('rememberme');
+
+    if (values.Rememberme) {
+      const dto = {
+        Email: values.Email,
+        Password: values.Password,
+      };
+
+      window.localStorage.setItem('rememberme', JSON.stringify(dto));
+    }
+  }
+
   function onFinish(values: I.ILoginRequest) {
     LoginApi.Login(values).then(({ Token, Message }) => {
-      if (!Token)
-        return Notification.error({
-          message: 'Erro!',
-          description: Message,
-          icon: <FeatherIcons icon="x" color="red" />,
-          duration: 3.5,
-        });
+      if (!Token) return Notification.error(Message);
 
+      handleRememberme(values);
       updateLogin(Token);
 
-      Notification.success({
-        message: 'Sucesso!',
-        description: Message,
-        icon: <FeatherIcons icon="check" color="green" />,
-        duration: 3.5,
-      });
+      Notification.success(Message);
 
       router.push('/home');
     });
@@ -144,7 +162,7 @@ export default function LoginContainer() {
           form={form}
         >
           <Form.Item
-            name="email"
+            name="Email"
             label="E-mail"
             rules={[requiredRules, emailRegex]}
           >
@@ -155,7 +173,7 @@ export default function LoginContainer() {
             />
           </Form.Item>
 
-          <Form.Item name="password" label="Senha" rules={[requiredRules]}>
+          <Form.Item name="Password" label="Senha" rules={[requiredRules]}>
             <Input.Password
               type="password"
               placeholder="Senha"
@@ -164,7 +182,9 @@ export default function LoginContainer() {
           </Form.Item>
 
           <Row justify="space-between">
-            <Checkbox>Lembrar senha</Checkbox>
+            <Form.Item name="Rememberme" valuePropName="checked">
+              <Checkbox>Lembrar senha</Checkbox>
+            </Form.Item>
 
             <S.HoverSpan onClick={toRecover}>Esqueci minha senha</S.HoverSpan>
           </Row>
@@ -172,7 +192,6 @@ export default function LoginContainer() {
           <Row justify="center">
             <Button
               htmlType="submit"
-              margintop="20px"
               marginbottom="20px"
               backgroundcolor={theme.colors.textPrimary}
               color={theme.colors.textSecondary}

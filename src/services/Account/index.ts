@@ -1,13 +1,14 @@
 import * as I from './IAccountService';
 import baseService from '../api';
 import { AxiosResponse } from 'axios';
+import { IGenericResponse } from 'services/IApi';
 
 const baseURL = '/Account';
 const http = baseService();
 
 const ApiAuth = {
   CreateAccount: async function (data: I.ICreateAccountRequest) {
-    const response: AxiosResponse<void> = await http.post(
+    const response: AxiosResponse<IGenericResponse> = await http.post(
       `${baseURL}/createAccount`,
       data
     );

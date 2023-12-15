@@ -16,8 +16,3 @@ export interface IResetPasswordRequest {
   Password: string;
   SecretKey: string;
 }
-
-export interface IGenericResponse {
-  Message: string;
-  Success: boolean;
-}
