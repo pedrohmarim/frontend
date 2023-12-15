@@ -42,7 +42,11 @@ export default function LoginContainer() {
 
         console.log(parsed);
 
-        form.setFieldsValue({ Email: parsed.Email, Password: parsed.Password });
+        form.setFieldsValue({
+          Email: parsed.Email,
+          Password: parsed.Password,
+          Rememberme: true,
+        });
       }
     }
   }, [form, router]);
@@ -169,15 +173,26 @@ export default function LoginContainer() {
             <Input
               type="email"
               placeholder="E-mail"
-              prefix={<FeatherIcons icon="mail" color="#cecfd3" size={18} />}
+              prefix={
+                <FeatherIcons
+                  icon="mail"
+                  color={theme.colors.textPrimary}
+                  size={18}
+                />
+              }
             />
           </Form.Item>
 
           <Form.Item name="Password" label="Senha" rules={[requiredRules]}>
             <Input.Password
-              type="password"
               placeholder="Senha"
-              prefix={<FeatherIcons icon="lock" color="#cecfd3" size={18} />}
+              prefix={
+                <FeatherIcons
+                  icon="lock"
+                  color={theme.colors.textPrimary}
+                  size={18}
+                />
+              }
             />
           </Form.Item>
 

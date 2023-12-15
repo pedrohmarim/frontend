@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
 import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
-import { Notification } from 'antd_components';
+import { FeatherIcons, Notification } from 'antd_components';
 import { RuleObject } from 'antd/lib/form';
 import * as S from './styles';
 import RecoverPasswordApi from 'services/RecoverPassword';
@@ -102,7 +102,16 @@ export default function RecoverPasswordContainer() {
         label="Nova Senha"
         rules={[requiredRules, { validator: validatePassword }]}
       >
-        <Input type="password" placeholder="Nova Senha" />
+        <Input.Password
+          placeholder="Nova Senha"
+          prefix={
+            <FeatherIcons
+              icon="lock"
+              color={theme.colors.textPrimary}
+              size={18}
+            />
+          }
+        />
       </Form.Item>
 
       <Form.Item
@@ -110,7 +119,16 @@ export default function RecoverPasswordContainer() {
         label="Confirmar Nova Senha"
         rules={[requiredRules, { validator: validateConfirmPassword }]}
       >
-        <Input type="password" placeholder="Confirmar Nova Senha" />
+        <Input.Password
+          placeholder="Confirmar Nova Senha"
+          prefix={
+            <FeatherIcons
+              icon="lock"
+              color={theme.colors.textPrimary}
+              size={18}
+            />
+          }
+        />
       </Form.Item>
 
       <Button

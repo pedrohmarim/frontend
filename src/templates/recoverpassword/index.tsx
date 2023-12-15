@@ -20,6 +20,7 @@ import {
   Button,
   Notification,
   Col,
+  FeatherIcons,
 } from 'antd_components';
 
 export default function RecoverPasswordContainer() {
@@ -144,7 +145,17 @@ export default function RecoverPasswordContainer() {
               label="E-mail"
               rules={[requiredRules, emailRegex]}
             >
-              <Input type="email" placeholder="E-mail" />
+              <Input
+                type="email"
+                placeholder="E-mail"
+                prefix={
+                  <FeatherIcons
+                    icon="mail"
+                    color={theme.colors.textPrimary}
+                    size={18}
+                  />
+                }
+              />
             </Form.Item>
 
             <Button

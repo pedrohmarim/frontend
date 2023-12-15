@@ -24,6 +24,11 @@ export default createGlobalStyle`
 
   .ant-input, .ant-input-password, .ant-input-affix-wrapper{
     background-color: ${(props) => props.theme.colors.textSecondary} !important;
+
+    ::placeholder {
+      color:${(props) => props.theme.colors.background};
+      opacity: 0.5;
+    }
   }
 
   .ant-form-item-explain-error{

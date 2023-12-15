@@ -6,7 +6,7 @@ import AccountApi from 'services/Account';
 import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
 import * as I from '../../services/Account/IAccountService';
-import { Notification } from 'antd_components';
+import { FeatherIcons, Notification } from 'antd_components';
 import { RuleObject } from 'antd/lib/form';
 import { Form as CustomizedForm, Input, Button, Row } from 'antd_components';
 
@@ -115,7 +115,17 @@ export default function RegisterContainer() {
       width="400px"
     >
       <Form.Item name="Username" label="Nome Completo" rules={[requiredRules]}>
-        <Input type="text" placeholder="Nome Completo" />
+        <Input
+          type="text"
+          placeholder="Nome Completo"
+          prefix={
+            <FeatherIcons
+              icon="user"
+              color={theme.colors.textPrimary}
+              size={18}
+            />
+          }
+        />
       </Form.Item>
 
       <Form.Item
@@ -135,7 +145,18 @@ export default function RegisterContainer() {
           ) : null
         }
       >
-        <Input type="email" placeholder="E-mail" onChange={handleInputChange} />
+        <Input
+          type="email"
+          placeholder="E-mail"
+          onChange={handleInputChange}
+          prefix={
+            <FeatherIcons
+              icon="mail"
+              color={theme.colors.textPrimary}
+              size={18}
+            />
+          }
+        />
       </Form.Item>
 
       <Form.Item
@@ -143,7 +164,17 @@ export default function RegisterContainer() {
         label="Data Nascimento"
         rules={[requiredRules]}
       >
-        <Input type="date" placeholder="Data Nascimento" />
+        <Input
+          type="date"
+          placeholder="Data Nascimento"
+          prefix={
+            <FeatherIcons
+              icon="calendar"
+              color={theme.colors.textPrimary}
+              size={18}
+            />
+          }
+        />
       </Form.Item>
 
       <Form.Item
@@ -151,7 +182,16 @@ export default function RegisterContainer() {
         label="Senha"
         rules={[requiredRules, { validator: validatePassword }]}
       >
-        <Input type="password" placeholder="Senha" />
+        <Input.Password
+          placeholder="Senha"
+          prefix={
+            <FeatherIcons
+              icon="lock"
+              color={theme.colors.textPrimary}
+              size={18}
+            />
+          }
+        />
       </Form.Item>
 
       <Form.Item
@@ -159,7 +199,17 @@ export default function RegisterContainer() {
         label="Confirmar Senha"
         rules={[requiredRules, { validator: validateConfirmPassword }]}
       >
-        <Input type="password" placeholder="Confirmar Senha" />
+        <Input.Password
+          type="password"
+          placeholder="Confirmar Senha"
+          prefix={
+            <FeatherIcons
+              icon="lock"
+              color={theme.colors.textPrimary}
+              size={18}
+            />
+          }
+        />
       </Form.Item>
 
       <Button
