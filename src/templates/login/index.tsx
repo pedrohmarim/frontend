@@ -6,7 +6,8 @@ import LoginApi from 'services/Login';
 import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
-import ImageLogin from 'assets/loginImg.png';
+import Lottie from 'lottie-react';
+import loginAnimation from 'assets/loginAnimation.json';
 import {
   emailRegex,
   requiredRules,
@@ -18,7 +19,6 @@ import {
   Row,
   Checkbox,
   Notification,
-  Image,
   FeatherIcons,
   Layout,
   Col,
@@ -144,17 +144,11 @@ export default function LoginContainer() {
       <Sider
         hidden={showImage}
         style={siderStyle}
-        width="40vw"
+        width="50%"
         breakpoint="xl"
         onBreakpoint={(broken) => setShowImage(broken)}
       >
-        <Image
-          src={ImageLogin.src}
-          alt="Login_img"
-          preview={false}
-          height="100%"
-          width="100%"
-        />
+        <Lottie animationData={loginAnimation} />
       </Sider>
 
       <Content style={contentStyle}>
