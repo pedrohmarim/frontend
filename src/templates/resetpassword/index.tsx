@@ -135,7 +135,7 @@ export default function RecoverPasswordContainer() {
         htmlType="submit"
         backgroundcolor={theme.colors.textPrimary}
         color={theme.colors.textSecondary}
-        margintop="10px"
+        margin="10px 0 0 0"
       >
         Confirmar
       </Button>
@@ -144,7 +144,7 @@ export default function RecoverPasswordContainer() {
         htmlType="button"
         backgroundcolor={theme.colors.textSecondary}
         color={theme.colors.textPrimary}
-        margintop="10px"
+        margin="10px 0 0 0"
         onClick={() => router.push('/login')}
       >
         Voltar

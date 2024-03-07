@@ -29,16 +29,20 @@ import PopConfirm from './PopConfirm/PopConfirm.component';
 import Modal from './Modal/Modal.component';
 import Table from './Table/Table.component';
 import Progress from './Progress/Progress.component';
+import Carousel from './Carousel/Carousel.component';
 import Popover from './Popover/Popover.component';
+import Empty from './Empty/Empty.component';
 
 export {
   Avatar,
+  Empty,
   Table,
   Modal,
   Tag,
   Loading,
   Button,
   Spin,
+  Carousel,
   BackTop,
   Notification,
   Row,

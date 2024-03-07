@@ -1,0 +1,283 @@
+import React, { useState, useEffect } from 'react';
+import * as S from './styles';
+import * as I from './IChoosedMessage';
+import type { MenuProps } from 'antd';
+import DiscordMessagesApi from 'services/DiscordleService';
+import theme from 'globalStyles/theme';
+import filterMessage from 'helpers/discordle/filter.message';
+import DisplayMessageContainer from 'templates/discordleTemplates/game/components/DisplayMessageContainer';
+import { IChoosedMessage } from './IChoosedMessage';
+import Cookie from 'cookiejs';
+import {
+  FilterMessageEnum,
+  IFilterMessageResponse,
+  MessageLevelEnum,
+} from 'helpers/discordle/filterMessageEnum';
+import {
+  Button,
+  FeatherIcons,
+  Tooltip,
+  Dropdown,
+  PopConfirm,
+  Avatar,
+  Row,
+} from 'antd_components';
+
+export default function ChoosedMessage({
+  message,
+  score,
+  serverName,
+  serverIcon,
+  setUsedHint,
+}: I.IChoosedMessageComponent) {
+  const {
+    content,
+    timestamp,
+    id,
+    messageType,
+    formattedAttachs,
+    messageLevel,
+    urlLink,
+  } = message;
+
+  const mainMessage = {
+    content,
+    timestamp,
+    id,
+    messageType,
+    formattedAttachs,
+    messageLevel,
+    urlLink,
+  };
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [channelId, setChannelId] = useState<string>('');
+  const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
+    mainMessage,
+  ]);
+
+  const [stillOpen, setStillOpen] = useState({
+    tooltip: false,
+    popconfirm: false,
+    dropdown: false,
+  });
+
+  function closeAll() {
+    setStillOpen({
+      tooltip: false,
+      popconfirm: false,
+      dropdown: false,
+    });
+  }
+
+  function handleFormattEmptyChoosedMessage(
+    emptyChoosedMessage: IChoosedMessage,
+    isPrevious: boolean
+  ) {
+    if (isPrevious) {
+      emptyChoosedMessage.content =
+        'Não existe uma mensagem consecutiva à escolhida.';
+      emptyChoosedMessage.messageLevel = MessageLevelEnum.isPrevious;
+    } else {
+      emptyChoosedMessage.content =
+        'Não existe uma mensagem anterior à escolhida.';
+      emptyChoosedMessage.messageLevel = MessageLevelEnum.isConsecutive;
+    }
+
+    return emptyChoosedMessage;
+  }
+
+  function handleGetHints() {
+    DiscordMessagesApi.GetDiscordHints(id, channelId).then(
+      ({ consecutivePosition, previousPosition }) => {
+        const emptyChoosedMessage: IChoosedMessage = {
+          content: '',
+          formattedAttachs: [] as JSX.Element[],
+          id: '',
+          urlLink: '',
+          messageType: FilterMessageEnum.isText,
+          timestamp: '',
+          messageLevel: MessageLevelEnum.dontExist,
+        };
+
+        let filterResponsePreviousMessage: IFilterMessageResponse =
+          {} as IFilterMessageResponse;
+
+        if (previousPosition)
+          filterResponsePreviousMessage = filterMessage(previousPosition);
+
+        const previousMessage: IChoosedMessage = !previousPosition
+          ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
+          : {
+              content: previousPosition.content,
+              formattedAttachs: filterResponsePreviousMessage.formattedAttachs,
+              urlLink: filterResponsePreviousMessage.urlLink,
+              id: previousPosition.id,
+              messageType: filterResponsePreviousMessage.messageType,
+              timestamp: previousPosition.timestamp,
+              messageLevel: MessageLevelEnum.isPrevious,
+            };
+
+        let filterResponseConsecutiveMessage: IFilterMessageResponse =
+          {} as IFilterMessageResponse;
+
+        if (consecutivePosition)
+          filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
+
+        const consecutiveMessage: IChoosedMessage = !consecutivePosition
+          ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
+          : {
+              content: consecutivePosition.content,
+              formattedAttachs:
+                filterResponseConsecutiveMessage.formattedAttachs,
+              urlLink: filterResponseConsecutiveMessage.urlLink,
+              id: consecutivePosition.id,
+              messageType: filterResponseConsecutiveMessage.messageType,
+              timestamp: consecutivePosition.timestamp,
+              messageLevel: MessageLevelEnum.isConsecutive,
+            };
+
+        setTotalMessages([consecutiveMessage, mainMessage, previousMessage]);
+      }
+    );
+  }
+
+  useEffect(() => {
+    const channelId = Cookie.get('channelId').toString();
+    setChannelId(channelId);
+  }, []);
+
+  const confirm = () =>
+    new Promise(() => {
+      setLoading(true);
+
+      setTimeout(() => {
+        setUsedHint(true);
+        handleGetHints();
+
+        setLoading(false);
+      }, 2000);
+    });
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <PopConfirm
+          title="Aviso! Ao mostrar uma dica, a resposta correta valerá a metade dos pontos normais."
+          okText="Mostrar"
+          cancelText="Cancelar"
+          onConfirm={confirm}
+          onCancel={closeAll}
+          open={stillOpen.popconfirm || loading}
+        >
+          <S.OptionItem
+            align="middle"
+            onClick={() =>
+              setStillOpen({
+                popconfirm: true,
+                tooltip: false,
+                dropdown: true,
+              })
+            }
+          >
+            <FeatherIcons
+              icon="star"
+              color={theme.discordleColors.primary}
+              size={20}
+            />
+            <S.Hint>Dica</S.Hint>
+          </S.OptionItem>
+        </PopConfirm>
+      ),
+    },
+  ];
+
+  return (
+    <S.PaddingContainer>
+      <S.ScoreContainer>
+        <FeatherIcons icon="star" size={18} />
+        <S.ScoreText> Pontuação: {score}/10</S.ScoreText>
+      </S.ScoreContainer>
+
+      {totalMessages.length === 1 && (
+        <Tooltip title="Opções" color="#17171a" open={stillOpen.tooltip}>
+          <S.Options>
+            <Dropdown
+              menu={{ items }}
+              placement="bottomRight"
+              trigger={window.innerWidth < 450 ? ['click'] : ['hover', 'click']}
+              open={stillOpen.dropdown || loading}
+              onOpenChange={(open) =>
+                setStillOpen({
+                  popconfirm: !open ? false : stillOpen.popconfirm,
+                  tooltip: open && !stillOpen.popconfirm,
+                  dropdown: open,
+                })
+              }
+            >
+              <a onClick={(e) => e.preventDefault()}>
+                <Button
+                  type="ghost"
+                  icon={
+                    <FeatherIcons
+                      icon="more-vertical"
+                      color={theme.discordleColors.primary}
+                      size={25}
+                    />
+                  }
+                />
+              </a>
+            </Dropdown>
+          </S.Options>
+        </Tooltip>
+      )}
+
+      <S.BiggerGameTitle>Discordle</S.BiggerGameTitle>
+
+      <Row justify="center" align="middle">
+        <Avatar src={serverIcon} />
+        <S.ServerName>{serverName}</S.ServerName>
+      </Row>
+
+      {totalMessages.map(
+        (
+          {
+            content,
+            formattedAttachs,
+            messageType,
+            timestamp,
+            id,
+            messageLevel,
+            urlLink,
+          },
+          index
+        ) => {
+          const props = {
+            content,
+            formattedAttachs,
+            messageType,
+            timestamp,
+            id,
+            messageLevel,
+            urlLink,
+            key: index,
+          };
+
+          return (
+            <S.Container key={index}>
+              {messageLevel === MessageLevelEnum.isMain &&
+              totalMessages.length > 1 ? (
+                <S.MainMessageContainer>
+                  <DisplayMessageContainer {...props} />
+                </S.MainMessageContainer>
+              ) : (
+                <DisplayMessageContainer {...props} />
+              )}
+            </S.Container>
+          );
+        }
+      )}
+    </S.PaddingContainer>
+  );
+}

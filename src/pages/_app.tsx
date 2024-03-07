@@ -2,10 +2,9 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
 import 'antd/dist/antd.css';
-import GlobalStyle from 'globalStyles/global';
+import GlobalStyle, { CenteredContainer } from 'globalStyles/global';
 import theme from 'globalStyles/theme';
 import { ContextProvider } from '../Context';
-import * as S from './styles';
 import Loading from 'antd_components/Loading';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
@@ -19,9 +18,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     <ThemeProvider theme={theme}>
       <ContextProvider>
         {renderCentered ? (
-          <S.CenteredContainer>
+          <CenteredContainer>
             <Component {...pageProps} />
-          </S.CenteredContainer>
+          </CenteredContainer>
         ) : (
           <Component {...pageProps} />
         )}

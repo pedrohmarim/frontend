@@ -217,7 +217,7 @@ export default function RegisterContainer() {
         htmlType="submit"
         backgroundcolor={theme.colors.textPrimary}
         color={theme.colors.textSecondary}
-        margintop="10px"
+        margin="10px 0 0 0"
       >
         Registrar
       </Button>
@@ -226,7 +226,7 @@ export default function RegisterContainer() {
         htmlType="button"
         backgroundcolor={theme.colors.textSecondary}
         color={theme.colors.textPrimary}
-        margintop="10px"
+        margin="10px 0 0 0"
         onClick={() => router.push('/login')}
       >
         Voltar

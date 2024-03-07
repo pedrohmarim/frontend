@@ -194,7 +194,7 @@ export default function RecoverPasswordContainer() {
             htmlType="button"
             backgroundcolor={theme.colors.textSecondary}
             color={theme.colors.textPrimary}
-            margintop="20px"
+            margin="20px 0 0 0"
             onClick={() => router.push('/login')}
           >
             Voltar

@@ -201,7 +201,7 @@ export default function LoginContainer() {
           <Row justify="center">
             <Button
               htmlType="submit"
-              marginbottom="20px"
+              margin="0 0 20px 0"
               backgroundcolor={theme.colors.textPrimary}
               color={theme.colors.textSecondary}
             >
