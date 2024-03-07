@@ -12,7 +12,8 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     router.pathname == '/login' ||
     router.pathname == '/register' ||
     router.pathname == '/recoverpassword' ||
-    router.pathname == '/resetpassword';
+    router.pathname == '/resetpassword' ||
+    router.pathname == '/discordle/home';
 
   return (
     <ThemeProvider theme={theme}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
@@ -24,6 +24,19 @@ export default function HomeContainer() {
     []
   );
 
+  function onClick() {
+    const clientIdBot = '1089918362311733378';
+    const permissions = '75824';
+    const redirectUri = encodeURIComponent(
+      process.env.NEXT_PUBLIC_REDIRECT_URI ?? ''
+    );
+
+    const respondeType = 'code';
+    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientIdBot}&permissions=${permissions}&redirect_uri=${redirectUri}&response_type=${respondeType}&scope=connections%20bot`;
+
+    window.open(url);
+  }
+
   useEffect(() => {
     function handleReset() {
       Cookie.remove('guildId');
@@ -38,13 +51,13 @@ export default function HomeContainer() {
       if (guild_id) {
         setGuildId(guild_id.toString());
 
-        DiscordMessagesApi.GetInstanceChannels(guild_id.toString())
-          .then((channels) => {
-            setInstanceChannels(channels);
-            setWhichRender('formDiscordleInstance');
-          })
-          .catch(() => handleReset())
-          .finally(() => setLoadHome(false));
+        // DiscordMessagesApi.GetInstanceChannels(guild_id.toString())
+        //   .then((channels) => {
+        //     setInstanceChannels(channels);
+        //     setWhichRender('formDiscordleInstance');
+        //   })
+        //   // .catch(() => handleReset())
+        //   .finally(() => setLoadHome(false));
       } else {
         const userId = Cookie.get('userId');
 
@@ -69,7 +82,7 @@ export default function HomeContainer() {
   }, [router]);
 
   const GamePresentation = () => (
-    <>
+    <Fragment>
       <S.Title>
         Bem vindo ao
         <G.HomeSpan> Discordle</G.HomeSpan>
@@ -89,12 +102,7 @@ export default function HomeContainer() {
 
       <Row justify="center">
         <S.Button
-          onClick={() =>
-            window.open(
-              'https://discord.com/api/oauth2/authorize?client_id=1089918362311733378&permissions=2064&redirect_uri=https%3A%2F%2Fdiscordlle.vercel.app%2F&response_type=code&scope=connections%20bot',
-              '_self'
-            )
-          }
+          onClick={onClick}
           boxshadow="0px 0px 10px 10px rgba(255, 255, 255, 0.08)"
           backgroundcolor={theme.discordleColors.primary}
           color={theme.discordleColors.text}
@@ -112,7 +120,7 @@ export default function HomeContainer() {
           <G.HomeSpan> Dono </G.HomeSpan> do servidor que deseje usar.
         </S.Description>
       </Row>
-    </>
+    </Fragment>
   );
 
   function handleReset() {
@@ -125,17 +133,16 @@ export default function HomeContainer() {
   function onChange(channelId: string) {
     setLoadingInstance(true);
 
-    DiscordMessagesApi.CreateDiscordleInstance(channelId, guildId)
-      .then(() => {
-        router.push({
-          pathname: '/chooseProfile',
-          query: {
-            channelId,
-            guildId,
-          },
-        });
-      })
-      .catch(() => handleReset());
+    DiscordMessagesApi.CreateDiscordleInstance(channelId, guildId).then(() => {
+      router.push({
+        pathname: '/chooseProfile',
+        query: {
+          channelId,
+          guildId,
+        },
+      });
+    });
+    // .catch(() => handleReset());
   }
 
   function handleReload() {
@@ -149,13 +156,13 @@ export default function HomeContainer() {
           setInstanceChannels(channels);
           setWhichRender('formDiscordleInstance');
         })
-        .catch(() => handleReset())
+        // .catch(() => handleReset())
         .finally(() => setLoadingInstance(false));
     }
   }
 
   const FormDiscordleInstance = () => (
-    <>
+    <Fragment>
       <GameTitle>Discordle | Criar Instância</GameTitle>
 
       <S.NegativeMarginRow justify="center" align="middle">
@@ -214,7 +221,7 @@ export default function HomeContainer() {
           <G.HomeSpan> cinco</G.HomeSpan> mensagens não serão listados.
         </S.Description>
       </S.Row>
-    </>
+    </Fragment>
   );
 
   const WhichRender = () => {
@@ -229,12 +236,12 @@ export default function HomeContainer() {
   if (loadHome) return <DiscordLoad />;
 
   return (
-    <>
+    <Fragment>
       <Head>
         <title>Discordle | Home</title>
       </Head>
 
-      <G.MessageContainer>{WhichRender()}</G.MessageContainer>
-    </>
+      <G.MessageContainer width="50%">{WhichRender()}</G.MessageContainer>
+    </Fragment>
   );
 }

@@ -4,11 +4,12 @@ import { AxiosResponse } from 'axios';
 import { IAwnser } from 'templates/discordleTemplates/game/IGame';
 
 const http = baseService();
+const baseUrl = 'Discordle';
 
 const ApiAuth = {
   GetChoosedMessages: async function (channelId: string) {
     const response: AxiosResponse<I.IMessageInstance> = await http.get(
-      '/getChoosedMessages',
+      `${baseUrl}/getChoosedMessages`,
       {
         params: {
           channelId,
@@ -19,7 +20,7 @@ const ApiAuth = {
   },
   GetChannelMembers: async function (channelId: string, guildId: string) {
     const response: AxiosResponse<I.IMember[]> = await http.get(
-      '/getChannelMembers',
+      `${baseUrl}/getChannelMembers`,
       {
         params: {
           channelId,
@@ -30,26 +31,32 @@ const ApiAuth = {
     return response.data;
   },
   ValidateToken: async function (token: string, userId: string) {
-    const response: AxiosResponse<boolean> = await http.get('/validateToken', {
-      params: {
-        userId,
-        token,
-      },
-    });
+    const response: AxiosResponse<boolean> = await http.get(
+      `${baseUrl}/validateToken`,
+      {
+        params: {
+          userId,
+          token,
+        },
+      }
+    );
     return response.data;
   },
   VerifyUser: async function (guildId: string, userId: string) {
-    const response: AxiosResponse<boolean> = await http.get('/verifyUser', {
-      params: {
-        guildId,
-        userId,
-      },
-    });
+    const response: AxiosResponse<boolean> = await http.get(
+      `${baseUrl}/verifyUser`,
+      {
+        params: {
+          guildId,
+          userId,
+        },
+      }
+    );
     return response.data;
   },
   GetDiscordHints: async function (id: string, channelId: string) {
     const response: AxiosResponse<I.IGetDiscordHintsResponse> = await http.get(
-      '/getHints',
+      `${baseUrl}/getHints`,
       {
         params: { id, channelId },
       }
@@ -58,21 +65,24 @@ const ApiAuth = {
     return response.data;
   },
   GetTimer: async function (channelId: string, guildId: string) {
-    const response: AxiosResponse<string> = await http.get('/getTimer', {
-      params: { guildId, channelId },
-    });
+    const response: AxiosResponse<string> = await http.get(
+      `${baseUrl}/getTimer`,
+      {
+        params: { guildId, channelId },
+      }
+    );
     return response.data;
   },
   SaveScore: async function (data: I.IScoreInstance) {
     const response: AxiosResponse<boolean> = await http.post(
-      '/saveScore',
+      `${baseUrl}/saveScore`,
       data
     );
     return response.data;
   },
   VerifyAlreadyAwnsered: async function (userId: string, channelId: string) {
     const response: AxiosResponse<IAwnser[]> = await http.get(
-      '/verifyAlreadyAwnsered',
+      `${baseUrl}/verifyAlreadyAwnsered`,
       {
         params: {
           userId,
@@ -84,7 +94,7 @@ const ApiAuth = {
   },
   GetInstanceChannels: async function (guildId: string) {
     const response: AxiosResponse<I.IInstanceChannels[]> = await http.get(
-      '/getInstanceChannels',
+      `${baseUrl}/getInstanceChannels`,
       {
         params: {
           guildId,
@@ -95,7 +105,7 @@ const ApiAuth = {
   },
   GetDiscordleHistory: async function (channelId: string, guildId: string) {
     const response: AxiosResponse<I.IGetTableResponse> = await http.get(
-      '/getDiscordleHistory',
+      `${baseUrl}/getDiscordleHistory`,
       {
         params: {
           guildId,
@@ -107,7 +117,7 @@ const ApiAuth = {
   },
   GetUserScoreDetail: async function (userId: string, channelId: string) {
     const response: AxiosResponse<I.IUserScoreDetail[]> = await http.get(
-      '/getUserScoreDetail',
+      `${baseUrl}/getUserScoreDetail`,
       {
         params: {
           userId,
@@ -119,7 +129,7 @@ const ApiAuth = {
   },
   CreateDiscordleInstance: async function (channelId: string, guildId: string) {
     const response: AxiosResponse = await http.post(
-      '/createDiscordleInstance',
+      `${baseUrl}/createDiscordleInstance`,
       {
         channelId,
         guildId,

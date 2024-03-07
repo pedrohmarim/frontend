@@ -10,7 +10,7 @@ export default createGlobalStyle`
   }
 
   body {
-    background-image: url("https://images4.alphacoders.com/909/909912.png")
+    background-image: url("https://images4.alphacoders.com/909/909912.png") !important
   }
   
   nextjs-portal {
@@ -234,7 +234,9 @@ export const DynamicWidth = styled.div<{ width: string }>`
   width: ${({ width }) => width};
 `;
 
-export const MessageContainer = styled(Card)`
+export const MessageContainer = styled(Card)<{ width?: string }>`
+  text-align: center;
+  width: ${({ width }) => width};
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.discordleColors.text};
