@@ -61,10 +61,10 @@ export interface IInstanceChannelsGetDto {
 }
 
 export interface IInstanceChannels {
-  channelName: string;
-  channelId: string;
-  members: IMember[];
-  notListed: boolean;
+  ChannelName: string;
+  ChannelId: string;
+  Members: IMember[];
+  NotListed: boolean;
 }
 
 export interface IMember {

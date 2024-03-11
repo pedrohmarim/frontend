@@ -31,8 +31,8 @@ export default function HomeContainer() {
       process.env.NEXT_PUBLIC_REDIRECT_URI ?? ''
     );
 
-    const respondeType = 'code';
-    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientIdBot}&permissions=${permissions}&redirect_uri=${redirectUri}&response_type=${respondeType}&scope=connections%20bot`;
+    const responseType = 'code';
+    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientIdBot}&permissions=${permissions}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=connections%20bot`;
 
     window.open(url);
   }
@@ -51,13 +51,13 @@ export default function HomeContainer() {
       if (guild_id) {
         setGuildId(guild_id.toString());
 
-        // DiscordMessagesApi.GetInstanceChannels(guild_id.toString())
-        //   .then((channels) => {
-        //     setInstanceChannels(channels);
-        //     setWhichRender('formDiscordleInstance');
-        //   })
-        //   // .catch(() => handleReset())
-        //   .finally(() => setLoadHome(false));
+        DiscordMessagesApi.GetGuildById(guild_id.toString())
+          .then((channels) => {
+            setInstanceChannels(channels);
+            setWhichRender('formDiscordleInstance');
+          })
+          .catch(() => handleReset())
+          .finally(() => setLoadHome(false));
       } else {
         const userId = Cookie.get('userId');
 
@@ -133,16 +133,17 @@ export default function HomeContainer() {
   function onChange(channelId: string) {
     setLoadingInstance(true);
 
-    DiscordMessagesApi.CreateDiscordleInstance(channelId, guildId).then(() => {
-      router.push({
-        pathname: '/chooseProfile',
-        query: {
-          channelId,
-          guildId,
-        },
-      });
-    });
-    // .catch(() => handleReset());
+    DiscordMessagesApi.CreateDiscordleInstance(channelId, guildId)
+      .then(() => {
+        router.push({
+          pathname: '/chooseProfile',
+          query: {
+            channelId,
+            guildId,
+          },
+        });
+      })
+      .catch(() => handleReset());
   }
 
   function handleReload() {
@@ -151,7 +152,7 @@ export default function HomeContainer() {
     const { guild_id } = router.query;
 
     if (guild_id) {
-      DiscordMessagesApi.GetInstanceChannels(guild_id.toString())
+      DiscordMessagesApi.GetGuildById(guild_id.toString())
         .then((channels) => {
           setInstanceChannels(channels);
           setWhichRender('formDiscordleInstance');
@@ -173,16 +174,22 @@ export default function HomeContainer() {
           onChange={(channelId) => onChange(String(channelId))}
         >
           {instanceChannels?.length &&
-            instanceChannels.map(({ channelId, channelName, notListed }) => (
-              <Select.Option key={channelId}>
-                <Row align="middle">
-                  <Row justify="center" align="middle">
-                    #{channelName}
-                    {notListed && <S.NewHighlight> (Novo!)</S.NewHighlight>}
+            instanceChannels.map(
+              ({
+                ChannelId: channelId,
+                ChannelName: channelName,
+                NotListed: notListed,
+              }) => (
+                <Select.Option key={channelId}>
+                  <Row align="middle">
+                    <Row justify="center" align="middle">
+                      #{channelName}
+                      {notListed && <S.NewHighlight> (Novo!)</S.NewHighlight>}
+                    </Row>
                   </Row>
-                </Row>
-              </Select.Option>
-            ))}
+                </Select.Option>
+              )
+            )}
         </Select>
 
         <Tooltip title="Recarregar" placement="right">

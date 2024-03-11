@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import { IAwnser } from 'templates/discordleTemplates/game/IGame';
 
 const http = baseService();
-const baseUrl = 'Discordle';
+const baseUrl = 'DiscordleGuilds';
 
 const ApiAuth = {
   GetChoosedMessages: async function (channelId: string) {
@@ -92,13 +92,11 @@ const ApiAuth = {
     );
     return response.data;
   },
-  GetInstanceChannels: async function (guildId: string) {
-    const response: AxiosResponse<I.IInstanceChannels[]> = await http.get(
-      `${baseUrl}/getInstanceChannels`,
+  GetGuildById: async function (guildId: string) {
+    const response: AxiosResponse<I.IInstanceChannels[]> = await http.post(
+      `${baseUrl}/GetGuildById`,
       {
-        params: {
-          guildId,
-        },
+        guildId,
       }
     );
     return response.data;
