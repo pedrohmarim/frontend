@@ -13,6 +13,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
     router.pathname == '/register' ||
     router.pathname == '/recoverpassword' ||
     router.pathname == '/resetpassword' ||
+    router.pathname == '/discordle/chooseProfile' ||
     router.pathname == '/discordle/home';
 
   return (

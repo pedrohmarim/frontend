@@ -11,6 +11,8 @@ export const Card = styled.div`
   border: solid 1px rgba(255, 255, 255, 0.1);
   transition: all 0.2s;
   scale: calc(0.9);
+  min-width: 180px;
+  max-width: 180px;
 
   :hover {
     cursor: pointer;

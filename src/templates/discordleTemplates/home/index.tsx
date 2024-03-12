@@ -7,7 +7,8 @@ import Cookie from 'cookiejs';
 import theme from 'globalStyles/theme';
 import Head from 'next/head';
 import { Row, FeatherIcons, Tooltip } from 'antd_components';
-import DiscordMessagesApi from 'services/DiscordleService';
+import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
+import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import { IInstanceChannels } from 'services/DiscordleService/IDiscordleService';
 import DiscordLoad from 'templates/discordleTemplates/load';
 import { Select } from 'templates/discordleTemplates/game/components/AuthorSelect/styles';
@@ -51,7 +52,7 @@ export default function HomeContainer() {
       if (guild_id) {
         setGuildId(guild_id.toString());
 
-        DiscordMessagesApi.GetGuildById(guild_id.toString())
+        DiscordGuildsApi.GetGuildById(guild_id.toString())
           .then((channels) => {
             setInstanceChannels(channels);
             setWhichRender('formDiscordleInstance');
@@ -133,10 +134,10 @@ export default function HomeContainer() {
   function onChange(channelId: string) {
     setLoadingInstance(true);
 
-    DiscordMessagesApi.CreateDiscordleInstance(channelId, guildId)
+    DiscordInstanceApi.CreateDiscordleInstance(channelId, guildId)
       .then(() => {
         router.push({
-          pathname: '/chooseProfile',
+          pathname: '/discordle/chooseProfile',
           query: {
             channelId,
             guildId,
@@ -152,12 +153,12 @@ export default function HomeContainer() {
     const { guild_id } = router.query;
 
     if (guild_id) {
-      DiscordMessagesApi.GetGuildById(guild_id.toString())
+      DiscordGuildsApi.GetGuildById(guild_id.toString())
         .then((channels) => {
           setInstanceChannels(channels);
           setWhichRender('formDiscordleInstance');
         })
-        // .catch(() => handleReset())
+        .catch(() => handleReset())
         .finally(() => setLoadingInstance(false));
     }
   }

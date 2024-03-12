@@ -68,9 +68,9 @@ export interface IInstanceChannels {
 }
 
 export interface IMember {
-  id: string;
-  username: string;
-  avatarUrl: string;
+  Id: string;
+  Username: string;
+  AvatarUrl: string;
 }
 
 export interface IGetTableResponse {

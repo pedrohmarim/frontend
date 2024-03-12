@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { IMember } from 'services/DiscordleService/IDiscordleService';
 import Cookie from 'cookiejs';
 import * as S from './styles';
-import DiscordMessagesApi from 'services/DiscordleService';
+import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
 import { Image, Row, Col } from 'antd_components';
 import { useRouter } from 'next/router';
 import DiscordLoad from 'templates/discordleTemplates/load';
@@ -45,18 +45,15 @@ export default function ChooseProfile() {
 
       if (userId) {
         router.push({
-          pathname: '/game',
+          pathname: 'discordle/game',
           query: {
             channelId,
             guildId,
           },
         });
       } else {
-        if (guildId && channelId)
-          DiscordMessagesApi.GetChannelMembers(
-            channelId.toString(),
-            guildId.toString()
-          )
+        if (channelId)
+          DiscordMembersApi.GetChannelMembers(channelId.toString())
             .then((members: IMember[]) => setMembers(members))
             .catch(() => handleReset())
             .finally(() => setLoading(false));
@@ -75,28 +72,25 @@ export default function ChooseProfile() {
     }
 
     if (guildId) {
-      setLoadingValidateToken(true);
-
-      DiscordMessagesApi.ValidateToken(token, showTokenInput.userId)
-        .then((validToken: boolean) => {
-          if (!validToken) {
-            setValidToken(validToken);
-            return;
-          }
-
-          Cookie.set('userId', showTokenInput.userId);
-          Cookie.set('guildId', guildId?.toString());
-          Cookie.set('channelId', channelId?.toString());
-
-          router.push({
-            pathname: '/game',
-            query: {
-              channelId,
-              guildId,
-            },
-          });
-        })
-        .finally(() => setLoadingValidateToken(false));
+      // setLoadingValidateToken(true);
+      // DiscordMessagesApi.ValidateToken(token, showTokenInput.userId)
+      //   .then((validToken: boolean) => {
+      //     if (!validToken) {
+      //       setValidToken(validToken);
+      //       return;
+      //     }
+      //     Cookie.set('userId', showTokenInput.userId);
+      //     Cookie.set('guildId', guildId?.toString());
+      //     Cookie.set('channelId', channelId?.toString());
+      //     router.push({
+      //       pathname: '/game',
+      //       query: {
+      //         channelId,
+      //         guildId,
+      //       },
+      //     });
+      //   })
+      //   .finally(() => setLoadingValidateToken(false));
     }
   }
 
@@ -135,7 +129,7 @@ export default function ChooseProfile() {
       <GameTitle>Escolha seu Perfil</GameTitle>
 
       <S.MemberRow ref={memberRowRef} onMouseDown={handleMouseDown}>
-        {members.map(({ avatarUrl, id, username }, index) => (
+        {members.map(({ AvatarUrl, Id, Username }, index) => (
           <S.Card
             className={
               showTokenInput.selectedItemIndex === index
@@ -146,24 +140,24 @@ export default function ChooseProfile() {
             onClick={() =>
               setShowTokenInput({
                 view: true,
-                userId: id,
+                userId: Id,
                 selectedItemIndex: index,
               })
             }
           >
             <Image
               alt="avatarUrl"
-              src={avatarUrl}
+              src={AvatarUrl}
               preview={false}
               width={130}
             />
-            <S.Username>{username}</S.Username>
+            <S.Username>{Username}</S.Username>
           </S.Card>
         ))}
       </S.MemberRow>
 
       {showTokenInput.view && (
-        <>
+        <Fragment>
           <Divider />
 
           <Row justify="center" align="middle" gutter={[16, 16]}>
@@ -199,13 +193,13 @@ export default function ChooseProfile() {
               <S.InvalidText>Codigo Inválido!</S.InvalidText>
             ) : (
               loadingValidateToken && (
-                <>
+                <Fragment>
                   Validando... <LoadingOutlined spin />
-                </>
+                </Fragment>
               )
             )}
           </Row>
-        </>
+        </Fragment>
       )}
     </MessageContainer>
   ) : (
