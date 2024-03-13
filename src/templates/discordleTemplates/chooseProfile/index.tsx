@@ -65,32 +65,35 @@ export default function ChooseProfile() {
   function handleSaveUser(token: string) {
     const { guildId, channelId } = router.query;
 
-    if (token.length !== 5) {
+    if (token.length === 5) {
       setValidToken(true);
       setLoadingValidateToken(false);
       return;
     }
 
     if (guildId) {
-      // setLoadingValidateToken(true);
-      // DiscordMessagesApi.ValidateToken(token, showTokenInput.userId)
-      //   .then((validToken: boolean) => {
-      //     if (!validToken) {
-      //       setValidToken(validToken);
-      //       return;
-      //     }
-      //     Cookie.set('userId', showTokenInput.userId);
-      //     Cookie.set('guildId', guildId?.toString());
-      //     Cookie.set('channelId', channelId?.toString());
-      //     router.push({
-      //       pathname: '/game',
-      //       query: {
-      //         channelId,
-      //         guildId,
-      //       },
-      //     });
-      //   })
-      //   .finally(() => setLoadingValidateToken(false));
+      setLoadingValidateToken(true);
+
+      DiscordMembersApi.ValidateToken(token, showTokenInput.userId)
+        .then((validToken: boolean) => {
+          if (!validToken) {
+            setValidToken(validToken);
+            return;
+          }
+
+          Cookie.set('userId', showTokenInput.userId);
+          Cookie.set('guildId', guildId?.toString());
+          Cookie.set('channelId', channelId?.toString());
+
+          router.push({
+            pathname: '/game',
+            query: {
+              channelId,
+              guildId,
+            },
+          });
+        })
+        .finally(() => setLoadingValidateToken(false));
     }
   }
 
@@ -172,22 +175,15 @@ export default function ChooseProfile() {
               </Col>
             </Col>
 
-            <Col span={24}>
-              <ReactCodeInput
-                className="codeInput"
-                onComplete={handleSaveUser}
-                fields={5}
-                // loading={codeInputState.loading}
-                // disabled={codeInputState.disabled}
-              />
-              {/* <ReactCodeInput
-                isValid={validToken}
-                inputMode="numeric"
-                name="code"
-                onChange={handleSaveUser}
-                fields={5}
-              /> */}
-            </Col>
+            <Row justify="center">
+              <Col span={24}>
+                <ReactCodeInput
+                  className="codeInput"
+                  onComplete={handleSaveUser}
+                  fields={5}
+                />
+              </Col>
+            </Row>
 
             {!validToken ? (
               <S.InvalidText>Codigo Inválido!</S.InvalidText>

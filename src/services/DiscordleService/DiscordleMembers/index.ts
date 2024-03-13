@@ -15,6 +15,18 @@ const ApiAuth = {
     );
     return response.data;
   },
+  ValidateToken: async function (token: string, userId: string) {
+    const response: AxiosResponse<boolean> = await http.get(
+      `${baseUrl}/ValidateToken`,
+      {
+        params: {
+          UserId: userId,
+          Token: token,
+        },
+      }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;
