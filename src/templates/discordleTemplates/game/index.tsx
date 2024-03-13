@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import * as I from './IGame';
 import Cookie from 'cookiejs';
-import DiscordMessagesApi from 'services/DiscordleService';
+import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
 import Head from 'next/head';
 import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/discordle/filter.message';
@@ -9,7 +9,6 @@ import Result from './components/Result';
 import { IFilterMessageResponse } from 'helpers/discordle/filterMessageEnum';
 import { useRouter } from 'next/router';
 import { MessageContainer } from 'globalStyles/global';
-import DiscordLoad from 'templates/discordleTemplates/load';
 import {
   IAuthor,
   IScoreInstance,
@@ -20,7 +19,6 @@ export default function GameContainer() {
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
-  const [loadGame, setLoadGame] = useState<boolean>(false);
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
@@ -38,7 +36,7 @@ export default function GameContainer() {
 
       if (!userId) {
         router.push({
-          pathname: '/chooseProfile',
+          pathname: '/discordle/home',
           query: {
             channelId,
             guildId,
@@ -47,7 +45,7 @@ export default function GameContainer() {
       } else {
         const loadParameters = Boolean(channelId && guildId && userId);
 
-        !loadParameters && router.push('/');
+        !loadParameters && router.push('/discordle/home');
       }
     }
   }, [router]);
@@ -57,14 +55,14 @@ export default function GameContainer() {
       Cookie.remove('guildId');
       Cookie.remove('userId');
       Cookie.remove('channelId');
-      router.push('/');
+      router.push('/discordle/home');
     }
 
     if (router.isReady) {
       const { channelId } = router.query;
 
       if (channelId) {
-        DiscordMessagesApi.GetChoosedMessages(channelId.toString())
+        DiscordGameApi.GetChoosedMessages(channelId.toString())
           .then(({ messages, serverName, serverIcon, authors }) => {
             setAuthors(authors);
             setServerInfos({ serverName, serverIcon });
@@ -81,7 +79,7 @@ export default function GameContainer() {
 
         const userId = Cookie.get('userId').toString();
 
-        DiscordMessagesApi.VerifyAlreadyAwnsered(userId, channelId.toString())
+        DiscordGameApi.VerifyAlreadyAwnsered(userId, channelId.toString())
           .then((data) => {
             setActiveTabKey(data.length + 1);
 
@@ -91,9 +89,8 @@ export default function GameContainer() {
 
             setAwnsers(data);
           })
-          .catch(() => handleReset())
-          .finally(() => setLoadGame(true));
-      } else router.push('/');
+          .catch(() => handleReset());
+      } else router.push('/discordle/home');
     }
   }, [router]);
 
@@ -101,7 +98,7 @@ export default function GameContainer() {
     Cookie.remove('guildId');
     Cookie.remove('userId');
     Cookie.remove('channelId');
-    router.push('/');
+    router.push('/discordle/home');
   }
 
   function saveScore(awnser: I.IAwnser) {
@@ -121,7 +118,7 @@ export default function GameContainer() {
       };
 
       if (!alreadyAwnsered)
-        DiscordMessagesApi.SaveScore(dto)
+        DiscordGameApi.SaveScore(dto)
           .then((alreadyAwnsered) => setAlreadyAwnsered(alreadyAwnsered))
           .catch(() => handleReset());
     }
@@ -133,27 +130,23 @@ export default function GameContainer() {
         <title>Discordle | Game</title>
       </Head>
 
-      {loadGame ? (
-        <MessageContainer>
-          {awnsers.length < 5 && !alreadyAwnsered ? (
-            <MessageTabs
-              serverName={serverInfos.serverName}
-              serverIcon={serverInfos.serverIcon}
-              activeTabKey={activeTabKey}
-              awnsers={awnsers}
-              saveScore={saveScore}
-              setAwnsers={setAwnsers}
-              authors={authors}
-              choosedMessages={choosedMessages}
-              setActiveTabKey={setActiveTabKey}
-            />
-          ) : (
-            <Result awnsers={awnsers} />
-          )}
-        </MessageContainer>
-      ) : (
-        <DiscordLoad />
-      )}
+      <MessageContainer>
+        {awnsers.length < 5 && !alreadyAwnsered ? (
+          <MessageTabs
+            serverName={serverInfos.serverName}
+            serverIcon={serverInfos.serverIcon}
+            activeTabKey={activeTabKey}
+            awnsers={awnsers}
+            saveScore={saveScore}
+            setAwnsers={setAwnsers}
+            authors={authors}
+            choosedMessages={choosedMessages}
+            setActiveTabKey={setActiveTabKey}
+          />
+        ) : (
+          <Result awnsers={awnsers} />
+        )}
+      </MessageContainer>
     </Fragment>
   );
 }

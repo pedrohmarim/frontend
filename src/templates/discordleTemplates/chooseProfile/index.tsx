@@ -5,9 +5,7 @@ import * as S from './styles';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
 import { Image, Row, Col } from 'antd_components';
 import { useRouter } from 'next/router';
-import DiscordLoad from 'templates/discordleTemplates/load';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
-import { LoadingOutlined } from '@ant-design/icons';
 import { Description } from 'templates/discordleTemplates/home/styles';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
 import { Divider } from 'templates/discordleTemplates/game/components/Result/styles';
@@ -16,10 +14,7 @@ import ReactCodeInput from 'react-verification-code-input';
 export default function ChooseProfile() {
   const router = useRouter();
   const [members, setMembers] = useState<IMember[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [validToken, setValidToken] = useState<boolean>(true);
-  const [loadingValidateToken, setLoadingValidateToken] =
-    useState<boolean>(false);
   const [showTokenInput, setShowTokenInput] = useState<{
     view: boolean;
     userId: string;
@@ -35,7 +30,7 @@ export default function ChooseProfile() {
       Cookie.remove('guildId');
       Cookie.remove('userId');
       Cookie.remove('channelId');
-      router.push('/');
+      router.push('/discordle/home');
     }
 
     if (router.isReady) {
@@ -54,46 +49,41 @@ export default function ChooseProfile() {
       } else {
         if (channelId)
           DiscordMembersApi.GetChannelMembers(channelId.toString())
-            .then((members: IMember[]) => setMembers(members))
-            .catch(() => handleReset())
-            .finally(() => setLoading(false));
+            .then((members: IMember[]) => {
+              if (!members.length) handleReset();
+              setMembers(members);
+            })
+            .catch(() => handleReset());
         else handleReset();
       }
     }
   }, [router]);
 
   function handleSaveUser(token: string) {
+    setValidToken(true);
+
     const { guildId, channelId } = router.query;
 
-    if (token.length === 5) {
-      setValidToken(true);
-      setLoadingValidateToken(false);
-      return;
-    }
-
     if (guildId) {
-      setLoadingValidateToken(true);
+      DiscordMembersApi.ValidateToken(token, showTokenInput.userId).then(
+        (validToken: boolean) => {
+          setValidToken(validToken);
 
-      DiscordMembersApi.ValidateToken(token, showTokenInput.userId)
-        .then((validToken: boolean) => {
-          if (!validToken) {
-            setValidToken(validToken);
-            return;
+          if (validToken) {
+            Cookie.set('userId', showTokenInput.userId);
+            Cookie.set('guildId', guildId?.toString());
+            Cookie.set('channelId', channelId?.toString());
+
+            router.push({
+              pathname: '/discordle/game',
+              query: {
+                channelId,
+                guildId,
+              },
+            });
           }
-
-          Cookie.set('userId', showTokenInput.userId);
-          Cookie.set('guildId', guildId?.toString());
-          Cookie.set('channelId', channelId?.toString());
-
-          router.push({
-            pathname: '/game',
-            query: {
-              channelId,
-              guildId,
-            },
-          });
-        })
-        .finally(() => setLoadingValidateToken(false));
+        }
+      );
     }
   }
 
@@ -127,7 +117,7 @@ export default function ChooseProfile() {
     }
   };
 
-  return !loading ? (
+  return (
     <MessageContainer>
       <GameTitle>Escolha seu Perfil</GameTitle>
 
@@ -171,7 +161,7 @@ export default function ChooseProfile() {
               </Description>
 
               <Col span={24}>
-                <Description>para recuperar seu token.</Description>
+                <Description>para gerar seu token.</Description>
               </Col>
             </Col>
 
@@ -182,23 +172,13 @@ export default function ChooseProfile() {
                   onComplete={handleSaveUser}
                   fields={5}
                 />
+
+                {!validToken && <S.InvalidText>Codigo Inválido!</S.InvalidText>}
               </Col>
             </Row>
-
-            {!validToken ? (
-              <S.InvalidText>Codigo Inválido!</S.InvalidText>
-            ) : (
-              loadingValidateToken && (
-                <Fragment>
-                  Validando... <LoadingOutlined spin />
-                </Fragment>
-              )
-            )}
           </Row>
         </Fragment>
       )}
     </MessageContainer>
-  ) : (
-    <DiscordLoad />
   );
 }

@@ -7,17 +7,7 @@
 // const baseUrl = 'DiscordleGuilds';
 
 // const ApiAuth = {
-//   GetChoosedMessages: async function (channelId: string) {
-//     const response: AxiosResponse<I.IMessageInstance> = await http.get(
-//       `${baseUrl}/getChoosedMessages`,
-//       {
-//         params: {
-//           channelId,
-//         },
-//       }
-//     );
-//     return response.data;
-//   },
+
 //   VerifyUser: async function (guildId: string, userId: string) {
 //     const response: AxiosResponse<boolean> = await http.get(
 //       `${baseUrl}/verifyUser`,
@@ -45,25 +35,6 @@
 //       `${baseUrl}/getTimer`,
 //       {
 //         params: { guildId, channelId },
-//       }
-//     );
-//     return response.data;
-//   },
-//   SaveScore: async function (data: I.IScoreInstance) {
-//     const response: AxiosResponse<boolean> = await http.post(
-//       `${baseUrl}/saveScore`,
-//       data
-//     );
-//     return response.data;
-//   },
-//   VerifyAlreadyAwnsered: async function (userId: string, channelId: string) {
-//     const response: AxiosResponse<IAwnser[]> = await http.get(
-//       `${baseUrl}/verifyAlreadyAwnsered`,
-//       {
-//         params: {
-//           userId,
-//           channelId,
-//         },
 //       }
 //     );
 //     return response.data;

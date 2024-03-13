@@ -30,6 +30,7 @@ export const InvalidText = styled.span`
   color: red;
   opacity: 0.75;
   font-weight: 400;
+  font-size: 11pt;
 `;
 
 export const MemberRow = styled.div`

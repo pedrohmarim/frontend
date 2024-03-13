@@ -10,7 +10,6 @@ import { Row, FeatherIcons, Tooltip } from 'antd_components';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import { IInstanceChannels } from 'services/DiscordleService/IDiscordleService';
-import DiscordLoad from 'templates/discordleTemplates/load';
 import { Select } from 'templates/discordleTemplates/game/components/AuthorSelect/styles';
 import { Divider } from 'templates/discordleTemplates/game/components/Result/styles';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
@@ -20,7 +19,6 @@ export default function HomeContainer() {
   const [whichRender, setWhichRender] = useState<string>('gamePresentation');
   const [guildId, setGuildId] = useState<string>('');
   const [loadingInstance, setLoadingInstance] = useState<boolean>(false);
-  const [loadHome, setLoadHome] = useState<boolean>(true);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
@@ -57,8 +55,7 @@ export default function HomeContainer() {
             setInstanceChannels(channels);
             setWhichRender('formDiscordleInstance');
           })
-          .catch(() => handleReset())
-          .finally(() => setLoadHome(false));
+          .catch(() => handleReset());
       } else {
         const userId = Cookie.get('userId');
 
@@ -74,7 +71,6 @@ export default function HomeContainer() {
             },
           });
         } else {
-          setLoadHome(false);
           Cookie.remove('guildId');
           Cookie.remove('channelId');
         }
@@ -240,8 +236,6 @@ export default function HomeContainer() {
         return <FormDiscordleInstance />;
     }
   };
-
-  if (loadHome) return <DiscordLoad />;
 
   return (
     <Fragment>

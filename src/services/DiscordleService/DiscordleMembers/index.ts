@@ -16,13 +16,11 @@ const ApiAuth = {
     return response.data;
   },
   ValidateToken: async function (token: string, userId: string) {
-    const response: AxiosResponse<boolean> = await http.get(
+    const response: AxiosResponse<boolean> = await http.post(
       `${baseUrl}/ValidateToken`,
       {
-        params: {
-          UserId: userId,
-          Token: token,
-        },
+        UserId: userId,
+        Token: token,
       }
     );
     return response.data;

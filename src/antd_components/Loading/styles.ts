@@ -25,10 +25,3 @@ export const Content = styled.div`
   flex-direction: column;
   height: 100vh;
 `;
-
-export const Span = styled.span`
-  color: #fff;
-  font-size: 1.1em;
-  margin-top: 15px;
-  margin-top: -55px;
-`;

@@ -1,12 +1,11 @@
 import * as S from './styles';
-import loadingAnimation from 'assets/loadingAnimation.json';
+import Animation from 'assets/discordLoad.json';
 
 function Loader() {
   return (
     <S.ScreenBlocker id="loader">
       <S.Content>
-        <S.LottieContainer animationData={loadingAnimation} />
-        <S.Span>Carregando . . .</S.Span>
+        <S.LottieContainer animationData={Animation} />
       </S.Content>
     </S.ScreenBlocker>
   );
