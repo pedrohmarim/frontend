@@ -47,11 +47,13 @@ export const errorRequestInterceptor = (errorResquest: unknown) => {
   return Promise.reject(errorResquest);
 };
 
-export const errorResponseInterceptor = (error: AxiosError) => {
+export const errorResponseInterceptor = (
+  error: AxiosError<{ Message: string; Status: number }>
+) => {
   DisableLoading();
 
-  const description = error.response?.data ?? 'Erro inesperado';
-  const statusCode = error.response?.status ?? '';
+  const description = error.response?.data.Message;
+  const statusCode = error.response?.status;
 
   switch (statusCode) {
     case 401:
@@ -61,11 +63,7 @@ export const errorResponseInterceptor = (error: AxiosError) => {
       break;
   }
 
-  Notification.error({
-    message: 'Erro!',
-    description: `(${statusCode}) - ${description}`,
-    duration: 2,
-  });
+  Notification.error('Erro!', description);
 
   return Promise.reject(error);
 };

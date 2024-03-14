@@ -30,15 +30,6 @@
 
 //     return response.data;
 //   },
-//   GetTimer: async function (channelId: string, guildId: string) {
-//     const response: AxiosResponse<string> = await http.get(
-//       `${baseUrl}/getTimer`,
-//       {
-//         params: { guildId, channelId },
-//       }
-//     );
-//     return response.data;
-//   },
 //   GetGuildById: async function (guildId: string) {
 //     const response: AxiosResponse<I.IInstanceChannels[]> = await http.post(
 //       `${baseUrl}/GetGuildById`,

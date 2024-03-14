@@ -2,19 +2,19 @@ import { notification as antdNotification } from 'antd';
 import { FeatherIcons } from 'antd_components';
 
 const notification = {
-  success(description) {
+  success(title, description) {
     antdNotification.success({
       icon: <FeatherIcons icon="check" color="green" />,
-      message: 'Sucesso',
+      message: title ?? 'Sucesso',
       description: description,
       duration: 5,
       placement: 'topRight',
     });
   },
-  error(description) {
+  error(title, description) {
     antdNotification.error({
       icon: <FeatherIcons icon="x" color="red" />,
-      message: 'Erro',
+      message: title ?? 'Erro',
       description: description,
       duration: 5,
       placement: 'topRight',

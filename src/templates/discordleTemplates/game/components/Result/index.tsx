@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, Fragment } from 'react';
 import { Button } from 'antd_components';
 import formatDate from 'helpers/discordle/formatDate';
-import DiscordMessagesApi from 'services/DiscordleService';
+import DiscordMessagesApi from 'services/DiscordleService/DiscordleGame';
 import { Row, FeatherIcons } from 'antd_components';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { useRouter } from 'next/router';

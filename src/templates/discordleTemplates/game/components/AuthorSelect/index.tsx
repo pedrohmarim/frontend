@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Row, Select, Image, Notification } from 'antd_components';
 import * as S from './styles';
 import * as I from './IAuthorSelect';
@@ -34,30 +34,20 @@ const AuthorSelect = ({
 
     setAwnsers((prevAwnsers) => [...prevAwnsers, newAwnserDto]);
 
-    const title: JSX.Element = (
-      <>
-        {success
-          ? 'Acertou! Quem mandou essa mensagem foi '
-          : 'Errou! A resposta certa era '}
+    const description: JSX.Element = (
+      <Fragment>
+        {success ? 'Quem mandou essa mensagem foi ' : 'A resposta certa era '}
         <S.AuthorHighlight color={theme.discordleColors.primary}>
           {username}
         </S.AuthorHighlight>
-      </>
+      </Fragment>
     );
-
-    const description: string = success
-      ? 'Parabéns você realmente conhece seus colegas.'
-      : 'Você não é um bom colega...';
-
-    const duration = 8;
-
-    const config = { title, description, duration };
 
     setUsedHint(false);
 
-    if (success) return Notification.success(config);
+    if (success) return Notification.success('Acertou!', description);
 
-    return Notification.error(config);
+    return Notification.error('Errou!', description);
   }
 
   return (

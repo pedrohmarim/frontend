@@ -117,6 +117,8 @@ export default function ChooseProfile() {
     }
   };
 
+  if (!members.length) return <Fragment />;
+
   return (
     <MessageContainer>
       <GameTitle>Escolha seu Perfil</GameTitle>

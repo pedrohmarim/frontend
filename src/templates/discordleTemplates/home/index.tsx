@@ -124,7 +124,6 @@ export default function HomeContainer() {
     Cookie.remove('guildId');
     Cookie.remove('userId');
     Cookie.remove('channelId');
-    router.push('/');
   }
 
   function onChange(channelId: string) {
@@ -140,6 +139,7 @@ export default function HomeContainer() {
           },
         });
       })
+      .finally(() => setLoadingInstance(false))
       .catch(() => handleReset());
   }
 

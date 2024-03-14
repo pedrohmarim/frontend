@@ -33,6 +33,16 @@ const ApiAuth = {
     );
     return response.data;
   },
+  GetTimer: async function (channelId: string, guildId: string) {
+    const response: AxiosResponse<string> = await http.post(
+      `${baseUrl}/GetTimer`,
+      {
+        GuildId: guildId,
+        ChannelId: channelId,
+      }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;
