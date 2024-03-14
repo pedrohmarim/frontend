@@ -18,14 +18,16 @@ const AuthorSelect = ({
   function handleVerifyAwnser(awnserId: string) {
     const success = awnserId === authorMessageId;
 
-    const username = authors.find(({ id }) => id === authorMessageId)?.username;
+    const username = authors.find(
+      ({ Id: id }) => id === authorMessageId
+    )?.Username;
 
     const score = success ? (usedHint ? 1 : 2) : 0;
 
     const newAwnserDto: IAwnser = {
-      success,
-      tabKey: activeTabKey,
-      score,
+      Success: success,
+      TabKey: activeTabKey,
+      Score: score,
     };
 
     saveScore(newAwnserDto);
@@ -68,18 +70,18 @@ const AuthorSelect = ({
         setActiveTabKey((prev: number) => prev + 1);
       }}
     >
-      {authors?.map(({ avatarUrl, username, id }) => (
-        <Select.Option key={id}>
+      {authors?.map(({ Avatar, Username, Id }) => (
+        <Select.Option key={Id}>
           <Row align="middle">
             <Image
               style={{ borderRadius: '4px' }}
               preview={false}
-              src={avatarUrl}
+              src={Avatar}
               alt="profile-pic"
               height="30px"
               width="30px"
             />
-            <S.AuthorName>{username}</S.AuthorName>
+            <S.AuthorName>{Username}</S.AuthorName>
           </Row>
         </Select.Option>
       ))}

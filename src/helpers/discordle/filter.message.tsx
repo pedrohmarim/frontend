@@ -13,10 +13,10 @@ export default function filterMessage(message: IMessage) {
     message: emptyMessage,
   };
 
-  if (message.attachments.length) {
+  if (message.Attachments.length) {
     response.messageType = FilterMessageEnum.isImage;
 
-    message.attachments.forEach(({ url }, index) => {
+    message.Attachments.forEach(({ url }, index) => {
       response.formattedAttachs.push(
         <Image
           preview={false}
@@ -29,23 +29,23 @@ export default function filterMessage(message: IMessage) {
     });
   }
 
-  if (message.content.includes('<@')) {
+  if (message.Content.includes('<@')) {
     response.messageType = FilterMessageEnum.isText;
 
-    message.mentions.map(({ username, id }) => {
-      message.content = message.content.replaceAll(`<@${id}>`, `@${username}`);
+    message.Mentions.map(({ username, id }) => {
+      message.Content = message.Content.replaceAll(`<@${id}>`, `@${username}`);
     });
   }
 
   const includeLink =
-    message.content.includes('https://') || message.content.includes('http://');
+    message.Content.includes('https://') || message.Content.includes('http://');
 
   if (includeLink) {
     response.messageType = FilterMessageEnum.isLink;
 
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
-    message.content = message.content.replace(urlRegex, (content: string) => {
+    message.Content = message.Content.replace(urlRegex, (content: string) => {
       let hyperlink = content;
 
       if (!hyperlink.match('^https?://')) hyperlink = 'http://' + hyperlink;
@@ -56,13 +56,13 @@ export default function filterMessage(message: IMessage) {
     });
   }
 
-  if (message.attachments.length && message.content.length)
+  if (message.Attachments.length && message.Content.length)
     response.messageType = FilterMessageEnum.isImageWithText;
 
-  if (message.attachments.length && includeLink)
+  if (message.Attachments.length && includeLink)
     response.messageType = FilterMessageEnum.isImageWithTextAndLink;
 
-  if (!message.attachments.length && includeLink)
+  if (!message.Attachments.length && includeLink)
     response.messageType = FilterMessageEnum.isImageWithTextAndLink;
 
   response.message = message;

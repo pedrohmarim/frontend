@@ -27,11 +27,11 @@ export default function MessageTabs({
     let icon = '';
     let color = '';
 
-    if (awnsers[index]?.success === undefined) return '';
+    if (awnsers[index]?.Success === undefined) return '';
 
-    if (awnsers[index]?.tabKey === current && awnsers[index]?.success) {
+    if (awnsers[index]?.TabKey === current && awnsers[index]?.Success) {
       icon = 'check-circle';
-      color = awnsers[index]?.score === 2 ? '#009e3f' : '#d48a00';
+      color = awnsers[index]?.Score === 2 ? '#009e3f' : '#d48a00';
     } else {
       icon = 'x-circle';
       color = '#a61f1f';
@@ -41,14 +41,19 @@ export default function MessageTabs({
   }
 
   const score = awnsers.reduce((accumulator, curValue) => {
-    return accumulator + curValue.score;
+    return accumulator + curValue.Score;
   }, 0);
 
   return (
     <S.Tabs activeKey={String(activeTabKey)} onChange={handleTabChange}>
       {choosedMessages.map(
         ({ message, formattedAttachs, messageType, urlLink }, index) => {
-          const { timestamp, content, id, author } = message;
+          const {
+            Timestamp: timestamp,
+            Content: content,
+            Id: id,
+            Author: author,
+          } = message;
           const current = index + 1;
 
           const choosedMessage: IChoosedMessage = {
@@ -98,7 +103,7 @@ export default function MessageTabs({
                 setUsedHint={(value) => setUsedHint(value)}
                 usedHint={usedHint}
                 setAwnsers={setAwnsers}
-                authorMessageId={author.id}
+                authorMessageId={author.Id}
                 authors={authors}
                 activeTabKey={activeTabKey}
                 setActiveTabKey={setActiveTabKey}

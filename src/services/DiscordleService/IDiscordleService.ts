@@ -1,11 +1,12 @@
 import { IAwnser } from 'templates/discordleTemplates/game/IGame';
 
 export interface IMessageInstance {
-  messages: IMessage[];
-  authors: IAuthor[];
-  channelId: string;
-  serverName: string;
-  serverIcon: string;
+  Messages: IMessage[];
+  Authors: IAuthor[];
+  ChannelId: string;
+  GuildId: string;
+  ServerName: string;
+  ServerIcon: string;
 }
 
 export interface IGetDiscordHintsResponse {
@@ -14,13 +15,13 @@ export interface IGetDiscordHintsResponse {
 }
 
 export interface IMessage {
-  id: string;
-  author: IAuthor;
-  content: string;
-  mentions: IMention[];
-  attachments: IAttachments[];
-  sticker_items: [];
-  timestamp: string;
+  Id: string;
+  Author: IAuthor;
+  Content: string;
+  Mentions: IMention[];
+  Attachments: IAttachments[];
+  Sticker_Items: [];
+  Timestamp: string;
 }
 
 export interface IAttachments {
@@ -28,9 +29,9 @@ export interface IAttachments {
 }
 
 export interface IAuthor {
-  id: string;
-  username: string;
-  avatarUrl: string;
+  Id: string;
+  Username: string;
+  Avatar: string;
 }
 
 export interface IMention {
@@ -39,15 +40,14 @@ export interface IMention {
 }
 
 export interface IScoreInstance {
-  scores: IPostSaveScore;
-  channelId: string;
-  guildId: string;
+  Score: IPostSaveScore;
+  ChannelId: string;
+  GuildId: string;
 }
 
 export interface IPostSaveScore {
-  scoreDetails: IAwnser;
-  date: string;
-  userId: string;
+  Awnser: IAwnser;
+  UserId: string;
 }
 
 export interface IGetQueryParamsByUserIdResponse {

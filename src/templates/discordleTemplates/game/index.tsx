@@ -24,9 +24,9 @@ export default function GameContainer() {
     IFilterMessageResponse[]
   >([]);
   const [serverInfos, setServerInfos] = useState<{
-    serverName: string;
-    serverIcon: string;
-  }>({} as { serverName: string; serverIcon: string });
+    ServerName: string;
+    ServerIcon: string;
+  }>({} as { ServerName: string; ServerIcon: string });
 
   useEffect(() => {
     if (router.isReady) {
@@ -36,7 +36,7 @@ export default function GameContainer() {
 
       if (!userId) {
         router.push({
-          pathname: '/discordle/home',
+          pathname: '/discordle/chooseProfile',
           query: {
             channelId,
             guildId,
@@ -45,7 +45,7 @@ export default function GameContainer() {
       } else {
         const loadParameters = Boolean(channelId && guildId && userId);
 
-        !loadParameters && router.push('/discordle/home');
+        !loadParameters && router.push('/discordle/chooseProfile');
       }
     }
   }, [router]);
@@ -55,7 +55,7 @@ export default function GameContainer() {
       Cookie.remove('guildId');
       Cookie.remove('userId');
       Cookie.remove('channelId');
-      router.push('/discordle/home');
+      router.push('/discordle/chooseProfile');
     }
 
     if (router.isReady) {
@@ -63,17 +63,17 @@ export default function GameContainer() {
 
       if (channelId) {
         DiscordGameApi.GetChoosedMessages(channelId.toString())
-          .then(({ messages, serverName, serverIcon, authors }) => {
-            setAuthors(authors);
-            setServerInfos({ serverName, serverIcon });
+          .then(({ Messages, ServerName, ServerIcon, Authors }) => {
+            setAuthors(Authors);
+            setServerInfos({ ServerName, ServerIcon });
 
             const filteredMessagesArray: IFilterMessageResponse[] = [];
 
-            messages.forEach((message) => {
+            Messages.forEach((message) => {
               filteredMessagesArray.push(filterMessage(message));
-
-              setChoosedMessages(filteredMessagesArray);
             });
+
+            setChoosedMessages(filteredMessagesArray);
           })
           .catch(() => handleReset());
 
@@ -90,7 +90,7 @@ export default function GameContainer() {
             setAwnsers(data);
           })
           .catch(() => handleReset());
-      } else router.push('/discordle/home');
+      } else router.push('/discordle/chooseProfile');
     }
   }, [router]);
 
@@ -98,7 +98,7 @@ export default function GameContainer() {
     Cookie.remove('guildId');
     Cookie.remove('userId');
     Cookie.remove('channelId');
-    router.push('/discordle/home');
+    router.push('/discordle/chooseProfile');
   }
 
   function saveScore(awnser: I.IAwnser) {
@@ -108,12 +108,11 @@ export default function GameContainer() {
 
     if (channelId && guildId) {
       const dto: IScoreInstance = {
-        channelId: channelId.toString(),
-        guildId: guildId.toString(),
-        scores: {
-          userId,
-          date: new Date().toLocaleDateString(),
-          scoreDetails: awnser,
+        ChannelId: channelId.toString(),
+        GuildId: guildId.toString(),
+        Score: {
+          UserId: userId,
+          Awnser: awnser,
         },
       };
 
@@ -133,8 +132,8 @@ export default function GameContainer() {
       <MessageContainer>
         {awnsers.length < 5 && !alreadyAwnsered ? (
           <MessageTabs
-            serverName={serverInfos.serverName}
-            serverIcon={serverInfos.serverIcon}
+            serverName={serverInfos.ServerName}
+            serverIcon={serverInfos.ServerIcon}
             activeTabKey={activeTabKey}
             awnsers={awnsers}
             saveScore={saveScore}

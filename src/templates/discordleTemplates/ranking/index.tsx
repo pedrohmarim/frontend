@@ -150,15 +150,20 @@ export default function Ranking() {
       title: 'Detalhes do dia',
       dataIndex: 'scoreDetails',
       render: (scoreDetails) =>
-        scoreDetails.map(({ score, success, tabKey }: IAwnser, key: number) => (
-          <Row align="middle" key={key}>
-            <S.UserSpan>{tabKey}º Pergunta -</S.UserSpan>
-            <S.UserSpan>Pontuação: {score} -</S.UserSpan>
-            <S.UserSpan>
-              {success ? `Acertou ${score === 1 ? '(dica)' : ''}` : 'Errou'}
-            </S.UserSpan>
-          </Row>
-        )),
+        scoreDetails.map(
+          (
+            { Score: score, Success: success, TabKey: tabKey }: IAwnser,
+            key: number
+          ) => (
+            <Row align="middle" key={key}>
+              <S.UserSpan>{tabKey}º Pergunta -</S.UserSpan>
+              <S.UserSpan>Pontuação: {score} -</S.UserSpan>
+              <S.UserSpan>
+                {success ? `Acertou ${score === 1 ? '(dica)' : ''}` : 'Errou'}
+              </S.UserSpan>
+            </Row>
+          )
+        ),
     },
   ];
 

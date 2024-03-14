@@ -15,7 +15,7 @@ export default function Result({ awnsers }: I.IResult) {
   const router = useRouter();
 
   const score = awnsers.reduce((accumulator, curValue) => {
-    return accumulator + curValue.score;
+    return accumulator + curValue.Score;
   }, 0);
 
   const [timer, setTimer] = useState<string>('Carregando...');
@@ -66,9 +66,9 @@ export default function Result({ awnsers }: I.IResult) {
 
       <Row justify="center">
         {awnsers &&
-          awnsers.map(({ score, success, tabKey }, index) => (
-            <S.AwnserItem success={success} score={score} key={index}>
-              {tabKey}
+          awnsers.map(({ Score, Success, TabKey }, index) => (
+            <S.AwnserItem success={Success} score={Score} key={index}>
+              {TabKey}
             </S.AwnserItem>
           ))}
       </Row>
