@@ -167,7 +167,6 @@ export default function GameContainer() {
             activeTabKey={activeTabKey}
             awnsers={awnsers}
             saveScore={saveScore}
-            setAwnsers={setAwnsers}
             authors={authors}
             choosedMessages={choosedMessages}
             setActiveTabKey={setActiveTabKey}

@@ -16,5 +16,4 @@ export interface IMessageTabs {
     activeTabKey: number
   ) => void;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
-  setAwnsers: React.Dispatch<React.SetStateAction<IAwnser[]>>;
 }
