@@ -30,32 +30,23 @@ export default function ChooseProfile() {
       Cookie.remove('guildId');
       Cookie.remove('userId');
       Cookie.remove('channelId');
-      router.push('/discordle/home');
     }
 
     if (router.isReady) {
-      const { guildId, channelId } = router.query;
+      const { channelId } = router.query;
 
       const userId = Cookie.get('userId');
 
-      if (userId) {
-        router.push({
-          pathname: 'discordle/game',
-          query: {
-            channelId,
-            guildId,
-          },
-        });
-      } else {
-        if (channelId)
-          DiscordMembersApi.GetChannelMembers(channelId.toString())
-            .then((members: IMember[]) => {
-              if (!members.length) handleReset();
-              setMembers(members);
-            })
-            .catch(() => handleReset());
-        else handleReset();
-      }
+      if (userId) handleReset();
+
+      if (channelId)
+        DiscordMembersApi.GetChannelMembers(channelId.toString())
+          .then((members: IMember[]) => {
+            if (!members.length) handleReset();
+            setMembers(members);
+          })
+          .catch(() => handleReset());
+      else handleReset();
     }
   }, [router]);
 

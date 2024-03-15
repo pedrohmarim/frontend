@@ -20,16 +20,7 @@
 //     );
 //     return response.data;
 //   },
-//   GetDiscordHints: async function (id: string, channelId: string) {
-//     const response: AxiosResponse<I.IGetDiscordHintsResponse> = await http.get(
-//       `${baseUrl}/getHints`,
-//       {
-//         params: { id, channelId },
-//       }
-//     );
-
-//     return response.data;
-//   },
+//
 //   GetGuildById: async function (guildId: string) {
 //     const response: AxiosResponse<I.IInstanceChannels[]> = await http.post(
 //       `${baseUrl}/GetGuildById`,
@@ -39,30 +30,7 @@
 //     );
 //     return response.data;
 //   },
-//   GetDiscordleHistory: async function (channelId: string, guildId: string) {
-//     const response: AxiosResponse<I.IGetTableResponse> = await http.get(
-//       `${baseUrl}/getDiscordleHistory`,
-//       {
-//         params: {
-//           guildId,
-//           channelId,
-//         },
-//       }
-//     );
-//     return response.data;
-//   },
-//   GetUserScoreDetail: async function (userId: string, channelId: string) {
-//     const response: AxiosResponse<I.IUserScoreDetail[]> = await http.get(
-//       `${baseUrl}/getUserScoreDetail`,
-//       {
-//         params: {
-//           userId,
-//           channelId,
-//         },
-//       }
-//     );
-//     return response.data;
-//   },
+//
 // };
 
 // export default ApiAuth;

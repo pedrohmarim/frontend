@@ -74,25 +74,31 @@ export default function DisplayMessageContainer({
         {messageType === FilterMessageEnum.isImage && <ImageContainer />}
 
         {messageType === FilterMessageEnum.isImageWithText && (
-          <>
+          <Fragment>
             <DefaultContent />
 
             <ImageContainer />
-          </>
+          </Fragment>
         )}
 
         {messageType === FilterMessageEnum.isImageWithTextAndLink && (
-          <>
+          <Fragment>
             <LinkContainer content={content} urlLink={urlLink} />
 
             <ImageContainer />
-          </>
+          </Fragment>
         )}
       </S.Message>
 
       {timestamp && (
         <S.Date justify="end">
-          {new Date(timestamp).toLocaleString('pt-BR')}
+          {new Date(timestamp).toLocaleString('pt-BR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
         </S.Date>
       )}
     </Fragment>

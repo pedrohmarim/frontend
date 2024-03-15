@@ -10,8 +10,8 @@ export interface IMessageInstance {
 }
 
 export interface IGetDiscordHintsResponse {
-  previousPosition: IMessage;
-  consecutivePosition: IMessage;
+  PreviousPosition: IMessage;
+  ConsecutivePosition: IMessage;
 }
 
 export interface IMessage {
@@ -25,7 +25,7 @@ export interface IMessage {
 }
 
 export interface IAttachments {
-  url: string;
+  Url: string;
 }
 
 export interface IAuthor {
@@ -35,8 +35,8 @@ export interface IAuthor {
 }
 
 export interface IMention {
-  username: string;
-  id: string;
+  Username: string;
+  Id: string;
 }
 
 export interface IScoreInstance {
@@ -74,23 +74,23 @@ export interface IMember {
 }
 
 export interface IGetTableResponse {
-  channelName: string;
-  rankingTableData: IRankingTableData[];
+  ChannelName: string;
+  RankingTableData: IRankingTableData[];
 }
 
 export interface IRankingTableData {
-  rowId: string;
-  position: number;
-  member: {
-    avatarUrl: string;
-    username: string;
-    userId: string;
+  RowId: string;
+  Position: number;
+  TotalScore: number;
+  Member: {
+    AvatarUrl: string;
+    Username: string;
+    Id: string;
   };
-  totalScore: number;
 }
 
 export interface IUserScoreDetail {
-  scoreDetails: IAwnser[];
-  date: string;
-  rowId: string;
+  ScoreDetails: IAwnser[];
+  Date: string;
+  RowId: string;
 }

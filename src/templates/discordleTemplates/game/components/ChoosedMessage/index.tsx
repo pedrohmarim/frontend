@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import type { MenuProps } from 'antd';
-import DiscordMessagesApi from 'services/DiscordleService';
+import DiscordleGameApi from 'services/DiscordleService/DiscordleGame';
 import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/discordle/filter.message';
 import DisplayMessageContainer from 'templates/discordleTemplates/game/components/DisplayMessageContainer';
@@ -88,8 +88,8 @@ export default function ChoosedMessage({
   }
 
   function handleGetHints() {
-    DiscordMessagesApi.GetDiscordHints(id, channelId).then(
-      ({ consecutivePosition, previousPosition }) => {
+    DiscordleGameApi.GetDiscordHints(id, channelId).then(
+      ({ ConsecutivePosition, PreviousPosition }) => {
         const emptyChoosedMessage: IChoosedMessage = {
           content: '',
           formattedAttachs: [] as JSX.Element[],
@@ -103,37 +103,37 @@ export default function ChoosedMessage({
         let filterResponsePreviousMessage: IFilterMessageResponse =
           {} as IFilterMessageResponse;
 
-        if (previousPosition)
-          filterResponsePreviousMessage = filterMessage(previousPosition);
+        if (PreviousPosition)
+          filterResponsePreviousMessage = filterMessage(PreviousPosition);
 
-        const previousMessage: IChoosedMessage = !previousPosition
+        const previousMessage: IChoosedMessage = !PreviousPosition
           ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
           : {
-              content: previousPosition.content,
+              content: PreviousPosition.Content,
               formattedAttachs: filterResponsePreviousMessage.formattedAttachs,
               urlLink: filterResponsePreviousMessage.urlLink,
-              id: previousPosition.id,
+              id: PreviousPosition.Id,
               messageType: filterResponsePreviousMessage.messageType,
-              timestamp: previousPosition.timestamp,
+              timestamp: PreviousPosition.Timestamp,
               messageLevel: MessageLevelEnum.isPrevious,
             };
 
         let filterResponseConsecutiveMessage: IFilterMessageResponse =
           {} as IFilterMessageResponse;
 
-        if (consecutivePosition)
-          filterResponseConsecutiveMessage = filterMessage(consecutivePosition);
+        if (ConsecutivePosition)
+          filterResponseConsecutiveMessage = filterMessage(ConsecutivePosition);
 
-        const consecutiveMessage: IChoosedMessage = !consecutivePosition
+        const consecutiveMessage: IChoosedMessage = !ConsecutivePosition
           ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
           : {
-              content: consecutivePosition.content,
+              content: ConsecutivePosition.Content,
               formattedAttachs:
                 filterResponseConsecutiveMessage.formattedAttachs,
               urlLink: filterResponseConsecutiveMessage.urlLink,
-              id: consecutivePosition.id,
+              id: ConsecutivePosition.Id,
               messageType: filterResponseConsecutiveMessage.messageType,
-              timestamp: consecutivePosition.timestamp,
+              timestamp: ConsecutivePosition.Timestamp,
               messageLevel: MessageLevelEnum.isConsecutive,
             };
 
@@ -243,13 +243,13 @@ export default function ChoosedMessage({
       {totalMessages.map(
         (
           {
-            content,
-            formattedAttachs,
-            messageType,
-            timestamp,
-            id,
-            messageLevel,
-            urlLink,
+            content: content,
+            formattedAttachs: formattedAttachs,
+            messageType: messageType,
+            timestamp: timestamp,
+            id: id,
+            messageLevel: messageLevel,
+            urlLink: urlLink,
           },
           index
         ) => {

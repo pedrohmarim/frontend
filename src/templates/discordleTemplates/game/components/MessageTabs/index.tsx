@@ -57,13 +57,13 @@ export default function MessageTabs({
           const current = index + 1;
 
           const choosedMessage: IChoosedMessage = {
-            content,
-            timestamp,
-            id,
+            content: content,
+            timestamp: timestamp,
+            id: id,
             messageLevel: MessageLevelEnum.isMain,
-            urlLink,
-            formattedAttachs,
-            messageType,
+            urlLink: urlLink,
+            formattedAttachs: formattedAttachs,
+            messageType: messageType,
           };
 
           return (

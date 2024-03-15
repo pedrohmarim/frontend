@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Button } from 'antd_components';
-import formatDate from 'helpers/discordle/formatDate';
-import DiscordMessagesApi from 'services/DiscordleService/DiscordleGame';
+import countdown from 'helpers/discordle/formatDate';
 import { Row, FeatherIcons } from 'antd_components';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { useRouter } from 'next/router';
@@ -20,32 +19,29 @@ export default function Result({ awnsers }: I.IResult) {
 
   const [timer, setTimer] = useState<string>('Carregando...');
 
-  const handleFormatDate = useCallback(
-    (timer: string, channelId: string, guildId: string) => {
-      formatDate(timer, channelId, guildId, setTimer);
-    },
-    []
-  );
-
   useEffect(() => {
-    if (router.isReady) {
-      const { channelId, guildId } = router.query;
+    let intervalId: NodeJS.Timeout;
 
-      if (channelId && guildId)
-        DiscordMessagesApi.GetTimer(
-          channelId.toString(),
-          guildId.toString()
-        ).then((timer) =>
-          handleFormatDate(timer, channelId.toString(), guildId.toString())
-        );
+    const startCountdown = () => {
+      intervalId = setInterval(() => {
+        setTimer(countdown());
+      }, 1000);
+    };
+
+    const { channelId, guildId } = router.query;
+    if (router.isReady && channelId && guildId) {
+      setTimer(countdown());
+      startCountdown();
     }
-  }, [handleFormatDate, router]);
+
+    return () => clearInterval(intervalId);
+  }, [router]);
 
   function toRanking() {
     const { channelId, guildId } = router.query;
 
     router.push({
-      pathname: '/ranking',
+      pathname: '/discordle/ranking',
       query: {
         channelId,
         guildId,

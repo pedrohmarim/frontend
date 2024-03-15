@@ -33,13 +33,10 @@ const ApiAuth = {
     );
     return response.data;
   },
-  GetTimer: async function (channelId: string, guildId: string) {
-    const response: AxiosResponse<string> = await http.post(
-      `${baseUrl}/GetTimer`,
-      {
-        GuildId: guildId,
-        ChannelId: channelId,
-      }
+  GetDiscordHints: async function (id: string, channelId: string) {
+    const response: AxiosResponse<I.IGetDiscordHintsResponse> = await http.post(
+      `${baseUrl}/GetHints`,
+      { MessageId: id, ChannelId: channelId }
     );
     return response.data;
   },

@@ -211,6 +211,16 @@ export default createGlobalStyle`
     background-color: ${(props) =>
       props.theme.discordleColors.background} !important;
   }
+
+  .ant-modal-header{
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+    border-bottom: 0px;
+  }
+
+  .ant-modal-footer {
+    border-top: 0px;
+  }
 `;
 
 export const HomeSpan = styled.span`

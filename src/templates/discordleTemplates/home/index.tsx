@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
-import { LoadingOutlined } from '@ant-design/icons';
 import Cookie from 'cookiejs';
 import theme from 'globalStyles/theme';
 import Head from 'next/head';
@@ -18,7 +17,6 @@ export default function HomeContainer() {
   const router = useRouter();
   const [whichRender, setWhichRender] = useState<string>('gamePresentation');
   const [guildId, setGuildId] = useState<string>('');
-  const [loadingInstance, setLoadingInstance] = useState<boolean>(false);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
@@ -127,8 +125,6 @@ export default function HomeContainer() {
   }
 
   function onChange(channelId: string) {
-    setLoadingInstance(true);
-
     DiscordInstanceApi.CreateDiscordleInstance(channelId, guildId)
       .then(() => {
         router.push({
@@ -139,13 +135,10 @@ export default function HomeContainer() {
           },
         });
       })
-      .finally(() => setLoadingInstance(false))
       .catch(() => handleReset());
   }
 
   function handleReload() {
-    setLoadingInstance(true);
-
     const { guild_id } = router.query;
 
     if (guild_id) {
@@ -154,8 +147,7 @@ export default function HomeContainer() {
           setInstanceChannels(channels);
           setWhichRender('formDiscordleInstance');
         })
-        .catch(() => handleReset())
-        .finally(() => setLoadingInstance(false));
+        .catch(() => handleReset());
     }
   }
 
@@ -195,14 +187,6 @@ export default function HomeContainer() {
           </S.ReloadContainer>
         </Tooltip>
       </S.NegativeMarginRow>
-
-      {loadingInstance && (
-        <S.Row justify="center">
-          <S.Description fontSize="12pt">
-            Carregando... <LoadingOutlined spin />
-          </S.Description>
-        </S.Row>
-      )}
 
       <Divider />
 

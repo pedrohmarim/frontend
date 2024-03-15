@@ -16,11 +16,11 @@ export default function filterMessage(message: IMessage) {
   if (message.Attachments.length) {
     response.messageType = FilterMessageEnum.isImage;
 
-    message.Attachments.forEach(({ url }, index) => {
+    message.Attachments.forEach(({ Url }, index) => {
       response.formattedAttachs.push(
         <Image
           preview={false}
-          src={url}
+          src={Url}
           alt={`image_${index}`}
           height={500}
           width="100%"
@@ -32,8 +32,8 @@ export default function filterMessage(message: IMessage) {
   if (message.Content.includes('<@')) {
     response.messageType = FilterMessageEnum.isText;
 
-    message.Mentions.map(({ username, id }) => {
-      message.Content = message.Content.replaceAll(`<@${id}>`, `@${username}`);
+    message.Mentions.map(({ Username, Id }) => {
+      message.Content = message.Content.replaceAll(`<@${Id}>`, `@${Username}`);
     });
   }
 

@@ -1,37 +1,32 @@
-import DiscordMessagesApi from 'services/DiscordleService';
+export default function countdown(): string {
+  const intervalId: NodeJS.Timeout = setInterval(() => {
+    const tempoRestante: string = formatDate();
 
-export default function formatDate(
-  timer: string,
-  channelId: string,
-  guildId: string,
-  setTimer: React.Dispatch<React.SetStateAction<string>>
-) {
-  const hour = Number(timer.split(':')[0]);
-  const minute = Number(timer.split(':')[1]);
-  const seconds = Number(timer.split(':')[2]);
-
-  const dataFinal = new Date();
-  dataFinal.setHours(dataFinal.getHours() + hour);
-  dataFinal.setMinutes(dataFinal.getMinutes() + minute);
-  dataFinal.setSeconds(dataFinal.getSeconds() + seconds);
-
-  const x = setInterval(async () => {
-    const agora = new Date().getTime();
-    const tempoRestante = dataFinal.getTime() - agora;
-    const hh = Math.floor(
-      (tempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const mm = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
-    const ss = Math.floor((tempoRestante % (1000 * 60)) / 1000);
-
-    setTimer(`${hh}h ${mm}m ${ss}s`);
-
-    if (tempoRestante < 0) {
-      clearInterval(x);
-
-      const timer = await DiscordMessagesApi.GetTimer(channelId, guildId);
-
-      return formatDate(timer, channelId, guildId, setTimer);
+    if (tempoRestante === '00:00:00') {
+      clearInterval(intervalId);
+      countdown();
     }
   }, 1000);
+
+  return formatDate();
+}
+
+function formatDate(): string {
+  const agora: Date = new Date();
+  const meiaNoite: Date = new Date(agora);
+  meiaNoite.setHours(24, 0, 0, 0);
+
+  const tempoRestante: number = meiaNoite.getTime() - agora.getTime();
+
+  const horas: number = Math.floor(tempoRestante / (1000 * 60 * 60));
+  const minutos: number = Math.floor(
+    (tempoRestante % (1000 * 60 * 60)) / (1000 * 60)
+  );
+  const segundos: number = Math.floor((tempoRestante % (1000 * 60)) / 1000);
+
+  const tempoRestanteFormatado = `${horas.toString().padStart(2, '0')}:${minutos
+    .toString()
+    .padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+
+  return tempoRestanteFormatado;
 }

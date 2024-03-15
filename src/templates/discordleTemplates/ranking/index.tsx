@@ -3,12 +3,11 @@ import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedM
 import { ColumnsType } from 'antd/es/table';
 import Cookie from 'cookiejs';
 import * as S from './styles';
-import DiscordMessagesApi from 'services/DiscordleService';
+import DiscordMessagesApi from 'services/DiscordleService/DiscordleRanking';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { IAwnser } from 'templates/discordleTemplates/game/IGame';
 import { MarginRow } from 'templates/discordleTemplates/home/styles';
-import DiscordLoad from 'templates/discordleTemplates/load';
 import { MessageContainer } from 'globalStyles/global';
 import {
   IRankingTableData,
@@ -27,7 +26,6 @@ import {
 export default function Ranking() {
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [loadPage, setLoadPage] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
   const [channelName, setChannelName] = useState<string>('');
@@ -35,11 +33,20 @@ export default function Ranking() {
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
 
   useEffect(() => {
-    function handleReset() {
+    function wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww(
+      channelId: string,
+      guildId: string
+    ) {
       Cookie.remove('guildId');
       Cookie.remove('userId');
       Cookie.remove('channelId');
-      router.push('/');
+      router.push({
+        pathname: '/discordle/chooseProfile',
+        query: {
+          channelId,
+          guildId,
+        },
+      });
     }
 
     if (router.isReady) {
@@ -49,7 +56,7 @@ export default function Ranking() {
 
       if (!userId) {
         router.push({
-          pathname: '/chooseProfile',
+          pathname: '/discordle/chooseProfile',
           query: {
             channelId,
             guildId,
@@ -62,21 +69,23 @@ export default function Ranking() {
           channelId.toString(),
           guildId.toString()
         )
-          .then(({ channelName, rankingTableData }) => {
-            setChannelName(channelName);
-            setDataSource(rankingTableData);
+          .then(({ ChannelName, RankingTableData }) => {
+            setChannelName(ChannelName);
+            setDataSource(RankingTableData);
           })
-          .catch(() => handleReset())
-          .finally(() => {
-            setLoadPage(false);
-            setLoading(false);
-          });
+          .catch(() =>
+            wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww(
+              channelId.toString(),
+              guildId.toString()
+            )
+          )
+          .finally(() => setLoading(false));
       }
     }
   }, [router]);
 
   function showDetails(userId: string) {
-    const { channelId } = router.query;
+    const { channelId, guildId } = router.query;
 
     if (channelId)
       DiscordMessagesApi.GetUserScoreDetail(userId, channelId?.toString())
@@ -85,7 +94,13 @@ export default function Ranking() {
           Cookie.remove('guildId');
           Cookie.remove('userId');
           Cookie.remove('channelId');
-          router.push('/');
+          router.push({
+            pathname: '/discordle/chooseProfile',
+            query: {
+              channelId,
+              guildId,
+            },
+          });
         })
         .finally(() => setOpen(true));
   }
@@ -95,39 +110,39 @@ export default function Ranking() {
       title: 'Posição',
       align: 'center',
       width: 80,
-      dataIndex: 'position',
+      dataIndex: 'Position',
       render: (value) => <>{value}</>,
     },
     {
       title: 'Membro',
-      dataIndex: 'member',
-      render: ({ username, avatarUrl }) => (
+      dataIndex: 'Member',
+      render: ({ Username, AvatarUrl }) => (
         <Row align="middle">
-          {avatarUrl && <Avatar src={avatarUrl} />}
-          <S.UserSpan>{username}</S.UserSpan>
+          {AvatarUrl && <Avatar src={AvatarUrl} />}
+          <S.UserSpan>{Username}</S.UserSpan>
         </Row>
       ),
     },
     {
       title: 'Total de pontos',
       align: 'center',
-      width: 100,
-      dataIndex: 'totalScore',
+      width: 150,
+      dataIndex: 'TotalScore',
     },
     {
       title: 'Ações',
       align: 'center',
       fixed: 'right',
-      width: 60,
+      width: 80,
       key: 'operation',
-      render: ({ member }) => {
+      render: ({ Member }) => {
         return (
           <Tooltip title="Ver detalhes">
             <S.Row
               justify="center"
               onClick={() => {
-                setNameModalTitle(member.username);
-                showDetails(member.userId);
+                setNameModalTitle(Member.Username);
+                showDetails(Member.Id);
               }}
             >
               <FeatherIcons icon="eye" size={18} />
@@ -142,28 +157,23 @@ export default function Ranking() {
     {
       title: 'Data',
       width: 100,
-      dataIndex: 'date',
+      dataIndex: 'Date',
       align: 'center',
       render: (value) => <>{value}</>,
     },
     {
       title: 'Detalhes do dia',
-      dataIndex: 'scoreDetails',
+      dataIndex: 'ScoreDetails',
       render: (scoreDetails) =>
-        scoreDetails.map(
-          (
-            { Score: score, Success: success, TabKey: tabKey }: IAwnser,
-            key: number
-          ) => (
-            <Row align="middle" key={key}>
-              <S.UserSpan>{tabKey}º Pergunta -</S.UserSpan>
-              <S.UserSpan>Pontuação: {score} -</S.UserSpan>
-              <S.UserSpan>
-                {success ? `Acertou ${score === 1 ? '(dica)' : ''}` : 'Errou'}
-              </S.UserSpan>
-            </Row>
-          )
-        ),
+        scoreDetails.map(({ Score, Success, TabKey }: IAwnser, key: number) => (
+          <Row align="middle" key={key}>
+            <S.UserSpan>{TabKey}º Pergunta -</S.UserSpan>
+            <S.UserSpan>Pontuação: {Score} -</S.UserSpan>
+            <S.UserSpan>
+              {Success ? `Acertou ${Score === 1 ? '(dica)' : ''}` : 'Errou'}
+            </S.UserSpan>
+          </Row>
+        )),
     },
   ];
 
@@ -177,15 +187,20 @@ export default function Ranking() {
         channelId.toString(),
         guildId.toString()
       )
-        .then(({ channelName, rankingTableData }) => {
-          setChannelName(channelName);
-          setDataSource(rankingTableData);
-        })
+        .then(
+          ({
+            ChannelName: channelName,
+            RankingTableData: rankingTableData,
+          }) => {
+            setChannelName(channelName);
+            setDataSource(rankingTableData);
+          }
+        )
         .catch(() => {
           Cookie.remove('guildId');
           Cookie.remove('userId');
           Cookie.remove('channelId');
-          router.push('/');
+          router.push('/discordle/chooseProfile');
         })
         .finally(() => setLoading(false));
     }
@@ -195,7 +210,7 @@ export default function Ranking() {
     const { channelId, guildId } = router.query;
 
     router.push({
-      pathname: '/game',
+      pathname: '/discordle/game',
       query: {
         channelId,
         guildId,
@@ -204,89 +219,85 @@ export default function Ranking() {
   }
 
   return (
-    <Fragment>
-      {!loadPage ? (
-        <MessageContainer>
-          <S.TableContainer>
-            <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
+    <MessageContainer>
+      <S.TableContainer>
+        <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
 
-            <Table
-              scroll={{ x: 600 }}
-              loading={loading}
-              size="middle"
-              columns={columns}
-              dataSource={dataSource}
-              rowKey={(record: IRankingTableData) => record.rowId}
-              locale={{ emptyText: <Empty description="Sem registros" /> }}
-              pagination={{
-                pageSize: 10,
-                hideOnSinglePage: true,
-                style: { color: theme.discordleColors.text },
-                total: dataSource.length,
-                showTotal: (total) => `Total de ${total} registros`,
-              }}
-            />
+        {dataSource.length && (
+          <Table
+            scroll={{ x: 600 }}
+            loading={loading}
+            size="middle"
+            columns={columns}
+            dataSource={dataSource}
+            rowKey={(record: IRankingTableData) => record.RowId}
+            locale={{ emptyText: <Empty description="Sem registros" /> }}
+            pagination={{
+              pageSize: 10,
+              hideOnSinglePage: true,
+              style: { color: theme.discordleColors.text },
+              total: dataSource.length,
+              showTotal: (total) => `Total de ${total} registros`,
+            }}
+          />
+        )}
 
-            <S.Modal
-              destroyOnClose
-              open={open}
-              title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
-              onCancel={() => setOpen(false)}
-              onOk={() => setOpen(false)}
-              bodyStyle={{ backgroundColor: theme.discordleColors.background }}
-              okText="Voltar"
-              cancelButtonProps={{ style: { display: 'none' } }}
-              okButtonProps={{
-                style: {
-                  backgroundColor: theme.discordleColors.primary,
-                  color: theme.discordleColors.text,
-                },
-              }}
+        <S.Modal
+          destroyOnClose
+          open={open}
+          title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
+          onCancel={() => setOpen(false)}
+          onOk={() => setOpen(false)}
+          bodyStyle={{ backgroundColor: theme.discordleColors.background }}
+          okText="Voltar"
+          cancelButtonProps={{ style: { display: 'none' } }}
+          okButtonProps={{
+            style: {
+              backgroundColor: theme.discordleColors.primary,
+              color: theme.discordleColors.text,
+            },
+          }}
+        >
+          <Table
+            scroll={{ x: 450 }}
+            loading={loading}
+            locale={{ emptyText: <Empty description="Sem registros" /> }}
+            size="small"
+            columns={modalColumns}
+            dataSource={scoreDetail}
+            rowKey={(record: IUserScoreDetail) => record.RowId}
+            pagination={{
+              pageSize: 3,
+              hideOnSinglePage: true,
+              style: { color: theme.discordleColors.text },
+              total: scoreDetail.length,
+              showTotal: (total) => `Total de ${total} registros`,
+            }}
+          />
+        </S.Modal>
+
+        <MarginRow justify="space-between" align="middle">
+          <Button
+            onClick={toGame}
+            backgroundcolor={theme.discordleColors.primary}
+            color={theme.discordleColors.text}
+            icon={<FeatherIcons icon="arrow-left" size={18} />}
+          >
+            <S.UserSpan>Voltar</S.UserSpan>
+          </Button>
+
+          <Row justify="end" align="middle">
+            <Button
+              onClick={gridReload}
+              backgroundcolor={theme.discordleColors.primary}
+              color={theme.discordleColors.text}
+              icon={<FeatherIcons icon="rotate-cw" size={18} />}
             >
-              <Table
-                scroll={{ x: 450 }}
-                loading={loading}
-                locale={{ emptyText: <Empty description="Sem registros" /> }}
-                size="small"
-                columns={modalColumns}
-                dataSource={scoreDetail}
-                rowKey={(record: IUserScoreDetail) => record.rowId}
-                pagination={{
-                  pageSize: 3,
-                  hideOnSinglePage: true,
-                  style: { color: theme.discordleColors.text },
-                  total: scoreDetail.length,
-                  showTotal: (total) => `Total de ${total} registros`,
-                }}
-              />
-            </S.Modal>
-
-            <MarginRow justify="space-between" align="middle">
-              <Button
-                onClick={toGame}
-                backgroundcolor={theme.discordleColors.primary}
-                color={theme.discordleColors.text}
-                icon={<FeatherIcons icon="arrow-left" size={18} />}
-              >
-                <S.UserSpan>Voltar</S.UserSpan>
-              </Button>
-
-              <Row justify="end" align="middle">
-                <Button
-                  onClick={gridReload}
-                  backgroundcolor={theme.discordleColors.primary}
-                  color={theme.discordleColors.text}
-                  icon={<FeatherIcons icon="rotate-cw" size={18} />}
-                >
-                  <S.UserSpan>Recarregar</S.UserSpan>
-                </Button>
-              </Row>
-            </MarginRow>
-          </S.TableContainer>
-        </MessageContainer>
-      ) : (
-        <DiscordLoad />
-      )}
-    </Fragment>
+              <S.UserSpan>Recarregar</S.UserSpan>
+            </Button>
+          </Row>
+        </MarginRow>
+      </S.TableContainer>
+    </MessageContainer>
   );
 }
