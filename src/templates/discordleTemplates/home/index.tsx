@@ -77,7 +77,7 @@ export default function HomeContainer() {
   }, [router]);
 
   const GamePresentation = () => (
-    <Fragment>
+    <G.MessageContainer width="70%" margin="auto">
       <S.Title>
         Bem vindo ao
         <G.HomeSpan> Discordle</G.HomeSpan>
@@ -115,7 +115,7 @@ export default function HomeContainer() {
           <G.HomeSpan> Dono </G.HomeSpan> do servidor que deseje usar.
         </S.Description>
       </Row>
-    </Fragment>
+    </G.MessageContainer>
   );
 
   function handleReset() {
@@ -152,7 +152,7 @@ export default function HomeContainer() {
   }
 
   const FormDiscordleInstance = () => (
-    <Fragment>
+    <G.MessageContainer width="99.3%">
       <GameTitle>Discordle | Criar Instância</GameTitle>
 
       <S.NegativeMarginRow justify="center" align="middle">
@@ -209,7 +209,7 @@ export default function HomeContainer() {
           <G.HomeSpan> cinco</G.HomeSpan> mensagens não serão listados.
         </S.Description>
       </S.Row>
-    </Fragment>
+    </G.MessageContainer>
   );
 
   const WhichRender = () => {
@@ -227,7 +227,7 @@ export default function HomeContainer() {
         <title>Discordle | Home</title>
       </Head>
 
-      <G.MessageContainer width="50%">{WhichRender()}</G.MessageContainer>
+      {WhichRender()}
     </Fragment>
   );
 }

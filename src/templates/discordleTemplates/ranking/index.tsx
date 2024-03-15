@@ -245,6 +245,7 @@ export default function Ranking() {
         <S.Modal
           destroyOnClose
           open={open}
+          style={{ top: '5%' }}
           title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
           onCancel={() => setOpen(false)}
           onOk={() => setOpen(false)}
@@ -282,6 +283,7 @@ export default function Ranking() {
             backgroundcolor={theme.discordleColors.primary}
             color={theme.discordleColors.text}
             icon={<FeatherIcons icon="arrow-left" size={18} />}
+            width={120}
           >
             <S.UserSpan>Voltar</S.UserSpan>
           </Button>

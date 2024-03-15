@@ -10,17 +10,11 @@ export default createGlobalStyle`
   }
 
   body {
-    background-image: url("https://images4.alphacoders.com/909/909912.png") !important
+    background-image: url("https://images4.alphacoders.com/909/909912.png") !important;
   }
   
   nextjs-portal {
     display: none;
-  }
-  
-  body {
-    background: ${(props) => props.theme.colors.background};
-    color: ${(props) => props.theme.colors.textSecondary};
-    font: 400 16px Roboto, sans-serif;
   }
   
   .ant-divider-inner-text{
@@ -244,9 +238,49 @@ export const DynamicWidth = styled.div<{ width: string }>`
   width: ${({ width }) => width};
 `;
 
-export const MessageContainer = styled(Card)<{ width?: string }>`
+export const CenteredContainer = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const OverflowDiscordle = styled.div`
+  max-height: 820px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Media query para dispositivos com largura de tela até 768px pixels (por exemplo, smartphones em modo retrato) */
+  @media screen and (max-width: 768px) {
+    max-height: 100%; /* Ajuste conforme necessário para dispositivos móveis */
+  }
+
+  /* Media query para dispositivos com largura de tela de 769 a 1600px pixels (por exemplo, tablets em modo paisagem) */
+  @media screen and (min-width: 769px) and (max-width: 1600px) {
+    max-height: 700px; /* Ajuste conforme necessário para dispositivos móveis */
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${(props) =>
+      props.theme.discordleColors.primary} !important;
+  }
+`;
+
+export const MessageContainer = styled(Card)<{
+  width?: string;
+  margin?: string;
+}>`
   text-align: center;
   width: ${({ width }) => width};
+  margin: ${({ margin }) => margin};
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.discordleColors.text};
@@ -254,14 +288,4 @@ export const MessageContainer = styled(Card)<{ width?: string }>`
   border-radius: 8px;
   border-color: rgba(255, 255, 255, 0.09);
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-`;
-
-export const CenteredContainer = styled.div`
-  width: 75%;
-  min-width: 455px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: auto;
 `;

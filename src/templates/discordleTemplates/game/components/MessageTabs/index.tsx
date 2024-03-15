@@ -44,7 +44,11 @@ export default function MessageTabs({
   }, 0);
 
   return (
-    <S.Tabs activeKey={String(activeTabKey)} onChange={handleTabChange}>
+    <S.Tabs
+      activeKey={String(activeTabKey)}
+      onChange={handleTabChange}
+      moreIcon={false}
+    >
       {choosedMessages.map(
         ({ message, formattedAttachs, messageType, urlLink }, index) => {
           const { Timestamp: timestamp, Content: content, Id: id } = message;

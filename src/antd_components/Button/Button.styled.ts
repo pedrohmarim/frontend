@@ -7,8 +7,8 @@ export const Button = styled(AntDesignButton)<I.IButton>`
   background-color: ${({ backgroundcolor }) => backgroundcolor};
   border: none;
   outline: none !important;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   margin: ${({ margin }) => margin};
   border-radius: 4px;
   font-weight: 500;

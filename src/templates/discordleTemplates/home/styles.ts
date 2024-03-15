@@ -11,16 +11,6 @@ export const Title = styled.h1`
   color: ${(props) => props.theme.discordleColors.text};
 `;
 
-export const Description = styled.span<{
-  fontSize?: string;
-  fontStyle?: string;
-}>`
-  color: ${(props) => props.theme.discordleColors.text};
-  font-size: ${({ fontSize }) => fontSize || '13pt'};
-  font-style: ${({ fontStyle }) => fontStyle || 'normal'};
-  font-weight: normal;
-`;
-
 export const Label = styled.span`
   font-size: 13pt;
 `;
@@ -55,4 +45,14 @@ export const ReloadContainer = styled.div`
   margin-left: 10px;
   margin-top: 10px;
   cursor: pointer;
+`;
+
+export const Description = styled.span<{
+  fontSize?: string;
+  fontStyle?: string;
+}>`
+  color: ${(props) => props.theme.discordleColors.text};
+  font-size: ${({ fontSize }) => fontSize || '13pt'};
+  font-style: ${({ fontStyle }) => fontStyle || 'normal'};
+  font-weight: normal;
 `;

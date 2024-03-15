@@ -4,7 +4,7 @@ export interface IButton {
   color?: string;
   backgroundcolor?: string;
   width?: number | string;
-  height?: number;
+  height?: number | string;
   boxshadow?: string;
   margin?: string;
   icon?: React.ReactNode;

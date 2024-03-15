@@ -23,8 +23,8 @@ export default function Button({
       icon={icon}
       color={color}
       backgroundcolor={backgroundcolor}
-      width={width}
-      height={height}
+      width={width ? `${width}px` : '100%'}
+      height={height ? `${height}px` : '100%'}
       margin={margin}
       htmlType={htmlType}
       onClick={onClick}
