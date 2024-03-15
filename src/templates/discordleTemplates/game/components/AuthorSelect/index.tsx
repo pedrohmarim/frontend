@@ -1,62 +1,25 @@
-import React, { Fragment } from 'react';
-import { Row, Select, Image, Notification } from 'antd_components';
+import React from 'react';
+import { Row, Select, Image } from 'antd_components';
 import * as S from './styles';
 import * as I from './IAuthorSelect';
-import theme from 'globalStyles/theme';
-import { IAwnser } from 'templates/discordleTemplates/game/IGame';
 
 const AuthorSelect = ({
-  authorMessageId,
+  messageId,
   authors,
-  activeTabKey,
   usedHint,
+  activeTabKey,
   saveScore,
   setActiveTabKey,
-  setAwnsers,
   setUsedHint,
 }: I.IAuthorSelect) => {
-  function handleVerifyAwnser(awnserId: string) {
-    const success = awnserId === authorMessageId;
-
-    const username = authors.find(
-      ({ Id: id }) => id === authorMessageId
-    )?.Username;
-
-    const score = success ? (usedHint ? 1 : 2) : 0;
-
-    const newAwnserDto: IAwnser = {
-      Success: success,
-      TabKey: activeTabKey,
-      Score: score,
-    };
-
-    saveScore(newAwnserDto);
-
-    setAwnsers((prevAwnsers) => [...prevAwnsers, newAwnserDto]);
-
-    const description: JSX.Element = (
-      <Fragment>
-        {success ? 'Quem mandou essa mensagem foi ' : 'A resposta certa era '}
-        <S.AuthorHighlight color={theme.discordleColors.primary}>
-          {username}
-        </S.AuthorHighlight>
-      </Fragment>
-    );
-
-    setUsedHint(false);
-
-    if (success) return Notification.success('Acertou!', description);
-
-    return Notification.error('Errou!', description);
-  }
-
   return (
     <S.Select
       disabled={!authors?.length}
       getPopupContainer={(trigger) => trigger.parentNode}
       placeholder="Selecione um membro"
       onChange={(value) => {
-        handleVerifyAwnser(String(value));
+        saveScore(messageId, String(value), usedHint, activeTabKey);
+        setUsedHint(false);
         setActiveTabKey((prev: number) => prev + 1);
       }}
     >

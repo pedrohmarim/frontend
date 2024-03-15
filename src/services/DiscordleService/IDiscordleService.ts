@@ -16,7 +16,6 @@ export interface IGetDiscordHintsResponse {
 
 export interface IMessage {
   Id: string;
-  Author: IAuthor;
   Content: string;
   Mentions: IMention[];
   Attachments: IAttachments[];
@@ -46,8 +45,11 @@ export interface IScoreInstance {
 }
 
 export interface IPostSaveScore {
-  Awnser: IAwnser;
   UserId: string;
+  MessageId: string;
+  AuthorSelected: string;
+  UsedHint: boolean;
+  ActiveTabKey: number;
 }
 
 export interface IGetQueryParamsByUserIdResponse {

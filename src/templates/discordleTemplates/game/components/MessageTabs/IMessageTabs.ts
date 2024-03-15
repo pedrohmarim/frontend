@@ -9,7 +9,12 @@ export interface IMessageTabs {
   serverName: string;
   authors: IAuthor[];
   serverIcon: string;
-  saveScore: (awnser: IAwnser) => void;
+  saveScore: (
+    messageId: string,
+    authorSelected: string,
+    usedHint: boolean,
+    activeTabKey: number
+  ) => void;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
   setAwnsers: React.Dispatch<React.SetStateAction<IAwnser[]>>;
 }

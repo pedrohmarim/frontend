@@ -17,7 +17,6 @@ export default function MessageTabs({
   serverIcon,
   saveScore,
   setActiveTabKey,
-  setAwnsers,
 }: I.IMessageTabs) {
   const [usedHint, setUsedHint] = useState<boolean>(false);
 
@@ -48,12 +47,7 @@ export default function MessageTabs({
     <S.Tabs activeKey={String(activeTabKey)} onChange={handleTabChange}>
       {choosedMessages.map(
         ({ message, formattedAttachs, messageType, urlLink }, index) => {
-          const {
-            Timestamp: timestamp,
-            Content: content,
-            Id: id,
-            Author: author,
-          } = message;
+          const { Timestamp: timestamp, Content: content, Id: id } = message;
           const current = index + 1;
 
           const choosedMessage: IChoosedMessage = {
@@ -99,13 +93,12 @@ export default function MessageTabs({
               />
 
               <AuthorSelect
-                saveScore={saveScore}
-                setUsedHint={(value) => setUsedHint(value)}
-                usedHint={usedHint}
-                setAwnsers={setAwnsers}
-                authorMessageId={author.Id}
-                authors={authors}
                 activeTabKey={activeTabKey}
+                messageId={choosedMessage.id}
+                authors={authors}
+                usedHint={usedHint}
+                setUsedHint={(value) => setUsedHint(value)}
+                saveScore={saveScore}
                 setActiveTabKey={setActiveTabKey}
               />
             </S.TabsPane>

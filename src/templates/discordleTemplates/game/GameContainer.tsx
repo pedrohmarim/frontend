@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import * as I from './IGame';
 import Cookie from 'cookiejs';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
+import { Notification } from 'antd_components';
 import Head from 'next/head';
 import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/discordle/filter.message';
@@ -13,6 +14,8 @@ import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
+import { AuthorHighlight } from './components/AuthorSelect/styles';
+import theme from 'globalStyles/theme';
 
 export default function GameContainer() {
   const router = useRouter();
@@ -101,7 +104,12 @@ export default function GameContainer() {
     router.push('/discordle/chooseProfile');
   }
 
-  function saveScore(awnser: I.IAwnser) {
+  async function saveScore(
+    messageId: string,
+    authorSelected: string,
+    usedHint: boolean,
+    activeTabKey: number
+  ) {
     const userId = Cookie.get('userId').toString();
 
     const { channelId, guildId } = router.query;
@@ -112,14 +120,36 @@ export default function GameContainer() {
         GuildId: guildId.toString(),
         Score: {
           UserId: userId,
-          Awnser: awnser,
+          MessageId: messageId,
+          AuthorSelected: authorSelected,
+          UsedHint: usedHint,
+          ActiveTabKey: activeTabKey,
         },
       };
 
-      if (!alreadyAwnsered)
-        DiscordGameApi.SaveScore(dto)
-          .then((alreadyAwnsered) => setAlreadyAwnsered(alreadyAwnsered))
+      if (!alreadyAwnsered) {
+        await DiscordGameApi.SaveScore(dto)
+          .then((data: I.IAwnser[]) => {
+            setAwnsers(data);
+            setAlreadyAwnsered(data.length === 5);
+
+            const success = data[data.length - 1].Success;
+            const description: JSX.Element = (
+              <Fragment>
+                {success
+                  ? 'Quem mandou essa mensagem foi '
+                  : 'A resposta certa era '}
+                <AuthorHighlight color={theme.discordleColors.primary}>
+                  {data[data.length - 1].Username}
+                </AuthorHighlight>
+              </Fragment>
+            );
+
+            if (success) Notification.success('Acertou!', description);
+            else Notification.error('Errou!', description);
+          })
           .catch(() => handleReset());
+      }
     }
   }
 

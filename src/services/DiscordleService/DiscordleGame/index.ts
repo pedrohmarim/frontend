@@ -27,7 +27,7 @@ const ApiAuth = {
     return response.data;
   },
   SaveScore: async function (data: I.IScoreInstance) {
-    const response: AxiosResponse<boolean> = await http.post(
+    const response: AxiosResponse<IAwnser[]> = await http.post(
       `${baseUrl}/SaveScore`,
       data
     );
