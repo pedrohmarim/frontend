@@ -26,6 +26,11 @@ export const Username = styled.span`
   font-size: 14pt;
 `;
 
+export const TimerText = styled.span`
+  font-weight: 400;
+  font-size: 11pt;
+`;
+
 export const InvalidText = styled.span`
   color: red;
   opacity: 0.75;

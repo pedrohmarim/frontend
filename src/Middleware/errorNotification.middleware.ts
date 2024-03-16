@@ -52,7 +52,8 @@ export const errorResponseInterceptor = (
 ) => {
   DisableLoading();
 
-  const description = error.response?.data.Message;
+  const description =
+    error.response?.data.Message ?? 'Não foi possível conectar-se ao servidor.';
   const statusCode = error.response?.status;
 
   switch (statusCode) {

@@ -40,8 +40,6 @@ export default function LoginContainer() {
       if (localStorageRememberMeDto) {
         const parsed: I.ILoginRequest = JSON.parse(localStorageRememberMeDto);
 
-        console.log(parsed);
-
         form.setFieldsValue({
           Email: parsed.Email,
           Password: parsed.Password,

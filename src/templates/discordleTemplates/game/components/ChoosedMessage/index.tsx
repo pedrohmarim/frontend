@@ -164,11 +164,25 @@ export default function ChoosedMessage({
       key: '1',
       label: (
         <PopConfirm
-          title="Aviso! Ao mostrar uma dica, a resposta correta valerá a metade dos pontos normais."
+          title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
           okText="Mostrar"
           cancelText="Cancelar"
+          okButtonProps={{
+            style: {
+              backgroundColor: theme.discordleColors.primary,
+              border: 'none',
+            },
+          }}
+          cancelButtonProps={{
+            style: {
+              backgroundColor: theme.discordleColors.text,
+              color: theme.discordleColors.primary,
+            },
+          }}
           onConfirm={confirm}
+          getPopupContainer={(trigger) => trigger}
           onCancel={closeAll}
+          placement="bottom"
           open={stillOpen.popconfirm || loading}
         >
           <S.OptionItem

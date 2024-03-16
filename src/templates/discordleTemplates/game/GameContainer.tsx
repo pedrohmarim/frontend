@@ -16,6 +16,7 @@ import {
 } from 'services/DiscordleService/IDiscordleService';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
 import theme from 'globalStyles/theme';
+import { Description } from '../home/styles';
 
 export default function GameContainer() {
   const router = useRouter();
@@ -33,40 +34,11 @@ export default function GameContainer() {
 
   useEffect(() => {
     if (router.isReady) {
-      const userId = Cookie.get('userId');
-
-      const { channelId, guildId } = router.query;
-
-      if (!userId) {
-        router.push({
-          pathname: '/discordle/chooseProfile',
-          query: {
-            channelId,
-            guildId,
-          },
-        });
-      } else {
-        const loadParameters = Boolean(channelId && guildId && userId);
-
-        !loadParameters && router.push('/discordle/chooseProfile');
-      }
-    }
-  }, [router]);
-
-  useEffect(() => {
-    function handleReset() {
-      Cookie.remove('guildId');
-      Cookie.remove('userId');
-      Cookie.remove('channelId');
-      router.push('/discordle/chooseProfile');
-    }
-
-    if (router.isReady) {
       const { channelId } = router.query;
 
       if (channelId) {
-        DiscordGameApi.GetChoosedMessages(channelId.toString())
-          .then(({ Messages, ServerName, ServerIcon, Authors }) => {
+        DiscordGameApi.GetChoosedMessages(channelId.toString()).then(
+          ({ Messages, ServerName, ServerIcon, Authors }) => {
             setAuthors(Authors);
             setServerInfos({ ServerName, ServerIcon });
 
@@ -77,13 +49,13 @@ export default function GameContainer() {
             });
 
             setChoosedMessages(filteredMessagesArray);
-          })
-          .catch(() => handleReset());
+          }
+        );
 
         const userId = Cookie.get('userId').toString();
 
-        DiscordGameApi.VerifyAlreadyAwnsered(userId, channelId.toString())
-          .then((data) => {
+        DiscordGameApi.VerifyAlreadyAwnsered(userId, channelId.toString()).then(
+          (data) => {
             setActiveTabKey(data.length + 1);
 
             if (!data.length) return;
@@ -91,18 +63,11 @@ export default function GameContainer() {
             if (data.length === 5) setAlreadyAwnsered(true);
 
             setAwnsers(data);
-          })
-          .catch(() => handleReset());
-      } else router.push('/discordle/chooseProfile');
+          }
+        );
+      }
     }
   }, [router]);
-
-  function handleReset() {
-    Cookie.remove('guildId');
-    Cookie.remove('userId');
-    Cookie.remove('channelId');
-    router.push('/discordle/chooseProfile');
-  }
 
   async function saveScore(
     messageId: string,
@@ -128,30 +93,35 @@ export default function GameContainer() {
       };
 
       if (!alreadyAwnsered) {
-        await DiscordGameApi.SaveScore(dto)
-          .then((data: I.IAwnser[]) => {
-            setAwnsers(data);
-            setAlreadyAwnsered(data.length === 5);
+        await DiscordGameApi.SaveScore(dto).then((data: I.IAwnser[]) => {
+          setAwnsers(data);
+          setAlreadyAwnsered(data.length === 5);
 
-            const success = data[data.length - 1].Success;
-            const description: JSX.Element = (
-              <Fragment>
-                {success
-                  ? 'Quem mandou essa mensagem foi '
-                  : 'A resposta certa era '}
-                <AuthorHighlight color={theme.discordleColors.primary}>
-                  {data[data.length - 1].Username}
-                </AuthorHighlight>
-              </Fragment>
-            );
+          const success = data[data.length - 1].Success;
+          const description: JSX.Element = (
+            <Fragment>
+              {success
+                ? 'Quem mandou essa mensagem foi '
+                : 'A resposta certa era '}
+              <AuthorHighlight color={theme.discordleColors.primary}>
+                {data[data.length - 1].Username}
+              </AuthorHighlight>
+            </Fragment>
+          );
 
-            if (success) Notification.success('Acertou!', description);
-            else Notification.error('Errou!', description);
-          })
-          .catch(() => handleReset());
+          if (success) Notification.success('Acertou!', description);
+          else Notification.error('Errou!', description);
+        });
       }
     }
   }
+
+  if (!choosedMessages.length)
+    return (
+      <MessageContainer>
+        <Description>Erro ao carregar o Discordle</Description>
+      </MessageContainer>
+    );
 
   return (
     <Fragment>

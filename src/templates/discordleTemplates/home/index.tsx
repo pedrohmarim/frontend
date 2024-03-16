@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
-import Cookie from 'cookiejs';
 import theme from 'globalStyles/theme';
 import Head from 'next/head';
 import { Row, FeatherIcons, Tooltip } from 'antd_components';
@@ -16,7 +15,7 @@ import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedM
 export default function HomeContainer() {
   const router = useRouter();
   const [whichRender, setWhichRender] = useState<string>('gamePresentation');
-  const [guildId, setGuildId] = useState<string>('');
+  const [guildId, setGuildId] = useState<string | null>(null);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
@@ -35,13 +34,6 @@ export default function HomeContainer() {
   }
 
   useEffect(() => {
-    function handleReset() {
-      Cookie.remove('guildId');
-      Cookie.remove('userId');
-      Cookie.remove('channelId');
-      router.push('/');
-    }
-
     if (router.isReady) {
       const { guild_id } = router.query;
 
@@ -53,27 +45,10 @@ export default function HomeContainer() {
             setInstanceChannels(channels);
             setWhichRender('formDiscordleInstance');
           })
-          .catch(() => handleReset());
-      } else {
-        const userId = Cookie.get('userId');
-
-        if (Boolean(userId)) {
-          const channelId = Cookie.get('channelId');
-          const guildId = Cookie.get('guildId');
-
-          router.push({
-            pathname: '/game',
-            query: {
-              channelId,
-              guildId,
-            },
-          });
-        } else {
-          Cookie.remove('guildId');
-          Cookie.remove('channelId');
-        }
+          .finally(() => handleReload());
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const GamePresentation = () => (
@@ -118,36 +93,25 @@ export default function HomeContainer() {
     </G.MessageContainer>
   );
 
-  function handleReset() {
-    Cookie.remove('guildId');
-    Cookie.remove('userId');
-    Cookie.remove('channelId');
-  }
-
   function onChange(channelId: string) {
-    DiscordInstanceApi.CreateDiscordleInstance(channelId, guildId)
-      .then(() => {
+    if (guildId) {
+      DiscordInstanceApi.CreateDiscordleInstance(channelId, guildId).then(() =>
         router.push({
           pathname: '/discordle/chooseProfile',
           query: {
             channelId,
-            guildId,
           },
-        });
-      })
-      .catch(() => handleReset());
+        })
+      );
+    }
   }
 
   function handleReload() {
-    const { guild_id } = router.query;
-
-    if (guild_id) {
-      DiscordGuildsApi.GetGuildById(guild_id.toString())
-        .then((channels) => {
-          setInstanceChannels(channels);
-          setWhichRender('formDiscordleInstance');
-        })
-        .catch(() => handleReset());
+    if (guildId) {
+      DiscordGuildsApi.GetGuildById(guildId).then((channels) => {
+        setInstanceChannels(channels);
+        setWhichRender('formDiscordleInstance');
+      });
     }
   }
 
@@ -159,7 +123,11 @@ export default function HomeContainer() {
         <Select
           disabled={!instanceChannels?.length}
           getPopupContainer={(trigger) => trigger.parentNode}
-          placeholder="Selecione um canal"
+          placeholder={
+            instanceChannels.length
+              ? 'Selecione um canal'
+              : 'Não há canais a serem exibidos'
+          }
           onChange={(channelId) => onChange(String(channelId))}
         >
           {instanceChannels?.length &&

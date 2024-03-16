@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { ColumnsType } from 'antd/es/table';
-import Cookie from 'cookiejs';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordleService/DiscordleRanking';
 import { useRouter } from 'next/router';
@@ -33,36 +32,8 @@ export default function Ranking() {
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
 
   useEffect(() => {
-    function wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww(
-      channelId: string,
-      guildId: string
-    ) {
-      Cookie.remove('guildId');
-      Cookie.remove('userId');
-      Cookie.remove('channelId');
-      router.push({
-        pathname: '/discordle/chooseProfile',
-        query: {
-          channelId,
-          guildId,
-        },
-      });
-    }
-
     if (router.isReady) {
-      const userId = Cookie.get('userId');
-
       const { channelId, guildId } = router.query;
-
-      if (!userId) {
-        router.push({
-          pathname: '/discordle/chooseProfile',
-          query: {
-            channelId,
-            guildId,
-          },
-        });
-      }
 
       if (channelId && guildId) {
         DiscordMessagesApi.GetDiscordleHistory(
@@ -73,35 +44,17 @@ export default function Ranking() {
             setChannelName(ChannelName);
             setDataSource(RankingTableData);
           })
-          .catch(() =>
-            wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww(
-              channelId.toString(),
-              guildId.toString()
-            )
-          )
           .finally(() => setLoading(false));
       }
     }
   }, [router]);
 
   function showDetails(userId: string) {
-    const { channelId, guildId } = router.query;
+    const { channelId } = router.query;
 
     if (channelId)
       DiscordMessagesApi.GetUserScoreDetail(userId, channelId?.toString())
         .then((data) => setScoreDetail(data))
-        .catch(() => {
-          Cookie.remove('guildId');
-          Cookie.remove('userId');
-          Cookie.remove('channelId');
-          router.push({
-            pathname: '/discordle/chooseProfile',
-            query: {
-              channelId,
-              guildId,
-            },
-          });
-        })
         .finally(() => setOpen(true));
   }
 
@@ -196,12 +149,6 @@ export default function Ranking() {
             setDataSource(rankingTableData);
           }
         )
-        .catch(() => {
-          Cookie.remove('guildId');
-          Cookie.remove('userId');
-          Cookie.remove('channelId');
-          router.push('/discordle/chooseProfile');
-        })
         .finally(() => setLoading(false));
     }
   }
@@ -221,26 +168,28 @@ export default function Ranking() {
   return (
     <MessageContainer>
       <S.TableContainer>
-        <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
-
-        {dataSource.length && (
-          <Table
-            scroll={{ x: 600 }}
-            loading={loading}
-            size="middle"
-            columns={columns}
-            dataSource={dataSource}
-            rowKey={(record: IRankingTableData) => record.RowId}
-            locale={{ emptyText: <Empty description="Sem registros" /> }}
-            pagination={{
-              pageSize: 10,
-              hideOnSinglePage: true,
-              style: { color: theme.discordleColors.text },
-              total: dataSource.length,
-              showTotal: (total) => `Total de ${total} registros`,
-            }}
-          />
+        {channelName ? (
+          <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
+        ) : (
+          <GameTitle>Erro ao carregar ranking</GameTitle>
         )}
+
+        <Table
+          scroll={{ x: 600 }}
+          loading={loading}
+          size="middle"
+          columns={columns}
+          dataSource={dataSource}
+          rowKey={(record: IRankingTableData) => record.RowId}
+          locale={{ emptyText: <Empty description="Sem registros" /> }}
+          pagination={{
+            pageSize: 10,
+            hideOnSinglePage: true,
+            style: { color: theme.discordleColors.text },
+            total: dataSource.length,
+            showTotal: (total) => `Total de ${total} registros`,
+          }}
+        />
 
         <S.Modal
           destroyOnClose

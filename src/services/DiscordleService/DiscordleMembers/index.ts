@@ -16,7 +16,7 @@ const ApiAuth = {
     return response.data;
   },
   ValidateToken: async function (token: string, userId: string) {
-    const response: AxiosResponse<boolean> = await http.post(
+    const response: AxiosResponse<string> = await http.post(
       `${baseUrl}/ValidateToken`,
       {
         UserId: userId,

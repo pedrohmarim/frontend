@@ -57,15 +57,9 @@ export interface IGetQueryParamsByUserIdResponse {
   guildId: string;
 }
 
-export interface IInstanceChannelsGetDto {
-  _id: string;
-  channels: IInstanceChannels[];
-}
-
 export interface IInstanceChannels {
   ChannelName: string;
   ChannelId: string;
-  Members: IMember[];
   NotListed: boolean;
 }
 

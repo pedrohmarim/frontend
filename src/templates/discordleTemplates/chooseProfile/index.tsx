@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import { IMember } from 'services/DiscordleService/IDiscordleService';
-import Cookie from 'cookiejs';
 import * as S from './styles';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
-import { Image, Row, Col } from 'antd_components';
+import { Image, Row, Col, Button } from 'antd_components';
 import { useRouter } from 'next/router';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { Description } from 'templates/discordleTemplates/home/styles';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
 import { Divider } from 'templates/discordleTemplates/game/components/Result/styles';
 import ReactCodeInput from 'react-verification-code-input';
+import theme from 'globalStyles/theme';
 
 export default function ChooseProfile() {
   const router = useRouter();
@@ -26,57 +26,76 @@ export default function ChooseProfile() {
   });
 
   useEffect(() => {
-    function handleReset() {
-      Cookie.remove('guildId');
-      Cookie.remove('userId');
-      Cookie.remove('channelId');
-    }
-
     if (router.isReady) {
       const { channelId } = router.query;
 
-      const userId = Cookie.get('userId');
-
-      if (userId) handleReset();
-
-      if (channelId)
-        DiscordMembersApi.GetChannelMembers(channelId.toString())
-          .then((members: IMember[]) => {
-            if (!members.length) handleReset();
-            setMembers(members);
-          })
-          .catch(() => handleReset());
-      else handleReset();
+      if (channelId) {
+        DiscordMembersApi.GetChannelMembers(channelId.toString()).then(
+          (members: IMember[]) => setMembers(members)
+        );
+      }
     }
   }, [router]);
 
-  function handleSaveUser(token: string) {
-    setValidToken(true);
+  const [secondsRemaining, setSecondsRemaining] = useState<number | null>(null);
 
-    const { guildId, channelId } = router.query;
+  const secondsToAwait = 5;
 
-    if (guildId) {
-      DiscordMembersApi.ValidateToken(token, showTokenInput.userId).then(
-        (validToken: boolean) => {
-          setValidToken(validToken);
+  const startTimer = () => {
+    setSecondsRemaining(secondsToAwait);
+    let remainingTime = secondsToAwait;
 
-          if (validToken) {
-            Cookie.set('userId', showTokenInput.userId);
-            Cookie.set('guildId', guildId?.toString());
-            Cookie.set('channelId', channelId?.toString());
+    const timer = setInterval(() => {
+      remainingTime -= 1;
+      setSecondsRemaining(remainingTime);
 
-            router.push({
-              pathname: '/discordle/game',
-              query: {
-                channelId,
-                guildId,
-              },
-            });
-          }
-        }
-      );
+      if (remainingTime <= 0) {
+        clearInterval(timer);
+        setSecondsRemaining(null);
+      }
+    }, 1000);
+  };
+
+  const debounce = (func: (token: string) => void, delay: number) => {
+    let timeoutId: NodeJS.Timeout;
+
+    return (token: string) => {
+      if (secondsRemaining === null) {
+        startTimer();
+        func(token);
+      } else {
+        clearInterval(timeoutId);
+        timeoutId = setTimeout(() => {
+          func(token);
+        }, delay * 1000);
+      }
+    };
+  };
+
+  const debouncedHandleSaveUser = debounce((token: string) => {
+    const { channelId } = router.query;
+
+    if (channelId) {
+      DiscordMembersApi.ValidateToken(token, showTokenInput.userId)
+        .then((accessToken: string) => {
+          const isValid = Boolean(accessToken.length);
+
+          setValidToken(isValid);
+
+          if (!isValid) return;
+
+          window.localStorage.setItem('discordleToken', accessToken);
+
+          router.push({
+            pathname: '/discordle/game',
+            query: {
+              channelId,
+            },
+          });
+        })
+        .catch(() => setValidToken(false));
     }
-  }
+  }, secondsToAwait);
 
   const memberRowRef = useRef<HTMLDivElement>(null);
 
@@ -108,7 +127,27 @@ export default function ChooseProfile() {
     }
   };
 
-  if (!members.length) return <Fragment />;
+  if (!members.length)
+    return (
+      <MessageContainer>
+        <Description>Não há membros á serem exibidos</Description>
+
+        <Col>
+          <Description>
+            Parâmetro ID do canal inválido ou inexistente
+          </Description>
+        </Col>
+
+        <Button
+          margin="20px 0 0 0"
+          backgroundcolor={theme.discordleColors.primary}
+          color={theme.discordleColors.text}
+          onClick={() => router.back()}
+        >
+          Voltar
+        </Button>
+      </MessageContainer>
+    );
 
   return (
     <MessageContainer>
@@ -161,12 +200,22 @@ export default function ChooseProfile() {
             <Row justify="center">
               <Col span={24}>
                 <ReactCodeInput
+                  onChange={() => setValidToken(true)}
+                  disabled={secondsRemaining != null}
                   className="codeInput"
-                  onComplete={handleSaveUser}
+                  onComplete={debouncedHandleSaveUser}
                   fields={5}
                 />
 
                 {!validToken && <S.InvalidText>Codigo Inválido!</S.InvalidText>}
+
+                {secondsRemaining && (
+                  <Row justify="center">
+                    <S.TimerText>
+                      Tente novamente em <HomeSpan>{secondsRemaining}</HomeSpan>
+                    </S.TimerText>
+                  </Row>
+                )}
               </Col>
             </Row>
           </Row>

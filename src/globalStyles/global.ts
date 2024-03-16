@@ -80,11 +80,17 @@ export default createGlobalStyle`
   }
 
   .ant-popover-inner-content {
-    width: 135px;
-    position: absolute;
-    top: -10px;
-    left: -110px;
-    padding: 0 !important;
+    width: 360px;
+    background-color: #17171a;
+    border-color: rgba(255, 255, 255, 0.09);
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  }
+
+  .ant-popover-arrow {
+  }
+  
+  .ant-popover-message{
+    color: ${(props) => props.theme.discordleColors.text} !important;
   }
 
   .ant-form-item-required, .ant-checkbox-wrapper span {
@@ -92,6 +98,10 @@ export default createGlobalStyle`
   }
 
   //Discordle
+
+  .ant-tabs-tab {
+    pointer-events: none;
+  }
 
   .ant-dropdown-menu-item {
     padding: 0 !important;
