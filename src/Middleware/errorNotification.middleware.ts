@@ -1,5 +1,5 @@
 import { Notification } from 'antd_components';
-import { getUser } from 'utils/localStorage/User';
+import { getDiscordleToken, getUserToken } from 'utils/localStorage/User';
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 function ActiveLoading() {
@@ -14,10 +14,26 @@ function DisableLoading() {
   }, 1000);
 }
 
-function RedirectLogin() {
+function RedirectLogin(description: string) {
   window.localStorage.removeItem('login');
+  window.localStorage.removeItem('discordleToken');
 
-  if (typeof window !== 'undefined') window.location.href = '/login';
+  alert(`${description}`);
+
+  if (typeof window !== 'undefined') {
+    if (window.location.pathname.includes('discordle')) {
+      const channelId = window.location.search
+        .replace('?', '')
+        .split('&')[0]
+        .split('=')[1];
+      const guildId = window.location.search
+        .replace('?', '')
+        .split('&')[1]
+        .split('=')[1];
+
+      window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId${guildId}`;
+    } else window.location.href = '/login';
+  }
 }
 
 export const responseInterceptor = (responseConfig: AxiosResponse) => {
@@ -28,10 +44,19 @@ export const responseInterceptor = (responseConfig: AxiosResponse) => {
 export const requestInterceptor = (
   requestConfig: InternalAxiosRequestConfig
 ) => {
-  const user = getUser();
+  const token = getUserToken();
+  const discordleToken = getDiscordleToken();
 
-  if (user?.Token) {
-    const Authorization = `Bearer ${user?.Token}`;
+  if (token) {
+    const Authorization = `Bearer ${token}`;
+
+    requestConfig.headers = requestConfig.headers || {};
+
+    requestConfig.headers['Authorization'] = Authorization as string;
+  }
+
+  if (discordleToken) {
+    const Authorization = `Bearer discordle ${discordleToken}`;
 
     requestConfig.headers = requestConfig.headers || {};
 
@@ -58,13 +83,13 @@ export const errorResponseInterceptor = (
 
   switch (statusCode) {
     case 401:
-      RedirectLogin();
+      RedirectLogin(description);
       break;
     default:
       break;
   }
 
-  Notification.error('Erro!', description);
+  if (statusCode !== 401) Notification.error('Erro!', description);
 
   return Promise.reject(error);
 };

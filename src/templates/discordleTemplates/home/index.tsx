@@ -94,12 +94,13 @@ export default function HomeContainer() {
   );
 
   function onChange(channelId: string) {
-    if (guildId) {
+    if (guildId && channelId) {
       DiscordInstanceApi.CreateDiscordleInstance(channelId, guildId).then(() =>
         router.push({
           pathname: '/discordle/chooseProfile',
           query: {
             channelId,
+            guildId,
           },
         })
       );

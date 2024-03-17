@@ -73,9 +73,9 @@ export default function ChooseProfile() {
   };
 
   const debouncedHandleSaveUser = debounce((token: string) => {
-    const { channelId } = router.query;
+    const { channelId, guildId } = router.query;
 
-    if (channelId) {
+    if (channelId && guildId) {
       DiscordMembersApi.ValidateToken(token, showTokenInput.userId)
         .then((accessToken: string) => {
           const isValid = Boolean(accessToken.length);
@@ -90,6 +90,7 @@ export default function ChooseProfile() {
             pathname: '/discordle/game',
             query: {
               channelId,
+              guildId,
             },
           });
         })

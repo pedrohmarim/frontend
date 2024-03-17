@@ -10,13 +10,13 @@ import Result from './components/Result';
 import { IFilterMessageResponse } from 'helpers/discordle/filterMessageEnum';
 import { useRouter } from 'next/router';
 import { MessageContainer } from 'globalStyles/global';
+import { AuthorHighlight } from './components/AuthorSelect/styles';
+import theme from 'globalStyles/theme';
+import { Description } from '../home/styles';
 import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
-import { AuthorHighlight } from './components/AuthorSelect/styles';
-import theme from 'globalStyles/theme';
-import { Description } from '../home/styles';
 
 export default function GameContainer() {
   const router = useRouter();
@@ -34,11 +34,11 @@ export default function GameContainer() {
 
   useEffect(() => {
     if (router.isReady) {
-      const { channelId } = router.query;
+      const { channelId, guildId } = router.query;
 
-      if (channelId) {
-        DiscordGameApi.GetChoosedMessages(channelId.toString()).then(
-          ({ Messages, ServerName, ServerIcon, Authors }) => {
+      if (channelId && guildId) {
+        DiscordGameApi.GetChoosedMessages(channelId.toString())
+          .then(({ Messages, ServerName, ServerIcon, Authors }) => {
             setAuthors(Authors);
             setServerInfos({ ServerName, ServerIcon });
 
@@ -49,22 +49,23 @@ export default function GameContainer() {
             });
 
             setChoosedMessages(filteredMessagesArray);
-          }
-        );
+          })
+          .then(() => {
+            const userId = Cookie.get('userId').toString();
 
-        const userId = Cookie.get('userId').toString();
+            DiscordGameApi.VerifyAlreadyAwnsered(
+              userId,
+              channelId.toString()
+            ).then((data) => {
+              setActiveTabKey(data.length + 1);
 
-        DiscordGameApi.VerifyAlreadyAwnsered(userId, channelId.toString()).then(
-          (data) => {
-            setActiveTabKey(data.length + 1);
+              if (!data.length) return;
 
-            if (!data.length) return;
+              if (data.length === 5) setAlreadyAwnsered(true);
 
-            if (data.length === 5) setAlreadyAwnsered(true);
-
-            setAwnsers(data);
-          }
-        );
+              setAwnsers(data);
+            });
+          });
       }
     }
   }, [router]);
