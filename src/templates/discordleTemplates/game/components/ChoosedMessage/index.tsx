@@ -167,7 +167,7 @@ export default function ChoosedMessage({
     if (usedHint) handleGetHints();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usedHint]);
+  }, []);
 
   const confirm = () =>
     new Promise(() => {

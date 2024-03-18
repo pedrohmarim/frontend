@@ -22,7 +22,7 @@ export default function GameContainer() {
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
-  const [useHint, setUseHint] = useState<boolean>(false);
+  const [useHint, setUsedHint] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
   >([]);
@@ -40,13 +40,17 @@ export default function GameContainer() {
           (data) => {
             if (data.length > 0 && data[data.length - 1].UsedHint) {
               setActiveTabKey(data.length);
-              setUseHint(true);
+              setUsedHint(true);
             } else setActiveTabKey(data.length + 1);
 
             setAwnsers(data);
-            setAlreadyAwnsered(data.length === 5);
 
-            if (data.length !== 5) {
+            const alreadyAwnsered =
+              data.length === 5 && !data[data.length - 1].UsedHint;
+
+            setAlreadyAwnsered(alreadyAwnsered);
+
+            if (!alreadyAwnsered) {
               DiscordGameApi.GetChoosedMessages(channelId.toString()).then(
                 ({ Messages, ServerName, ServerIcon, Authors }) => {
                   setAuthors(Authors);
@@ -90,7 +94,7 @@ export default function GameContainer() {
 
       if (!alreadyAwnsered) {
         await DiscordGameApi.SaveScore(dto).then((data: I.IAwnser[]) => {
-          setUseHint(false);
+          setUsedHint(false);
           setAwnsers(data);
           setAlreadyAwnsered(data.length === 5);
 
@@ -130,7 +134,7 @@ export default function GameContainer() {
             authors={authors}
             choosedMessages={choosedMessages}
             saveScore={saveScore}
-            setUsedHint={setUseHint}
+            setUsedHint={setUsedHint}
             setActiveTabKey={setActiveTabKey}
           />
         ) : (

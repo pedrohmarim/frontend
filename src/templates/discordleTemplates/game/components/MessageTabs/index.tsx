@@ -78,7 +78,7 @@ export default function MessageTabs({
 
           return (
             <S.TabsPane
-              disabled={current !== activeTabKey}
+              disabled
               key={String(current)}
               tab={
                 awnsers && (
