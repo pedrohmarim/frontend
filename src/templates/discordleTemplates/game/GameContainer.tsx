@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import * as I from './IGame';
-import Cookie from 'cookiejs';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
 import { Notification } from 'antd_components';
 import Head from 'next/head';
@@ -12,7 +11,6 @@ import { useRouter } from 'next/router';
 import { MessageContainer } from 'globalStyles/global';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
 import theme from 'globalStyles/theme';
-import { Description } from '../home/styles';
 import {
   IAuthor,
   IScoreInstance,
@@ -37,35 +35,31 @@ export default function GameContainer() {
       const { channelId, guildId } = router.query;
 
       if (channelId && guildId) {
-        DiscordGameApi.GetChoosedMessages(channelId.toString())
-          .then(({ Messages, ServerName, ServerIcon, Authors }) => {
-            setAuthors(Authors);
-            setServerInfos({ ServerName, ServerIcon });
+        DiscordGameApi.VerifyAlreadyAwnsered(channelId.toString()).then(
+          (data) => {
+            setActiveTabKey(data.length + 1);
 
-            const filteredMessagesArray: IFilterMessageResponse[] = [];
+            setAwnsers(data);
+            setAlreadyAwnsered(data.length === 5);
 
-            Messages.forEach((message) => {
-              filteredMessagesArray.push(filterMessage(message));
-            });
+            if (data.length !== 5) {
+              DiscordGameApi.GetChoosedMessages(channelId.toString()).then(
+                ({ Messages, ServerName, ServerIcon, Authors }) => {
+                  setAuthors(Authors);
+                  setServerInfos({ ServerName, ServerIcon });
 
-            setChoosedMessages(filteredMessagesArray);
-          })
-          .then(() => {
-            const userId = Cookie.get('userId').toString();
+                  const filteredMessagesArray: IFilterMessageResponse[] = [];
 
-            DiscordGameApi.VerifyAlreadyAwnsered(
-              userId,
-              channelId.toString()
-            ).then((data) => {
-              setActiveTabKey(data.length + 1);
+                  Messages.forEach((message) => {
+                    filteredMessagesArray.push(filterMessage(message));
+                  });
 
-              if (!data.length) return;
-
-              if (data.length === 5) setAlreadyAwnsered(true);
-
-              setAwnsers(data);
-            });
-          });
+                  setChoosedMessages(filteredMessagesArray);
+                }
+              );
+            }
+          }
+        );
       }
     }
   }, [router]);
@@ -76,8 +70,6 @@ export default function GameContainer() {
     usedHint: boolean,
     activeTabKey: number
   ) {
-    const userId = Cookie.get('userId').toString();
-
     const { channelId, guildId } = router.query;
 
     if (channelId && guildId) {
@@ -85,7 +77,6 @@ export default function GameContainer() {
         ChannelId: channelId.toString(),
         GuildId: guildId.toString(),
         Score: {
-          UserId: userId,
           MessageId: messageId,
           AuthorSelected: authorSelected,
           UsedHint: usedHint,
@@ -117,13 +108,6 @@ export default function GameContainer() {
     }
   }
 
-  if (!choosedMessages.length)
-    return (
-      <MessageContainer>
-        <Description>Erro ao carregar o Discordle</Description>
-      </MessageContainer>
-    );
-
   return (
     <Fragment>
       <Head>
@@ -131,7 +115,7 @@ export default function GameContainer() {
       </Head>
 
       <MessageContainer>
-        {awnsers.length < 5 && !alreadyAwnsered ? (
+        {!alreadyAwnsered ? (
           <MessageTabs
             serverName={serverInfos.ServerName}
             serverIcon={serverInfos.ServerIcon}

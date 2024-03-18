@@ -45,7 +45,6 @@ export interface IScoreInstance {
 }
 
 export interface IPostSaveScore {
-  UserId: string;
   MessageId: string;
   AuthorSelected: string;
   UsedHint: boolean;

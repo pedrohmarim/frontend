@@ -204,6 +204,7 @@ export default function Ranking() {
           okButtonProps={{
             style: {
               backgroundColor: theme.discordleColors.primary,
+              border: 'none',
               color: theme.discordleColors.text,
             },
           }}

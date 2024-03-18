@@ -16,11 +16,10 @@ const ApiAuth = {
     );
     return response.data;
   },
-  VerifyAlreadyAwnsered: async function (userId: string, channelId: string) {
+  VerifyAlreadyAwnsered: async function (channelId: string) {
     const response: AxiosResponse<IAwnser[]> = await http.post(
       `${baseUrl}/VerifyAlreadyAwnsered`,
       {
-        UserId: userId,
         ChannelId: channelId,
       }
     );

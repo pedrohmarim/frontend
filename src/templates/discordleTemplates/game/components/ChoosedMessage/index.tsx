@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import type { MenuProps } from 'antd';
@@ -7,7 +7,7 @@ import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/discordle/filter.message';
 import DisplayMessageContainer from 'templates/discordleTemplates/game/components/DisplayMessageContainer';
 import { IChoosedMessage } from './IChoosedMessage';
-import Cookie from 'cookiejs';
+import { useRouter } from 'next/router';
 import {
   FilterMessageEnum,
   IFilterMessageResponse,
@@ -30,6 +30,8 @@ export default function ChoosedMessage({
   serverIcon,
   setUsedHint,
 }: I.IChoosedMessageComponent) {
+  const router = useRouter();
+
   const {
     content,
     timestamp,
@@ -51,7 +53,6 @@ export default function ChoosedMessage({
   };
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [channelId, setChannelId] = useState<string>('');
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     mainMessage,
   ]);
@@ -88,64 +89,67 @@ export default function ChoosedMessage({
   }
 
   function handleGetHints() {
-    DiscordleGameApi.GetDiscordHints(id, channelId).then(
-      ({ ConsecutivePosition, PreviousPosition }) => {
-        const emptyChoosedMessage: IChoosedMessage = {
-          content: '',
-          formattedAttachs: [] as JSX.Element[],
-          id: '',
-          urlLink: '',
-          messageType: FilterMessageEnum.isText,
-          timestamp: '',
-          messageLevel: MessageLevelEnum.dontExist,
-        };
+    if (router.isReady) {
+      const { channelId } = router.query;
 
-        let filterResponsePreviousMessage: IFilterMessageResponse =
-          {} as IFilterMessageResponse;
+      if (!channelId) return;
 
-        if (PreviousPosition)
-          filterResponsePreviousMessage = filterMessage(PreviousPosition);
+      DiscordleGameApi.GetDiscordHints(id, channelId.toString()).then(
+        ({ ConsecutivePosition, PreviousPosition }) => {
+          const emptyChoosedMessage: IChoosedMessage = {
+            content: '',
+            formattedAttachs: [] as JSX.Element[],
+            id: '',
+            urlLink: '',
+            messageType: FilterMessageEnum.isText,
+            timestamp: '',
+            messageLevel: MessageLevelEnum.dontExist,
+          };
 
-        const previousMessage: IChoosedMessage = !PreviousPosition
-          ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
-          : {
-              content: PreviousPosition.Content,
-              formattedAttachs: filterResponsePreviousMessage.formattedAttachs,
-              urlLink: filterResponsePreviousMessage.urlLink,
-              id: PreviousPosition.Id,
-              messageType: filterResponsePreviousMessage.messageType,
-              timestamp: PreviousPosition.Timestamp,
-              messageLevel: MessageLevelEnum.isPrevious,
-            };
+          let filterResponsePreviousMessage: IFilterMessageResponse =
+            {} as IFilterMessageResponse;
 
-        let filterResponseConsecutiveMessage: IFilterMessageResponse =
-          {} as IFilterMessageResponse;
+          if (PreviousPosition)
+            filterResponsePreviousMessage = filterMessage(PreviousPosition);
 
-        if (ConsecutivePosition)
-          filterResponseConsecutiveMessage = filterMessage(ConsecutivePosition);
+          const previousMessage: IChoosedMessage = !PreviousPosition
+            ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
+            : {
+                content: PreviousPosition.Content,
+                formattedAttachs:
+                  filterResponsePreviousMessage.formattedAttachs,
+                urlLink: filterResponsePreviousMessage.urlLink,
+                id: PreviousPosition.Id,
+                messageType: filterResponsePreviousMessage.messageType,
+                timestamp: PreviousPosition.Timestamp,
+                messageLevel: MessageLevelEnum.isPrevious,
+              };
 
-        const consecutiveMessage: IChoosedMessage = !ConsecutivePosition
-          ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
-          : {
-              content: ConsecutivePosition.Content,
-              formattedAttachs:
-                filterResponseConsecutiveMessage.formattedAttachs,
-              urlLink: filterResponseConsecutiveMessage.urlLink,
-              id: ConsecutivePosition.Id,
-              messageType: filterResponseConsecutiveMessage.messageType,
-              timestamp: ConsecutivePosition.Timestamp,
-              messageLevel: MessageLevelEnum.isConsecutive,
-            };
+          let filterResponseConsecutiveMessage: IFilterMessageResponse =
+            {} as IFilterMessageResponse;
 
-        setTotalMessages([consecutiveMessage, mainMessage, previousMessage]);
-      }
-    );
+          if (ConsecutivePosition)
+            filterResponseConsecutiveMessage =
+              filterMessage(ConsecutivePosition);
+
+          const consecutiveMessage: IChoosedMessage = !ConsecutivePosition
+            ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
+            : {
+                content: ConsecutivePosition.Content,
+                formattedAttachs:
+                  filterResponseConsecutiveMessage.formattedAttachs,
+                urlLink: filterResponseConsecutiveMessage.urlLink,
+                id: ConsecutivePosition.Id,
+                messageType: filterResponseConsecutiveMessage.messageType,
+                timestamp: ConsecutivePosition.Timestamp,
+                messageLevel: MessageLevelEnum.isConsecutive,
+              };
+
+          setTotalMessages([consecutiveMessage, mainMessage, previousMessage]);
+        }
+      );
+    }
   }
-
-  useEffect(() => {
-    const channelId = Cookie.get('channelId').toString();
-    setChannelId(channelId);
-  }, []);
 
   const confirm = () =>
     new Promise(() => {

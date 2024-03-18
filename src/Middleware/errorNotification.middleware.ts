@@ -31,7 +31,7 @@ function RedirectLogin(description: string) {
         .split('&')[1]
         .split('=')[1];
 
-      window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId${guildId}`;
+      window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}`;
     } else window.location.href = '/login';
   }
 }
