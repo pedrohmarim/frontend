@@ -8,6 +8,7 @@ const AuthorSelect = ({
   authors,
   usedHint,
   activeTabKey,
+  setAuthorSelected,
   saveScore,
   setActiveTabKey,
   setUsedHint,
@@ -18,6 +19,7 @@ const AuthorSelect = ({
       getPopupContainer={(trigger) => trigger.parentNode}
       placeholder="Selecione um membro"
       onChange={(value) => {
+        setAuthorSelected(String(value));
         saveScore(messageId, String(value), usedHint, activeTabKey);
         setUsedHint(false);
         setActiveTabKey((prev: number) => prev + 1);

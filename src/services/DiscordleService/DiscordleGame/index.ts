@@ -32,10 +32,10 @@ const ApiAuth = {
     );
     return response.data;
   },
-  GetDiscordHints: async function (id: string, channelId: string) {
+  GetDiscordHints: async function (data: I.IDiscordHintsRequest) {
     const response: AxiosResponse<I.IGetDiscordHintsResponse> = await http.post(
       `${baseUrl}/GetHints`,
-      { MessageId: id, ChannelId: channelId }
+      data
     );
     return response.data;
   },

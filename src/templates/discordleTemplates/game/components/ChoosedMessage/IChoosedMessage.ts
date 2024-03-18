@@ -7,6 +7,9 @@ export interface IChoosedMessageComponent {
   score: number;
   message: IChoosedMessage;
   serverName: string;
+  authorSelected: string;
+  usedHint: boolean;
+  tabkey: number;
   serverIcon: string;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
 }

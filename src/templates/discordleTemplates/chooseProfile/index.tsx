@@ -73,7 +73,7 @@ export default function ChooseProfile() {
   };
 
   const debouncedHandleSaveUser = debounce((token: string) => {
-    const { channelId, guildId } = router.query;
+    const { channelId, guildId, backRoute } = router.query;
 
     if (channelId && guildId) {
       DiscordMembersApi.ValidateToken(token, showTokenInput.userId)
@@ -86,13 +86,15 @@ export default function ChooseProfile() {
 
           window.localStorage.setItem('discordleToken', accessToken);
 
-          router.push({
-            pathname: '/discordle/game',
-            query: {
-              channelId,
-              guildId,
-            },
-          });
+          if (backRoute) window.location.href = backRoute.toString();
+          else
+            router.push({
+              pathname: '/discordle/game',
+              query: {
+                channelId,
+                guildId,
+              },
+            });
         })
         .catch(() => setValidToken(false));
     }

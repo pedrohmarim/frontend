@@ -3,4 +3,5 @@ export interface IAwnser {
   Success: boolean;
   Username: string;
   TabKey: number;
+  UsedHint: boolean;
 }

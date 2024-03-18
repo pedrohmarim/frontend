@@ -7,6 +7,7 @@ export interface IMessageTabs {
   choosedMessages: IFilterMessageResponse[];
   awnsers: IAwnser[];
   serverName: string;
+  usedHint: boolean;
   authors: IAuthor[];
   serverIcon: string;
   saveScore: (
@@ -15,5 +16,6 @@ export interface IMessageTabs {
     usedHint: boolean,
     activeTabKey: number
   ) => void;
+  setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
 }

@@ -22,6 +22,7 @@ export default function GameContainer() {
   const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
+  const [useHint, setUseHint] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<
     IFilterMessageResponse[]
   >([]);
@@ -37,7 +38,10 @@ export default function GameContainer() {
       if (channelId && guildId) {
         DiscordGameApi.VerifyAlreadyAwnsered(channelId.toString()).then(
           (data) => {
-            setActiveTabKey(data.length + 1);
+            if (data.length > 0 && data[data.length - 1].UsedHint) {
+              setActiveTabKey(data.length);
+              setUseHint(true);
+            } else setActiveTabKey(data.length + 1);
 
             setAwnsers(data);
             setAlreadyAwnsered(data.length === 5);
@@ -86,6 +90,7 @@ export default function GameContainer() {
 
       if (!alreadyAwnsered) {
         await DiscordGameApi.SaveScore(dto).then((data: I.IAwnser[]) => {
+          setUseHint(false);
           setAwnsers(data);
           setAlreadyAwnsered(data.length === 5);
 
@@ -117,13 +122,15 @@ export default function GameContainer() {
       <MessageContainer>
         {!alreadyAwnsered ? (
           <MessageTabs
+            usedHint={useHint}
             serverName={serverInfos.ServerName}
             serverIcon={serverInfos.ServerIcon}
             activeTabKey={activeTabKey}
             awnsers={awnsers}
-            saveScore={saveScore}
             authors={authors}
             choosedMessages={choosedMessages}
+            saveScore={saveScore}
+            setUsedHint={setUseHint}
             setActiveTabKey={setActiveTabKey}
           />
         ) : (

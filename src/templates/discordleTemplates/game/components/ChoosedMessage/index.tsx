@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import type { MenuProps } from 'antd';
@@ -7,6 +7,7 @@ import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/discordle/filter.message';
 import DisplayMessageContainer from 'templates/discordleTemplates/game/components/DisplayMessageContainer';
 import { IChoosedMessage } from './IChoosedMessage';
+import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
 import {
   FilterMessageEnum,
@@ -26,7 +27,10 @@ import {
 export default function ChoosedMessage({
   message,
   score,
+  tabkey,
+  authorSelected,
   serverName,
+  usedHint,
   serverIcon,
   setUsedHint,
 }: I.IChoosedMessageComponent) {
@@ -90,11 +94,19 @@ export default function ChoosedMessage({
 
   function handleGetHints() {
     if (router.isReady) {
-      const { channelId } = router.query;
+      const { channelId, guildId } = router.query;
 
-      if (!channelId) return;
+      if (!channelId || !guildId) return;
 
-      DiscordleGameApi.GetDiscordHints(id, channelId.toString()).then(
+      const dto: IDiscordHintsRequest = {
+        MessageId: id,
+        AuthorSelected: authorSelected,
+        ChannelId: channelId.toString(),
+        GuildId: guildId.toString(),
+        TabKey: tabkey,
+      };
+
+      DiscordleGameApi.GetDiscordHints(dto).then(
         ({ ConsecutivePosition, PreviousPosition }) => {
           const emptyChoosedMessage: IChoosedMessage = {
             content: '',
@@ -150,6 +162,12 @@ export default function ChoosedMessage({
       );
     }
   }
+
+  useEffect(() => {
+    if (usedHint) handleGetHints();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usedHint]);
 
   const confirm = () =>
     new Promise(() => {

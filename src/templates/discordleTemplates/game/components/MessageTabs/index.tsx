@@ -12,26 +12,38 @@ export default function MessageTabs({
   activeTabKey,
   choosedMessages,
   awnsers,
+  usedHint,
   authors,
   serverName,
   serverIcon,
   saveScore,
+  setUsedHint,
   setActiveTabKey,
 }: I.IMessageTabs) {
-  const [usedHint, setUsedHint] = useState<boolean>(false);
+  const [authorSelected, setAuthorSelected] = useState<string>('');
 
   const handleTabChange = (key: string) => setActiveTabKey(Number(key));
 
-  function handleIcon(index: number, current: number) {
+  function handleIcon(index: number, current: number, color: string) {
     let icon = '';
-    let color = '';
 
-    if (awnsers[index]?.Success === undefined) return '';
+    if (!awnsers[index]?.Success || awnsers[index]?.UsedHint)
+      icon = 'help-circle';
 
-    if (awnsers[index]?.TabKey === current && awnsers[index]?.Success) {
+    if (
+      awnsers[index]?.TabKey === current &&
+      awnsers[index]?.Success &&
+      !awnsers[index]?.UsedHint
+    ) {
       icon = 'check-circle';
       color = awnsers[index]?.Score === 2 ? '#009e3f' : '#d48a00';
-    } else {
+    }
+
+    if (
+      awnsers[index]?.TabKey === current &&
+      !awnsers[index]?.Success &&
+      !awnsers[index]?.UsedHint
+    ) {
       icon = 'x-circle';
       color = '#a61f1f';
     }
@@ -71,16 +83,12 @@ export default function MessageTabs({
               tab={
                 awnsers && (
                   <Row justify="center">
-                    {handleIcon(index, current) || (
-                      <FeatherIcons
-                        icon="help-circle"
-                        size={18}
-                        color={
-                          current === activeTabKey
-                            ? theme.discordleColors.primary
-                            : '#fff'
-                        }
-                      />
+                    {handleIcon(
+                      index,
+                      current,
+                      current === activeTabKey
+                        ? theme.discordleColors.primary
+                        : '#fff'
                     )}
 
                     <S.MessageTabTitle>{`Mensagem ${current}`}</S.MessageTabTitle>
@@ -89,19 +97,23 @@ export default function MessageTabs({
               }
             >
               <ChoosedMessage
+                usedHint={usedHint}
+                authorSelected={authorSelected}
+                tabkey={activeTabKey}
                 serverName={serverName}
                 serverIcon={serverIcon}
-                setUsedHint={(value) => setUsedHint(value)}
+                setUsedHint={setUsedHint}
                 message={choosedMessage}
                 score={score}
               />
 
               <AuthorSelect
+                setAuthorSelected={setAuthorSelected}
                 activeTabKey={activeTabKey}
                 messageId={choosedMessage.id}
                 authors={authors}
                 usedHint={usedHint}
-                setUsedHint={(value) => setUsedHint(value)}
+                setUsedHint={setUsedHint}
                 saveScore={saveScore}
                 setActiveTabKey={setActiveTabKey}
               />

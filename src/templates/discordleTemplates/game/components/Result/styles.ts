@@ -38,9 +38,6 @@ export const AwnserItem = styled.div<{
   background-color: ${({ success, score }) =>
     success ? (score === 2 ? '#009e3f' : '#d48a00') : '#a61f1f'};
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   margin: 10px;
   height: 35px;
   width: 35px;

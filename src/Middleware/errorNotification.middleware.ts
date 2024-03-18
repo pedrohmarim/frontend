@@ -26,12 +26,15 @@ function RedirectLogin(description: string) {
         .replace('?', '')
         .split('&')[0]
         .split('=')[1];
+
       const guildId = window.location.search
         .replace('?', '')
         .split('&')[1]
         .split('=')[1];
 
-      window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}`;
+      const backRoute = encodeURIComponent(window.location.href);
+
+      window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}&backRoute=${backRoute}`;
     } else window.location.href = '/login';
   }
 }

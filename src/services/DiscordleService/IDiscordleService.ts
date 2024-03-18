@@ -38,6 +38,14 @@ export interface IMention {
   Id: string;
 }
 
+export interface IDiscordHintsRequest {
+  MessageId: string;
+  ChannelId: string;
+  GuildId: string;
+  AuthorSelected: string;
+  TabKey: number;
+}
+
 export interface IScoreInstance {
   Score: IPostSaveScore;
   ChannelId: string;

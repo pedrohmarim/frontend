@@ -13,4 +13,5 @@ export interface IAuthorSelect {
     activeTabKey: number
   ) => void;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
+  setAuthorSelected: React.Dispatch<React.SetStateAction<string>>;
 }
