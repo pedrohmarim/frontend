@@ -49,9 +49,11 @@ export const ReloadContainer = styled.div`
 
 export const Description = styled.span<{
   fontSize?: string;
+  textAlign?: string;
   fontStyle?: string;
 }>`
   color: ${(props) => props.theme.discordleColors.text};
+  text-align: ${({ textAlign }) => textAlign};
   font-size: ${({ fontSize }) => fontSize || '13pt'};
   font-style: ${({ fontStyle }) => fontStyle || 'normal'};
   font-weight: normal;

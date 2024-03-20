@@ -117,7 +117,7 @@ export default function HomeContainer() {
   }
 
   const FormDiscordleInstance = () => (
-    <G.MessageContainer width="99.3%">
+    <G.MessageContainer width="60%" margin="auto">
       <GameTitle>Discordle | Criar Instância</GameTitle>
 
       <S.NegativeMarginRow justify="center" align="middle">
@@ -161,16 +161,9 @@ export default function HomeContainer() {
       </S.Row>
 
       <S.Row justify="end">
-        <S.Description fontSize="11pt">
-          Para canais <G.HomeSpan>privados</G.HomeSpan> serem listados, adicione
-          o bot ao canal desejado e clique em &quot;Recarregar&quot;.
-        </S.Description>
-      </S.Row>
-
-      <S.Row justify="end">
-        <S.Description fontSize="11pt">
-          Canais de texto que não possuem pelo menos
-          <G.HomeSpan> cinco</G.HomeSpan> mensagens não serão listados.
+        <S.Description fontSize="11pt" textAlign="right">
+          Canais de texto com quantidade e variedade baixas de mensagens não
+          serão criados, certifique-se de escolher um canal com muito conteudo!
         </S.Description>
       </S.Row>
     </G.MessageContainer>
