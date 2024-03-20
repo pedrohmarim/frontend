@@ -67,7 +67,6 @@ export interface IGetQueryParamsByUserIdResponse {
 export interface IInstanceChannels {
   ChannelName: string;
   ChannelId: string;
-  NotListed: boolean;
 }
 
 export interface IMember {

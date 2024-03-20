@@ -22,7 +22,7 @@ export default function HomeContainer() {
 
   function onClick() {
     const clientIdBot = '1089918362311733378';
-    const permissions = '75824';
+    const permissions = '8'; //'75824';
     const redirectUri = encodeURIComponent(
       process.env.NEXT_PUBLIC_REDIRECT_URI ?? ''
     );
@@ -133,16 +133,11 @@ export default function HomeContainer() {
         >
           {instanceChannels?.length &&
             instanceChannels.map(
-              ({
-                ChannelId: channelId,
-                ChannelName: channelName,
-                NotListed: notListed,
-              }) => (
+              ({ ChannelId: channelId, ChannelName: channelName }) => (
                 <Select.Option key={channelId}>
                   <Row align="middle">
                     <Row justify="center" align="middle">
                       #{channelName}
-                      {notListed && <S.NewHighlight> (Novo!)</S.NewHighlight>}
                     </Row>
                   </Row>
                 </Select.Option>
