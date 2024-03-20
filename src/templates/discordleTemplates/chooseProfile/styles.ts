@@ -4,7 +4,7 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px;
+  padding: 25px;
   border-radius: 6px;
   background-color: ${(props) => props.theme.discordleColors.background};
   width: fit-content;
