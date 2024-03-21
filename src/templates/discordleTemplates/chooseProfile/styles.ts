@@ -46,6 +46,7 @@ export const MemberRow = styled.div`
   scroll-snap-type: x mandatory;
   transition: scroll-left 0.5s ease-out;
   max-width: 1000px;
+  cursor: grab;
 
   ::-webkit-scrollbar {
     height: 10px;
