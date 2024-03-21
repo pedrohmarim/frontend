@@ -125,7 +125,6 @@ export default function HomeContainer() {
           allowClear
           disabled={!instanceChannels?.length}
           onChange={(channelId) => onChange(String(channelId))}
-          getPopupContainer={(trigger) => trigger}
           showSearch
           notFoundContent={<Row justify="center">Sem dados</Row>}
           placeholder={
