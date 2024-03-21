@@ -10,7 +10,7 @@ export const Title = styled.div<{ marginTop?: string }>`
 `;
 
 export const Message = styled.div`
-  padding: 5px 8px 5px 8px;
+  padding: 8px 8px 5px 8px;
   text-align: left;
   font-size: 12pt;
   font-weight: 1;

@@ -26,16 +26,10 @@ export default function DisplayMessageContainer({
     }
   }
 
-  const GifContainer = () => {
+  const EmbedContainer = () => {
     if (!formattedAttachs.length) return <Fragment />;
 
-    return (
-      <Fragment>
-        {formattedAttachs.map((item, index) => (
-          <Fragment key={index}>{item}</Fragment>
-        ))}
-      </Fragment>
-    );
+    return <Fragment>{formattedAttachs[1]}</Fragment>;
   };
 
   const LinkContainer = () => {
@@ -78,9 +72,9 @@ export default function DisplayMessageContainer({
 
         {messageType === FilterMessageEnum.isLink && <LinkContainer />}
 
-        {messageType === FilterMessageEnum.isGif && <GifContainer />}
+        {messageType === FilterMessageEnum.isEmbed && <EmbedContainer />}
 
-        {messageType === FilterMessageEnum.isImage && <ImageContainer />}
+        {messageType === FilterMessageEnum.isEmbed && <ImageContainer />}
 
         {messageType === FilterMessageEnum.isImageWithText && (
           <Fragment>

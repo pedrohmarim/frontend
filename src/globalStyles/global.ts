@@ -281,6 +281,13 @@ export const OverflowDiscordle = styled.div`
     background-color: ${(props) =>
       props.theme.discordleColors.primary} !important;
   }
+
+  iframe {
+    width: 100% !important;
+    height: 700px !important;
+    max-height: 700px !important;
+    border: none;
+  }
 `;
 
 export const MessageContainer = styled(Card)<{

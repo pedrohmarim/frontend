@@ -1,6 +1,7 @@
 import { IMessage } from 'services/DiscordleService/IDiscordleService';
 import { FilterMessageEnum, IFilterMessageResponse } from './filterMessageEnum';
 import { Image } from 'antd_components';
+import { EmbedTypeEnum } from './embedTypeEnum';
 
 export default function filterMessage(message: IMessage) {
   const emptyContent: JSX.Element[] = [];
@@ -37,24 +38,35 @@ export default function filterMessage(message: IMessage) {
     });
   }
 
-  if (message.Content.includes('https://tenor.com') && message.Embeds.length) {
-    response.messageType = FilterMessageEnum.isGif;
+  if (message.Embeds.length) {
+    response.messageType = FilterMessageEnum.isEmbed;
 
-    if (message.Content.startsWith('https://tenor.com/view'))
+    if (
+      message.Content.startsWith('https://tenor.com/view') ||
+      message.Content.startsWith('https://www.youtube.com')
+    )
       message.Content = '';
 
-    message.Embeds.forEach(({ Video }, index) => {
-      response.formattedAttachs.push(
-        <video
-          key={index}
-          loop
-          autoPlay
-          height={Video.Height}
-          width="100%"
-          muted
-          src={Video.Url}
-        />
-      );
+    message.Embeds.forEach(({ Video, Type }) => {
+      switch (Type.toLowerCase()) {
+        case EmbedTypeEnum.Gifv:
+          response.formattedAttachs.push(
+            <video
+              height={Video.Height}
+              src={Video.Url}
+              loop
+              autoPlay
+              width="100%"
+              muted
+            />
+          );
+          break;
+        case EmbedTypeEnum.Video:
+          response.formattedAttachs.push(
+            <iframe src={Video.Url} allowFullScreen height="100vh" />
+          );
+        default:
+      }
     });
   }
 

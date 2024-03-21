@@ -38,6 +38,7 @@ export interface IVideoEmbed {
 
 export interface IEmbeds {
   Video: IVideoEmbed;
+  Type: string;
 }
 
 export interface IAttachments {
