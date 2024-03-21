@@ -36,29 +36,9 @@ export default function ChoosedMessage({
 }: I.IChoosedMessageComponent) {
   const router = useRouter();
 
-  const {
-    content,
-    timestamp,
-    id,
-    messageType,
-    formattedAttachs,
-    messageLevel,
-    urlLink,
-  } = message;
-
-  const mainMessage = {
-    content,
-    timestamp,
-    id,
-    messageType,
-    formattedAttachs,
-    messageLevel,
-    urlLink,
-  };
-
   const [loading, setLoading] = useState<boolean>(false);
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
-    mainMessage,
+    message,
   ]);
 
   const [stillOpen, setStillOpen] = useState({
@@ -99,7 +79,7 @@ export default function ChoosedMessage({
       if (!channelId || !guildId) return;
 
       const dto: IDiscordHintsRequest = {
-        MessageId: id,
+        MessageId: message.id,
         AuthorSelected: authorSelected,
         ChannelId: channelId.toString(),
         GuildId: guildId.toString(),
@@ -157,7 +137,7 @@ export default function ChoosedMessage({
                 messageLevel: MessageLevelEnum.isConsecutive,
               };
 
-          setTotalMessages([consecutiveMessage, mainMessage, previousMessage]);
+          setTotalMessages([consecutiveMessage, message, previousMessage]);
         }
       );
     }
@@ -279,13 +259,13 @@ export default function ChoosedMessage({
       {totalMessages.map(
         (
           {
-            content: content,
-            formattedAttachs: formattedAttachs,
-            messageType: messageType,
-            timestamp: timestamp,
-            id: id,
-            messageLevel: messageLevel,
-            urlLink: urlLink,
+            content,
+            formattedAttachs,
+            messageType,
+            timestamp,
+            id,
+            messageLevel,
+            urlLink,
           },
           index
         ) => {

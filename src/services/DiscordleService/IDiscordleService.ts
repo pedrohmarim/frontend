@@ -19,8 +19,25 @@ export interface IMessage {
   Content: string;
   Mentions: IMention[];
   Attachments: IAttachments[];
-  Sticker_Items: [];
+  Sticker_Items: IStickerItems[];
+  Embeds: IEmbeds[];
   Timestamp: string;
+}
+
+export interface IStickerItems {
+  Id: string;
+  Name: string;
+  Format_Type: string;
+}
+
+export interface IVideoEmbed {
+  Url: string;
+  Height: number;
+  Width: number;
+}
+
+export interface IEmbeds {
+  Video: IVideoEmbed;
 }
 
 export interface IAttachments {

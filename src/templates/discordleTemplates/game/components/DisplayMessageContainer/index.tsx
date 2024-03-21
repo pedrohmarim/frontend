@@ -1,14 +1,11 @@
 import React, { Fragment } from 'react';
 import * as S from './styles';
 import Link from 'next/link';
+import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
 import {
   FilterMessageEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
-import {
-  IChoosedMessage,
-  ILinkContainer,
-} from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
 
 export default function DisplayMessageContainer({
   content,
@@ -29,7 +26,19 @@ export default function DisplayMessageContainer({
     }
   }
 
-  const LinkContainer = ({ content, urlLink }: ILinkContainer) => {
+  const GifContainer = () => {
+    if (!formattedAttachs.length) return <Fragment />;
+
+    return (
+      <Fragment>
+        {formattedAttachs.map((item, index) => (
+          <Fragment key={index}>{item}</Fragment>
+        ))}
+      </Fragment>
+    );
+  };
+
+  const LinkContainer = () => {
     const parts = content.split(urlLink);
 
     return (
@@ -67,9 +76,9 @@ export default function DisplayMessageContainer({
       <S.Message>
         {messageType === FilterMessageEnum.isText && <DefaultContent />}
 
-        {messageType === FilterMessageEnum.isLink && (
-          <LinkContainer content={content} urlLink={urlLink} />
-        )}
+        {messageType === FilterMessageEnum.isLink && <LinkContainer />}
+
+        {messageType === FilterMessageEnum.isGif && <GifContainer />}
 
         {messageType === FilterMessageEnum.isImage && <ImageContainer />}
 
@@ -83,7 +92,7 @@ export default function DisplayMessageContainer({
 
         {messageType === FilterMessageEnum.isImageWithTextAndLink && (
           <Fragment>
-            <LinkContainer content={content} urlLink={urlLink} />
+            <LinkContainer />
 
             <ImageContainer />
           </Fragment>

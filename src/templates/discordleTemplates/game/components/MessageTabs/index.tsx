@@ -63,13 +63,12 @@ export default function MessageTabs({
     >
       {choosedMessages.map(
         ({ message, formattedAttachs, messageType, urlLink }, index) => {
-          const { Timestamp: timestamp, Content: content, Id: id } = message;
           const current = index + 1;
 
           const choosedMessage: IChoosedMessage = {
-            content: content,
-            timestamp: timestamp,
-            id: id,
+            content: message.Content,
+            timestamp: message.Timestamp,
+            id: message.Id,
             messageLevel: MessageLevelEnum.isMain,
             urlLink: urlLink,
             formattedAttachs: formattedAttachs,

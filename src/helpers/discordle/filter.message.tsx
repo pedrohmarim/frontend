@@ -37,6 +37,27 @@ export default function filterMessage(message: IMessage) {
     });
   }
 
+  if (message.Content.includes('https://tenor.com') && message.Embeds.length) {
+    response.messageType = FilterMessageEnum.isGif;
+
+    if (message.Content.startsWith('https://tenor.com/view'))
+      message.Content = '';
+
+    message.Embeds.forEach(({ Video }, index) => {
+      response.formattedAttachs.push(
+        <video
+          key={index}
+          loop
+          autoPlay
+          height={Video.Height}
+          width="100%"
+          muted
+          src={Video.Url}
+        />
+      );
+    });
+  }
+
   const includeLink =
     message.Content.includes('https://') || message.Content.includes('http://');
 

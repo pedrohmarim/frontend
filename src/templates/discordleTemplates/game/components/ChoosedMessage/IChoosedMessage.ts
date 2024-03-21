@@ -23,8 +23,3 @@ export interface IChoosedMessage {
   messageLevel: MessageLevelEnum;
   formattedAttachs: JSX.Element[];
 }
-
-export interface ILinkContainer {
-  content: string;
-  urlLink: string;
-}
