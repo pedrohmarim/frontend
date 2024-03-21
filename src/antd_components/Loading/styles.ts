@@ -7,9 +7,17 @@ export const LottieContainer = styled(Lottie)`
   height: 250px;
 `;
 
+export const LoadingDescription = styled.span`
+  margin-top: -80px;
+  padding: 0 10px;
+  background-color: rgba(4, 4, 4, 1);
+  color: ${(props) => props.theme.discordleColors.text};
+  font-size: 15pt;
+`;
+
 export const ScreenBlocker = styled.div`
   display: none;
-  background-color: rgba(4, 4, 4, 0.4);
+  background-color: rgba(4, 4, 4, 0.65);
   position: fixed;
   top: 0;
   left: 0;

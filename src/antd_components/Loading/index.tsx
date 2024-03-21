@@ -6,6 +6,9 @@ function Loader() {
     <S.ScreenBlocker id="loader">
       <S.Content>
         <S.LottieContainer animationData={Animation} />
+        <S.LoadingDescription>
+          Carregando, isso pode levar um tempo ...
+        </S.LoadingDescription>
       </S.Content>
     </S.ScreenBlocker>
   );
