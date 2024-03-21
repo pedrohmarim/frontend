@@ -16,8 +16,17 @@ const AuthorSelect = ({
   return (
     <S.Select
       disabled={!authors?.length}
-      getPopupContainer={(trigger) => trigger.parentNode}
+      allowClear
       placeholder="Selecione um membro"
+      showSearch
+      dropdownMatchSelectWidth
+      getPopupContainer={(trigger) => trigger}
+      notFoundContent={<Row justify="center">Sem dados</Row>}
+      filterOption={(inputValue, option) => {
+        return option?.children?.props?.children[1].props?.children
+          .toLowerCase()
+          .includes(inputValue.toLowerCase());
+      }}
       onChange={(value) => {
         setAuthorSelected(String(value));
         saveScore(messageId, String(value), usedHint, activeTabKey);

@@ -122,27 +122,34 @@ export default function HomeContainer() {
 
       <S.NegativeMarginRow justify="center" align="middle">
         <Select
+          allowClear
           disabled={!instanceChannels?.length}
-          getPopupContainer={(trigger) => trigger.parentNode}
+          onChange={(channelId) => onChange(String(channelId))}
+          getPopupContainer={(trigger) => trigger}
+          showSearch
+          notFoundContent={<Row justify="center">Sem dados</Row>}
           placeholder={
             instanceChannels.length
               ? 'Selecione um canal'
               : 'Não há canais a serem exibidos'
           }
-          onChange={(channelId) => onChange(String(channelId))}
+          filterOption={(inputValue, option) => {
+            return option?.children?.props?.children?.props?.children
+              .join('')
+              .toLowerCase()
+              .includes(`${inputValue.toLowerCase()}`);
+          }}
         >
           {instanceChannels?.length &&
-            instanceChannels.map(
-              ({ ChannelId: channelId, ChannelName: channelName }) => (
-                <Select.Option key={channelId}>
-                  <Row align="middle">
-                    <Row justify="center" align="middle">
-                      #{channelName}
-                    </Row>
+            instanceChannels.map(({ ChannelId, ChannelName }) => (
+              <Select.Option key={ChannelId}>
+                <Row align="middle">
+                  <Row justify="center" align="middle">
+                    #{ChannelName}
                   </Row>
-                </Select.Option>
-              )
-            )}
+                </Row>
+              </Select.Option>
+            ))}
         </Select>
 
         <Tooltip title="Recarregar" placement="right">
