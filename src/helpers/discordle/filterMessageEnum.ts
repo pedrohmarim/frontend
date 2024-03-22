@@ -8,6 +8,7 @@ export enum FilterMessageEnum {
   isImageWithTextAndLink = 6,
   isImageWithLink = 7,
   isEmbed = 8,
+  isReferencedMessage = 9,
 }
 
 export enum MessageLevelEnum {

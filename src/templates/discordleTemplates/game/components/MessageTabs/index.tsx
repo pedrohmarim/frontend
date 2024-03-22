@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 import ChoosedMessage from 'templates/discordleTemplates/game/components/ChoosedMessage';
 import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
 import * as I from './IMessageTabs';
 import * as S from './styles';
-import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
 import { FeatherIcons, Row } from 'antd_components';
 import theme from 'globalStyles/theme';
 
@@ -61,65 +59,53 @@ export default function MessageTabs({
       onChange={handleTabChange}
       moreIcon={false}
     >
-      {choosedMessages.map(
-        ({ message, formattedAttachs, messageType, urlLink }, index) => {
-          const current = index + 1;
+      {choosedMessages.map((choosedMessage, index) => {
+        const current = index + 1;
 
-          const choosedMessage: IChoosedMessage = {
-            content: message.Content,
-            timestamp: message.Timestamp,
-            id: message.Id,
-            messageLevel: MessageLevelEnum.isMain,
-            urlLink: urlLink,
-            formattedAttachs: formattedAttachs,
-            messageType: messageType,
-          };
+        return (
+          <S.TabsPane
+            disabled
+            key={String(current)}
+            tab={
+              awnsers && (
+                <Row justify="center">
+                  {handleIcon(
+                    index,
+                    current,
+                    current === activeTabKey
+                      ? theme.discordleColors.primary
+                      : '#fff'
+                  )}
 
-          return (
-            <S.TabsPane
-              disabled
-              key={String(current)}
-              tab={
-                awnsers && (
-                  <Row justify="center">
-                    {handleIcon(
-                      index,
-                      current,
-                      current === activeTabKey
-                        ? theme.discordleColors.primary
-                        : '#fff'
-                    )}
+                  <S.MessageTabTitle>{`Mensagem ${current}`}</S.MessageTabTitle>
+                </Row>
+              )
+            }
+          >
+            <ChoosedMessage
+              usedHint={usedHint}
+              tabkey={activeTabKey}
+              serverName={serverName}
+              serverIcon={serverIcon}
+              message={choosedMessage}
+              score={score}
+              authorSelected={authorSelected}
+              setUsedHint={setUsedHint}
+            />
 
-                    <S.MessageTabTitle>{`Mensagem ${current}`}</S.MessageTabTitle>
-                  </Row>
-                )
-              }
-            >
-              <ChoosedMessage
-                usedHint={usedHint}
-                authorSelected={authorSelected}
-                tabkey={activeTabKey}
-                serverName={serverName}
-                serverIcon={serverIcon}
-                setUsedHint={setUsedHint}
-                message={choosedMessage}
-                score={score}
-              />
-
-              <AuthorSelect
-                setAuthorSelected={setAuthorSelected}
-                activeTabKey={activeTabKey}
-                messageId={choosedMessage.id}
-                authors={authors}
-                usedHint={usedHint}
-                setUsedHint={setUsedHint}
-                saveScore={saveScore}
-                setActiveTabKey={setActiveTabKey}
-              />
-            </S.TabsPane>
-          );
-        }
-      )}
+            <AuthorSelect
+              messageId={choosedMessage.id}
+              activeTabKey={activeTabKey}
+              usedHint={usedHint}
+              authors={authors}
+              saveScore={saveScore}
+              setUsedHint={setUsedHint}
+              setActiveTabKey={setActiveTabKey}
+              setAuthorSelected={setAuthorSelected}
+            />
+          </S.TabsPane>
+        );
+      })}
     </S.Tabs>
   );
 }

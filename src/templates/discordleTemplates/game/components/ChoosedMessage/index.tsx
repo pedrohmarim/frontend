@@ -9,11 +9,7 @@ import DisplayMessageContainer from 'templates/discordleTemplates/game/component
 import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
-import {
-  FilterMessageEnum,
-  IFilterMessageResponse,
-  MessageLevelEnum,
-} from 'helpers/discordle/filterMessageEnum';
+import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 import {
   Button,
   FeatherIcons,
@@ -55,23 +51,6 @@ export default function ChoosedMessage({
     });
   }
 
-  function handleFormattEmptyChoosedMessage(
-    emptyChoosedMessage: IChoosedMessage,
-    isPrevious: boolean
-  ) {
-    if (isPrevious) {
-      emptyChoosedMessage.content =
-        'Não existe uma mensagem consecutiva à escolhida.';
-      emptyChoosedMessage.messageLevel = MessageLevelEnum.isPrevious;
-    } else {
-      emptyChoosedMessage.content =
-        'Não existe uma mensagem anterior à escolhida.';
-      emptyChoosedMessage.messageLevel = MessageLevelEnum.isConsecutive;
-    }
-
-    return emptyChoosedMessage;
-  }
-
   function handleGetHints() {
     if (router.isReady) {
       const { channelId, guildId } = router.query;
@@ -88,54 +67,29 @@ export default function ChoosedMessage({
 
       DiscordleGameApi.GetDiscordHints(dto).then(
         ({ ConsecutivePosition, PreviousPosition }) => {
-          const emptyChoosedMessage: IChoosedMessage = {
-            content: '',
-            formattedAttachs: [] as JSX.Element[],
-            id: '',
-            urlLink: '',
-            messageType: FilterMessageEnum.isText,
-            timestamp: '',
-            messageLevel: MessageLevelEnum.dontExist,
-          };
+          let previousMessage = {} as I.IChoosedMessage;
+          let consecutiveMessage = {} as I.IChoosedMessage;
 
-          let filterResponsePreviousMessage: IFilterMessageResponse =
-            {} as IFilterMessageResponse;
-
-          if (PreviousPosition)
-            filterResponsePreviousMessage = filterMessage(PreviousPosition);
-
-          const previousMessage: IChoosedMessage = !PreviousPosition
-            ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, true)
-            : {
-                content: PreviousPosition.Content,
-                formattedAttachs:
-                  filterResponsePreviousMessage.formattedAttachs,
-                urlLink: filterResponsePreviousMessage.urlLink,
-                id: PreviousPosition.Id,
-                messageType: filterResponsePreviousMessage.messageType,
-                timestamp: PreviousPosition.Timestamp,
-                messageLevel: MessageLevelEnum.isPrevious,
-              };
-
-          let filterResponseConsecutiveMessage: IFilterMessageResponse =
-            {} as IFilterMessageResponse;
-
-          if (ConsecutivePosition)
-            filterResponseConsecutiveMessage =
-              filterMessage(ConsecutivePosition);
-
-          const consecutiveMessage: IChoosedMessage = !ConsecutivePosition
-            ? handleFormattEmptyChoosedMessage(emptyChoosedMessage, false)
-            : {
-                content: ConsecutivePosition.Content,
-                formattedAttachs:
-                  filterResponseConsecutiveMessage.formattedAttachs,
-                urlLink: filterResponseConsecutiveMessage.urlLink,
-                id: ConsecutivePosition.Id,
-                messageType: filterResponseConsecutiveMessage.messageType,
-                timestamp: ConsecutivePosition.Timestamp,
-                messageLevel: MessageLevelEnum.isConsecutive,
-              };
+          if (PreviousPosition) {
+            previousMessage = filterMessage(
+              PreviousPosition,
+              MessageLevelEnum.isPrevious
+            );
+          } else {
+            previousMessage.content =
+              'Não existe uma mensagem consecutiva à escolhida.';
+            previousMessage.messageLevel = MessageLevelEnum.isPrevious;
+          }
+          if (ConsecutivePosition) {
+            consecutiveMessage = filterMessage(
+              ConsecutivePosition,
+              MessageLevelEnum.isConsecutive
+            );
+          } else {
+            consecutiveMessage.content =
+              'Não existe uma mensagem anterior à escolhida.';
+            consecutiveMessage.messageLevel = MessageLevelEnum.isConsecutive;
+          }
 
           setTotalMessages([consecutiveMessage, message, previousMessage]);
         }
@@ -266,6 +220,8 @@ export default function ChoosedMessage({
             id,
             messageLevel,
             urlLink,
+            referencedMessage,
+            author,
           },
           index
         ) => {
@@ -278,11 +234,13 @@ export default function ChoosedMessage({
             messageLevel,
             urlLink,
             key: index,
+            referencedMessage,
+            author,
           };
 
           return (
             <S.Container key={index}>
-              {messageLevel === MessageLevelEnum.isMain &&
+              {message.messageLevel === MessageLevelEnum.isMain &&
               totalMessages.length > 1 ? (
                 <S.MainMessageContainer>
                   <DisplayMessageContainer {...props} />

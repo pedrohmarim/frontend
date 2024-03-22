@@ -44,11 +44,6 @@ export default class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
 
-          <link
-            href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=optional"
-            rel="stylesheet"
-          />
-
           <link rel="icon" href="https://rocketseat.com.br/favicon.ico" />
         </Head>
         <body>

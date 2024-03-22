@@ -6,7 +6,6 @@ import Head from 'next/head';
 import MessageTabs from './components/MessageTabs';
 import filterMessage from 'helpers/discordle/filter.message';
 import Result from './components/Result';
-import { IFilterMessageResponse } from 'helpers/discordle/filterMessageEnum';
 import { useRouter } from 'next/router';
 import { MessageContainer } from 'globalStyles/global';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
@@ -15,6 +14,8 @@ import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
+import { IChoosedMessage } from './components/ChoosedMessage/IChoosedMessage';
+import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 
 export default function GameContainer() {
   const router = useRouter();
@@ -23,9 +24,7 @@ export default function GameContainer() {
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
   const [useHint, setUsedHint] = useState<boolean>(false);
-  const [choosedMessages, setChoosedMessages] = useState<
-    IFilterMessageResponse[]
-  >([]);
+  const [choosedMessages, setChoosedMessages] = useState<IChoosedMessage[]>([]);
   const [serverInfos, setServerInfos] = useState<{
     ServerName: string;
     ServerIcon: string;
@@ -56,10 +55,12 @@ export default function GameContainer() {
                   setAuthors(Authors);
                   setServerInfos({ ServerName, ServerIcon });
 
-                  const filteredMessagesArray: IFilterMessageResponse[] = [];
+                  const filteredMessagesArray: IChoosedMessage[] = [];
 
                   Messages.forEach((message) => {
-                    filteredMessagesArray.push(filterMessage(message));
+                    filteredMessagesArray.push(
+                      filterMessage(message, MessageLevelEnum.isMain)
+                    );
                   });
 
                   setChoosedMessages(filteredMessagesArray);

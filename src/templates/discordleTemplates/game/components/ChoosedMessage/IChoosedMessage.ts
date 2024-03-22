@@ -1,4 +1,8 @@
 import {
+  IAuthor,
+  IReferencedMessage,
+} from 'services/DiscordleService/IDiscordleService';
+import {
   FilterMessageEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
@@ -20,6 +24,8 @@ export interface IChoosedMessage {
   content: string;
   timestamp: string;
   messageType: FilterMessageEnum;
-  messageLevel: MessageLevelEnum;
+  messageLevel?: MessageLevelEnum;
   formattedAttachs: JSX.Element[];
+  referencedMessage?: IReferencedMessage;
+  author?: IAuthor;
 }

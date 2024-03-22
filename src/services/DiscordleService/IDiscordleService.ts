@@ -10,13 +10,14 @@ export interface IMessageInstance {
 }
 
 export interface IGetDiscordHintsResponse {
-  PreviousPosition: IMessage;
-  ConsecutivePosition: IMessage;
+  PreviousPosition?: IMessage;
+  ConsecutivePosition?: IMessage;
 }
 
 export interface IMessage {
   Id: string;
   Content: string;
+  Author: IAuthor;
   Mentions: IMention[];
   Attachments: IAttachments[];
   Embeds: IEmbeds[];
@@ -32,7 +33,6 @@ export interface IVideoEmbed {
 
 export interface IReferencedMessage {
   Content: string;
-  Author: IAuthor;
 }
 
 export interface IEmbeds {

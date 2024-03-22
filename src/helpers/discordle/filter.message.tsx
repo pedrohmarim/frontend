@@ -1,17 +1,23 @@
 import { IMessage } from 'services/DiscordleService/IDiscordleService';
-import { FilterMessageEnum, IFilterMessageResponse } from './filterMessageEnum';
+import { FilterMessageEnum, MessageLevelEnum } from './filterMessageEnum';
 import { Image } from 'antd_components';
 import { EmbedTypeEnum } from './embedTypeEnum';
+import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
 
-export default function filterMessage(message: IMessage) {
-  const emptyContent: JSX.Element[] = [];
-  const emptyMessage = {} as IMessage;
-
-  const response: IFilterMessageResponse = {
+export default function filterMessage(
+  message: IMessage,
+  messageLevelParam: MessageLevelEnum
+) {
+  const response: IChoosedMessage = {
     messageType: FilterMessageEnum.isText,
-    formattedAttachs: emptyContent,
+    formattedAttachs: [] as JSX.Element[],
     urlLink: '',
-    message: emptyMessage,
+    content: message.Content,
+    id: message.Id,
+    referencedMessage: message.ReferencedMessage,
+    timestamp: message.Timestamp,
+    messageLevel: messageLevelParam,
+    author: message.Author,
   };
 
   if (message.Attachments.length) {
@@ -30,22 +36,11 @@ export default function filterMessage(message: IMessage) {
     });
   }
 
-  if (message.Content.includes('<@')) {
+  if (message.Content.includes('<@'))
     response.messageType = FilterMessageEnum.isText;
-
-    message.Mentions.map(({ Username, Id }) => {
-      message.Content = message.Content.replaceAll(`<@${Id}>`, `@${Username}`);
-    });
-  }
 
   if (message.Embeds.length) {
     response.messageType = FilterMessageEnum.isEmbed;
-
-    if (
-      message.Content.startsWith('https://tenor.com/view') ||
-      message.Content.startsWith('https://www.youtube.com')
-    )
-      message.Content = '';
 
     message.Embeds.forEach(({ Video, Type }) => {
       switch (Type.toLowerCase()) {
@@ -73,12 +68,17 @@ export default function filterMessage(message: IMessage) {
   const includeLink =
     message.Content.includes('https://') || message.Content.includes('http://');
 
-  if (includeLink) {
+  if (
+    message.Content.startsWith('https://tenor.com/view') ||
+    message.Content.startsWith('https://www.youtube.com')
+  )
+    response.content = '';
+  else if (includeLink) {
     response.messageType = FilterMessageEnum.isLink;
 
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
-    message.Content = message.Content.replace(urlRegex, (content: string) => {
+    response.content = message.Content.replace(urlRegex, (content: string) => {
       let hyperlink = content;
 
       if (!hyperlink.match('^https?://')) hyperlink = 'http://' + hyperlink;
@@ -97,8 +97,6 @@ export default function filterMessage(message: IMessage) {
 
   if (!message.Attachments.length && includeLink)
     response.messageType = FilterMessageEnum.isImageWithTextAndLink;
-
-  response.message = message;
 
   return response;
 }

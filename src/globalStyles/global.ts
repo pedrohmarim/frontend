@@ -9,6 +9,7 @@ export default createGlobalStyle`
   }
 
   body {
+    font-family: 'Roboto', sans-serif !important;
     background-image: url("https://images4.alphacoders.com/909/909912.png") !important;
   }
   

@@ -1,10 +1,10 @@
-import { IFilterMessageResponse } from 'helpers/discordle/filterMessageEnum';
 import { IAuthor } from 'services/DiscordleService/IDiscordleService';
 import { IAwnser } from 'templates/discordleTemplates/game/IGame';
+import { IChoosedMessage } from '../ChoosedMessage/IChoosedMessage';
 
 export interface IMessageTabs {
   activeTabKey: number;
-  choosedMessages: IFilterMessageResponse[];
+  choosedMessages: IChoosedMessage[];
   awnsers: IAwnser[];
   serverName: string;
   usedHint: boolean;
