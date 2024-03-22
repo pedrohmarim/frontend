@@ -12,7 +12,6 @@ steps:
     yarn install
   displayName: 'Instalar Dependências'
 
-jobs:
 - job: Build_and_Deploy
   displayName: 'Build and Deploy'
   steps:
