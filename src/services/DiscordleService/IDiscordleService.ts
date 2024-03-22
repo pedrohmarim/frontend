@@ -19,21 +19,20 @@ export interface IMessage {
   Content: string;
   Mentions: IMention[];
   Attachments: IAttachments[];
-  Sticker_Items: IStickerItems[];
   Embeds: IEmbeds[];
+  ReferencedMessage: IReferencedMessage;
   Timestamp: string;
-}
-
-export interface IStickerItems {
-  Id: string;
-  Name: string;
-  Format_Type: string;
 }
 
 export interface IVideoEmbed {
   Url: string;
   Height: number;
   Width: number;
+}
+
+export interface IReferencedMessage {
+  Content: string;
+  Author: IAuthor;
 }
 
 export interface IEmbeds {

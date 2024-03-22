@@ -14,7 +14,7 @@ export default function BaseService(
     headers: {
       'Content-type': contentType,
     },
-    timeout: 120000,
+    timeout: 5 * 60 * 1000,
   });
 
   api.interceptors.request.use(requestInterceptor, errorRequestInterceptor);
