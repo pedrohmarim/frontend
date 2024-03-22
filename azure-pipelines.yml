@@ -12,17 +12,6 @@ steps:
     yarn install
   displayName: 'Instalar Dependências'
 
-- job: Build_and_Deploy
-  displayName: 'Build and Deploy'
-  steps:
-  - script: |
-      npm install
-    displayName: 'Install Dependencies'
-
-  - script: |
-      npm run build
-    displayName: 'Build Application'
-
 - script: |
     # Construção do aplicativo usando Next.js
     yarn run build
