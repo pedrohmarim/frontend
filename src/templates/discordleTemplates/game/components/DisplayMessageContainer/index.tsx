@@ -71,7 +71,7 @@ export default function DisplayMessageContainer({
           <FeatherIcons icon="corner-up-right" size={20} />
 
           <S.SpanWithMarginLeft
-            dangerouslySetInnerHTML={{ __html: referencedMessage.Content }}
+            dangerouslySetInnerHTML={{ __html: referencedMessage }}
           />
         </Row>
       </S.ReferencedMessageContainer>

@@ -18,10 +18,9 @@ export interface IMessage {
   Id: string;
   Content: string;
   Author: IAuthor;
-  Mentions: IMention[];
   Attachments: IAttachments[];
   Embeds: IEmbeds[];
-  ReferencedMessage: IReferencedMessage;
+  ReferencedMessage: string;
   Timestamp: string;
 }
 
@@ -29,10 +28,6 @@ export interface IVideoEmbed {
   Url: string;
   Height: number;
   Width: number;
-}
-
-export interface IReferencedMessage {
-  Content: string;
 }
 
 export interface IEmbeds {
@@ -48,11 +43,6 @@ export interface IAuthor {
   Id: string;
   Username: string;
   Avatar: string;
-}
-
-export interface IMention {
-  Username: string;
-  Id: string;
 }
 
 export interface IDiscordHintsRequest {

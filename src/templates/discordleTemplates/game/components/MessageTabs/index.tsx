@@ -2,13 +2,12 @@ import React, { useState, useEffect, Fragment } from 'react';
 import ChoosedMessage from 'templates/discordleTemplates/game/components/ChoosedMessage';
 import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
 import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
+import ConfigurationModal from './ConfigurationModal';
 import * as I from './IMessageTabs';
 import * as S from './styles';
-import { FeatherIcons, Row, PopConfirm } from 'antd_components';
-import type { MenuProps } from 'antd';
+import { FeatherIcons, Row } from 'antd_components';
 import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
-import ConfigurationModal from './ConfigurationModal';
 
 export default function MessageTabs({
   activeTabKey,
@@ -24,24 +23,9 @@ export default function MessageTabs({
 }: I.IMessageTabs) {
   const router = useRouter();
   const [authorSelected, setAuthorSelected] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [stillOpen, setStillOpen] = useState({
-    tooltip: false,
-    popconfirm: false,
-    dropdown: false,
-  });
 
   const handleTabChange = (key: string) => setActiveTabKey(Number(key));
-
-  function closeAll() {
-    setStillOpen({
-      tooltip: false,
-      popconfirm: false,
-      dropdown: false,
-    });
-  }
 
   useEffect(() => {
     if (router.isReady) {
@@ -85,94 +69,9 @@ export default function MessageTabs({
     return accumulator + curValue.Score;
   }, 0);
 
-  const confirm = () =>
-    new Promise(() => {
-      setLoading(true);
-
-      setTimeout(() => {
-        setUsedHint(true);
-
-        setLoading(false);
-      }, 2000);
-    });
-
-  const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: (
-        <PopConfirm
-          title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
-          okText="Mostrar"
-          cancelText="Cancelar"
-          onConfirm={confirm}
-          getPopupContainer={(trigger) => trigger}
-          onCancel={closeAll}
-          placement="bottom"
-          open={stillOpen.popconfirm || loading}
-          okButtonProps={{
-            style: {
-              backgroundColor: theme.discordleColors.primary,
-              border: 'none',
-            },
-          }}
-          cancelButtonProps={{
-            style: {
-              backgroundColor: theme.discordleColors.text,
-              color: theme.discordleColors.primary,
-            },
-          }}
-        >
-          <S.OptionItem
-            align="middle"
-            onClick={() =>
-              setStillOpen({
-                popconfirm: true,
-                tooltip: false,
-                dropdown: true,
-              })
-            }
-          >
-            <FeatherIcons
-              icon="star"
-              color={theme.discordleColors.primary}
-              size={20}
-            />
-            <S.Hint>Dica</S.Hint>
-          </S.OptionItem>
-
-          {isOwner && (
-            <S.OptionItem
-              align="middle"
-              onClick={() => {
-                setStillOpen({
-                  popconfirm: false,
-                  tooltip: false,
-                  dropdown: false,
-                });
-
-                setOpenModal(!openModal);
-              }}
-            >
-              <FeatherIcons
-                icon="settings"
-                color={theme.discordleColors.primary}
-                size={20}
-              />
-              <S.Hint>Configurações</S.Hint>
-            </S.OptionItem>
-          )}
-        </PopConfirm>
-      ),
-    },
-  ];
-
   return (
     <Fragment>
-      <ConfigurationModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        setStillOpen={setStillOpen}
-      />
+      {/* <ConfigurationModal openModal={true} /> */}
 
       <S.Tabs
         activeKey={String(activeTabKey)}
@@ -203,17 +102,15 @@ export default function MessageTabs({
               }
             >
               <ChoosedMessage
+                isOwner={isOwner}
+                score={score}
+                authorSelected={authorSelected}
                 usedHint={usedHint}
                 tabkey={activeTabKey}
                 serverName={serverName}
                 serverIcon={serverIcon}
                 message={choosedMessage}
-                score={score}
-                items={items}
-                loading={loading}
-                stillOpen={stillOpen}
-                setStillOpen={setStillOpen}
-                authorSelected={authorSelected}
+                setUsedHint={setUsedHint}
               />
 
               <AuthorSelect

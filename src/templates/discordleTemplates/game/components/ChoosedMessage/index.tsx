@@ -16,26 +16,38 @@ import {
   Dropdown,
   Avatar,
   Row,
+  PopConfirm,
 } from 'antd_components';
+import { MenuProps } from 'antd';
 
 export default function ChoosedMessage({
-  message,
   score,
   tabkey,
-  authorSelected,
-  serverName,
+  message,
+  isOwner,
   usedHint,
   serverIcon,
-  items,
-  stillOpen,
-  loading,
-  setStillOpen,
+  serverName,
+  authorSelected,
+  setUsedHint,
 }: I.IChoosedMessageComponent) {
   const router = useRouter();
-
+  const [loading, setLoading] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [stillOpen, setStillOpen] = useState({
+    tooltip: false,
+    popconfirm: false,
+    dropdown: false,
+  });
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     message,
   ]);
+
+  useEffect(() => {
+    if (usedHint) handleGetHints();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usedHint]);
 
   function handleGetHints() {
     if (router.isReady) {
@@ -83,11 +95,100 @@ export default function ChoosedMessage({
     }
   }
 
-  useEffect(() => {
-    if (usedHint) handleGetHints();
+  function closeAll() {
+    setStillOpen({
+      tooltip: false,
+      popconfirm: false,
+      dropdown: false,
+    });
+  }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usedHint]);
+  const confirm = () =>
+    new Promise(() => {
+      setLoading(true);
+
+      setTimeout(() => {
+        setUsedHint(true);
+
+        setLoading(false);
+      }, 2000);
+    });
+
+  const items: MenuProps['items'] = [];
+
+  if (totalMessages.length === 1) {
+    items.push({
+      key: '1',
+      label: (
+        <PopConfirm
+          title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
+          okText="Mostrar"
+          cancelText="Cancelar"
+          onConfirm={confirm}
+          getPopupContainer={(trigger) => trigger}
+          onCancel={closeAll}
+          placement="bottom"
+          open={stillOpen.popconfirm || loading}
+          okButtonProps={{
+            style: {
+              backgroundColor: theme.discordleColors.primary,
+              border: 'none',
+            },
+          }}
+          cancelButtonProps={{
+            style: {
+              backgroundColor: theme.discordleColors.text,
+              color: theme.discordleColors.primary,
+            },
+          }}
+        >
+          <S.OptionItem
+            align="middle"
+            onClick={() =>
+              setStillOpen({
+                popconfirm: true,
+                tooltip: false,
+                dropdown: true,
+              })
+            }
+          >
+            <FeatherIcons
+              icon="star"
+              color={theme.discordleColors.primary}
+              size={20}
+            />
+            <S.Hint>Dica</S.Hint>
+          </S.OptionItem>
+        </PopConfirm>
+      ),
+    });
+  }
+
+  if (true)
+    items.push({
+      key: '2',
+      label: (
+        <S.OptionItem
+          align="middle"
+          onClick={() => {
+            setStillOpen({
+              popconfirm: false,
+              tooltip: false,
+              dropdown: false,
+            });
+
+            setOpenModal(!openModal);
+          }}
+        >
+          <FeatherIcons
+            icon="settings"
+            color={theme.discordleColors.primary}
+            size={20}
+          />
+          <S.Hint>Configurações</S.Hint>
+        </S.OptionItem>
+      ),
+    });
 
   return (
     <S.PaddingContainer>
@@ -96,7 +197,7 @@ export default function ChoosedMessage({
         <S.ScoreText> Pontuação: {score}/10</S.ScoreText>
       </S.ScoreContainer>
 
-      {totalMessages.length === 1 && (
+      {items.length > 0 && (
         <Tooltip title="Opções" color="#17171a" open={stillOpen.tooltip}>
           <S.Options>
             <Dropdown

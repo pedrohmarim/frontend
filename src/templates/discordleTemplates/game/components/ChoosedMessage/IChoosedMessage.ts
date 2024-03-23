@@ -1,14 +1,11 @@
-import {
-  IAuthor,
-  IReferencedMessage,
-} from 'services/DiscordleService/IDiscordleService';
+import { IAuthor } from 'services/DiscordleService/IDiscordleService';
 import {
   FilterMessageEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
-import { ItemType } from 'antd/lib/menu/hooks/useItems';
 
 export interface IChoosedMessageComponent {
+  isOwner: boolean;
   score: number;
   message: IChoosedMessage;
   serverName: string;
@@ -16,20 +13,7 @@ export interface IChoosedMessageComponent {
   usedHint: boolean;
   tabkey: number;
   serverIcon: string;
-  items: ItemType[];
-  loading: boolean;
-  stillOpen: {
-    tooltip: boolean;
-    popconfirm: boolean;
-    dropdown: boolean;
-  };
-  setStillOpen: React.Dispatch<
-    React.SetStateAction<{
-      tooltip: boolean;
-      popconfirm: boolean;
-      dropdown: boolean;
-    }>
-  >;
+  setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IChoosedMessage {
@@ -40,6 +24,6 @@ export interface IChoosedMessage {
   messageType: FilterMessageEnum;
   messageLevel?: MessageLevelEnum;
   formattedAttachs: JSX.Element[];
-  referencedMessage?: IReferencedMessage;
+  referencedMessage?: string;
   author?: IAuthor;
 }

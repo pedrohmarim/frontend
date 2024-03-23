@@ -40,7 +40,7 @@ export default function GameContainer() {
             if (data.length > 0 && data[data.length - 1].UsedHint) {
               setActiveTabKey(data.length);
               setUsedHint(true);
-            } else setActiveTabKey(data.length + 1);
+            } else setActiveTabKey(data.length + 1 > 5 ? 5 : data.length + 1);
 
             setAwnsers(data);
 
