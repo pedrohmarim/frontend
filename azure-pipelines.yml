@@ -1,0 +1,31 @@
+trigger:
+  branches:
+    include:
+      - discordle  # Substitua "main" pelo nome da sua branch principal, se for diferente
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    # Instalação das dependências usando npm
+    yarn install
+  displayName: 'Instalar Dependências'
+
+- script: |
+    # Construção do aplicativo usando Next.js
+    yarn run build
+  displayName: 'Construir Aplicativo'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/build'  # Pasta de construção do Next.js
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'  # Pasta de artefatos de construção
+  displayName: 'Copiar Arquivos de Construção'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'  # Pasta de artefatos de construção
+    ArtifactName: 'drop'
+    publishLocation: 'Container'  # Publica os artefatos no Azure Pipelines
+  displayName: 'Publicar Artefatos de Construção'
