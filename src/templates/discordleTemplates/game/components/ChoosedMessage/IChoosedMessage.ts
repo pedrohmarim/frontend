@@ -6,6 +6,7 @@ import {
   FilterMessageEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
+import { ItemType } from 'antd/lib/menu/hooks/useItems';
 
 export interface IChoosedMessageComponent {
   score: number;
@@ -15,7 +16,20 @@ export interface IChoosedMessageComponent {
   usedHint: boolean;
   tabkey: number;
   serverIcon: string;
-  setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
+  items: ItemType[];
+  loading: boolean;
+  stillOpen: {
+    tooltip: boolean;
+    popconfirm: boolean;
+    dropdown: boolean;
+  };
+  setStillOpen: React.Dispatch<
+    React.SetStateAction<{
+      tooltip: boolean;
+      popconfirm: boolean;
+      dropdown: boolean;
+    }>
+  >;
 }
 
 export interface IChoosedMessage {

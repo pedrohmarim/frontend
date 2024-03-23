@@ -118,6 +118,7 @@ export default function DisplayMessageContainer({
           </Fragment>
         )}
       </S.Message>
+
       {timestamp && (
         <S.Date justify="end">
           {new Date(timestamp).toLocaleString('pt-BR', {

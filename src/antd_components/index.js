@@ -32,8 +32,10 @@ import Progress from './Progress/Progress.component';
 import Carousel from './Carousel/Carousel.component';
 import Popover from './Popover/Popover.component';
 import Empty from './Empty/Empty.component';
+import Switch from './Switch/Switch.component';
 
 export {
+  Switch,
   Avatar,
   Empty,
   Table,

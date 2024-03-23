@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
-import type { MenuProps } from 'antd';
 import DiscordleGameApi from 'services/DiscordleService/DiscordleGame';
 import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/discordle/filter.message';
@@ -15,7 +14,6 @@ import {
   FeatherIcons,
   Tooltip,
   Dropdown,
-  PopConfirm,
   Avatar,
   Row,
 } from 'antd_components';
@@ -28,28 +26,16 @@ export default function ChoosedMessage({
   serverName,
   usedHint,
   serverIcon,
-  setUsedHint,
+  items,
+  stillOpen,
+  loading,
+  setStillOpen,
 }: I.IChoosedMessageComponent) {
   const router = useRouter();
 
-  const [loading, setLoading] = useState<boolean>(false);
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     message,
   ]);
-
-  const [stillOpen, setStillOpen] = useState({
-    tooltip: false,
-    popconfirm: false,
-    dropdown: false,
-  });
-
-  function closeAll() {
-    setStillOpen({
-      tooltip: false,
-      popconfirm: false,
-      dropdown: false,
-    });
-  }
 
   function handleGetHints() {
     if (router.isReady) {
@@ -101,67 +87,7 @@ export default function ChoosedMessage({
     if (usedHint) handleGetHints();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const confirm = () =>
-    new Promise(() => {
-      setLoading(true);
-
-      setTimeout(() => {
-        setUsedHint(true);
-        handleGetHints();
-
-        setLoading(false);
-      }, 2000);
-    });
-
-  const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: (
-        <PopConfirm
-          title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
-          okText="Mostrar"
-          cancelText="Cancelar"
-          okButtonProps={{
-            style: {
-              backgroundColor: theme.discordleColors.primary,
-              border: 'none',
-            },
-          }}
-          cancelButtonProps={{
-            style: {
-              backgroundColor: theme.discordleColors.text,
-              color: theme.discordleColors.primary,
-            },
-          }}
-          onConfirm={confirm}
-          getPopupContainer={(trigger) => trigger}
-          onCancel={closeAll}
-          placement="bottom"
-          open={stillOpen.popconfirm || loading}
-        >
-          <S.OptionItem
-            align="middle"
-            onClick={() =>
-              setStillOpen({
-                popconfirm: true,
-                tooltip: false,
-                dropdown: true,
-              })
-            }
-          >
-            <FeatherIcons
-              icon="star"
-              color={theme.discordleColors.primary}
-              size={20}
-            />
-            <S.Hint>Dica</S.Hint>
-          </S.OptionItem>
-        </PopConfirm>
-      ),
-    },
-  ];
+  }, [usedHint]);
 
   return (
     <S.PaddingContainer>

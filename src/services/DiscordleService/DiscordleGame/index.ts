@@ -39,6 +39,13 @@ const ApiAuth = {
     );
     return response.data;
   },
+  VerifyIfIsDiscordleOwner: async function (guildId: string) {
+    const response: AxiosResponse<boolean> = await http.post(
+      `${baseUrl}/VerifyIfIsDiscordleOwner`,
+      { GuildId: guildId }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;

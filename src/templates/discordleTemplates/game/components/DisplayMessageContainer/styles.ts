@@ -25,7 +25,7 @@ export const SpanWithMarginLeft = styled.span`
 
 export const AuthorContainer = styled(Row)`
   background-color: ${(props) => props.theme.discordleColors.background};
-  border-bottom: solid 1px rgba(255, 255, 255, 0.09);
+  border-bottom: solid 1px rgba(255, 255, 255, 0.05);
   padding: 3px;
 `;
 

@@ -19,3 +19,15 @@ export interface IMessageTabs {
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export interface IConfigurationModal {
+  openModal: boolean;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setStillOpen: React.Dispatch<
+    React.SetStateAction<{
+      tooltip: boolean;
+      popconfirm: boolean;
+      dropdown: boolean;
+    }>
+  >;
+}

@@ -31,24 +31,6 @@ export const ScoreText = styled.span`
   margin-left: 4px;
 `;
 
-export const OptionItem = styled(Row)`
-  padding: 5px 15px;
-  background-color: ${(props) => props.theme.discordleColors.background};
-  border: solid 1px rgba(255, 255, 255, 0.1);
-  transition: all 0.2s;
-
-  :hover {
-    opacity: 0.9;
-  }
-`;
-
-export const Hint = styled.span`
-  margin: 2px 0 0 5px;
-  font-size: 12pt;
-  font-weight: 500;
-  color: ${(props) => props.theme.discordleColors.text};
-`;
-
 export const Container = styled.div`
   max-width: 650px;
 
