@@ -3,6 +3,9 @@ trigger:
     include:
       - discordle  # Substitua "main" pelo nome da sua branch principal, se for diferente
 
+pool:
+  vmImage: 'ubuntu-latest'
+
 steps:
 - script: |
     # Instalação das dependências usando npm
