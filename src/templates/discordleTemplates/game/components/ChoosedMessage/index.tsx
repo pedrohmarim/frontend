@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
+import type { MenuProps } from 'antd';
 import DiscordleGameApi from 'services/DiscordleService/DiscordleGame';
 import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/discordle/filter.message';
@@ -18,36 +19,40 @@ import {
   Row,
   PopConfirm,
 } from 'antd_components';
-import { MenuProps } from 'antd';
 
 export default function ChoosedMessage({
   score,
   tabkey,
-  message,
   isOwner,
+  message,
   usedHint,
-  serverIcon,
+  openModal,
   serverName,
+  serverIcon,
   authorSelected,
   setUsedHint,
+  setOpenModal,
 }: I.IChoosedMessageComponent) {
   const router = useRouter();
+
   const [loading, setLoading] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
+    message,
+  ]);
+
   const [stillOpen, setStillOpen] = useState({
     tooltip: false,
     popconfirm: false,
     dropdown: false,
   });
-  const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
-    message,
-  ]);
 
-  useEffect(() => {
-    if (usedHint) handleGetHints();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usedHint]);
+  function closeAll() {
+    setStillOpen({
+      tooltip: false,
+      popconfirm: false,
+      dropdown: false,
+    });
+  }
 
   function handleGetHints() {
     if (router.isReady) {
@@ -95,13 +100,11 @@ export default function ChoosedMessage({
     }
   }
 
-  function closeAll() {
-    setStillOpen({
-      tooltip: false,
-      popconfirm: false,
-      dropdown: false,
-    });
-  }
+  useEffect(() => {
+    if (usedHint) handleGetHints();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const confirm = () =>
     new Promise(() => {
@@ -109,6 +112,7 @@ export default function ChoosedMessage({
 
       setTimeout(() => {
         setUsedHint(true);
+        handleGetHints();
 
         setLoading(false);
       }, 2000);
@@ -267,8 +271,7 @@ export default function ChoosedMessage({
 
           return (
             <S.Container key={index}>
-              {message.messageLevel === MessageLevelEnum.isMain &&
-              totalMessages.length > 1 ? (
+              {messageLevel === MessageLevelEnum.isMain ? (
                 <S.MainMessageContainer>
                   <DisplayMessageContainer {...props} />
                 </S.MainMessageContainer>

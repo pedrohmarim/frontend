@@ -24,6 +24,7 @@ export default function MessageTabs({
   const router = useRouter();
   const [authorSelected, setAuthorSelected] = useState<string>('');
   const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const handleTabChange = (key: string) => setActiveTabKey(Number(key));
 
@@ -71,7 +72,7 @@ export default function MessageTabs({
 
   return (
     <Fragment>
-      {/* <ConfigurationModal openModal={true} /> */}
+      <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
 
       <S.Tabs
         activeKey={String(activeTabKey)}
@@ -102,8 +103,9 @@ export default function MessageTabs({
               }
             >
               <ChoosedMessage
-                isOwner={isOwner}
                 score={score}
+                isOwner={isOwner}
+                openModal={openModal}
                 authorSelected={authorSelected}
                 usedHint={usedHint}
                 tabkey={activeTabKey}
@@ -111,6 +113,7 @@ export default function MessageTabs({
                 serverIcon={serverIcon}
                 message={choosedMessage}
                 setUsedHint={setUsedHint}
+                setOpenModal={setOpenModal}
               />
 
               <AuthorSelect

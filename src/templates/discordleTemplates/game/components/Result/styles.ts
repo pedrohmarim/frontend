@@ -41,5 +41,8 @@ export const AwnserItem = styled.div<{
   margin: 10px;
   height: 35px;
   width: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
 `;

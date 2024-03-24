@@ -34,7 +34,8 @@ export const Avatar = styled(AvatarAntd)`
 `;
 
 export const DefaultContent = styled.div`
-  padding: 3px 6px 6px 6px !important;
+  margin-left: 5px;
+  padding: 8px;
 `;
 
 export const Message = styled.div`

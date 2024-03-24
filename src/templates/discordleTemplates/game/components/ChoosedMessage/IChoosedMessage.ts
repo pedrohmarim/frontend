@@ -6,6 +6,7 @@ import {
 
 export interface IChoosedMessageComponent {
   isOwner: boolean;
+  openModal: boolean;
   score: number;
   message: IChoosedMessage;
   serverName: string;
@@ -14,6 +15,7 @@ export interface IChoosedMessageComponent {
   tabkey: number;
   serverIcon: string;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IChoosedMessage {

@@ -10,12 +10,12 @@ import { useRouter } from 'next/router';
 import { MessageContainer } from 'globalStyles/global';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
 import theme from 'globalStyles/theme';
+import { IChoosedMessage } from './components/ChoosedMessage/IChoosedMessage';
+import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
-import { IChoosedMessage } from './components/ChoosedMessage/IChoosedMessage';
-import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 
 export default function GameContainer() {
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function GameContainer() {
             if (data.length > 0 && data[data.length - 1].UsedHint) {
               setActiveTabKey(data.length);
               setUsedHint(true);
-            } else setActiveTabKey(data.length + 1 > 5 ? 5 : data.length + 1);
+            } else setActiveTabKey(data.length + 1);
 
             setAwnsers(data);
 
@@ -127,13 +127,13 @@ export default function GameContainer() {
       <MessageContainer>
         {!alreadyAwnsered ? (
           <MessageTabs
-            usedHint={useHint}
-            serverName={serverInfos.ServerName}
-            serverIcon={serverInfos.ServerIcon}
-            activeTabKey={activeTabKey}
             awnsers={awnsers}
             authors={authors}
+            usedHint={useHint}
+            activeTabKey={activeTabKey}
             choosedMessages={choosedMessages}
+            serverName={serverInfos.ServerName}
+            serverIcon={serverInfos.ServerIcon}
             saveScore={saveScore}
             setUsedHint={setUsedHint}
             setActiveTabKey={setActiveTabKey}

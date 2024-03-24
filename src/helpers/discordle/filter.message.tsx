@@ -47,7 +47,7 @@ export default function filterMessage(
         case EmbedTypeEnum.Gifv:
           response.formattedAttachs.push(
             <video
-              height={Video.Height}
+              height="100%"
               src={Video.Url}
               loop
               autoPlay

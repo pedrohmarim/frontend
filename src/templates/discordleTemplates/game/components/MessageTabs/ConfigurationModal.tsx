@@ -42,7 +42,6 @@ const SwitchComponent = ({ children }: { children: string }) => (
 
 export default function ConfigurationModal({
   openModal,
-  setStillOpen,
   setOpenModal,
 }: I.IConfigurationModal) {
   return (
@@ -64,11 +63,11 @@ export default function ConfigurationModal({
         </Row>
       }
       onCancel={() => {
-        setStillOpen({
-          popconfirm: false,
-          tooltip: false,
-          dropdown: false,
-        });
+        // setStillOpen({
+        //   popconfirm: false,
+        //   tooltip: false,
+        //   dropdown: false,
+        // });
         setOpenModal(!openModal);
       }}
     >
