@@ -30,5 +30,5 @@ export interface IChoosedMessage {
   formattedAttachs: JSX.Element[];
   referencedMessage?: string;
   author?: IAuthor;
-  switchValues: ISwitchValues | undefined;
+  switchValues?: ISwitchValues | undefined;
 }

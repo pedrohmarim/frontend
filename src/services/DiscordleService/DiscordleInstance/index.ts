@@ -1,9 +1,9 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
+import { ISwitchValues } from 'templates/discordleTemplates/game/components/MessageTabs/IMessageTabs';
 import {
   IChangeSwitchGet,
   IChangeSwitchRequest,
-  ISwitchValues,
 } from 'templates/discordleTemplates/game/components/MessageTabs/components/ConfigurationModal/IConfigurationModal';
 
 const http = baseService();
