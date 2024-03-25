@@ -29,6 +29,7 @@ export default function ChoosedMessage({
   openModal,
   serverName,
   serverIcon,
+  switchValues,
   authorSelected,
   setUsedHint,
   setOpenModal,
@@ -168,7 +169,7 @@ export default function ChoosedMessage({
     });
   }
 
-  if (true)
+  if (isOwner)
     items.push({
       key: '2',
       label: (
@@ -267,6 +268,7 @@ export default function ChoosedMessage({
             key: index,
             referencedMessage,
             author,
+            switchValues,
           };
 
           return (

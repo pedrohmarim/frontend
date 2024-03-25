@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import * as S from './styles';
+import * as I from './IReferencedMessage';
 import Link from 'next/link';
 import { FeatherIcons, Row } from 'antd_components';
 import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
@@ -9,14 +10,15 @@ import {
 } from 'helpers/discordle/filterMessageEnum';
 
 export default function DisplayMessageContainer({
-  content,
-  messageLevel,
-  messageType,
-  timestamp,
-  formattedAttachs,
-  urlLink,
-  referencedMessage,
   author,
+  content,
+  urlLink,
+  timestamp,
+  messageType,
+  switchValues,
+  messageLevel,
+  formattedAttachs,
+  referencedMessage,
 }: IChoosedMessage) {
   function titleMessage() {
     switch (messageLevel) {
@@ -64,20 +66,15 @@ export default function DisplayMessageContainer({
     </S.Carousel>
   );
 
-  const ReferencedMessageContainer = () =>
-    referencedMessage ? (
-      <S.ReferencedMessageContainer>
-        <Row justify="start" align="middle">
-          <FeatherIcons icon="corner-up-right" size={20} />
+  const ReferencedMessageContainer = ({ content }: I.IReferencedMessage) => (
+    <S.ReferencedMessageContainer>
+      <Row justify="start" align="middle">
+        <FeatherIcons icon="corner-up-right" size={20} />
 
-          <S.SpanWithMarginLeft
-            dangerouslySetInnerHTML={{ __html: referencedMessage }}
-          />
-        </Row>
-      </S.ReferencedMessageContainer>
-    ) : (
-      <Fragment />
-    );
+        <S.SpanWithMarginLeft dangerouslySetInnerHTML={{ __html: content }} />
+      </Row>
+    </S.ReferencedMessageContainer>
+  );
 
   const DefaultContent = () => (
     <S.DefaultContent dangerouslySetInnerHTML={{ __html: content }} />
@@ -85,12 +82,16 @@ export default function DisplayMessageContainer({
 
   return (
     <Fragment>
-      <ReferencedMessageContainer />
+      {switchValues &&
+        switchValues.ShowReferencedMessage &&
+        referencedMessage && (
+          <ReferencedMessageContainer content={referencedMessage} />
+        )}
 
       <Row justify="space-between">
         <S.Title>{titleMessage()}</S.Title>
 
-        {author && (
+        {switchValues && switchValues.ShowHintsAuthors && author && (
           <S.AuthorContainer align="middle" justify="start">
             <S.Avatar src={author?.Avatar} size={28} />
             <S.SpanWithMarginLeft>{author.Username}</S.SpanWithMarginLeft>

@@ -1,4 +1,5 @@
 import { IAuthor } from 'services/DiscordleService/IDiscordleService';
+import { ISwitchValues } from '../MessageTabs/IMessageTabs';
 import {
   FilterMessageEnum,
   MessageLevelEnum,
@@ -6,6 +7,7 @@ import {
 
 export interface IChoosedMessageComponent {
   isOwner: boolean;
+  switchValues: ISwitchValues | undefined;
   openModal: boolean;
   score: number;
   message: IChoosedMessage;
@@ -28,4 +30,5 @@ export interface IChoosedMessage {
   formattedAttachs: JSX.Element[];
   referencedMessage?: string;
   author?: IAuthor;
+  switchValues: ISwitchValues | undefined;
 }

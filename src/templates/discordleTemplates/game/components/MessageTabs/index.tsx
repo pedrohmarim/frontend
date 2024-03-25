@@ -2,7 +2,8 @@ import React, { useState, useEffect, Fragment } from 'react';
 import ChoosedMessage from 'templates/discordleTemplates/game/components/ChoosedMessage';
 import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
 import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
-import ConfigurationModal from './ConfigurationModal';
+import ConfigurationModal from './components/ConfigurationModal';
+import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import * as I from './IMessageTabs';
 import * as S from './styles';
 import { FeatherIcons, Row } from 'antd_components';
@@ -25,17 +26,27 @@ export default function MessageTabs({
   const [authorSelected, setAuthorSelected] = useState<string>('');
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
+    undefined
+  );
 
   const handleTabChange = (key: string) => setActiveTabKey(Number(key));
 
   useEffect(() => {
     if (router.isReady) {
-      const { guildId } = router.query;
+      const { guildId, channelId } = router.query;
 
       if (guildId)
         DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
           (isOwner) => setIsOwner(isOwner)
         );
+
+      if (guildId && channelId) {
+        DiscordleInstaceApi.GetSwitchDiscordleInstance({
+          channelId: channelId.toString(),
+          guildId: guildId.toString(),
+        }).then((data) => setSwitchValues(data));
+      }
     }
   }, [router]);
 
@@ -72,7 +83,14 @@ export default function MessageTabs({
 
   return (
     <Fragment>
-      <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
+      {switchValues && (
+        <ConfigurationModal
+          openModal={openModal}
+          switchValues={switchValues}
+          setOpenModal={setOpenModal}
+          setSwitchValues={setSwitchValues}
+        />
+      )}
 
       <S.Tabs
         activeKey={String(activeTabKey)}
@@ -106,6 +124,7 @@ export default function MessageTabs({
                 score={score}
                 isOwner={isOwner}
                 openModal={openModal}
+                switchValues={switchValues}
                 authorSelected={authorSelected}
                 usedHint={usedHint}
                 tabkey={activeTabKey}
@@ -117,10 +136,10 @@ export default function MessageTabs({
               />
 
               <AuthorSelect
-                messageId={choosedMessage.id}
-                activeTabKey={activeTabKey}
-                usedHint={usedHint}
                 authors={authors}
+                usedHint={usedHint}
+                activeTabKey={activeTabKey}
+                messageId={choosedMessage.id}
                 saveScore={saveScore}
                 setUsedHint={setUsedHint}
                 setActiveTabKey={setActiveTabKey}

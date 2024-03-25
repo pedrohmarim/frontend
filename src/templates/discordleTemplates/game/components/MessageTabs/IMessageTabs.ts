@@ -20,7 +20,7 @@ export interface IMessageTabs {
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export interface IConfigurationModal {
-  openModal: boolean;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+export interface ISwitchValues {
+  ShowHintsAuthors: boolean;
+  ShowReferencedMessage: boolean;
 }
