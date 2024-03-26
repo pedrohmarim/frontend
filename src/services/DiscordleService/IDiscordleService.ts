@@ -1,4 +1,4 @@
-import { IAwnser } from 'templates/discordleTemplates/game/IGame';
+import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 
 export interface IMessageInstance {
   Messages: IMessage[];
@@ -99,7 +99,7 @@ export interface IRankingTableData {
 }
 
 export interface IUserScoreDetail {
-  ScoreDetails: IAwnser[];
+  ScoreDetails: IAnswer[];
   Date: string;
   RowId: string;
 }

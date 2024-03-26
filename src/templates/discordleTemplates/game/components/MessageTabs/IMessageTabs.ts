@@ -1,15 +1,22 @@
 import { IAuthor } from 'services/DiscordleService/IDiscordleService';
-import { IAwnser } from 'templates/discordleTemplates/game/IGame';
+import {
+  IAnswer,
+  ISwitchValues,
+} from 'templates/discordleTemplates/game/IGame';
 import { IChoosedMessage } from '../ChoosedMessage/IChoosedMessage';
 
 export interface IMessageTabs {
   activeTabKey: number;
   choosedMessages: IChoosedMessage[];
-  awnsers: IAwnser[];
+  answers: IAnswer[];
   serverName: string;
   usedHint: boolean;
   authors: IAuthor[];
   serverIcon: string;
+  switchValues: ISwitchValues | undefined;
+  setSwitchValues: React.Dispatch<
+    React.SetStateAction<ISwitchValues | undefined>
+  >;
   saveScore: (
     messageId: string,
     authorSelected: string,
@@ -18,9 +25,4 @@ export interface IMessageTabs {
   ) => void;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
-}
-
-export interface ISwitchValues {
-  ShowHintsAuthors: boolean;
-  ShowReferencedMessage: boolean;
 }

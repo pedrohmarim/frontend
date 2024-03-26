@@ -3,7 +3,6 @@ import ChoosedMessage from 'templates/discordleTemplates/game/components/Choosed
 import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
 import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
 import ConfigurationModal from './components/ConfigurationModal';
-import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import * as I from './IMessageTabs';
 import * as S from './styles';
 import { FeatherIcons, Row } from 'antd_components';
@@ -11,64 +10,56 @@ import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
 
 export default function MessageTabs({
-  activeTabKey,
   choosedMessages,
-  awnsers,
-  usedHint,
-  authors,
+  activeTabKey,
+  switchValues,
   serverName,
   serverIcon,
+  usedHint,
+  answers,
+  authors,
   saveScore,
   setUsedHint,
   setActiveTabKey,
+  setSwitchValues,
 }: I.IMessageTabs) {
   const router = useRouter();
   const [authorSelected, setAuthorSelected] = useState<string>('');
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
-    undefined
-  );
 
   const handleTabChange = (key: string) => setActiveTabKey(Number(key));
 
   useEffect(() => {
     if (router.isReady) {
-      const { guildId, channelId } = router.query;
+      const { guildId } = router.query;
 
       if (guildId)
         DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
           (isOwner) => setIsOwner(isOwner)
         );
-
-      if (guildId && channelId) {
-        DiscordleInstaceApi.GetSwitchDiscordleInstance({
-          channelId: channelId.toString(),
-          guildId: guildId.toString(),
-        }).then((data) => setSwitchValues(data));
-      }
     }
   }, [router]);
 
   function handleIcon(index: number, current: number, color: string) {
     let icon = '';
 
-    if (!awnsers[index]?.Success || awnsers[index]?.UsedHint)
+    if (!answers[index]?.Success || answers[index]?.UsedHint)
       icon = 'help-circle';
 
     if (
-      awnsers[index]?.TabKey === current &&
-      awnsers[index]?.Success &&
-      !awnsers[index]?.UsedHint
+      answers[index]?.TabKey === current &&
+      answers[index]?.Success &&
+      !answers[index]?.UsedHint
     ) {
       icon = 'check-circle';
-      color = awnsers[index]?.Score === 2 ? '#009e3f' : '#d48a00';
+      color = answers[index]?.Score % 2 === 0 ? '#009e3f' : '#d48a00';
     }
 
     if (
-      awnsers[index]?.TabKey === current &&
-      !awnsers[index]?.Success &&
-      !awnsers[index]?.UsedHint
+      answers[index]?.TabKey === current &&
+      !answers[index]?.Success &&
+      !answers[index]?.UsedHint
     ) {
       icon = 'x-circle';
       color = '#a61f1f';
@@ -77,7 +68,7 @@ export default function MessageTabs({
     return <FeatherIcons icon={icon} color={color} size={18} />;
   }
 
-  const score = awnsers.reduce((accumulator, curValue) => {
+  const score = answers.reduce((accumulator, curValue) => {
     return accumulator + curValue.Score;
   }, 0);
 
@@ -105,7 +96,7 @@ export default function MessageTabs({
               disabled
               key={String(current)}
               tab={
-                awnsers && (
+                answers && (
                   <Row justify="center">
                     {handleIcon(
                       index,
@@ -121,11 +112,11 @@ export default function MessageTabs({
               }
             >
               <ChoosedMessage
-                score={score}
-                isOwner={isOwner}
-                openModal={openModal}
-                switchValues={switchValues}
                 authorSelected={authorSelected}
+                switchValues={switchValues}
+                openModal={openModal}
+                isOwner={isOwner}
+                score={score}
                 usedHint={usedHint}
                 tabkey={activeTabKey}
                 serverName={serverName}
@@ -136,10 +127,10 @@ export default function MessageTabs({
               />
 
               <AuthorSelect
-                authors={authors}
-                usedHint={usedHint}
-                activeTabKey={activeTabKey}
                 messageId={choosedMessage.id}
+                activeTabKey={activeTabKey}
+                usedHint={usedHint}
+                authors={authors}
                 saveScore={saveScore}
                 setUsedHint={setUsedHint}
                 setActiveTabKey={setActiveTabKey}

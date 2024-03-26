@@ -83,7 +83,7 @@ export default function DisplayMessageContainer({
   return (
     <Fragment>
       {switchValues &&
-        switchValues.ShowReferencedMessage &&
+        Boolean(switchValues.ShowReferencedMessage) &&
         referencedMessage && (
           <ReferencedMessageContainer content={referencedMessage} />
         )}
@@ -91,7 +91,7 @@ export default function DisplayMessageContainer({
       <Row justify="space-between">
         <S.Title>{titleMessage()}</S.Title>
 
-        {switchValues && switchValues.ShowHintsAuthors && author && (
+        {switchValues && Boolean(switchValues.ShowHintsAuthors) && author && (
           <S.AuthorContainer align="middle" justify="start">
             <S.Avatar src={author?.Avatar} size={28} />
             <S.SpanWithMarginLeft>{author.Username}</S.SpanWithMarginLeft>

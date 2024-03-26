@@ -2,12 +2,14 @@ import React, { Fragment } from 'react';
 import * as I from './IConfigurationModal';
 import * as S from './styles';
 import theme from 'globalStyles/theme';
-import { SwitchNameEnum } from '../ConfigurationSwitches/switchNameEnum';
+import { SwitchNameEnum } from '../ConfigurationParams/switchNameEnum';
 import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import { useRouter } from 'next/router';
 import { Button, Modal, Row, FeatherIcons } from 'antd_components';
-import { ISwitches } from '../ConfigurationSwitches/IConfigurationSwitches';
-import ConfigurationSwitches from '../ConfigurationSwitches';
+import { ISwitches } from '../ConfigurationParams/IConfigurationSwitches';
+import ConfigurationParams from '../ConfigurationParams';
+import Image1 from 'assets/image_1.png';
+import Image2 from 'assets/image_2.png';
 
 export default function ConfigurationModal({
   openModal,
@@ -20,13 +22,13 @@ export default function ConfigurationModal({
   if (!router.isReady) return <Fragment />;
 
   async function updateSwitchValue(
-    checked: boolean,
+    value: number,
     switchName: SwitchNameEnum,
     guildId: string,
     channelId: string
   ) {
     const dto: I.IChangeSwitchRequest = {
-      checked,
+      value,
       switch: switchName,
       guildId,
       channelId,
@@ -43,28 +45,49 @@ export default function ConfigurationModal({
     switches.push(
       {
         label: 'Mostrar autores de dicas.',
-        checked: switchValues.ShowHintsAuthors,
-        onChange: (checked: boolean) =>
+        img: Image1,
+        value: switchValues.ShowHintsAuthors,
+        type: SwitchNameEnum.ShowHintsAuthors,
+        onChange: (value: number) =>
           updateSwitchValue(
-            checked,
+            value,
             SwitchNameEnum.ShowHintsAuthors,
             guildId.toString(),
             channelId.toString()
           ).then(() =>
-            setSwitchValues({ ...switchValues, ShowHintsAuthors: checked })
+            setSwitchValues({ ...switchValues, ShowHintsAuthors: value })
           ),
       },
       {
         label: 'Mostrar respostas de mensagens.',
-        checked: switchValues.ShowReferencedMessage,
-        onChange: (checked: boolean) =>
+        img: Image2,
+        type: SwitchNameEnum.ShowReferencedMessage,
+        value: switchValues.ShowReferencedMessage,
+        onChange: (value: number) =>
           updateSwitchValue(
-            checked,
+            value,
             SwitchNameEnum.ShowReferencedMessage,
             guildId.toString(),
             channelId.toString()
           ).then(() =>
-            setSwitchValues({ ...switchValues, ShowReferencedMessage: checked })
+            setSwitchValues({ ...switchValues, ShowReferencedMessage: value })
+          ),
+      },
+      {
+        label: 'Pontos por acerto. (Dica valerá metade dos pontos).',
+        type: SwitchNameEnum.PointsPerCorrectAnswer,
+        value: switchValues.PointsPerCorrectAnswer,
+        onChange: (value: number) =>
+          updateSwitchValue(
+            value,
+            SwitchNameEnum.PointsPerCorrectAnswer,
+            guildId.toString(),
+            channelId.toString()
+          ).then(() =>
+            setSwitchValues({
+              ...switchValues,
+              PointsPerCorrectAnswer: value,
+            })
           ),
       }
     );
@@ -90,10 +113,12 @@ export default function ConfigurationModal({
         </Row>
       }
     >
-      {switches.map(({ label, checked, onChange }, index) => (
-        <ConfigurationSwitches
+      {switches.map(({ label, value, img, type, onChange }, index) => (
+        <ConfigurationParams
           key={index.toString()}
-          checked={checked}
+          value={value}
+          img={img}
+          type={type}
           label={label}
           onChange={onChange}
         />
@@ -101,7 +126,6 @@ export default function ConfigurationModal({
 
       <Row justify="center">
         <Button
-          margin="30px 0 0 0"
           onClick={() => setOpenModal(!openModal)}
           width="200"
           color={theme.discordleColors.text}

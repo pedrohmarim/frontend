@@ -1,7 +1,7 @@
 import * as I from '../IDiscordleService';
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import { IAwnser } from 'templates/discordleTemplates/game/IGame';
+import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 
 const http = baseService();
 const baseUrl = 'DiscordleGame';
@@ -16,9 +16,9 @@ const ApiAuth = {
     );
     return response.data;
   },
-  VerifyAlreadyAwnsered: async function (channelId: string) {
-    const response: AxiosResponse<IAwnser[]> = await http.post(
-      `${baseUrl}/VerifyAlreadyAwnsered`,
+  VerifyAlreadyAnswered: async function (channelId: string) {
+    const response: AxiosResponse<IAnswer[]> = await http.post(
+      `${baseUrl}/VerifyAlreadyAnswered`,
       {
         ChannelId: channelId,
       }
@@ -26,7 +26,7 @@ const ApiAuth = {
     return response.data;
   },
   SaveScore: async function (data: I.IScoreInstance) {
-    const response: AxiosResponse<IAwnser[]> = await http.post(
+    const response: AxiosResponse<IAnswer[]> = await http.post(
       `${baseUrl}/SaveScore`,
       data
     );

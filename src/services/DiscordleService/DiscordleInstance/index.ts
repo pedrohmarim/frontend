@@ -1,6 +1,6 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import { ISwitchValues } from 'templates/discordleTemplates/game/components/MessageTabs/IMessageTabs';
+import { ISwitchValues } from 'templates/discordleTemplates/game/IGame';
 import {
   IChangeSwitchGet,
   IChangeSwitchRequest,
@@ -24,7 +24,7 @@ const ApiAuth = {
     const response: AxiosResponse<void> = await http.post(
       `${baseUrl}/UpdateSwitchDiscordleInstance`,
       {
-        Checked: data.checked,
+        Value: data.value,
         Switch: data.switch,
         GuildId: data.guildId,
         ChannelId: data.channelId,

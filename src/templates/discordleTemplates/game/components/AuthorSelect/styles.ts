@@ -7,11 +7,6 @@ export const Select = styled(SelectAntd)`
   @media screen and (max-width: 350px) {
     width: 100%;
   }
-
-  .ant-select-selection-placeholder {
-    font-weight: 500;
-    color: ${(props) => props.theme.discordleColors.background} !important;
-  }
 `;
 
 export const AuthorName = styled.span`

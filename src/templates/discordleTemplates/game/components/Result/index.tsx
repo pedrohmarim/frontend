@@ -10,10 +10,10 @@ import theme from 'globalStyles/theme';
 import { Description } from 'templates/discordleTemplates/home/styles';
 import { HomeSpan } from 'globalStyles/global';
 
-export default function Result({ awnsers }: I.IResult) {
+export default function Result({ answers, totalScore }: I.IResult) {
   const router = useRouter();
 
-  const score = awnsers.reduce((accumulator, curValue) => {
+  const score = answers.reduce((accumulator, curValue) => {
     return accumulator + curValue.Score;
   }, 0);
 
@@ -57,15 +57,17 @@ export default function Result({ awnsers }: I.IResult) {
 
       <Row justify="center">
         <FeatherIcons icon="star" size={21} />
-        <S.Subtitle>Pontuação final: {score}/10</S.Subtitle>
+        <S.Subtitle>
+          Pontuação final: {score}/{totalScore * 5}
+        </S.Subtitle>
       </Row>
 
       <Row justify="center">
-        {awnsers &&
-          awnsers.map(({ Score, Success, TabKey }, index) => (
-            <S.AwnserItem success={Success} score={Score} key={index}>
+        {answers &&
+          answers.map(({ Score, Success, TabKey }, index) => (
+            <S.AnswerItem success={Success} score={Score} key={index}>
               {TabKey}
-            </S.AwnserItem>
+            </S.AnswerItem>
           ))}
       </Row>
 

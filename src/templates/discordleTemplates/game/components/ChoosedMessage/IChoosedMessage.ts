@@ -1,9 +1,9 @@
 import { IAuthor } from 'services/DiscordleService/IDiscordleService';
-import { ISwitchValues } from '../MessageTabs/IMessageTabs';
 import {
   FilterMessageEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
+import { ISwitchValues } from '../../IGame';
 
 export interface IChoosedMessageComponent {
   isOwner: boolean;

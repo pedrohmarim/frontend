@@ -5,7 +5,7 @@ import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordleService/DiscordleRanking';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
-import { IAwnser } from 'templates/discordleTemplates/game/IGame';
+import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 import { MarginRow } from 'templates/discordleTemplates/home/styles';
 import { MessageContainer } from 'globalStyles/global';
 import {
@@ -118,7 +118,7 @@ export default function Ranking() {
       title: 'Detalhes do dia',
       dataIndex: 'ScoreDetails',
       render: (scoreDetails) =>
-        scoreDetails.map(({ Score, Success, TabKey }: IAwnser, key: number) => (
+        scoreDetails.map(({ Score, Success, TabKey }: IAnswer, key: number) => (
           <Row align="middle" key={key}>
             <S.UserSpan>{TabKey}º Pergunta -</S.UserSpan>
             <S.UserSpan>Pontuação: {Score} -</S.UserSpan>

@@ -8,6 +8,7 @@ import filterMessage from 'helpers/discordle/filter.message';
 import Result from './components/Result';
 import { useRouter } from 'next/router';
 import { MessageContainer } from 'globalStyles/global';
+import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
 import theme from 'globalStyles/theme';
 import { IChoosedMessage } from './components/ChoosedMessage/IChoosedMessage';
@@ -20,10 +21,13 @@ import {
 export default function GameContainer() {
   const router = useRouter();
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
-  const [awnsers, setAwnsers] = useState<I.IAwnser[]>([]);
+  const [answers, setAnswers] = useState<I.IAnswer[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
-  const [alreadyAwnsered, setAlreadyAwnsered] = useState<boolean>(false);
+  const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
   const [useHint, setUsedHint] = useState<boolean>(false);
+  const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
+    undefined
+  );
   const [choosedMessages, setChoosedMessages] = useState<IChoosedMessage[]>([]);
   const [serverInfos, setServerInfos] = useState<{
     ServerName: string;
@@ -35,21 +39,26 @@ export default function GameContainer() {
       const { channelId, guildId } = router.query;
 
       if (channelId && guildId) {
-        DiscordGameApi.VerifyAlreadyAwnsered(channelId.toString()).then(
+        DiscordleInstaceApi.GetSwitchDiscordleInstance({
+          channelId: channelId.toString(),
+          guildId: guildId.toString(),
+        }).then((data) => setSwitchValues(data));
+
+        DiscordGameApi.VerifyAlreadyAnswered(channelId.toString()).then(
           (data) => {
             if (data.length > 0 && data[data.length - 1].UsedHint) {
               setActiveTabKey(data.length);
               setUsedHint(true);
             } else setActiveTabKey(data.length + 1);
 
-            setAwnsers(data);
+            setAnswers(data);
 
-            const alreadyAwnsered =
+            const alreadyAnswered =
               data.length === 5 && !data[data.length - 1].UsedHint;
 
-            setAlreadyAwnsered(alreadyAwnsered);
+            setAlreadyAnswered(alreadyAnswered);
 
-            if (!alreadyAwnsered) {
+            if (!alreadyAnswered) {
               DiscordGameApi.GetChoosedMessages(channelId.toString()).then(
                 ({ Messages, ServerName, ServerIcon, Authors }) => {
                   setAuthors(Authors);
@@ -93,11 +102,11 @@ export default function GameContainer() {
         },
       };
 
-      if (!alreadyAwnsered) {
-        await DiscordGameApi.SaveScore(dto).then((data: I.IAwnser[]) => {
+      if (!alreadyAnswered) {
+        await DiscordGameApi.SaveScore(dto).then((data: I.IAnswer[]) => {
           setUsedHint(false);
-          setAwnsers(data);
-          setAlreadyAwnsered(data.length === 5);
+          setAnswers(data);
+          setAlreadyAnswered(data.length === 5);
 
           const success = data[data.length - 1].Success;
           const description: JSX.Element = (
@@ -124,24 +133,33 @@ export default function GameContainer() {
         <title>Discordle | Game</title>
       </Head>
 
-      <MessageContainer>
-        {!alreadyAwnsered ? (
-          <MessageTabs
-            awnsers={awnsers}
-            authors={authors}
-            usedHint={useHint}
-            activeTabKey={activeTabKey}
-            choosedMessages={choosedMessages}
-            serverName={serverInfos.ServerName}
-            serverIcon={serverInfos.ServerIcon}
-            saveScore={saveScore}
-            setUsedHint={setUsedHint}
-            setActiveTabKey={setActiveTabKey}
-          />
-        ) : (
-          <Result awnsers={awnsers} />
-        )}
-      </MessageContainer>
+      {switchValues && (
+        <Fragment>
+          <MessageContainer>
+            {!alreadyAnswered ? (
+              <MessageTabs
+                setSwitchValues={setSwitchValues}
+                setActiveTabKey={setActiveTabKey}
+                setUsedHint={setUsedHint}
+                saveScore={saveScore}
+                answers={answers}
+                authors={authors}
+                usedHint={useHint}
+                activeTabKey={activeTabKey}
+                switchValues={switchValues}
+                choosedMessages={choosedMessages}
+                serverName={serverInfos.ServerName}
+                serverIcon={serverInfos.ServerIcon}
+              />
+            ) : (
+              <Result
+                answers={answers}
+                totalScore={switchValues.PointsPerCorrectAnswer}
+              />
+            )}
+          </MessageContainer>
+        </Fragment>
+      )}
     </Fragment>
   );
 }

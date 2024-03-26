@@ -1,5 +1,5 @@
-import { ISwitchValues } from '../../IMessageTabs';
-import { SwitchNameEnum } from '../ConfigurationSwitches/switchNameEnum';
+import { ISwitchValues } from 'templates/discordleTemplates/game/IGame';
+import { SwitchNameEnum } from '../ConfigurationParams/switchNameEnum';
 
 export interface IConfigurationModal {
   openModal: boolean;
@@ -16,7 +16,7 @@ export interface IChangeSwitchGet {
 }
 
 export interface IChangeSwitchRequest {
-  checked: boolean;
+  value: boolean | number;
   switch: SwitchNameEnum;
   guildId: string;
   channelId: string;

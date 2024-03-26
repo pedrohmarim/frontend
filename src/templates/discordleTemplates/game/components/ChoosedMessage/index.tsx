@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import type { MenuProps } from 'antd';
@@ -199,7 +199,13 @@ export default function ChoosedMessage({
     <S.PaddingContainer>
       <S.ScoreContainer>
         <FeatherIcons icon="star" size={18} />
-        <S.ScoreText> Pontuação: {score}/10</S.ScoreText>
+        <S.ScoreText>
+          {switchValues && (
+            <Fragment>
+              Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
+            </Fragment>
+          )}
+        </S.ScoreText>
       </S.ScoreContainer>
 
       {items.length > 0 && (
