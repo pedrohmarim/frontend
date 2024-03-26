@@ -23,9 +23,8 @@ export default function HomeContainer() {
   function onClick() {
     const clientIdBot = '1089918362311733378';
     const permissions = '8'; //'75824';
-    const redirectUri = encodeURIComponent(
-      process.env.NEXT_PUBLIC_REDIRECT_URI ?? ''
-    );
+
+    const redirectUri = encodeURIComponent(window.location.href);
 
     const responseType = 'code';
     const url = `https://discord.com/api/oauth2/authorize?client_id=${clientIdBot}&permissions=${permissions}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=connections%20bot`;
