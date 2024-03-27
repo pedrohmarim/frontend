@@ -6,11 +6,12 @@ const http = baseService();
 const baseUrl = 'DiscordleMembers';
 
 const ApiAuth = {
-  GetChannelMembers: async function (channelId: string) {
+  GetChannelMembers: async function (channelId: string, code: string) {
     const response: AxiosResponse<IMember[]> = await http.post(
       `${baseUrl}/GetChannelMembers`,
       {
         ChannelId: channelId,
+        Code: code,
       }
     );
     return response.data;

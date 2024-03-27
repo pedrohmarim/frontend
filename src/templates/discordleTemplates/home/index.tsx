@@ -15,7 +15,6 @@ import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedM
 export default function HomeContainer() {
   const router = useRouter();
   const [whichRender, setWhichRender] = useState<string>('gamePresentation');
-  const [guildId, setGuildId] = useState<string | null>(null);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
@@ -37,8 +36,6 @@ export default function HomeContainer() {
       const { guild_id } = router.query;
 
       if (guild_id) {
-        setGuildId(guild_id.toString());
-
         DiscordGuildsApi.GetGuildById(guild_id.toString())
           .then((channels) => {
             setInstanceChannels(channels);
@@ -93,25 +90,40 @@ export default function HomeContainer() {
   );
 
   function onChange(channelId: string) {
-    if (guildId && channelId) {
-      DiscordInstanceApi.CreateDiscordleInstance(channelId, guildId).then(() =>
-        router.push({
-          pathname: '/discordle/chooseProfile',
-          query: {
-            channelId,
-            guildId,
-          },
-        })
-      );
+    if (router.isReady) {
+      const { guild_id, code } = router.query;
+
+      if (guild_id && channelId && code) {
+        const guildId = guild_id.toString();
+
+        DiscordInstanceApi.CreateDiscordleInstance(
+          channelId,
+          guildId,
+          code.toString()
+        ).then(() =>
+          router.push({
+            pathname: '/discordle/chooseProfile',
+            query: {
+              channelId,
+              guildId,
+              code,
+            },
+          })
+        );
+      }
     }
   }
 
   function handleReload() {
-    if (guildId) {
-      DiscordGuildsApi.GetGuildById(guildId).then((channels) => {
-        setInstanceChannels(channels);
-        setWhichRender('formDiscordleInstance');
-      });
+    if (router.isReady) {
+      const { guild_id } = router.query;
+
+      if (guild_id) {
+        DiscordGuildsApi.GetGuildById(guild_id.toString()).then((channels) => {
+          setInstanceChannels(channels);
+          setWhichRender('formDiscordleInstance');
+        });
+      }
     }
   }
 

@@ -27,12 +27,13 @@ export default function ChooseProfile() {
 
   useEffect(() => {
     if (router.isReady) {
-      const { channelId } = router.query;
+      const { channelId, code } = router.query;
 
-      if (channelId) {
-        DiscordMembersApi.GetChannelMembers(channelId.toString()).then(
-          (members: IMember[]) => setMembers(members)
-        );
+      if (channelId && code) {
+        DiscordMembersApi.GetChannelMembers(
+          channelId.toString(),
+          code.toString()
+        ).then((members: IMember[]) => setMembers(members));
       }
     }
   }, [router]);
@@ -137,7 +138,7 @@ export default function ChooseProfile() {
 
         <Col>
           <Description>
-            Parâmetro ID do canal inválido ou inexistente
+            Parâmetro ID do canal/código da sala inválidos ou inexistentes
           </Description>
         </Col>
 
