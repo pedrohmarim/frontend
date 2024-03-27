@@ -32,6 +32,7 @@ export const ScoreText = styled.span`
 `;
 
 export const Container = styled.div`
+  margin-top: 25px;
   max-width: 650px;
 
   @media screen and (min-width: 700px) {

@@ -1,32 +1,50 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   Row,
   Carousel as CarouselAntd,
   Avatar as AvatarAntd,
 } from 'antd_components';
 
-export const Title = styled.div<{ marginTop?: string }>`
+export const Title = styled.div<{ isHint: boolean; isMobile: boolean }>`
   text-align: left;
   font-size: 13pt;
   font-weight: 100;
   margin-bottom: 5px;
-  margin-top: ${({ marginTop }) => marginTop};
+
+  ${({ isHint, isMobile }) => {
+    if (isHint && !isMobile) {
+      return css`
+        margin-bottom: -33px;
+      `;
+    } else if (isHint && isMobile) {
+      return css`
+        margin-bottom: 10px;
+      `;
+    }
+  }}
 `;
 
-export const ReferencedMessageContainer = styled.div`
+export const ReferencedMessageContainer = styled.div<{ width: number }>`
   margin-top: 5px;
   text-align: left;
   opacity: 0.85;
+  max-width: ${({ width }) => (width < 625 ? width - 99 + 'px' : '603px')};
 `;
 
-export const SpanWithMarginLeft = styled.span`
+export const HintAuthorUsername = styled.span`
   margin-left: 5px;
+`;
+
+export const ReferecendMessageContent = styled.span<{ width: number }>`
+  overflow-x: auto;
+  max-width: ${({ width }) => (width < 625 ? width - 80 + 'px' : '625px')};
+  word-break: break-all;
 `;
 
 export const AuthorContainer = styled(Row)`
   background-color: ${(props) => props.theme.discordleColors.background};
   border-bottom: solid 1px rgba(255, 255, 255, 0.05);
-  padding: 3px;
+  padding: 6px;
 `;
 
 export const Avatar = styled(AvatarAntd)`

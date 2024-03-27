@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import * as S from './styles';
 import * as I from './IReferencedMessage';
 import Link from 'next/link';
@@ -20,6 +20,16 @@ export default function DisplayMessageContainer({
   formattedAttachs,
   referencedMessage,
 }: IChoosedMessage) {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   function titleMessage() {
     switch (messageLevel) {
       case MessageLevelEnum.isConsecutive:
@@ -67,13 +77,16 @@ export default function DisplayMessageContainer({
   );
 
   const ReferencedMessageContainer = ({ content }: I.IReferencedMessage) => (
-    <S.ReferencedMessageContainer>
-      <Row justify="start" align="middle">
-        <FeatherIcons icon="corner-up-right" size={20} />
+    <Row justify="start" align="middle">
+      <FeatherIcons icon="corner-up-right" size={20} />
 
-        <S.SpanWithMarginLeft dangerouslySetInnerHTML={{ __html: content }} />
-      </Row>
-    </S.ReferencedMessageContainer>
+      <S.ReferencedMessageContainer width={windowWidth}>
+        <S.ReferecendMessageContent
+          width={windowWidth}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      </S.ReferencedMessageContainer>
+    </Row>
   );
 
   const DefaultContent = () => (
@@ -88,13 +101,20 @@ export default function DisplayMessageContainer({
           <ReferencedMessageContainer content={referencedMessage} />
         )}
 
-      <Row justify="space-between">
-        <S.Title>{titleMessage()}</S.Title>
+      <Row justify="space-between" align="middle">
+        <S.Title
+          isMobile={windowWidth <= 400}
+          isHint={messageLevel !== MessageLevelEnum.isMain}
+        >
+          {titleMessage()}
+        </S.Title>
+      </Row>
 
+      <Row justify="end">
         {switchValues && Boolean(switchValues.ShowHintsAuthors) && author && (
           <S.AuthorContainer align="middle" justify="start">
             <S.Avatar src={author?.Avatar} size={28} />
-            <S.SpanWithMarginLeft>{author.Username}</S.SpanWithMarginLeft>
+            <S.HintAuthorUsername>{author.Username}</S.HintAuthorUsername>
           </S.AuthorContainer>
         )}
       </Row>
