@@ -59,12 +59,10 @@ export default function ConfigurationParams({
 
       {img ? (
         <Popover
-          showArrow={false}
+          placement="right"
           content={content}
-          overlayStyle={{
-            width: '585px',
-          }}
-          trigger="click"
+          overlayStyle={{ width: '610px' }}
+          trigger={window.innerWidth < 450 ? ['click'] : ['hover', 'click']}
         >
           <FeatherIcons
             style={{ cursor: 'pointer' }}

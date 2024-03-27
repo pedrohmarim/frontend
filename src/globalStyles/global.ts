@@ -80,8 +80,12 @@ export default createGlobalStyle`
     }
   }
 
+  .ant-popover-arrow-content {
+    --antd-arrow-background-color: rgba(138, 0, 194, 0.5);
+  }
+
   .ant-popover-inner {
-    border: ${(props) => `solid 1px ${props.theme.discordleColors.primary}`};
+    border: solid 2px rgba(138, 0, 194, 0.5);
     border-radius:10px;
     padding: 5px;
     background-color: ${(props) =>

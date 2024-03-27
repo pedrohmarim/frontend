@@ -132,7 +132,7 @@ export default function ChoosedMessage({
           onConfirm={confirm}
           getPopupContainer={(trigger) => trigger}
           onCancel={closeAll}
-          placement="bottom"
+          placement="right"
           open={stillOpen.popconfirm || loading}
           okButtonProps={{
             style: {
