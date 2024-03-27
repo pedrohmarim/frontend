@@ -1,0 +1,76 @@
+import styled from 'styled-components';
+import {
+  Menu as AntdMenu,
+  Row as RowAntd,
+  Drawer as DrawerAntd,
+} from 'antd_components';
+
+export const DesktopMenu = styled(AntdMenu)`
+  margin-top: 25px;
+  display: flex;
+  height: fit-content;
+  border-radius: 40px 0 0 40px;
+  justify-content: end;
+  align-items: center;
+  background-color: ${(props) =>
+    props.theme.discordleColors.background} !important;
+
+  .ant-menu-item {
+    min-width: 100px;
+    text-align: center;
+    font-size: 16pt;
+    padding: 10px 0px !important;
+    margin: 0 30px !important;
+    height: 100%;
+    color: ${(props) => props.theme.discordleColors.text} !important;
+  }
+
+  .ant-menu-item-active::after,
+  .ant-menu-submenu::after {
+    width: 100%;
+    margin-left: -20px !important;
+    border-color: ${(props) => props.theme.discordleColors.primary} !important;
+  }
+
+  .ant-menu-item-selected::after {
+    margin-left: -20px !important;
+    width: 100%;
+    border-color: ${(props) => props.theme.discordleColors.primary} !important;
+  }
+`;
+
+export const MobileMenu = styled(AntdMenu)`
+  background-color: ${(props) =>
+    props.theme.discordleColors.background} !important;
+
+  .ant-menu-item-selected {
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+  }
+
+  .ant-menu-item {
+    font-size: 14pt;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: ${(props) => props.theme.discordleColors.text} !important;
+  }
+`;
+
+export const Row = styled(RowAntd)`
+  width: 100%;
+`;
+
+export const DrawerTitle = styled.span`
+  font-size: 15pt;
+`;
+
+export const Drawer = styled(DrawerAntd)`
+  .ant-drawer-title,
+  .ant-drawer-close {
+    color: ${(props) => props.theme.discordleColors.primary} !important;
+  }
+`;
+
+export const ContainerWrapper = styled.div`
+  overflow: hidden;
+  height: 100vh;
+`;

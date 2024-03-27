@@ -11,6 +11,19 @@ export default createGlobalStyle`
   body {
     font-family: 'Roboto', sans-serif !important;
     background-image: url("https://images4.alphacoders.com/909/909912.png") !important;
+
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: ${(props) =>
+        props.theme.discordleColors.primary} !important;
+    }
   }
   
   nextjs-portal {
@@ -284,19 +297,6 @@ export const OverflowDiscordle = styled.div`
   /* Media query para dispositivos com largura de tela de 769 a 1600px pixels (por exemplo, tablets em modo paisagem) */
   @media screen and (min-width: 769px) and (max-width: 1600px) {
     max-height: 700px; /* Ajuste conforme necessário para dispositivos móveis */
-  }
-
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: ${(props) =>
-      props.theme.discordleColors.primary} !important;
   }
 
   iframe {

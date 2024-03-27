@@ -1,118 +1,30 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import * as S from './styles';
-import * as G from 'globalStyles/global';
-import { useRouter } from 'next/router';
-import theme from 'globalStyles/theme';
 import Head from 'next/head';
-import { Row, FeatherIcons, Tooltip } from 'antd_components';
+import { useRouter } from 'next/router';
+import GamePresentation from './components/GamePresentation';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
-import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
+import FormDiscordleInstance from './components/FormDiscordleInstance';
 import { IInstanceChannels } from 'services/DiscordleService/IDiscordleService';
-import { Select } from 'templates/discordleTemplates/game/components/AuthorSelect/styles';
-import { Divider } from 'templates/discordleTemplates/game/components/Result/styles';
-import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 
 export default function HomeContainer() {
   const router = useRouter();
   const [whichRender, setWhichRender] = useState<string>('gamePresentation');
+  const [windowWidth, setWindowWidth] = useState<number | null>(null);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
 
-  function onClick() {
-    const clientIdBot = '1089918362311733378';
-    const permissions = '8'; //'75824';
-
-    const redirectUri = encodeURIComponent(window.location.href);
-
-    const responseType = 'code';
-    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientIdBot}&permissions=${permissions}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=connections%20bot`;
-
-    window.open(url);
-  }
-
   useEffect(() => {
-    if (router.isReady) {
-      const { guild_id } = router.query;
+    const handleResize = () => setWindowWidth(window.innerWidth);
 
-      if (guild_id) {
-        DiscordGuildsApi.GetGuildById(guild_id.toString())
-          .then((channels) => {
-            setInstanceChannels(channels);
-            setWhichRender('formDiscordleInstance');
-          })
-          .finally(() => handleReload());
-      }
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+
+      setWindowWidth(window.innerWidth);
+
+      return () => window.removeEventListener('resize', handleResize);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
-
-  const GamePresentation = () => (
-    <G.MessageContainer width="70%" margin="auto">
-      <S.Title>
-        Bem vindo ao
-        <G.HomeSpan> Discordle</G.HomeSpan>
-      </S.Title>
-
-      <S.Description>
-        Esse jogo resume-se em acertar quem escreveu uma frase gerada de forma
-        aleatória, retirada de um canal de texto de um servidor do{' '}
-        <G.HomeSpan> Discord</G.HomeSpan>
-      </S.Description>
-
-      <Divider />
-
-      <S.Description>
-        Primeiro, convite o bot para o servidor desejado
-      </S.Description>
-
-      <Row justify="center">
-        <S.Button
-          onClick={onClick}
-          boxshadow="0px 0px 10px 10px rgba(255, 255, 255, 0.08)"
-          backgroundcolor={theme.discordleColors.primary}
-          color={theme.discordleColors.text}
-          width={165}
-          height={35}
-          margin="25px 0 55px 0"
-        >
-          Convidar bot
-        </S.Button>
-      </Row>
-
-      <Row justify="end">
-        <S.Description fontSize="10.5pt" fontStyle="italic">
-          *Certifique-se de estar logado na conta de cargo
-          <G.HomeSpan> Dono </G.HomeSpan> do servidor que deseje usar.
-        </S.Description>
-      </Row>
-    </G.MessageContainer>
-  );
-
-  function onChange(channelId: string) {
-    if (router.isReady) {
-      const { guild_id, code } = router.query;
-
-      if (guild_id && channelId && code) {
-        const guildId = guild_id.toString();
-
-        DiscordInstanceApi.CreateDiscordleInstance(
-          channelId,
-          guildId,
-          code.toString()
-        ).then(() =>
-          router.push({
-            pathname: '/discordle/chooseProfile',
-            query: {
-              channelId,
-              guildId,
-              code,
-            },
-          })
-        );
-      }
-    }
-  }
+  }, []);
 
   function handleReload() {
     if (router.isReady) {
@@ -127,71 +39,34 @@ export default function HomeContainer() {
     }
   }
 
-  const FormDiscordleInstance = () => (
-    <G.MessageContainer width="60%" margin="auto">
-      <GameTitle>Discordle | Criar Instância</GameTitle>
+  useEffect(() => {
+    if (router.isReady) {
+      const { guild_id } = router.query;
 
-      <S.NegativeMarginRow justify="center" align="middle">
-        <Select
-          allowClear
-          disabled={!instanceChannels?.length}
-          onChange={(channelId) => onChange(String(channelId))}
-          showSearch
-          notFoundContent={<Row justify="center">Sem dados</Row>}
-          placeholder={
-            instanceChannels.length
-              ? 'Selecione um canal'
-              : 'Não há canais a serem exibidos'
-          }
-          filterOption={(inputValue, option) => {
-            return option?.children?.props?.children?.props?.children
-              .join('')
-              .toLowerCase()
-              .includes(`${inputValue.toLowerCase()}`);
-          }}
-        >
-          {instanceChannels?.length &&
-            instanceChannels.map(({ ChannelId, ChannelName }) => (
-              <Select.Option key={ChannelId}>
-                <Row align="middle">
-                  <Row justify="center" align="middle">
-                    #{ChannelName}
-                  </Row>
-                </Row>
-              </Select.Option>
-            ))}
-        </Select>
-
-        <Tooltip title="Recarregar" placement="right">
-          <S.ReloadContainer onClick={handleReload}>
-            <FeatherIcons icon="rotate-ccw" size={20} />
-          </S.ReloadContainer>
-        </Tooltip>
-      </S.NegativeMarginRow>
-
-      <Divider />
-
-      <S.Row justify="end">
-        <S.Description fontSize="12pt">
-          <G.HomeSpan>Informações adicionais:</G.HomeSpan>
-        </S.Description>
-      </S.Row>
-
-      <S.Row justify="end">
-        <S.Description fontSize="11pt" textAlign="right">
-          Canais de texto com quantidade e variedade baixas de mensagens não
-          serão criados, certifique-se de escolher um canal com muito conteudo!
-        </S.Description>
-      </S.Row>
-    </G.MessageContainer>
-  );
+      if (guild_id) {
+        DiscordGuildsApi.GetGuildById(guild_id.toString()).then((channels) => {
+          setInstanceChannels(channels);
+          setWhichRender('formDiscordleInstance');
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const WhichRender = () => {
     switch (whichRender) {
       case 'gamePresentation':
-        return <GamePresentation />;
+        return windowWidth && <GamePresentation width={windowWidth} />;
       default:
-        return <FormDiscordleInstance />;
+        return (
+          windowWidth && (
+            <FormDiscordleInstance
+              width={windowWidth}
+              handleReload={handleReload}
+              instanceChannels={instanceChannels}
+            />
+          )
+        );
     }
   };
 
