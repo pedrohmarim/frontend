@@ -106,5 +106,4 @@ export const Drawer = styled(DrawerAntd)`
 
 export const ContainerWrapper = styled.div`
   overflow: hidden;
-  height: 100vh;
 `;

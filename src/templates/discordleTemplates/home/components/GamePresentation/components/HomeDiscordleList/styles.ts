@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { Row } from 'antd_components';
+import { Row, Pagination as PaginationAntd } from 'antd_components';
 
 const slideAndBounce = keyframes`
     0% {
@@ -36,8 +36,10 @@ const slideAndBounce = keyframes`
 
 export const Container = styled.div<{
   marginTop: number;
-  windowHeight: number;
 }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
@@ -46,17 +48,16 @@ export const Container = styled.div<{
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
   padding: 20px;
-  height: ${({ windowHeight }) => `${windowHeight}px`};
+  height: 85vh;
 `;
 
-export const ListContainer = styled.div<{ windowHeight: number }>`
-  margin-top: 15px;
+export const ListContainer = styled.div`
   padding: 10px;
+  margin: 20px 0;
   border-radius: 10px;
   background-color: #17171a;
   border: solid 1px rgba(255, 255, 255, 0.08);
   overflow-y: auto;
-  max-height: ${({ windowHeight }) => `${windowHeight - 200}px`};
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -121,6 +122,13 @@ export const TextContainer = styled.div``;
 export const InputContainer = styled.div<{ isMobile: boolean }>`
   width: ${({ isMobile }) => (isMobile ? '100%' : '300px')};
   margin-top: ${({ isMobile }) => (isMobile ? '15px' : '0')};
+`;
+
+export const Pagination = styled(PaginationAntd)`
+  input {
+    color: ${(props) => props.theme.discordleColors.background};
+    font-size: 10pt;
+  }
 `;
 
 export const PaginationContainer = styled(Row)``;

@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as S from './styles';
 import * as I from './IHomeDiscordleList';
-import { Row, Avatar, FeatherIcons, Input, Pagination } from 'antd_components';
+import { Row, Avatar, FeatherIcons, Input } from 'antd_components';
+import theme from 'globalStyles/theme';
 
 export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
-  const [windowHeight, setWindowHeight] = useState<number>(window.innerHeight);
-
-  useEffect(() => {
-    const handleResize = () =>
-      setWindowHeight(window.innerWidth < 875 ? window.innerHeight - 90 : 300);
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const array = [
     {
       GuildName:
@@ -280,7 +270,7 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
   ];
 
   return (
-    <S.Container marginTop={isMobile ? 0 : 30} windowHeight={windowHeight}>
+    <S.Container marginTop={isMobile ? 0 : 30}>
       <Row justify="space-between" align="middle">
         {!isMobile ? (
           <S.TextContainer>
@@ -300,7 +290,7 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
         </S.InputContainer>
       </Row>
 
-      <S.ListContainer windowHeight={windowHeight}>
+      <S.ListContainer>
         <Row justify="start">
           {array.map(({ GuildName, Icon }, index) => (
             <S.GuildItem key={index} isMobile={isMobile}>
@@ -321,7 +311,12 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
       </S.ListContainer>
 
       <S.PaginationContainer justify="center" align="middle">
-        <Pagination simple defaultCurrent={2} total={array.length} />
+        <S.Pagination
+          simple
+          defaultCurrent={2}
+          total={array.length}
+          style={{ color: theme.discordleColors.text }}
+        />
       </S.PaginationContainer>
     </S.Container>
   );
