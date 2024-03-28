@@ -115,7 +115,7 @@ export default function GameContainer() {
                 ? 'Quem mandou essa mensagem foi '
                 : 'A resposta certa era '}
               <AuthorHighlight color={theme.discordleColors.primary}>
-                {data[data.length - 1].Username}
+                {data.find((x) => x.TabKey === activeTabKey)?.Username}
               </AuthorHighlight>
             </Fragment>
           );

@@ -33,9 +33,11 @@ import Carousel from './Carousel/Carousel.component';
 import Popover from './Popover/Popover.component';
 import Empty from './Empty/Empty.component';
 import Switch from './Switch/Switch.component';
+import Pagination from './Pagination/Pagination.component';
 
 export {
   Switch,
+  Pagination,
   Avatar,
   Empty,
   Table,

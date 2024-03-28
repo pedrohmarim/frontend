@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import { Row } from 'antd_components';
 
 const slideAndBounce = keyframes`
     0% {
@@ -33,7 +34,10 @@ const slideAndBounce = keyframes`
     }
 `;
 
-export const Container = styled.div<{ marginTop: number }>`
+export const Container = styled.div<{
+  marginTop: number;
+  windowHeight: number;
+}>`
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
@@ -42,27 +46,30 @@ export const Container = styled.div<{ marginTop: number }>`
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
   padding: 20px;
-  overflow-y: auto;
+  height: ${({ windowHeight }) => `${windowHeight}px`};
 `;
 
-export const ListContainer = styled.div`
+export const ListContainer = styled.div<{ windowHeight: number }>`
   margin-top: 15px;
-  width: 100%;
   padding: 10px;
   border-radius: 10px;
-  background-color: lightgrey;
   background-color: #17171a;
+  border: solid 1px rgba(255, 255, 255, 0.08);
   overflow-y: auto;
-  max-height: 71vh;
+  max-height: ${({ windowHeight }) => `${windowHeight - 200}px`};
+
   ::-webkit-scrollbar {
     width: 5px;
   }
 
   ::-webkit-scrollbar-track {
-    background-color: transparent;
+    margin: 5px 0;
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
   }
 
   ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
     background-color: ${(props) =>
       props.theme.discordleColors.primary} !important;
   }
@@ -115,3 +122,5 @@ export const InputContainer = styled.div<{ isMobile: boolean }>`
   width: ${({ isMobile }) => (isMobile ? '100%' : '300px')};
   margin-top: ${({ isMobile }) => (isMobile ? '15px' : '0')};
 `;
+
+export const PaginationContainer = styled(Row)``;

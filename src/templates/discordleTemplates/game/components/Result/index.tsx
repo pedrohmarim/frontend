@@ -64,11 +64,13 @@ export default function Result({ answers, totalScore }: I.IResult) {
 
       <Row justify="center">
         {answers &&
-          answers.map(({ Score, Success, TabKey }, index) => (
-            <S.AnswerItem success={Success} score={Score} key={index}>
-              {TabKey}
-            </S.AnswerItem>
-          ))}
+          answers
+            .sort((a, b) => a.TabKey - b.TabKey)
+            .map(({ Score, Success, TabKey }, index) => (
+              <S.AnswerItem success={Success} score={Score} key={index}>
+                {TabKey}
+              </S.AnswerItem>
+            ))}
       </Row>
 
       <S.Divider />
