@@ -41,7 +41,7 @@ export default function Header() {
   function renderScreen() {
     switch (current) {
       case 'home':
-        return <HomeDiscordlesList isMobile={windowWidth > 600} />;
+        return <HomeDiscordlesList isMobile={windowWidth < 875} />;
       case 'howworks':
         return <>howworkds</>;
       default:
@@ -56,7 +56,7 @@ export default function Header() {
 
   return (
     <S.ContainerWrapper>
-      {windowWidth > 600 ? (
+      {windowWidth > 875 ? (
         <S.Row justify="end">
           <S.DesktopMenu
             onClick={onClick}

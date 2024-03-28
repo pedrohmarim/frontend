@@ -1,12 +1,13 @@
 import React from 'react';
 import * as S from './styles';
 import * as I from './IHomeDiscordleList';
-import { Row, Avatar } from 'antd_components';
+import { Row, Avatar, FeatherIcons, Input } from 'antd_components';
 
 export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
   const array = [
     {
-      GuildName: 'Servidor de Pedro Marim',
+      GuildName:
+        'Servidor de Pedro MarimServidor de Pedro MarimServidor de Pedro MarimServidor de Pedro MarimServidor de Pedro MarimServidor de Pedro MarimServidor de Pedro MarimServidor de Pedro MarimServidor de Pedro Marim',
       Icon: 'https://cdn.discordapp.com/icons/1090337882268504067/91fa12354424c0721de76141e9abb897.jpg?size=2048',
     },
     {
@@ -272,24 +273,44 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
   ];
 
   return (
-    <S.Container marginTop={isMobile ? 30 : 0}>
-      <Row justify="center" align="middle">
-        <S.ListTitle>Instâncias de Servidores Criados</S.ListTitle>
+    <S.Container marginTop={isMobile ? 0 : 30}>
+      <Row justify="space-between" align="middle">
+        {!isMobile ? (
+          <S.TextContainer>
+            <FeatherIcons icon="trending-up" />
+            <S.ListTitle>Instâncias de Servidores Criados</S.ListTitle>
+            <S.Quantity>({array.length})</S.Quantity>
+          </S.TextContainer>
+        ) : (
+          <S.ListTitle>Instâncias de Servidores Criados</S.ListTitle>
+        )}
+
+        <S.InputContainer isMobile={isMobile}>
+          <Input
+            placeholder="Filtrar"
+            suffix={<FeatherIcons icon="search" size={18} />}
+          />
+        </S.InputContainer>
       </Row>
 
       <S.ListContainer>
-        {array.map(({ GuildName, Icon }, index) => (
-          <Row key={index}>
-            <S.GuildItem>
+        <Row justify="start">
+          {array.map(({ GuildName, Icon }, index) => (
+            <S.GuildItem key={index} isMobile={isMobile}>
               <Avatar
                 src={Icon}
                 alt="image"
-                style={{ height: 60, width: 60 }}
+                style={{ height: '70px', width: 'auto' }}
               />
-              <S.GuildName>{GuildName}</S.GuildName>
+
+              <S.GuildName>
+                {GuildName.length <= 50
+                  ? GuildName
+                  : GuildName.substring(0, 32) + '...'}
+              </S.GuildName>
             </S.GuildItem>
-          </Row>
-        ))}
+          ))}
+        </Row>
       </S.ListContainer>
     </S.Container>
   );

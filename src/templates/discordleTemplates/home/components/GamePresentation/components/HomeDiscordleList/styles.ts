@@ -46,6 +46,7 @@ export const Container = styled.div<{ marginTop: number }>`
 `;
 
 export const ListContainer = styled.div`
+  margin-top: 15px;
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -69,9 +70,48 @@ export const ListContainer = styled.div`
 
 export const ListTitle = styled.span`
   font-size: 18pt;
-  margin-bottom: 15px;
+  text-align: center;
+  width: 100%;
+  margin-left: 10px;
 `;
 
-export const GuildItem = styled.div``;
+export const Quantity = styled.span`
+  margin-left: 5px;
+  font-size: 13pt;
+`;
 
-export const GuildName = styled.div``;
+export const GuildItem = styled.div<{ isMobile: boolean }>`
+  max-height: 170px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  margin: 10px;
+  border-radius: 8px;
+  width: ${({ isMobile }) => (isMobile ? '100%' : '130px')};
+  transition: all 0.2s;
+  scale: calc(1);
+  background-color: ${(props) =>
+    props.theme.discordleColors.background} !important;
+
+  :hover {
+    :hover {
+      cursor: pointer;
+      box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
+      scale: calc(1.05);
+    }
+  }
+`;
+
+export const GuildName = styled.div`
+  margin-top: 10px;
+  text-align: center;
+`;
+
+export const TextContainer = styled.div``;
+
+export const InputContainer = styled.div<{ isMobile: boolean }>`
+  width: ${({ isMobile }) => (isMobile ? '100%' : '300px')};
+  margin-top: ${({ isMobile }) => (isMobile ? '15px' : '0')};
+`;

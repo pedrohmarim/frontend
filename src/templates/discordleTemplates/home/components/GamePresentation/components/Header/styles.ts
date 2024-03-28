@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import {
   Menu as AntdMenu,
   Row as RowAntd,
@@ -55,8 +55,42 @@ export const MobileMenu = styled(AntdMenu)`
   }
 `;
 
+const slideInFromRight = keyframes`
+    0% {
+      transform: translateX(100%);
+    }
+    40% {
+      transform: translateX(0);
+    }
+    45% {
+      transform: translateX(-10px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    55% {
+      transform: translateX(-2px);
+    }
+    60% {
+      transform: translateX(1px);
+    }
+    65% {
+      transform: translateX(-1px);
+    }
+    70% {
+      transform: translateX(0.5px);
+    }
+    75% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(0);
+    }
+`;
+
 export const Row = styled(RowAntd)`
   width: 100%;
+  animation: ${slideInFromRight} 1.5s ease-in-out forwards;
 `;
 
 export const DrawerTitle = styled.span`
