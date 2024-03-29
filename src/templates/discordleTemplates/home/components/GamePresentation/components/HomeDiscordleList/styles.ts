@@ -52,12 +52,13 @@ export const Container = styled.div<{
 `;
 
 export const ListContainer = styled.div`
-  padding: 10px;
-  margin: 20px 0;
   border-radius: 10px;
+  height: 100%;
+  margin: 15px 0;
   background-color: #17171a;
   border: solid 1px rgba(255, 255, 255, 0.08);
   overflow-y: auto;
+  min-height: 81%;
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -83,23 +84,13 @@ export const ListTitle = styled.span`
   margin-left: 10px;
 `;
 
-export const Quantity = styled.span`
-  margin-left: 5px;
-  font-size: 13pt;
-`;
-
-export const GuildItem = styled.div<{ isMobile: boolean }>`
-  max-height: 170px;
+export const GuildItem = styled.div`
   padding: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  margin: 10px;
+  height: 300px;
+  margin: 20px 0;
   border-radius: 8px;
-  width: ${({ isMobile }) => (isMobile ? '100%' : '130px')};
   transition: all 0.2s;
-  scale: calc(1);
+  scale: calc(0.9);
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
 
@@ -107,7 +98,7 @@ export const GuildItem = styled.div<{ isMobile: boolean }>`
     :hover {
       cursor: pointer;
       box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
-      scale: calc(1.05);
+      scale: calc(1);
     }
   }
 `;
@@ -125,10 +116,19 @@ export const InputContainer = styled.div<{ isMobile: boolean }>`
 `;
 
 export const Pagination = styled(PaginationAntd)`
-  input {
-    color: ${(props) => props.theme.discordleColors.background};
-    font-size: 10pt;
+  color: ${(props) => props.theme.discordleColors.text};
+
+  .ant-pagination-item-ellipsis {
+    color: ${(props) => props.theme.discordleColors.text} !important;
   }
 `;
 
-export const PaginationContainer = styled(Row)``;
+export const PaginationContainer = styled(Row)`
+  font-size: 12pt;
+`;
+
+export const PrimaryTextColor = styled.span`
+  color: ${(props) => props.theme.discordleColors.primary};
+  margin-right: 5px;
+  font-weight: bold;
+`;

@@ -15,6 +15,13 @@ const ApiAuth = {
     );
     return response.data;
   },
+  GetGuilds: async function (pageSize: number, pageNumber: number) {
+    const response: AxiosResponse<I.IGuildsResponse> = await http.post(
+      `${baseUrl}/GetGuilds`,
+      { Pagesize: pageSize, Pagenumber: pageNumber }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;

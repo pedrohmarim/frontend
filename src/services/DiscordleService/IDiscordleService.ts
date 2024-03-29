@@ -76,6 +76,17 @@ export interface IInstanceChannels {
   ChannelId: string;
 }
 
+export interface IGuildsResponse {
+  Guilds: IGuildsDto[];
+  Count: number;
+}
+
+export interface IGuildsDto {
+  GuildName: string;
+  GuildId: string;
+  Icon: string;
+}
+
 export interface IMember {
   Id: string;
   Username: string;
