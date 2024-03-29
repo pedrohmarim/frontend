@@ -54,7 +54,9 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
 
   function Filter(searchValue: string) {
     if (searchValue.length) debouncedFilter(searchValue);
-    else GetGuilds();
+
+    //TO DO
+    //else voltar a filtrar da pagina 1
   }
 
   useEffect(() => {
@@ -89,37 +91,43 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
           next={GetGuilds}
           hasMore
           loader={<Fragment />}
-          // loader={!noMoreDataToFetch && <Spin />}
           scrollableTarget="container"
         >
-          <Row style={{ padding: isMobile ? '2%' : '10px' }}>
-            {guilds.map(({ GuildName, Icon }, index) => (
-              <Col key={index} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
-                <S.GuildItem>
-                  <S.GuildItemBackgroundImage icon={Icon} />
+          <Row
+            style={{ padding: isMobile ? '2%' : '10px' }}
+            justify={guilds.length ? 'start' : 'center'}
+          >
+            {guilds.length ? (
+              guilds.map(({ GuildName, Icon }, index) => (
+                <Col key={index} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
+                  <S.GuildItem>
+                    <S.GuildItemBackgroundImage icon={Icon} />
 
-                  <S.InfoContainer>
-                    <Avatar
-                      src={Icon}
-                      alt="image"
-                      style={{
-                        height: '130px',
-                        width: 'auto',
-                        marginBottom: '10px',
-                      }}
-                    />
+                    <S.InfoContainer>
+                      <Avatar
+                        src={Icon}
+                        alt="image"
+                        style={{
+                          height: '130px',
+                          width: 'auto',
+                          marginBottom: '10px',
+                        }}
+                      />
 
-                    <S.GuildName>
-                      {GuildName.length <= (isMobile ? 50 : 90)
-                        ? GuildName
-                        : GuildName.substring(0, isMobile ? 50 : 90) + '...'}
-                    </S.GuildName>
+                      <S.GuildName>
+                        {GuildName.length <= (isMobile ? 50 : 90)
+                          ? GuildName
+                          : GuildName.substring(0, isMobile ? 50 : 90) + '...'}
+                      </S.GuildName>
 
-                    <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>
-                  </S.InfoContainer>
-                </S.GuildItem>
-              </Col>
-            ))}
+                      <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>
+                    </S.InfoContainer>
+                  </S.GuildItem>
+                </Col>
+              ))
+            ) : (
+              <>Sem dados</>
+            )}
           </Row>
         </InfiniteScroll>
       </S.ListContainer>

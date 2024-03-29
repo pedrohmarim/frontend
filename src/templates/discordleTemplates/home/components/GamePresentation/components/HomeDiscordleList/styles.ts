@@ -163,6 +163,11 @@ export const PaginationContainer = styled(Row)`
   font-size: 12pt;
 `;
 
+export const EmptyContent = styled(Row)`
+  height: 100%;
+  width: 100%;
+`;
+
 export const PrimaryTextColor = styled.span`
   color: ${(props) => props.theme.discordleColors.primary};
   margin-right: 5px;
