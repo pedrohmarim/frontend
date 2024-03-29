@@ -9,7 +9,8 @@ export const LottieContainer = styled(Lottie)`
 
 export const LoadingDescription = styled.span`
   margin-top: -80px;
-  padding: 0 10px;
+  text-align: center;
+  padding: 0 30px;
   background-color: rgba(4, 4, 4, 0.8);
   color: ${(props) => props.theme.discordleColors.text};
   font-size: 15pt;

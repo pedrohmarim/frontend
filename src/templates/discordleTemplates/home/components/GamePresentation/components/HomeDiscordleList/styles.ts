@@ -84,31 +84,67 @@ export const ListTitle = styled.span`
   margin-left: 10px;
 `;
 
-export const GuildItem = styled.div`
-  padding: 10px;
-  height: 300px;
-  margin: 20px 0;
+export const SpanEnterRoom = styled.div`
+  text-align: center;
+  font-size: 11.5pt;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 15px;
+  display: none;
+`;
+
+export const InfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #17171a;
+  opacity: 0.9;
+  padding: 20px;
   border-radius: 8px;
+  width: 100%;
+  height: 100%;
+`;
+
+export const GuildItemBackgroundImage = styled.div<{ icon: string }>`
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-image: ${({ icon }) => `url(${icon})`};
+  filter: blur(4px);
+  background-size: cover;
+  background-position: center;
+`;
+
+export const GuildItem = styled.div`
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  border-radius: 8px;
+  border: solid 2px rgba(255, 255, 255, 0.25);
   transition: all 0.2s;
   scale: calc(0.9);
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
 
   :hover {
-    :hover {
-      cursor: pointer;
-      box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
-      scale: calc(1);
+    cursor: pointer;
+    scale: calc(1);
+
+    & ${SpanEnterRoom} {
+      display: block;
     }
   }
 `;
 
 export const GuildName = styled.div`
-  margin-top: 10px;
   text-align: center;
+  font-size: 13pt;
 `;
 
-export const TextContainer = styled.div``;
+export const EmptyContainer = styled.div``;
 
 export const InputContainer = styled.div<{ isMobile: boolean }>`
   width: ${({ isMobile }) => (isMobile ? '100%' : '300px')};

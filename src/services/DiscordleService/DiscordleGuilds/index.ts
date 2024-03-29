@@ -22,6 +22,13 @@ const ApiAuth = {
     );
     return response.data;
   },
+  SearchGuildsByValue: async function (searchValue: string) {
+    const response: AxiosResponse<I.IGuildsDto[]> = await http.post(
+      `${baseUrl}/SearchGuildsByValue`,
+      { SearchValue: searchValue }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;

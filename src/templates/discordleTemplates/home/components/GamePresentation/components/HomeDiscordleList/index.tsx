@@ -10,8 +10,8 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
   const [totalGuilds, setTotalGuilds] = useState<number>(0);
   const [guilds, setGuilds] = useState<IGuildsDto[]>([]);
 
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const pageSize = 12;
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const pageSize = 18;
   const [noMoreDataToFetch, setNoMoreDataToFetch] = useState<boolean>(false);
 
   const GetGuilds = useCallback(() => {
@@ -29,6 +29,34 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
     );
   }, [pageNumber, pageSize, noMoreDataToFetch]);
 
+  const handleDebouncedSearch = useCallback(async (searchValue: string) => {
+    DiscordGuildApi.SearchGuildsByValue(searchValue).then((guilds) =>
+      setGuilds(guilds)
+    );
+  }, []);
+
+  const debounce = useCallback(
+    (func: (value: string) => void, delay: number) => {
+      let timerId: NodeJS.Timeout;
+
+      return function (value: string) {
+        if (timerId) clearTimeout(timerId);
+
+        timerId = setTimeout(() => {
+          func(value);
+        }, delay);
+      };
+    },
+    []
+  );
+
+  const debouncedFilter = debounce(handleDebouncedSearch, 1000);
+
+  function Filter(searchValue: string) {
+    if (searchValue.length) debouncedFilter(searchValue);
+    else GetGuilds();
+  }
+
   useEffect(() => {
     GetGuilds();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,16 +66,17 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
     <S.Container marginTop={isMobile ? 0 : 30}>
       <Row justify="space-between" align="middle">
         {!isMobile ? (
-          <S.TextContainer>
+          <S.EmptyContainer>
             <FeatherIcons icon="trending-up" />
             <S.ListTitle>Instâncias de Servidores Criados</S.ListTitle>
-          </S.TextContainer>
+          </S.EmptyContainer>
         ) : (
           <S.ListTitle>Instâncias de Servidores Criados</S.ListTitle>
         )}
 
         <S.InputContainer isMobile={isMobile}>
           <Input
+            onChange={(event) => Filter(event.target.value)}
             placeholder="Filtrar"
             suffix={<FeatherIcons icon="search" size={18} />}
           />
@@ -63,20 +92,31 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
           // loader={!noMoreDataToFetch && <Spin />}
           scrollableTarget="container"
         >
-          <Row>
+          <Row style={{ padding: isMobile ? '2%' : '10px' }}>
             {guilds.map(({ GuildName, Icon }, index) => (
-              <Col key={index} xs={12} sm={8} md={6} lg={6} xl={6} xxl={6}>
+              <Col key={index} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
                 <S.GuildItem>
-                  <Avatar
-                    src={Icon}
-                    alt="image"
-                    style={{ height: '70px', width: 'auto' }}
-                  />
-                  <S.GuildName>
-                    {GuildName.length <= 50
-                      ? GuildName
-                      : GuildName.substring(0, 32) + '...'}
-                  </S.GuildName>
+                  <S.GuildItemBackgroundImage icon={Icon} />
+
+                  <S.InfoContainer>
+                    <Avatar
+                      src={Icon}
+                      alt="image"
+                      style={{
+                        height: '130px',
+                        width: 'auto',
+                        marginBottom: '10px',
+                      }}
+                    />
+
+                    <S.GuildName>
+                      {GuildName.length <= (isMobile ? 50 : 90)
+                        ? GuildName
+                        : GuildName.substring(0, isMobile ? 50 : 90) + '...'}
+                    </S.GuildName>
+
+                    <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>
+                  </S.InfoContainer>
                 </S.GuildItem>
               </Col>
             ))}
