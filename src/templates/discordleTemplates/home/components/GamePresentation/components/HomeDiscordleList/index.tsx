@@ -77,15 +77,17 @@ export default function HomeDiscordleList({ isMobile }: I.IHomeDiscordleList) {
     <Fragment>
       {!isMobile && <S.StyledLottie animationData={Animation} loop autoplay />}
 
-      <S.Container>
+      {/* <S.ApresentationContainer>testrerhauifhuasfiu</S.ApresentationContainer> */}
+
+      <S.Container isMobile={isMobile}>
         <Row justify="space-between" align="middle">
           {!isMobile ? (
             <S.EmptyContainer>
               <FeatherIcons icon="trending-up" />
-              <S.ListTitle>Lista de Discordles Criados</S.ListTitle>
+              <S.ListTitle>Discordles Criados</S.ListTitle>
             </S.EmptyContainer>
           ) : (
-            <S.ListTitle>Lista de Discordles Criados</S.ListTitle>
+            <S.ListTitle>Discordles Criados</S.ListTitle>
           )}
 
           <S.InputContainer isMobile={isMobile}>

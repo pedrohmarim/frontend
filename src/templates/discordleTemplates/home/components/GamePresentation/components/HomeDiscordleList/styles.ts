@@ -4,6 +4,8 @@ import Lottie from 'lottie-react';
 
 export const StyledLottie = styled(Lottie)`
   margin-top: -3%;
+  z-index: -1;
+  position: relative;
 `;
 
 const slideAndBounce = keyframes`
@@ -39,7 +41,7 @@ const slideAndBounce = keyframes`
     }
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -47,7 +49,7 @@ export const Container = styled.div`
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
   animation: ${slideAndBounce} 1.5s ease-in-out;
-  margin: 0 25px;
+  margin: ${({ isMobile }) => `${!isMobile ? '-25%' : 0} 25px 0 25px`};
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
   padding: 20px;
@@ -144,6 +146,11 @@ export const GuildItem = styled.div`
 `;
 
 export const GuildName = styled.div`
+  text-align: center;
+  font-size: 13pt;
+`;
+
+export const ApresentationContainer = styled.div`
   text-align: center;
   font-size: 13pt;
 `;
