@@ -5,7 +5,7 @@ import { Row, Avatar, FeatherIcons, Input, Col } from 'antd_components';
 import DiscordGuildApi from 'services/DiscordleService/DiscordleGuilds';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { IGuildsDto } from 'services/DiscordleService/IDiscordleService';
-import Animation from 'assets/homeAnimation2.json';
+import Animation from 'assets/homeAnimation.json';
 
 export default function HomeDiscordleList({ isMobile }: I.IHomeDiscordleList) {
   const [totalGuilds, setTotalGuilds] = useState<number>(0);
@@ -75,11 +75,7 @@ export default function HomeDiscordleList({ isMobile }: I.IHomeDiscordleList) {
 
   return (
     <Fragment>
-      {/* {!isMobile && (
-        <S.LottieContainer>
-          <S.StyledLottie animationData={Animation} loop autoplay />
-        </S.LottieContainer>
-      )} */}
+      {!isMobile && <S.StyledLottie animationData={Animation} loop autoplay />}
 
       <S.Container>
         <Row justify="space-between" align="middle">

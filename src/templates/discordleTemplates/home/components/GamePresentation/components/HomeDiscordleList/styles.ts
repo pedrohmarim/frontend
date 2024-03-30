@@ -2,13 +2,8 @@ import styled, { keyframes } from 'styled-components';
 import { Row, Pagination as PaginationAntd } from 'antd_components';
 import Lottie from 'lottie-react';
 
-export const LottieContainer = styled.div`
-  background-color: lightslategrey;
-  height: 0;
-`;
-
 export const StyledLottie = styled(Lottie)`
-  margin-top: -40px;
+  margin-top: -3%;
 `;
 
 const slideAndBounce = keyframes`
