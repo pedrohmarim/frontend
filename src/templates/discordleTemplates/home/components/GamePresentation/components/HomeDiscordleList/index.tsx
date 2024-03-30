@@ -5,8 +5,9 @@ import { Row, Avatar, FeatherIcons, Input, Col } from 'antd_components';
 import DiscordGuildApi from 'services/DiscordleService/DiscordleGuilds';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { IGuildsDto } from 'services/DiscordleService/IDiscordleService';
+import Animation from 'assets/homeAnimation2.json';
 
-export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
+export default function HomeDiscordleList({ isMobile }: I.IHomeDiscordleList) {
   const [totalGuilds, setTotalGuilds] = useState<number>(0);
   const [guilds, setGuilds] = useState<IGuildsDto[]>([]);
 
@@ -64,78 +65,95 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  function handleFormatLabel() {
+    if (totalGuilds === 0) return 'Nenhum servidor registrado.';
+
+    if (totalGuilds === 1) return 'servidor registrado.';
+
+    return 'servidores registrados.';
+  }
+
   return (
-    <S.Container marginTop={isMobile ? 0 : 30}>
-      <Row justify="space-between" align="middle">
-        {!isMobile ? (
-          <S.EmptyContainer>
-            <FeatherIcons icon="trending-up" />
-            <S.ListTitle>Instâncias de Servidores Criados</S.ListTitle>
-          </S.EmptyContainer>
-        ) : (
-          <S.ListTitle>Instâncias de Servidores Criados</S.ListTitle>
-        )}
+    <Fragment>
+      {/* {!isMobile && (
+        <S.LottieContainer>
+          <S.StyledLottie animationData={Animation} loop autoplay />
+        </S.LottieContainer>
+      )} */}
 
-        <S.InputContainer isMobile={isMobile}>
-          <Input
-            onChange={(event) => Filter(event.target.value)}
-            placeholder="Filtrar"
-            suffix={<FeatherIcons icon="search" size={18} />}
-          />
-        </S.InputContainer>
-      </Row>
+      <S.Container>
+        <Row justify="space-between" align="middle">
+          {!isMobile ? (
+            <S.EmptyContainer>
+              <FeatherIcons icon="trending-up" />
+              <S.ListTitle>Lista de Discordles Criados</S.ListTitle>
+            </S.EmptyContainer>
+          ) : (
+            <S.ListTitle>Lista de Discordles Criados</S.ListTitle>
+          )}
 
-      <S.ListContainer id="container">
-        <InfiniteScroll
-          dataLength={guilds.length}
-          next={GetGuilds}
-          hasMore
-          loader={<Fragment />}
-          scrollableTarget="container"
-        >
-          <Row
-            style={{ padding: isMobile ? '2%' : '10px' }}
-            justify={guilds.length ? 'start' : 'center'}
+          <S.InputContainer isMobile={isMobile}>
+            <Input
+              onChange={(event) => Filter(event.target.value)}
+              placeholder="Filtrar"
+              suffix={<FeatherIcons icon="search" size={18} />}
+            />
+          </S.InputContainer>
+        </Row>
+
+        <S.ListContainer id="container">
+          <InfiniteScroll
+            dataLength={guilds.length}
+            next={GetGuilds}
+            hasMore
+            loader={<Fragment />}
+            scrollableTarget="container"
           >
-            {guilds.length ? (
-              guilds.map(({ GuildName, Icon }, index) => (
-                <Col key={index} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
-                  <S.GuildItem>
-                    <S.GuildItemBackgroundImage icon={Icon} />
+            <Row
+              style={{ padding: isMobile ? '2%' : '10px' }}
+              justify={guilds.length ? 'start' : 'center'}
+            >
+              {guilds.length ? (
+                guilds.map(({ GuildName, Icon }, index) => (
+                  <Col key={index} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
+                    <S.GuildItem>
+                      <S.GuildItemBackgroundImage icon={Icon} />
 
-                    <S.InfoContainer>
-                      <Avatar
-                        src={Icon}
-                        alt="image"
-                        style={{
-                          height: '130px',
-                          width: 'auto',
-                          marginBottom: '10px',
-                        }}
-                      />
+                      <S.InfoContainer>
+                        <Avatar
+                          src={Icon}
+                          alt="image"
+                          style={{
+                            height: '130px',
+                            width: 'auto',
+                            marginBottom: '10px',
+                          }}
+                        />
 
-                      <S.GuildName>
-                        {GuildName.length <= (isMobile ? 50 : 90)
-                          ? GuildName
-                          : GuildName.substring(0, isMobile ? 50 : 90) + '...'}
-                      </S.GuildName>
+                        <S.GuildName>
+                          {GuildName.length <= (isMobile ? 50 : 90)
+                            ? GuildName
+                            : GuildName.substring(0, isMobile ? 50 : 90) +
+                              '...'}
+                        </S.GuildName>
 
-                      <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>
-                    </S.InfoContainer>
-                  </S.GuildItem>
-                </Col>
-              ))
-            ) : (
-              <>Sem dados</>
-            )}
-          </Row>
-        </InfiniteScroll>
-      </S.ListContainer>
+                        <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>
+                      </S.InfoContainer>
+                    </S.GuildItem>
+                  </Col>
+                ))
+              ) : (
+                <>Sem dados</>
+              )}
+            </Row>
+          </InfiniteScroll>
+        </S.ListContainer>
 
-      <S.PaginationContainer justify="center" align="middle">
-        <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor> servidores
-        registrados.
-        {/* <S.Pagination
+        <S.PaginationContainer justify="center" align="middle">
+          <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
+
+          {handleFormatLabel()}
+          {/* <S.Pagination
           size="small"
           total={totalGuilds}
           pageSize={pageSize}
@@ -146,7 +164,8 @@ export default function HomeDiscordlesList({ isMobile }: I.IHomeDiscordleList) {
           showTotal={showTotal}
           // onChange={(page, pageSize) => GetGuilds(true, page, pageSize)}
         /> */}
-      </S.PaginationContainer>
-    </S.Container>
+        </S.PaginationContainer>
+      </S.Container>
+    </Fragment>
   );
 }

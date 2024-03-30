@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Button, FeatherIcons, Row } from 'antd_components';
 import type { MenuProps } from 'antd';
-import HomeDiscordlesList from '../HomeDiscordleList';
+import HomeDiscordleList from '../HomeDiscordleList';
 import * as S from './styles';
 import theme from 'globalStyles/theme';
 
@@ -34,6 +34,13 @@ export default function Header() {
   ];
 
   const onClick: MenuProps['onClick'] = (e) => {
+    if (e.key.includes('home')) {
+      setAnimationActive(true);
+
+      setTimeout(() => {
+        setAnimationActive(false);
+      }, 1200);
+    }
     setOpen(!open);
     setCurrent(e.key);
   };
@@ -41,7 +48,7 @@ export default function Header() {
   function renderScreen() {
     switch (current) {
       case 'home':
-        return <HomeDiscordlesList isMobile={windowWidth < 875} />;
+        return <HomeDiscordleList isMobile={windowWidth < 875} />;
       case 'howworks':
         return <>howworkds</>;
       default:
@@ -54,9 +61,19 @@ export default function Header() {
     borderColor: 'rgba(255, 255, 255, 0.1)',
   };
 
+  const [animationActive, setAnimationActive] = useState(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setAnimationActive(false);
+    }, 1200);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
-    <S.ContainerWrapper>
-      {windowWidth > 875 ? (
+    <S.ContainerWrapper isAnimationActive={animationActive}>
+      {windowWidth >= 875 ? (
         <S.Row justify="end">
           <S.DesktopMenu
             onClick={onClick}

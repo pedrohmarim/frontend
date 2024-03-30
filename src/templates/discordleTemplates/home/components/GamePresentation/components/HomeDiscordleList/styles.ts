@@ -1,5 +1,15 @@
 import styled, { keyframes } from 'styled-components';
 import { Row, Pagination as PaginationAntd } from 'antd_components';
+import Lottie from 'lottie-react';
+
+export const LottieContainer = styled.div`
+  background-color: lightslategrey;
+  height: 0;
+`;
+
+export const StyledLottie = styled(Lottie)`
+  margin-top: -40px;
+`;
 
 const slideAndBounce = keyframes`
     0% {
@@ -34,9 +44,7 @@ const slideAndBounce = keyframes`
     }
 `;
 
-export const Container = styled.div<{
-  marginTop: number;
-}>`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -44,7 +52,7 @@ export const Container = styled.div<{
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
   animation: ${slideAndBounce} 1.5s ease-in-out;
-  margin: ${({ marginTop }) => `${marginTop}px 25px 0 25px`};
+  margin: 0 25px;
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
   padding: 20px;
@@ -58,7 +66,6 @@ export const ListContainer = styled.div`
   background-color: #17171a;
   border: solid 1px rgba(255, 255, 255, 0.08);
   overflow-y: auto;
-  min-height: 81%;
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -91,6 +98,8 @@ export const SpanEnterRoom = styled.div`
   bottom: 0;
   margin-bottom: 15px;
   display: none;
+  color: ${(props) => props.theme.discordleColors.primary};
+  font-weight: bold;
 `;
 
 export const InfoContainer = styled.div`

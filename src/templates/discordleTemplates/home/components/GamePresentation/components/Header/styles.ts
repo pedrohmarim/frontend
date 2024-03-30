@@ -6,7 +6,7 @@ import {
 } from 'antd_components';
 
 export const DesktopMenu = styled(AntdMenu)`
-  margin-top: 25px;
+  margin: 25px 0;
   display: flex;
   height: fit-content;
   border-radius: 40px 0 0 40px;
@@ -53,6 +53,11 @@ export const MobileMenu = styled(AntdMenu)`
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: ${(props) => props.theme.discordleColors.text} !important;
   }
+`;
+
+export const ContainerWrapper = styled.div<{ isAnimationActive: boolean }>`
+  overflow: ${({ isAnimationActive }) =>
+    isAnimationActive ? 'hidden' : 'visible'};
 `;
 
 const slideInFromRight = keyframes`
@@ -102,8 +107,4 @@ export const Drawer = styled(DrawerAntd)`
   .ant-drawer-close {
     color: ${(props) => props.theme.discordleColors.primary} !important;
   }
-`;
-
-export const ContainerWrapper = styled.div`
-  overflow: hidden;
 `;
