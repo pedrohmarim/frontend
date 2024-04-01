@@ -6,7 +6,7 @@ import * as S from './styles';
 import theme from 'globalStyles/theme';
 import Head from 'next/head';
 
-export default function GamePresentation() {
+export default function Home() {
   const [current, setCurrent] = useState('home');
   const [windowWidth, setWindowWidth] = useState<number>(1920);
   const [open, setOpen] = useState(false);

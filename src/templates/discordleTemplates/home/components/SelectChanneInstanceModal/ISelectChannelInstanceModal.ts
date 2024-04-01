@@ -1,8 +1,14 @@
+import { IInstanceChannels } from 'services/DiscordleService/IDiscordleService';
+
 export interface ISelectChannelInstanceModal {
   open: boolean;
-  title: string;
+  selectedGuildName: string | null;
   guildId: string;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  instanceChannels: IInstanceChannels[];
+  onClose: () => void;
+  setInstanceChannels: React.Dispatch<
+    React.SetStateAction<IInstanceChannels[]>
+  >;
 }
 
 export interface ShowInputsState {

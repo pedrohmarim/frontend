@@ -5,11 +5,11 @@ import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
 import { Image, Row, Col, Button } from 'antd_components';
 import { useRouter } from 'next/router';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
-import { Description } from 'templates/discordleTemplates/home/styles';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
 import { Divider } from 'templates/discordleTemplates/game/components/Result/styles';
 import ReactCodeInput from 'react-verification-code-input';
 import theme from 'globalStyles/theme';
+import { Description } from '../home/components/SelectChanneInstanceModal/styles';
 
 export default function ChooseProfile() {
   const router = useRouter();

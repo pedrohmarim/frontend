@@ -123,6 +123,9 @@ export default createGlobalStyle`
   }
 
   //Discordle
+  .ant-modal-close-x{
+    color: ${(props) => props.theme.discordleColors.text} !important;
+  }
 
   .ant-tabs-tab {
     pointer-events: none;

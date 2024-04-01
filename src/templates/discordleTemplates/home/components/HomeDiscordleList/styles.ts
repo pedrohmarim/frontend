@@ -4,7 +4,7 @@ import Lottie from 'lottie-react';
 
 export const StyledLottie = styled(Lottie)`
   position: relative;
-  z-index: -2;
+  z-index: -999;
 
   svg {
     margin-top: -3.2%;
@@ -21,13 +21,6 @@ export const Description = styled(Row)<{ isMobile: boolean }>`
 `;
 
 export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`
-  ${({ isDesktop }) =>
-    isDesktop
-      ? css`
-          position: absolute;
-        `
-      : ''};
-
   padding: 0 25px;
   text-align: right;
   display: flex;
@@ -35,9 +28,16 @@ export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`
   align-items: end;
   justify-content: center;
   width: 100%;
-  height: 70%;
   font-size: 13pt;
+  height: 40%;
   color: ${(props) => props.theme.discordleColors.text};
+
+  ${({ isDesktop }) =>
+    isDesktop
+      ? css`
+          position: absolute;
+        `
+      : ''};
 `;
 
 const slideAndBounce = keyframes`
@@ -74,6 +74,7 @@ const slideAndBounce = keyframes`
 `;
 
 export const AnimationContainer = styled.div`
+  position: relative;
   animation: ${slideAndBounce} 1.5s ease-in-out;
 `;
 
@@ -83,7 +84,7 @@ export const Container = styled.div<{ isMobile: boolean }>`
   justify-content: space-between;
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
-  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  box-shadow: rgba(0, 0, 0, 1) 0px 0px 120px 50px;
   margin: ${({ isMobile }) => `${!isMobile ? '-25%' : '42px'} 25px 0 25px`};
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;

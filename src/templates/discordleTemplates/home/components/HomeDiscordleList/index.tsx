@@ -4,13 +4,19 @@ import * as G from 'globalStyles/global';
 import * as I from './IHomeDiscordleList';
 import DiscordGuildApi from 'services/DiscordleService/DiscordleGuilds';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { IGuildsDto } from 'services/DiscordleService/IDiscordleService';
 import Animation from 'assets/homeAnimation.json';
 import theme from 'globalStyles/theme';
 import SelectChanneInstanceModal from '../SelectChanneInstanceModal';
 import { Row, Avatar, FeatherIcons, Input, Col, Button } from 'antd_components';
+import { useRouter } from 'next/router';
+import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
+import {
+  IGuildsDto,
+  IInstanceChannels,
+} from 'services/DiscordleService/IDiscordleService';
 
 export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
+  const router = useRouter();
   const isDesktop = width > 875;
   const pageSize = 18;
   const [totalGuilds, setTotalGuilds] = useState<number>(0);
@@ -18,8 +24,13 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [noMoreDataToFetch, setNoMoreDataToFetch] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedGuildName, setSelectedGuildName] = useState('');
-  const [selectedGuildId, setSelectedGuildId] = useState('');
+  const [selectedGuildName, setSelectedGuildName] = useState<string | null>(
+    null
+  );
+  const [selectedGuildId, setSelectedGuildId] = useState<string | null>(null);
+  const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
+    []
+  );
 
   function onClick() {
     const clientIdBot = '1089918362311733378';
@@ -96,14 +107,40 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
     return 'servidores registrados.';
   }
 
+  useEffect(() => {
+    if (router.isReady) {
+      const { guild_id } = router.query;
+
+      if (guild_id) {
+        DiscordGuildsApi.GetGuildById(guild_id.toString(), false).then(
+          (channels) => {
+            setSelectedGuildId(guild_id.toString());
+            setInstanceChannels(channels);
+            setOpen(!open);
+          }
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
+
   return (
     <Fragment>
-      <SelectChanneInstanceModal
-        open={open}
-        setOpen={setOpen}
-        title={`Instâncias de ${selectedGuildName}`}
-        guildId={selectedGuildId}
-      />
+      {selectedGuildId && (
+        <SelectChanneInstanceModal
+          instanceChannels={instanceChannels}
+          setInstanceChannels={setInstanceChannels}
+          open={open}
+          selectedGuildName={selectedGuildName}
+          guildId={selectedGuildId}
+          onClose={() => {
+            setInstanceChannels([] as IInstanceChannels[]);
+            setSelectedGuildId(null);
+            setOpen(!open);
+            router.push({ query: '' });
+          }}
+        />
+      )}
 
       <S.AnimationContainer>
         <S.ApresentationContainer isDesktop={isDesktop}>
