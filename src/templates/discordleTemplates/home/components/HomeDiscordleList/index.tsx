@@ -151,7 +151,7 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
             </G.HomeSpan>
           </S.Title>
 
-          <S.Description isMobile={!isDesktop} justify="end">
+          <S.Description ismobile={!isDesktop} justify="end">
             Teste suas habilidades ao tentar identificar quem escreveu uma das
             cinco frases aleatórias geradas a partir de um canal de texto de seu
             servidor do Discord e desafie seus amigos na disputa pelo topo do
@@ -176,7 +176,7 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
           <S.StyledLottie animationData={Animation} loop autoplay />
         )}
 
-        <S.Container isMobile={!isDesktop}>
+        <S.Container ismobile={!isDesktop}>
           <Row justify="space-between" align="middle">
             {isDesktop ? (
               <S.EmptyContainer>
@@ -187,7 +187,7 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
               <S.ListTitle>Discordles Criados</S.ListTitle>
             )}
 
-            <S.InputContainer isMobile={!isDesktop}>
+            <S.InputContainer ismobile={!isDesktop}>
               <Input
                 onChange={(event) => filter(event.target.value)}
                 placeholder="Filtrar"

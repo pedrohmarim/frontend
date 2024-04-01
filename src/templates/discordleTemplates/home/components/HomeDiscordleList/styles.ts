@@ -15,9 +15,9 @@ export const Title = styled(Row)`
   font-size: 36pt;
 `;
 
-export const Description = styled(Row)<{ isMobile: boolean }>`
+export const Description = styled(Row)<{ ismobile: boolean }>`
   font-size: 16pt;
-  width: ${({ isMobile }) => (isMobile ? '100%' : '45%')};
+  width: ${({ ismobile }) => (ismobile ? '100%' : '45%')};
 `;
 
 export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`
@@ -78,14 +78,14 @@ export const AnimationContainer = styled.div`
   animation: ${slideAndBounce} 1.5s ease-in-out;
 `;
 
-export const Container = styled.div<{ isMobile: boolean }>`
+export const Container = styled.div<{ ismobile: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 1) 0px 0px 120px 50px;
-  margin: ${({ isMobile }) => `${!isMobile ? '-25%' : '42px'} 25px 0 25px`};
+  margin: ${({ ismobile }) => `${!ismobile ? '-25%' : '42px'} 25px 0 25px`};
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
   padding: 20px;
@@ -188,9 +188,9 @@ export const GuildName = styled.div`
 
 export const EmptyContainer = styled.div``;
 
-export const InputContainer = styled.div<{ isMobile: boolean }>`
-  width: ${({ isMobile }) => (isMobile ? '100%' : '300px')};
-  margin-top: ${({ isMobile }) => (isMobile ? '15px' : '0')};
+export const InputContainer = styled.div<{ ismobile: boolean }>`
+  width: ${({ ismobile }) => (ismobile ? '100%' : '300px')};
+  margin-top: ${({ ismobile }) => (ismobile ? '15px' : '0')};
 `;
 
 export const Pagination = styled(PaginationAntd)`

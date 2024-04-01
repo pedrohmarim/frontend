@@ -51,6 +51,7 @@ export interface IDiscordHintsRequest {
   GuildId: string;
   AuthorSelected: string;
   TabKey: number;
+  FromClick: boolean;
 }
 
 export interface IScoreInstance {

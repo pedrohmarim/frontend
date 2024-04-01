@@ -46,10 +46,16 @@ export default function GameContainer() {
 
         DiscordGameApi.VerifyAlreadyAnswered(channelId.toString()).then(
           (data) => {
-            if (data.length > 0 && data[data.length - 1].UsedHint) {
-              setActiveTabKey(data.length);
-              setUsedHint(true);
-            } else setActiveTabKey(data.length + 1);
+            if (data.length) {
+              if (data[data.length - 1].UsedHint) {
+                setUsedHint(true);
+                setActiveTabKey(data.length);
+              } else setActiveTabKey(data.length + 1);
+            }
+            // if (data.length > 0 && data[data.length - 1].UsedHint) {
+            //   setActiveTabKey(data.length);
+            //   setUsedHint(true);
+            // } else setActiveTabKey(data.length + 1);
 
             setAnswers(data);
 

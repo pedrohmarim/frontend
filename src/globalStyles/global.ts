@@ -293,6 +293,20 @@ export const OverflowDiscordle = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${(props) =>
+      props.theme.discordleColors.primary} !important;
+  }
+
   /* Media query para dispositivos com largura de tela até 768px pixels (por exemplo, smartphones em modo retrato) */
   @media screen and (max-width: 768px) {
     max-height: 100%; /* Ajuste conforme necessário para dispositivos móveis */

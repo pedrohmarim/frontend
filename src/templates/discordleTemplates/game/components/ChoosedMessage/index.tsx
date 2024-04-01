@@ -55,7 +55,7 @@ export default function ChoosedMessage({
     });
   }
 
-  function handleGetHints() {
+  function handleGetHints(fromClick?: boolean) {
     if (router.isReady) {
       const { channelId, guildId } = router.query;
 
@@ -67,6 +67,7 @@ export default function ChoosedMessage({
         ChannelId: channelId.toString(),
         GuildId: guildId.toString(),
         TabKey: tabkey,
+        FromClick: fromClick ?? false,
       };
 
       DiscordleGameApi.GetDiscordHints(dto).then(
@@ -113,7 +114,7 @@ export default function ChoosedMessage({
 
       setTimeout(() => {
         setUsedHint(true);
-        handleGetHints();
+        handleGetHints(true);
 
         setLoading(false);
       }, 2000);
