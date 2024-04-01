@@ -1,3 +1,3 @@
 export interface IHomeDiscordleList {
-  isMobile: boolean;
+  width: number;
 }

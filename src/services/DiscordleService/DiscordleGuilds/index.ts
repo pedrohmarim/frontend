@@ -6,11 +6,15 @@ const http = baseService();
 const baseUrl = 'DiscordleGuilds';
 
 const ApiAuth = {
-  GetGuildById: async function (guildId: string) {
+  GetGuildById: async function (
+    guildId: string,
+    diffDiscordleInstance?: boolean
+  ) {
     const response: AxiosResponse<I.IInstanceChannels[]> = await http.post(
       `${baseUrl}/GetGuildById`,
       {
         guildId,
+        diffDiscordleInstance,
       }
     );
     return response.data;

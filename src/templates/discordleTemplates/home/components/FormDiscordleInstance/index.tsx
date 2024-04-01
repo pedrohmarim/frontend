@@ -1,6 +1,5 @@
-import React from 'react';
-import * as I from './IFormDiscordleInstance';
-import * as S from '../../styles';
+import React, { Fragment, useEffect, useState } from 'react';
+import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
 import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
@@ -8,13 +7,31 @@ import { Row, FeatherIcons, Tooltip } from 'antd_components';
 import { Divider } from 'templates/discordleTemplates/game/components/Result/styles';
 import { Select } from 'templates/discordleTemplates/game/components/AuthorSelect/styles';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
+import { IInstanceChannels } from 'services/DiscordleService/IDiscordleService';
+import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 
-export default function FormDiscordleInstance({
-  instanceChannels,
-  width,
-  handleReload,
-}: I.IFormDiscordleInstance) {
+export default function FormDiscordleInstance() {
   const router = useRouter();
+  const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
+    []
+  );
+
+  function handleGetChannels() {
+    if (router.isReady) {
+      const { guild_id } = router.query;
+
+      if (guild_id) {
+        DiscordGuildsApi.GetGuildById(guild_id.toString()).then((channels) =>
+          setInstanceChannels(channels)
+        );
+      }
+    }
+  }
+
+  useEffect(() => {
+    handleGetChannels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   function onChange(channelId: string) {
     if (router.isReady) {
@@ -38,13 +55,13 @@ export default function FormDiscordleInstance({
               },
             })
           )
-          .finally(() => handleReload());
+          .finally(() => handleGetChannels());
       }
     }
   }
 
   return (
-    <G.MessageContainer width={width > 850 ? '60%' : '100%'} margin="auto">
+    <Fragment>
       <GameTitle>Discordle | Criar Instância</GameTitle>
 
       <S.NegativeMarginRow justify="center" align="middle">
@@ -79,7 +96,7 @@ export default function FormDiscordleInstance({
         </Select>
 
         <Tooltip title="Recarregar" placement="right">
-          <S.ReloadContainer onClick={handleReload}>
+          <S.ReloadContainer onClick={handleGetChannels}>
             <FeatherIcons icon="rotate-ccw" size={20} />
           </S.ReloadContainer>
         </Tooltip>
@@ -99,6 +116,6 @@ export default function FormDiscordleInstance({
           serão criados, certifique-se de escolher um canal com muito conteudo!
         </S.Description>
       </S.Row>
-    </G.MessageContainer>
+    </Fragment>
   );
 }

@@ -47,6 +47,21 @@ const ApiAuth = {
     );
     return response.data;
   },
+  ValidateCode: async function (
+    code: string,
+    guildId: string,
+    channelId: string
+  ) {
+    const response: AxiosResponse<boolean> = await http.post(
+      `${baseUrl}/ValidateCode`,
+      {
+        Code: code,
+        GuildId: guildId,
+        ChannelId: channelId,
+      }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;

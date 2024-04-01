@@ -34,8 +34,10 @@ import Popover from './Popover/Popover.component';
 import Empty from './Empty/Empty.component';
 import Switch from './Switch/Switch.component';
 import Pagination from './Pagination/Pagination.component';
+import List from './List/List.component';
 
 export {
+  List,
   Switch,
   Pagination,
   Avatar,

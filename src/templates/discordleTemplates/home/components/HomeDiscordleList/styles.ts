@@ -1,11 +1,43 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { Row, Pagination as PaginationAntd } from 'antd_components';
 import Lottie from 'lottie-react';
 
 export const StyledLottie = styled(Lottie)`
-  margin-top: -3%;
-  z-index: -1;
   position: relative;
+  z-index: -2;
+
+  svg {
+    margin-top: -3.2%;
+  }
+`;
+
+export const Title = styled(Row)`
+  font-size: 36pt;
+`;
+
+export const Description = styled(Row)<{ isMobile: boolean }>`
+  font-size: 16pt;
+  width: ${({ isMobile }) => (isMobile ? '100%' : '45%')};
+`;
+
+export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`
+  ${({ isDesktop }) =>
+    isDesktop
+      ? css`
+          position: absolute;
+        `
+      : ''};
+
+  padding: 0 25px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
+  width: 100%;
+  height: 70%;
+  font-size: 13pt;
+  color: ${(props) => props.theme.discordleColors.text};
 `;
 
 const slideAndBounce = keyframes`
@@ -41,6 +73,10 @@ const slideAndBounce = keyframes`
     }
 `;
 
+export const AnimationContainer = styled.div`
+  animation: ${slideAndBounce} 1.5s ease-in-out;
+`;
+
 export const Container = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
@@ -48,8 +84,7 @@ export const Container = styled.div<{ isMobile: boolean }>`
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-  animation: ${slideAndBounce} 1.5s ease-in-out;
-  margin: ${({ isMobile }) => `${!isMobile ? '-25%' : 0} 25px 0 25px`};
+  margin: ${({ isMobile }) => `${!isMobile ? '-25%' : '42px'} 25px 0 25px`};
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
   padding: 20px;
@@ -146,11 +181,6 @@ export const GuildItem = styled.div`
 `;
 
 export const GuildName = styled.div`
-  text-align: center;
-  font-size: 13pt;
-`;
-
-export const ApresentationContainer = styled.div`
   text-align: center;
   font-size: 13pt;
 `;

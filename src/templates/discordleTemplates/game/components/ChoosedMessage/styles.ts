@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Row } from 'antd_components';
 
 export const GameTitle = styled.h2`
+  text-align: center;
   color: ${(props) => props.theme.discordleColors.primary};
 `;
 

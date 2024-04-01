@@ -256,8 +256,9 @@ export default createGlobalStyle`
   }
 `;
 
-export const HomeSpan = styled.span`
+export const HomeSpan = styled.span<{ margin?: string }>`
   color: ${(props) => props.theme.discordleColors.primary};
+  margin: ${({ margin }) => margin};
 `;
 
 export const Container = styled.div`
