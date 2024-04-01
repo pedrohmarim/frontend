@@ -6,7 +6,6 @@ import DiscordMessagesApi from 'services/DiscordleService/DiscordleRanking';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { IAnswer } from 'templates/discordleTemplates/game/IGame';
-import { MarginRow } from 'templates/discordleTemplates/home/styles';
 import { MessageContainer } from 'globalStyles/global';
 import {
   IRankingTableData,
@@ -227,7 +226,7 @@ export default function Ranking() {
           />
         </S.Modal>
 
-        <MarginRow justify="space-between" align="middle">
+        <Row justify="space-between" align="middle">
           <Button
             onClick={toGame}
             backgroundcolor={theme.discordleColors.primary}
@@ -248,7 +247,7 @@ export default function Ranking() {
               <S.UserSpan>Recarregar</S.UserSpan>
             </Button>
           </Row>
-        </MarginRow>
+        </Row>
       </S.TableContainer>
     </MessageContainer>
   );

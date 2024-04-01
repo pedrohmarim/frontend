@@ -7,8 +7,8 @@ import { useRouter } from 'next/router';
 import * as S from './styles';
 import * as I from './IResult';
 import theme from 'globalStyles/theme';
-import { Description } from 'templates/discordleTemplates/home/styles';
 import { HomeSpan } from 'globalStyles/global';
+import { Description } from 'templates/discordleTemplates/home/components/SelectChanneInstanceModal/styles';
 
 export default function Result({ answers, totalScore }: I.IResult) {
   const router = useRouter();

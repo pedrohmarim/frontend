@@ -59,8 +59,10 @@ export const SelectContainer = styled(Row)`
 
 export const Description = styled.span<{
   fontSize?: string;
+  fontStyle?: string;
 }>`
   text-align: center;
   color: ${(props) => props.theme.discordleColors.text};
   font-size: ${({ fontSize }) => fontSize};
+  font-style: ${({ fontStyle }) => fontStyle};
 `;
