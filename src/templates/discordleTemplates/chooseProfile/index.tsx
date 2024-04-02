@@ -12,8 +12,23 @@ import theme from 'globalStyles/theme';
 import { Description } from '../home/components/SelectChanneInstanceModal/styles';
 
 export default function ChooseProfile() {
+  const [windowWidth, setWindowWidth] = useState(1920);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener('resize', handleResize);
+
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
   const router = useRouter();
   const [members, setMembers] = useState<IMember[]>([]);
+  const [channelName, setChannelName] = useState<string>('');
   const [validToken, setValidToken] = useState<boolean>(true);
   const [showTokenInput, setShowTokenInput] = useState<{
     view: boolean;
@@ -33,7 +48,10 @@ export default function ChooseProfile() {
         DiscordMembersApi.GetChannelMembers(
           channelId.toString(),
           code.toString()
-        ).then((members: IMember[]) => setMembers(members));
+        ).then(({ ChannelName, Members }) => {
+          setMembers(Members);
+          setChannelName(ChannelName);
+        });
       }
     }
   }, [router]);
@@ -74,10 +92,14 @@ export default function ChooseProfile() {
   };
 
   const debouncedHandleSaveUser = debounce((token: string) => {
-    const { channelId, guildId, backRoute } = router.query;
+    const { channelId, guildId, code, backRoute } = router.query;
 
-    if (channelId && guildId) {
-      DiscordMembersApi.ValidateToken(token, showTokenInput.userId)
+    if (channelId && guildId && code) {
+      DiscordMembersApi.ValidateToken(
+        token,
+        showTokenInput.userId,
+        channelId.toString()
+      )
         .then((accessToken: string) => {
           const isValid = Boolean(accessToken.length);
 
@@ -94,6 +116,7 @@ export default function ChooseProfile() {
               query: {
                 channelId,
                 guildId,
+                code,
               },
             });
         })
@@ -154,8 +177,13 @@ export default function ChooseProfile() {
     );
 
   return (
-    <MessageContainer>
-      <GameTitle>Escolha seu Perfil</GameTitle>
+    <MessageContainer width={windowWidth > 1200 ? '100%' : ''} margin="auto">
+      <GameTitle>
+        <Row justify="center">
+          <Col span={24}>Escolha seu Perfil para</Col>
+          <Col span={24}>acessar #{channelName}</Col>
+        </Row>
+      </GameTitle>
 
       <S.MemberRow ref={memberRowRef} onMouseDown={handleMouseDown}>
         {members.map(({ AvatarUrl, Id, Username }, index) => (
@@ -193,7 +221,7 @@ export default function ChooseProfile() {
             <Col span={24}>
               <Description>
                 Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto
-                <HomeSpan> #daily-discordle</HomeSpan>
+                <HomeSpan> #{channelName}</HomeSpan>
               </Description>
 
               <Col span={24}>

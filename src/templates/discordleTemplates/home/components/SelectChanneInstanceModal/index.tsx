@@ -252,6 +252,7 @@ export default function SelectChanneInstanceModal({
                       <S.SpanList>Selecionar</S.SpanList>
                     ) : (
                       <Input
+                        autoFocus
                         onChange={(e) => onChange(e.target.value, ChannelId)}
                         placeholder="Informe o código da sala"
                         style={{ maxWidth: '60%' }}

@@ -328,9 +328,11 @@ export const OverflowDiscordle = styled.div`
 export const MessageContainer = styled(Card)<{
   width?: string;
   margin?: string;
+  maxWidth?: string;
 }>`
   text-align: center;
   width: ${({ width }) => width};
+  max-width: ${({ maxWidth }) => maxWidth};
   margin: ${({ margin }) => margin};
   font-size: 15pt;
   font-weight: 500;

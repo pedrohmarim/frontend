@@ -4,6 +4,7 @@ import { Row } from 'antd_components';
 export const GameTitle = styled.h2`
   text-align: center;
   color: ${(props) => props.theme.discordleColors.primary};
+  word-break: break-all;
 `;
 
 export const BiggerGameTitle = styled.h1`

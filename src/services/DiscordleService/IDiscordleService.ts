@@ -88,6 +88,11 @@ export interface IGuildsDto {
   Icon: string;
 }
 
+export interface IGetMemberResponse {
+  Members: IMember[];
+  ChannelName: string;
+}
+
 export interface IMember {
   Id: string;
   Username: string;
