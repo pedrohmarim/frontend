@@ -7,17 +7,19 @@ import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import DiscordleInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import notification from 'antd_components/Notification/Notification.component';
+import { Form } from 'antd';
+import theme from 'globalStyles/theme';
 import {
   Modal,
   List,
   Input,
   Select,
   Row,
-  Tooltip,
-  FeatherIcons,
   Col,
   Divider,
+  Button,
 } from 'antd_components';
+import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
 
 export default function SelectChanneInstanceModal({
   selectedGuildName,
@@ -33,11 +35,11 @@ export default function SelectChanneInstanceModal({
     : `Instâncias de ${selectedGuildName}`;
 
   const router = useRouter();
-  const [showInputs, setShowInputs] = useState<I.ShowInputsState>({});
+  const [showInputs, setShowInputs] = useState<I.IShowInputsState>({});
 
   const toggleInput = (channelId: string) => {
     setShowInputs((prev) => {
-      const updatedInputsState: I.ShowInputsState = {};
+      const updatedInputsState: I.IShowInputsState = {};
       const anyInputVisible = Object.values(prev).some((value) => value);
 
       if (!anyInputVisible || prev[channelId])
@@ -48,15 +50,12 @@ export default function SelectChanneInstanceModal({
     });
   };
 
-  function getChannels() {
-    DiscordGuildsApi.GetGuildById(guildId, !fromGuildParam).then((channels) =>
-      setInstanceChannels(channels)
-    );
-  }
-
   useEffect(() => {
-    if (router.isReady && guildId) getChannels();
-
+    if (router.isReady && guildId) {
+      DiscordGuildsApi.GetGuildById(guildId, !fromGuildParam).then((channels) =>
+        setInstanceChannels(channels)
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guildId, router.isReady, setInstanceChannels]);
 
@@ -102,24 +101,25 @@ export default function SelectChanneInstanceModal({
     debouncedOnChange(code, channelId);
   }
 
-  function onChangeSelect(channelId: string) {
+  function onSubmit(values: I.IFormValues) {
     if (router.isReady) {
-      const { guild_id, code } = router.query;
+      const { guild_id } = router.query;
+      const { channelCode, channelId } = values;
 
-      if (guild_id && channelId && code) {
+      if (guild_id && channelId && channelCode) {
         const guildId = guild_id.toString();
 
         DiscordInstanceApi.CreateDiscordleInstance(
           channelId,
           guildId,
-          code.toString()
+          channelCode
         ).then(() =>
           router.push({
             pathname: '/discordle/chooseProfile',
             query: {
               channelId,
               guildId,
-              code,
+              code: channelCode,
             },
           })
         );
@@ -143,48 +143,82 @@ export default function SelectChanneInstanceModal({
     >
       {fromGuildParam ? (
         <Fragment>
-          <S.SelectContainer align="middle" justify="center">
-            <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
-              <Select
-                style={{ width: '100%' }}
-                allowClear
-                disabled={!instanceChannels?.length}
-                onChange={(channelId) => onChangeSelect(String(channelId))}
-                showSearch
-                notFoundContent={<Row justify="center">Sem dados</Row>}
-                placeholder={
-                  instanceChannels.length
-                    ? 'Selecione um canal'
-                    : 'Não há canais a serem exibidos'
-                }
-                filterOption={(inputValue, option) => {
-                  return option?.children?.props?.children?.props?.children
-                    .join('')
-                    .toLowerCase()
-                    .includes(`${inputValue.toLowerCase()}`);
-                }}
-              >
-                {instanceChannels?.length &&
-                  instanceChannels.map(({ ChannelId, ChannelName }) => (
-                    <Select.Option key={ChannelId}>
-                      <Row align="middle">
-                        <Row justify="center" align="middle">
-                          #{ChannelName}
-                        </Row>
-                      </Row>
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Col>
+          <Form layout="vertical" onFinish={onSubmit}>
+            <Row align="middle" justify="center">
+              <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
+                <Form.Item
+                  name="channelId"
+                  label="Canal de texto:"
+                  required
+                  rules={[requiredRules]}
+                >
+                  <Select
+                    allowClear
+                    disabled={!instanceChannels?.length}
+                    showSearch
+                    notFoundContent={<Row justify="center">Sem dados</Row>}
+                    placeholder={
+                      instanceChannels.length
+                        ? 'Selecionar'
+                        : 'Não há canais a serem exibidos'
+                    }
+                    filterOption={(inputValue, option) => {
+                      return option?.children?.props?.children?.props?.children
+                        .join('')
+                        .toLowerCase()
+                        .includes(`${inputValue.toLowerCase()}`);
+                    }}
+                  >
+                    {instanceChannels?.length &&
+                      instanceChannels.map(({ ChannelId, ChannelName }) => (
+                        <Select.Option key={ChannelId}>
+                          <Row align="middle">
+                            <Row justify="center" align="middle">
+                              #{ChannelName}
+                            </Row>
+                          </Row>
+                        </Select.Option>
+                      ))}
+                  </Select>
+                </Form.Item>
+              </Col>
 
-            <Tooltip title="Recarregar" placement="bottom">
-              <S.ReloadContainer onClick={getChannels}>
-                <FeatherIcons icon="rotate-ccw" size={20} />
-              </S.ReloadContainer>
-            </Tooltip>
-          </S.SelectContainer>
+              <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
+                <Form.Item
+                  tooltip="Usado para entrar no Discordle do canal através da página inicial"
+                  name="channelCode"
+                  label="Senha:"
+                  required
+                  rules={[requiredRules]}
+                  initialValue={router.query.code}
+                >
+                  <Input
+                    maxLength={255}
+                    placeholder="Informe o código da sala"
+                    onClick={(e) => e.stopPropagation()}
+                    size="middle"
+                  />
+                </Form.Item>
+              </Col>
 
-          <Divider style={{ border: 'solid 1px rgba(255, 255, 255, 0.1)' }} />
+              <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
+                <Button
+                  color={theme.discordleColors.text}
+                  backgroundcolor={theme.discordleColors.primary}
+                  htmlType="submit"
+                >
+                  Confirmar
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+
+          <Divider
+            style={{
+              border: 'solid 1px rgba(255, 255, 255, 0.1)',
+              marginTop: '20px',
+            }}
+          />
 
           <Row justify="center">
             <S.Description fontSize="13pt">

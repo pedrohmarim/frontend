@@ -1,6 +1,6 @@
 import { IMessage } from 'services/DiscordleService/IDiscordleService';
 
-export enum FilterMessageEnum {
+export enum MessageTypeEnum {
   isText = 1,
   isLink = 3,
   isImage = 4,
@@ -19,7 +19,7 @@ export enum MessageLevelEnum {
 
 export interface IFilterMessageResponse {
   message: IMessage;
-  messageType: FilterMessageEnum;
+  messageType: MessageTypeEnum;
   urlLink: string;
   formattedAttachs: JSX.Element[];
 }

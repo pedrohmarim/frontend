@@ -39,8 +39,13 @@ function RedirectLogin(description: string) {
   }
 }
 
+let activeRequests = 0;
+
 export const responseInterceptor = (responseConfig: AxiosResponse) => {
-  DisableLoading();
+  activeRequests--;
+
+  if (activeRequests === 0) DisableLoading();
+
   return responseConfig;
 };
 
@@ -66,18 +71,23 @@ export const requestInterceptor = (
     requestConfig.headers['Authorization'] = Authorization as string;
   }
 
+  activeRequests++;
+
   ActiveLoading();
+
   return requestConfig;
 };
 
-export const errorRequestInterceptor = (errorResquest: unknown) => {
+export const errorRequestInterceptor = (errorRequest: unknown) => {
+  activeRequests--;
   DisableLoading();
-  return Promise.reject(errorResquest);
+  return Promise.reject(errorRequest);
 };
 
 export const errorResponseInterceptor = (
   error: AxiosError<{ Message: string; Status: number }>
 ) => {
+  activeRequests--;
   DisableLoading();
 
   const description =

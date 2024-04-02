@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { FeatherIcons, Row } from 'antd_components';
 import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
 import {
-  FilterMessageEnum,
+  MessageTypeEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
 
@@ -104,7 +104,7 @@ export default function DisplayMessageContainer({
       <Row justify="space-between" align="middle">
         <S.Title
           ismobile={windowWidth <= 400}
-          isHint={messageLevel !== MessageLevelEnum.isMain}
+          isHint={messageLevel !== MessageLevelEnum.isMain && Boolean(author)}
         >
           {titleMessage()}
         </S.Title>
@@ -120,19 +120,19 @@ export default function DisplayMessageContainer({
       </Row>
 
       <S.Message>
-        {messageType === FilterMessageEnum.isText && <DefaultContent />}
-        {messageType === FilterMessageEnum.isLink && <LinkContainer />}
-        {messageType === FilterMessageEnum.isEmbed && <EmbedContainer />}
-        {messageType === FilterMessageEnum.isImage && <ImageContainer />}
+        {messageType === MessageTypeEnum.isText && <DefaultContent />}
+        {messageType === MessageTypeEnum.isLink && <LinkContainer />}
+        {messageType === MessageTypeEnum.isEmbed && <EmbedContainer />}
+        {messageType === MessageTypeEnum.isImage && <ImageContainer />}
 
-        {messageType === FilterMessageEnum.isImageWithText && (
+        {messageType === MessageTypeEnum.isImageWithText && (
           <Fragment>
             <DefaultContent />
             <ImageContainer />
           </Fragment>
         )}
 
-        {messageType === FilterMessageEnum.isImageWithTextAndLink && (
+        {messageType === MessageTypeEnum.isImageWithTextAndLink && (
           <Fragment>
             <LinkContainer />
             <ImageContainer />

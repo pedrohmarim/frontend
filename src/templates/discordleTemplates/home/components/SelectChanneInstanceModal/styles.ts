@@ -46,17 +46,6 @@ export const EmptyContent = styled(Row)`
   color: ${(props) => props.theme.discordleColors.text} !important;
 `;
 
-export const ReloadContainer = styled.div`
-  color: ${(props) => props.theme.discordleColors.text};
-  margin-left: 10px;
-  margin-top: 5px;
-  cursor: pointer;
-`;
-
-export const SelectContainer = styled(Row)`
-  width: 100% !important;
-`;
-
 export const Description = styled.span<{
   fontSize?: string;
   fontStyle?: string;

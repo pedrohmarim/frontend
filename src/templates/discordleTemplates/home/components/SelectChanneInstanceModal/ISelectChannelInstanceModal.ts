@@ -11,6 +11,11 @@ export interface ISelectChannelInstanceModal {
   >;
 }
 
-export interface ShowInputsState {
+export interface IShowInputsState {
   [key: string]: boolean;
+}
+
+export interface IFormValues {
+  channelId: string;
+  channelCode: string;
 }

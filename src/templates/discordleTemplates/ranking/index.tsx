@@ -226,7 +226,7 @@ export default function Ranking() {
           />
         </S.Modal>
 
-        <Row justify="space-between" align="middle">
+        <S.ButtonRow justify="space-between" align="middle">
           <Button
             onClick={toGame}
             backgroundcolor={theme.discordleColors.primary}
@@ -237,17 +237,16 @@ export default function Ranking() {
             <S.UserSpan>Voltar</S.UserSpan>
           </Button>
 
-          <Row justify="end" align="middle">
-            <Button
-              onClick={gridReload}
-              backgroundcolor={theme.discordleColors.primary}
-              color={theme.discordleColors.text}
-              icon={<FeatherIcons icon="rotate-cw" size={18} />}
-            >
-              <S.UserSpan>Recarregar</S.UserSpan>
-            </Button>
-          </Row>
-        </Row>
+          <Button
+            onClick={gridReload}
+            backgroundcolor={theme.discordleColors.primary}
+            color={theme.discordleColors.text}
+            icon={<FeatherIcons icon="rotate-cw" size={18} />}
+            width={140}
+          >
+            <S.UserSpan>Recarregar</S.UserSpan>
+          </Button>
+        </S.ButtonRow>
       </S.TableContainer>
     </MessageContainer>
   );

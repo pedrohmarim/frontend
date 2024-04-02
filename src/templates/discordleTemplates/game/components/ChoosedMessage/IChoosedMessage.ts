@@ -1,6 +1,6 @@
 import { IAuthor } from 'services/DiscordleService/IDiscordleService';
 import {
-  FilterMessageEnum,
+  MessageTypeEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
 import { ISwitchValues } from '../../IGame';
@@ -25,7 +25,7 @@ export interface IChoosedMessage {
   urlLink: string;
   content: string;
   timestamp: string;
-  messageType: FilterMessageEnum;
+  messageType: MessageTypeEnum;
   messageLevel?: MessageLevelEnum;
   formattedAttachs: JSX.Element[];
   referencedMessage?: string;

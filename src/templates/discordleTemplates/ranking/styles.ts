@@ -28,3 +28,7 @@ export const UserSpan = styled.span`
 export const ModalTitle = styled.span`
   color: ${(props) => props.theme.discordleColors.primary};
 `;
+
+export const ButtonRow = styled(AntdRow)`
+  margin-top: 25px;
+`;

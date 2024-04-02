@@ -9,7 +9,10 @@ import DisplayMessageContainer from 'templates/discordleTemplates/game/component
 import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
-import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
+import {
+  MessageTypeEnum,
+  MessageLevelEnum,
+} from 'helpers/discordle/filterMessageEnum';
 import {
   Button,
   FeatherIcons,
@@ -81,9 +84,10 @@ export default function ChoosedMessage({
               MessageLevelEnum.isPrevious
             );
           } else {
-            previousMessage.content =
+            consecutiveMessage.content =
               'Não existe uma mensagem consecutiva à escolhida.';
-            previousMessage.messageLevel = MessageLevelEnum.isPrevious;
+            consecutiveMessage.messageLevel = MessageLevelEnum.isPrevious;
+            consecutiveMessage.messageType = MessageTypeEnum.isText;
           }
           if (ConsecutivePosition) {
             consecutiveMessage = filterMessage(
@@ -91,12 +95,13 @@ export default function ChoosedMessage({
               MessageLevelEnum.isConsecutive
             );
           } else {
-            consecutiveMessage.content =
+            previousMessage.content =
               'Não existe uma mensagem anterior à escolhida.';
-            consecutiveMessage.messageLevel = MessageLevelEnum.isConsecutive;
+            previousMessage.messageLevel = MessageLevelEnum.isConsecutive;
+            previousMessage.messageType = MessageTypeEnum.isText;
           }
 
-          setTotalMessages([consecutiveMessage, message, previousMessage]);
+          setTotalMessages([previousMessage, message, consecutiveMessage]);
         }
       );
     }

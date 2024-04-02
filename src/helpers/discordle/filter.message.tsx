@@ -1,5 +1,5 @@
 import { IMessage } from 'services/DiscordleService/IDiscordleService';
-import { FilterMessageEnum, MessageLevelEnum } from './filterMessageEnum';
+import { MessageTypeEnum, MessageLevelEnum } from './filterMessageEnum';
 import { Image } from 'antd_components';
 import { EmbedTypeEnum } from './embedTypeEnum';
 import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
@@ -9,7 +9,7 @@ export default function filterMessage(
   messageLevelParam: MessageLevelEnum
 ) {
   const response: IChoosedMessage = {
-    messageType: FilterMessageEnum.isText,
+    messageType: MessageTypeEnum.isText,
     formattedAttachs: [] as JSX.Element[],
     urlLink: '',
     content: message.Content,
@@ -21,7 +21,7 @@ export default function filterMessage(
   };
 
   if (message.Attachments.length) {
-    response.messageType = FilterMessageEnum.isImage;
+    response.messageType = MessageTypeEnum.isImage;
 
     message.Attachments.forEach(({ Url }, index) => {
       response.formattedAttachs.push(
@@ -37,10 +37,10 @@ export default function filterMessage(
   }
 
   if (message.Content.includes('<@'))
-    response.messageType = FilterMessageEnum.isText;
+    response.messageType = MessageTypeEnum.isText;
 
   if (message.Embeds.length) {
-    response.messageType = FilterMessageEnum.isEmbed;
+    response.messageType = MessageTypeEnum.isEmbed;
 
     message.Embeds.forEach(({ Video, Type }) => {
       switch (Type.toLowerCase()) {
@@ -74,7 +74,7 @@ export default function filterMessage(
   )
     response.content = '';
   else if (includeLink) {
-    response.messageType = FilterMessageEnum.isLink;
+    response.messageType = MessageTypeEnum.isLink;
 
     const urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
 
@@ -90,13 +90,13 @@ export default function filterMessage(
   }
 
   if (message.Attachments.length && message.Content.length)
-    response.messageType = FilterMessageEnum.isImageWithText;
+    response.messageType = MessageTypeEnum.isImageWithText;
 
   if (message.Attachments.length && includeLink)
-    response.messageType = FilterMessageEnum.isImageWithTextAndLink;
+    response.messageType = MessageTypeEnum.isImageWithTextAndLink;
 
   if (!message.Attachments.length && includeLink)
-    response.messageType = FilterMessageEnum.isImageWithTextAndLink;
+    response.messageType = MessageTypeEnum.isImageWithTextAndLink;
 
   return response;
 }
