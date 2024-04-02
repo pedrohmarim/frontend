@@ -84,10 +84,10 @@ export default function ChoosedMessage({
               MessageLevelEnum.isPrevious
             );
           } else {
-            consecutiveMessage.content =
-              'Não existe uma mensagem consecutiva à escolhida.';
-            consecutiveMessage.messageLevel = MessageLevelEnum.isPrevious;
-            consecutiveMessage.messageType = MessageTypeEnum.isText;
+            previousMessage.content =
+              'Não existe uma mensagem anterior à escolhida.';
+            previousMessage.messageLevel = MessageLevelEnum.isPrevious;
+            previousMessage.messageType = MessageTypeEnum.isText;
           }
           if (ConsecutivePosition) {
             consecutiveMessage = filterMessage(
@@ -95,10 +95,10 @@ export default function ChoosedMessage({
               MessageLevelEnum.isConsecutive
             );
           } else {
-            previousMessage.content =
-              'Não existe uma mensagem anterior à escolhida.';
-            previousMessage.messageLevel = MessageLevelEnum.isConsecutive;
-            previousMessage.messageType = MessageTypeEnum.isText;
+            consecutiveMessage.content =
+              'Não existe uma mensagem consecutiva à escolhida.';
+            consecutiveMessage.messageLevel = MessageLevelEnum.isConsecutive;
+            consecutiveMessage.messageType = MessageTypeEnum.isText;
           }
 
           setTotalMessages([previousMessage, message, consecutiveMessage]);
