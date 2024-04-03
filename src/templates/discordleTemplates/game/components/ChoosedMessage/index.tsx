@@ -89,6 +89,7 @@ export default function ChoosedMessage({
             previousMessage.messageLevel = MessageLevelEnum.isPrevious;
             previousMessage.messageType = MessageTypeEnum.isText;
           }
+
           if (ConsecutivePosition) {
             consecutiveMessage = filterMessage(
               ConsecutivePosition,
@@ -101,7 +102,7 @@ export default function ChoosedMessage({
             consecutiveMessage.messageType = MessageTypeEnum.isText;
           }
 
-          setTotalMessages([previousMessage, message, consecutiveMessage]);
+          setTotalMessages([consecutiveMessage, message, previousMessage]);
         }
       );
     }

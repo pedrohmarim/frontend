@@ -32,9 +32,9 @@ export default function DisplayMessageContainer({
 
   function titleMessage() {
     switch (messageLevel) {
-      case MessageLevelEnum.isPrevious:
-        return 'Mensagem anterior:';
       case MessageLevelEnum.isConsecutive:
+        return 'Mensagem anterior:';
+      case MessageLevelEnum.isPrevious:
         return 'Próxima mensagem:';
       default:
         return 'Mensagem:';
