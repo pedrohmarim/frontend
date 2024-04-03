@@ -14,8 +14,10 @@ export interface IChoosedMessageComponent {
   serverName: string;
   authorSelected: string;
   usedHint: boolean;
+  openTour: boolean;
   tabkey: number;
   serverIcon: string;
+  setOpenTour: React.Dispatch<React.SetStateAction<boolean>>;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }

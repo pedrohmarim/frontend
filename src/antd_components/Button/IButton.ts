@@ -10,7 +10,10 @@ export interface IButton {
   icon?: React.ReactNode;
   children?: React.ReactNode;
   disabled?: boolean;
-  onClick?: () => void;
   type?: ButtonType;
   htmlType?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
+  ref?: React.MutableRefObject<null>;
+  onClick?: () => void;
+  onMouseEnter?: () => unknown;
+  onMouseLeave?: () => unknown;
 }

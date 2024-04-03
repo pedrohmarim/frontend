@@ -95,8 +95,8 @@ export default function ConfigurationModal({
 
   return (
     <Modal
+      style={{ top: '10%' }}
       open={openModal}
-      bodyStyle={{ backgroundColor: '#17171a' }}
       footer={false}
       closable={false}
       destroyOnClose

@@ -9,6 +9,7 @@ import DiscordleInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import notification from 'antd_components/Notification/Notification.component';
 import { Form } from 'antd';
 import theme from 'globalStyles/theme';
+import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
 import {
   Modal,
   List,
@@ -19,7 +20,6 @@ import {
   Divider,
   Button,
 } from 'antd_components';
-import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
 
 export default function SelectChanneInstanceModal({
   selectedGuildName,
@@ -129,7 +129,6 @@ export default function SelectChanneInstanceModal({
 
   return (
     <Modal
-      bodyStyle={{ backgroundColor: '#17171a' }}
       open={open}
       footer={false}
       destroyOnClose

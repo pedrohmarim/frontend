@@ -6,10 +6,10 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif !important;
   }
 
   body {
-    font-family: 'Roboto', sans-serif !important;
     background-image: url("https://images4.alphacoders.com/909/909912.png") !important;
 
     ::-webkit-scrollbar {
@@ -93,25 +93,12 @@ export default createGlobalStyle`
     }
   }
 
-  .ant-popover-arrow-content {
-    --antd-arrow-background-color: rgba(138, 0, 194, 0.5);
+  .ant-popconfirm-title {
+    color: ${(props) => props.theme.discordleColors.text} !important;
   }
 
-  .ant-popover-inner {
-    border: solid 2px rgba(138, 0, 194, 0.5);
-    border-radius:10px;
-    padding: 5px;
-    background-color: ${(props) =>
-      props.theme.discordleColors.background} !important;
-  }
-
-  .ant-popover-inner-content {
-    width: 360px;
-    background-color: ${(props) =>
-      props.theme.discordleColors.background} !important;
-  }
-
-  .ant-popover-arrow {
+  .ant-popover-arrow::before {
+    background-color: rgba(138, 0, 194, 0.5) !important;
   }
   
   .ant-popover-message{
@@ -243,14 +230,13 @@ export default createGlobalStyle`
       props.theme.discordleColors.background} !important;
   }
 
-  .ant-modal-header{
-    background-color: ${(props) =>
-      props.theme.discordleColors.background} !important;
-    border-bottom: 0px;
+  .ant-modal-header {
+    margin-bottom: 35px !important;
   }
 
-  .ant-modal-footer {
-    border-top: 0px;
+  .ant-modal-header, .ant-modal-content{
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
   }
   
   .ant-select-selection-placeholder {

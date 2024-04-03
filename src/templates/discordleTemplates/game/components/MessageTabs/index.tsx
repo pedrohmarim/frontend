@@ -18,8 +18,10 @@ export default function MessageTabs({
   usedHint,
   answers,
   authors,
+  openTour,
   saveScore,
   setUsedHint,
+  setOpenTour,
   setActiveTabKey,
   setSwitchValues,
 }: I.IMessageTabs) {
@@ -113,16 +115,18 @@ export default function MessageTabs({
             >
               <ChoosedMessage
                 authorSelected={authorSelected}
-                switchValues={switchValues}
                 openModal={openModal}
                 isOwner={isOwner}
                 score={score}
+                openTour={openTour}
                 usedHint={usedHint}
                 tabkey={activeTabKey}
                 serverName={serverName}
                 serverIcon={serverIcon}
                 message={choosedMessage}
+                switchValues={switchValues}
                 setUsedHint={setUsedHint}
+                setOpenTour={setOpenTour}
                 setOpenModal={setOpenModal}
               />
 

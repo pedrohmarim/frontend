@@ -40,6 +40,7 @@ export const ListItemMeta = styled(List.Item.Meta)`
 
 export const RowContainer = styled(Row)`
   height: 33px;
+  padding: 0 3%;
 `;
 
 export const EmptyContent = styled(Row)`

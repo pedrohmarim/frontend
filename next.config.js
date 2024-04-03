@@ -2,6 +2,6 @@
 module.exports = {
   reactStrictMode: false,
   images: {
-    domains: ['media.tenor.com'],
+    domains: ['media.tenor.com', 'cdn.discordapp.com'],
   },
 };

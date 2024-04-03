@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
-import type { MenuProps } from 'antd';
 import DiscordleGameApi from 'services/DiscordleService/DiscordleGame';
 import theme from 'globalStyles/theme';
 import filterMessage from 'helpers/discordle/filter.message';
@@ -9,6 +8,7 @@ import DisplayMessageContainer from 'templates/discordleTemplates/game/component
 import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import {
   MessageTypeEnum,
   MessageLevelEnum,
@@ -16,11 +16,10 @@ import {
 import {
   Button,
   FeatherIcons,
-  Tooltip,
-  Dropdown,
-  Avatar,
   Row,
   PopConfirm,
+  Tour,
+  Tooltip,
 } from 'antd_components';
 
 export default function ChoosedMessage({
@@ -28,6 +27,7 @@ export default function ChoosedMessage({
   tabkey,
   isOwner,
   message,
+  openTour,
   usedHint,
   openModal,
   serverName,
@@ -35,28 +35,17 @@ export default function ChoosedMessage({
   switchValues,
   authorSelected,
   setUsedHint,
+  setOpenTour,
   setOpenModal,
 }: I.IChoosedMessageComponent) {
   const router = useRouter();
 
+  const ref = useRef(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [openPopConfirm, setOpenPopConfirm] = useState(false);
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     message,
   ]);
-
-  const [stillOpen, setStillOpen] = useState({
-    tooltip: false,
-    popconfirm: false,
-    dropdown: false,
-  });
-
-  function closeAll() {
-    setStillOpen({
-      tooltip: false,
-      popconfirm: false,
-      dropdown: false,
-    });
-  }
 
   function handleGetHints(fromClick?: boolean) {
     if (router.isReady) {
@@ -110,7 +99,6 @@ export default function ChoosedMessage({
 
   useEffect(() => {
     if (usedHint) handleGetHints();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,132 +114,111 @@ export default function ChoosedMessage({
       }, 2000);
     });
 
-  const items: MenuProps['items'] = [];
-
-  if (totalMessages.length === 1) {
-    items.push({
-      key: '1',
-      label: (
-        <PopConfirm
-          title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
-          okText="Mostrar"
-          cancelText="Cancelar"
-          onConfirm={confirm}
-          getPopupContainer={(trigger) => trigger}
-          onCancel={closeAll}
-          placement="right"
-          open={stillOpen.popconfirm || loading}
-          okButtonProps={{
-            style: {
-              backgroundColor: theme.discordleColors.primary,
-              border: 'none',
-            },
-          }}
-          cancelButtonProps={{
-            style: {
-              backgroundColor: theme.discordleColors.text,
-              color: theme.discordleColors.primary,
-            },
-          }}
-        >
-          <S.OptionItem
-            align="middle"
-            onClick={() =>
-              setStillOpen({
-                popconfirm: true,
-                tooltip: false,
-                dropdown: true,
-              })
-            }
-          >
-            <FeatherIcons
-              icon="star"
-              color={theme.discordleColors.primary}
-              size={20}
-            />
-            <S.Hint>Dica</S.Hint>
-          </S.OptionItem>
-        </PopConfirm>
-      ),
-    });
-  }
-
-  if (isOwner)
-    items.push({
-      key: '2',
-      label: (
-        <S.OptionItem
-          align="middle"
-          onClick={() => {
-            setStillOpen({
-              popconfirm: false,
-              tooltip: false,
-              dropdown: false,
-            });
-
-            setOpenModal(!openModal);
-          }}
-        >
-          <FeatherIcons
-            icon="settings"
-            color={theme.discordleColors.primary}
-            size={20}
-          />
-          <S.Hint>Configurações</S.Hint>
-        </S.OptionItem>
-      ),
-    });
-
   return (
     <S.PaddingContainer>
-      <S.ScoreContainer>
-        <FeatherIcons icon="star" size={18} />
-        <S.ScoreText>
+      <S.ScoreContainer align="middle" justify="space-between">
+        <S.ScoreTextContainer>
           {switchValues && (
-            <Fragment>
+            <S.ScoreText>
               Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
-            </Fragment>
+            </S.ScoreText>
           )}
-        </S.ScoreText>
-      </S.ScoreContainer>
+        </S.ScoreTextContainer>
 
-      {items.length > 0 && (
-        <Tooltip title="Opções" color="#17171a" open={stillOpen.tooltip}>
-          <S.Options>
-            <Dropdown
-              menu={{ items }}
-              placement="bottomRight"
-              trigger={window.innerWidth < 450 ? ['click'] : ['hover', 'click']}
-              open={stillOpen.dropdown || loading}
-              onOpenChange={(open) =>
-                setStillOpen({
-                  popconfirm: !open ? false : stillOpen.popconfirm,
-                  tooltip: open && !stillOpen.popconfirm,
-                  dropdown: open,
-                })
-              }
+        <Row>
+          {totalMessages.length === 1 && (
+            <PopConfirm
+              title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
+              okText="Mostrar"
+              cancelText="Cancelar"
+              onConfirm={confirm}
+              getPopupContainer={(trigger) => trigger}
+              onCancel={() => setOpenPopConfirm(false)}
+              placement="bottom"
+              open={openPopConfirm || loading}
+              overlayStyle={{
+                backgroundColor: theme.discordleColors.background,
+                borderRadius: '5px',
+              }}
+              overlayInnerStyle={{
+                border: 'solid 2px rgba(138, 0, 194, 0.5)',
+                width: '360px',
+                backgroundColor: theme.discordleColors.background,
+              }}
+              okButtonProps={{
+                style: {
+                  backgroundColor: theme.discordleColors.primary,
+                  border: 'none',
+                },
+              }}
+              cancelButtonProps={{
+                style: {
+                  backgroundColor: theme.discordleColors.text,
+                  color: theme.discordleColors.primary,
+                },
+              }}
             >
-              <a onClick={(e) => e.preventDefault()}>
+              <Tooltip title="Mostrar Dica">
                 <Button
-                  type="ghost"
+                  ref={ref}
+                  onClick={() => setOpenPopConfirm(true)}
+                  width={85}
+                  backgroundcolor="transparent"
+                  height={33}
                   icon={
                     <FeatherIcons
-                      icon="more-vertical"
-                      color={theme.discordleColors.primary}
-                      size={25}
+                      icon="message-circle"
+                      color={theme.discordleColors.text}
+                      size={20}
                     />
                   }
                 />
-              </a>
-            </Dropdown>
-          </S.Options>
-        </Tooltip>
-      )}
+              </Tooltip>
+            </PopConfirm>
+          )}
+
+          {!isOwner && (
+            <Tooltip title="Configurações">
+              <Button
+                onClick={() => setOpenModal(!openModal)}
+                height={33}
+                margin="0 0 0 10px"
+                backgroundcolor="transparent"
+                icon={
+                  <FeatherIcons
+                    icon="settings"
+                    color={theme.discordleColors.text}
+                    size={20}
+                  />
+                }
+              />
+            </Tooltip>
+          )}
+        </Row>
+      </S.ScoreContainer>
+
+      <Tour
+        open={openTour}
+        onClose={() => setOpenTour(!openTour)}
+        steps={[
+          {
+            title: 'Save',
+            description: 'Save your changes.',
+            target: () => ref.current,
+          },
+        ]}
+      />
 
       <S.BiggerGameTitle>Discordle</S.BiggerGameTitle>
 
       <Row justify="center" align="middle">
-        <Avatar src={serverIcon} />
+        <Image
+          src={serverIcon}
+          alt="img"
+          width={38}
+          height={38}
+          style={{ borderRadius: '50%' }}
+        />
         <S.ServerName>{serverName}</S.ServerName>
       </Row>
 

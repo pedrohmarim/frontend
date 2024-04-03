@@ -13,10 +13,16 @@ export default function Button({
   boxshadow,
   htmlType,
   disabled,
+  ref,
+  onMouseEnter,
+  onMouseLeave,
   onClick,
 }: I.IButton) {
   return (
     <S.Button
+      ref={ref}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       disabled={disabled}
       boxshadow={boxshadow}
       type={type}

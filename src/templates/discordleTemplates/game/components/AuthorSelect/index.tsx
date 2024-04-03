@@ -4,14 +4,14 @@ import * as S from './styles';
 import * as I from './IAuthorSelect';
 
 const AuthorSelect = ({
-  messageId,
-  authors,
-  usedHint,
   activeTabKey,
-  setAuthorSelected,
+  messageId,
+  usedHint,
+  authors,
   saveScore,
-  setActiveTabKey,
   setUsedHint,
+  setActiveTabKey,
+  setAuthorSelected,
 }: I.IAuthorSelect) => {
   return (
     <S.Select

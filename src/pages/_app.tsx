@@ -1,7 +1,6 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from 'styled-components';
-import 'antd/dist/antd.css';
 import theme from 'globalStyles/theme';
 import { ContextProvider } from '../Context';
 import Loading from 'antd_components/Loading';

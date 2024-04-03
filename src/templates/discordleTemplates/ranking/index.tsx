@@ -168,9 +168,11 @@ export default function Ranking() {
     <MessageContainer>
       <S.TableContainer>
         {channelName ? (
-          <GameTitle>Discordle | Ranking - #{channelName}</GameTitle>
+          <GameTitle margin="0 0 15px 0">
+            Discordle | Ranking - #{channelName}
+          </GameTitle>
         ) : (
-          <GameTitle>Erro ao carregar ranking</GameTitle>
+          <GameTitle margin="15px 0 0 0">Erro ao carregar ranking</GameTitle>
         )}
 
         <Table

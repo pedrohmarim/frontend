@@ -22,7 +22,7 @@ export const Button = styled(AntDesignButton)<I.IButton>`
   &&:hover,
   &&:focus {
     color: ${({ color }) => color} !important;
-    background-color: ${({ backgroundcolor }) => backgroundcolor};
+    background-color: ${({ backgroundcolor }) => backgroundcolor} !important;
     border: none;
     opacity: 0.9;
   }

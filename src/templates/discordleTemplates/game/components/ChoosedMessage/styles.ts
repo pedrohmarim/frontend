@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { Row } from 'antd_components';
 
-export const GameTitle = styled.h2`
+export const GameTitle = styled.h2<{ margin?: string }>`
   text-align: center;
+  margin: ${({ margin }) => margin};
   color: ${(props) => props.theme.discordleColors.primary};
   word-break: break-all;
 `;
@@ -11,26 +12,16 @@ export const BiggerGameTitle = styled.h1`
   color: ${(props) => props.theme.discordleColors.primary};
 `;
 
-export const Options = styled.div`
-  position: absolute;
-  height: 25px;
-  right: 0;
-  top: 0;
-`;
-
 export const ScoreContainer = styled(Row)`
+  margin-bottom: 10px;
   color: ${(props) => props.theme.discordleColors.text};
   font-size: 11pt;
-  position: absolute;
-  margin-top: 15px;
-  height: 25px;
-  left: 0;
-  top: 0;
 `;
 
+export const ScoreTextContainer = styled.div``;
+
 export const ScoreText = styled.span`
-  margin-top: -1px;
-  margin-left: 4px;
+  margin-left: 5px;
 `;
 
 export const Container = styled.div`
@@ -56,23 +47,5 @@ export const MainMessageContainer = styled.div`
 `;
 
 export const PaddingContainer = styled.div`
-  padding: 50px 0;
-`;
-
-export const OptionItem = styled(Row)`
-  padding: 5px 15px;
-  background-color: ${(props) => props.theme.discordleColors.background};
-  border: solid 1px rgba(255, 255, 255, 0.1);
-  transition: all 0.2s;
-
-  :hover {
-    opacity: 0.9;
-  }
-`;
-
-export const Hint = styled.span`
-  margin: 2px 0 0 5px;
-  font-size: 12pt;
-  font-weight: 500;
-  color: ${(props) => props.theme.discordleColors.text};
+  padding: 20px 0;
 `;

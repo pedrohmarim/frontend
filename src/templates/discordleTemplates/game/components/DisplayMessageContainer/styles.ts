@@ -35,10 +35,13 @@ export const HintAuthorUsername = styled.span`
   margin-left: 5px;
 `;
 
-export const ReferecendMessageContent = styled.span<{ width: number }>`
+export const ReferecendMessageContent = styled.div<{ width: number }>`
   overflow-x: auto;
   max-width: ${({ width }) => (width < 625 ? width - 80 + 'px' : '625px')};
   word-break: break-all;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const AuthorContainer = styled(Row)`

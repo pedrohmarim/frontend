@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as I from './IConfigurationSwitches';
 import * as S from './styles';
 import theme from 'globalStyles/theme';
@@ -23,81 +23,101 @@ export default function ConfigurationParams({
   onChange,
 }: I.ISwitches) {
   const [loadingSwitch, setLoadingSwitch] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(1920);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener('resize', handleResize);
+
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
+  const isMobile = windowWidth < 375;
 
   const content = img && (
-    <Image src={img.src} alt="img" height="100%" width={550} />
+    <Image src={img.src} alt="img" height="100%" width="100%" />
   );
 
   return (
-    <Row justify="start" align="middle">
-      {type !== SwitchNameEnum.PointsPerCorrectAnswer && (
-        <Switch
-          onChange={async (value) => {
-            setLoadingSwitch(true);
-            await onChange(value ? 1 : 0).finally(() =>
-              setLoadingSwitch(false)
-            );
-          }}
-          defaultChecked={Boolean(value)}
-          loading={loadingSwitch}
-          checkedChildren={<FeatherIcons icon="check" size={20} />}
-          unCheckedChildren={
-            <FeatherIcons icon="x" size={20} color="rgba(255, 0, 0, 0.7)" />
-          }
-        />
-      )}
+    <Row justify="start" align="middle" gutter={[0, 8]}>
+      <S.SwitchDescriptionContainer>
+        <S.SwitchDescription width={isMobile ? '92%' : '100%'}>
+          {label}
+        </S.SwitchDescription>
 
-      <S.SwitchDescription
-        margin={
-          type !== SwitchNameEnum.PointsPerCorrectAnswer
-            ? '0 5px 0 10px'
-            : '0 5px 0 0'
-        }
-      >
-        {label}
-      </S.SwitchDescription>
-
-      {img ? (
-        <Popover
-          placement="right"
-          content={content}
-          overlayStyle={{ width: '610px' }}
-          trigger={window.innerWidth < 450 ? ['click'] : ['hover', 'click']}
-        >
-          <FeatherIcons
-            style={{ cursor: 'pointer' }}
-            icon="help-circle"
-            size={20}
-            color={theme.discordleColors.text}
-          />
-        </Popover>
-      ) : (
-        <Tooltip title="Cada pergunta respondida corretamente terá o valor escolhido, mas se a resposta estiver correta e for dada uma dica, o valor será reduzido pela metade.">
-          <FeatherIcons
-            style={{ cursor: 'help' }}
-            icon="help-circle"
-            size={20}
-            color={theme.discordleColors.text}
-          />
-        </Tooltip>
-      )}
-
-      {type === SwitchNameEnum.PointsPerCorrectAnswer && (
-        <Col span={24}>
-          <Select
-            defaultValue={value}
-            onChange={(value) => onChange(Number(value))}
-            style={{ marginTop: '10px', width: '30%' }}
-            size="middle"
-            notFoundContent={<Row justify="center">Sem dados</Row>}
-            placeholder="Pontos por acerto"
+        {img ? (
+          <Popover
+            placement="right"
+            content={content}
+            trigger={window.innerWidth < 450 ? ['click'] : ['hover', 'click']}
+            overlayInnerStyle={{
+              border: 'solid 2px rgba(138, 0, 194, 0.5)',
+              backgroundColor: theme.discordleColors.background,
+            }}
+            overlayStyle={{
+              borderRadius: '5px',
+              backgroundColor: theme.discordleColors.background,
+            }}
           >
-            {[2, 4, 6, 8, 10].map((value) => (
-              <Select.Option key={value}>{value}</Select.Option>
-            ))}
-          </Select>
-        </Col>
-      )}
+            <FeatherIcons
+              style={{ cursor: 'pointer' }}
+              icon="help-circle"
+              size={20}
+              color={theme.discordleColors.text}
+            />
+          </Popover>
+        ) : (
+          <Tooltip title="Cada pergunta respondida corretamente terá o valor escolhido, mas se a resposta estiver correta e for dada uma dica, o valor será reduzido pela metade.">
+            <FeatherIcons
+              style={{ cursor: 'help' }}
+              icon="help-circle"
+              size={20}
+              color={theme.discordleColors.text}
+            />
+          </Tooltip>
+        )}
+      </S.SwitchDescriptionContainer>
+
+      <Col span={24}>
+        {type !== SwitchNameEnum.PointsPerCorrectAnswer && (
+          <Switch
+            onChange={async (value) => {
+              setLoadingSwitch(true);
+              await onChange(value ? 1 : 0).finally(() =>
+                setLoadingSwitch(false)
+              );
+            }}
+            defaultChecked={Boolean(value)}
+            loading={loadingSwitch}
+            checkedChildren={<FeatherIcons icon="check" size={20} />}
+            unCheckedChildren={
+              <FeatherIcons icon="x" size={20} color="rgba(255, 0, 0, 0.7)" />
+            }
+          />
+        )}
+
+        {type === SwitchNameEnum.PointsPerCorrectAnswer && (
+          <Col span={24}>
+            <Select
+              defaultValue={value}
+              onChange={(value) => onChange(Number(value))}
+              style={{ marginTop: '10px', width: '30%' }}
+              size="middle"
+              notFoundContent={<Row justify="center">Sem dados</Row>}
+              placeholder="Pontos por acerto"
+            >
+              {[2, 4, 6, 8, 10].map((value) => (
+                <Select.Option key={value}>{value}</Select.Option>
+              ))}
+            </Select>
+          </Col>
+        )}
+      </Col>
 
       <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
     </Row>

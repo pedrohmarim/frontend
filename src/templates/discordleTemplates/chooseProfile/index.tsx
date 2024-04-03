@@ -181,12 +181,11 @@ export default function ChooseProfile() {
 
   return (
     <MessageContainer width={windowWidth > 1200 ? '100%' : ''} margin="auto">
-      <GameTitle>
-        <Row justify="center">
-          <Col span={24}>Escolha seu Perfil para</Col>
-          <Col span={24}>acessar #{channelName}</Col>
-        </Row>
-      </GameTitle>
+      <Row justify="center">
+        <GameTitle margin="0 0 15px 0">
+          Escolha seu Perfil para acessar <br /> #{channelName}
+        </GameTitle>
+      </Row>
 
       <S.MemberRow ref={memberRowRef} onMouseDown={handleMouseDown}>
         {members.map(({ AvatarUrl, Id, Username }, index) => (
@@ -222,14 +221,12 @@ export default function ChooseProfile() {
 
           <Row justify="center" align="middle" gutter={[16, 16]}>
             <Col span={24}>
-              <Description>
+              <Description fontSize="12pt">
                 Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto
                 <HomeSpan> #{channelName}</HomeSpan>
+                <br />
+                para gerar seu token.
               </Description>
-
-              <Col span={24}>
-                <Description>para gerar seu token.</Description>
-              </Col>
             </Col>
 
             <Row justify="center">
