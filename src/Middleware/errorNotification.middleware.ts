@@ -90,24 +90,25 @@ export const errorRequestInterceptor = (errorRequest: unknown) => {
 };
 
 export const errorResponseInterceptor = (
-  error: AxiosError<{ Message: string; Status: number }>
+  error: AxiosError<{
+    Message: string;
+    error_description: string;
+    Status: number;
+  }>
 ) => {
   activeRequests--;
   DisableLoading();
 
   const description =
-    error.response?.data.Message ?? 'Não foi possível conectar-se ao servidor.';
-  const statusCode = error.response?.status;
+    error.response?.data.Message ??
+    error.response?.data.error_description ??
+    'Não foi possível conectar-se ao servidor.';
 
-  switch (statusCode) {
-    case 401:
-      RedirectLogin(description);
-      break;
-    default:
-      break;
-  }
+  const statusCode = error.response?.status ?? error.response?.data.Status;
 
-  if (statusCode !== 401) Notification.error('Erro!', description);
+  if (statusCode === 401 || description.includes('Não autorizado'))
+    RedirectLogin(description);
+  else Notification.error('Erro!', description);
 
   return Promise.reject(error);
 };

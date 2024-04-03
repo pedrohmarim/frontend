@@ -165,14 +165,17 @@ export default function ChooseProfile() {
           </Description>
         </Col>
 
-        <Button
-          margin="20px 0 0 0"
-          backgroundcolor={theme.discordleColors.primary}
-          color={theme.discordleColors.text}
-          onClick={() => router.back()}
-        >
-          Voltar
-        </Button>
+        <Row justify="center">
+          <Button
+            margin="20px 0 0 0"
+            width={200}
+            backgroundcolor={theme.discordleColors.primary}
+            color={theme.discordleColors.text}
+            onClick={() => router.back()}
+          >
+            Voltar
+          </Button>
+        </Row>
       </MessageContainer>
     );
 

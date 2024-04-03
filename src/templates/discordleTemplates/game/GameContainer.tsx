@@ -52,10 +52,6 @@ export default function GameContainer() {
                 setActiveTabKey(data.length);
               } else setActiveTabKey(data.length + 1);
             }
-            // if (data.length > 0 && data[data.length - 1].UsedHint) {
-            //   setActiveTabKey(data.length);
-            //   setUsedHint(true);
-            // } else setActiveTabKey(data.length + 1);
 
             setAnswers(data);
 
@@ -110,24 +106,26 @@ export default function GameContainer() {
 
       if (!alreadyAnswered) {
         await DiscordGameApi.SaveScore(dto).then((data: I.IAnswer[]) => {
-          setUsedHint(false);
-          setAnswers(data);
-          setAlreadyAnswered(data.length === 5);
+          if (data.length) {
+            setUsedHint(false);
+            setAnswers(data);
+            setAlreadyAnswered(data.length === 5);
 
-          const success = data[data.length - 1].Success;
-          const description: JSX.Element = (
-            <Fragment>
-              {success
-                ? 'Quem mandou essa mensagem foi '
-                : 'A resposta certa era '}
-              <AuthorHighlight color={theme.discordleColors.primary}>
-                {data.find((x) => x.TabKey === activeTabKey)?.Username}
-              </AuthorHighlight>
-            </Fragment>
-          );
+            const success = data[data.length - 1].Success;
+            const description: JSX.Element = (
+              <Fragment>
+                {success
+                  ? 'Quem mandou essa mensagem foi '
+                  : 'A resposta certa era '}
+                <AuthorHighlight color={theme.discordleColors.primary}>
+                  {data.find((x) => x.TabKey === activeTabKey)?.Username}
+                </AuthorHighlight>
+              </Fragment>
+            );
 
-          if (success) Notification.success('Acertou!', description);
-          else Notification.error('Errou!', description);
+            if (success) Notification.success('Acertou!', description);
+            else Notification.error('Errou!', description);
+          }
         });
       }
     }
