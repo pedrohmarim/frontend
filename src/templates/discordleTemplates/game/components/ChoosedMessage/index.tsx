@@ -177,7 +177,7 @@ export default function ChoosedMessage({
             </PopConfirm>
           )}
 
-          {!isOwner && (
+          {isOwner && (
             <Tooltip title="Configurações">
               <Button
                 onClick={() => setOpenModal(!openModal)}
