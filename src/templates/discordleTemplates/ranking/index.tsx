@@ -199,7 +199,6 @@ export default function Ranking() {
           title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
           onCancel={() => setOpen(false)}
           onOk={() => setOpen(false)}
-          bodyStyle={{ backgroundColor: theme.discordleColors.background }}
           okText="Voltar"
           cancelButtonProps={{ style: { display: 'none' } }}
           okButtonProps={{
