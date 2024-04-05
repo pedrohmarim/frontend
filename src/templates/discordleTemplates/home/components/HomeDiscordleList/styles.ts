@@ -15,9 +15,9 @@ export const Title = styled(Row)`
   font-size: 36pt;
 `;
 
-export const Description = styled(Row)<{ ismobile: boolean }>`
+export const Description = styled(Row)<{ width: string }>`
   font-size: 16pt;
-  width: ${({ ismobile }) => (ismobile ? '100%' : '45%')};
+  width: ${({ width }) => width};
 `;
 
 export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`

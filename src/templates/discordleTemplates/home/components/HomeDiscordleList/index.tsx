@@ -151,7 +151,7 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
             </G.HomeSpan>
           </S.Title>
 
-          <S.Description ismobile={!isDesktop} justify="end">
+          <S.Description width={!isDesktop ? '100%' : '45%'} justify="end">
             Teste suas habilidades ao tentar identificar quem escreveu uma das
             cinco frases aleatórias geradas a partir de um canal de texto de seu
             servidor do Discord e desafie seus amigos na disputa pelo topo do
