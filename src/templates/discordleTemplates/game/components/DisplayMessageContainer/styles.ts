@@ -1,27 +1,15 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import {
   Row,
   Carousel as CarouselAntd,
   Avatar as AvatarAntd,
 } from 'antd_components';
 
-export const Title = styled.div<{ isHint: boolean; ismobile: boolean }>`
+export const Title = styled.div`
   text-align: left;
   font-size: 13pt;
   font-weight: 100;
   margin-bottom: 5px;
-
-  ${({ isHint, ismobile }) => {
-    if (isHint && !ismobile) {
-      return css`
-        margin-bottom: -33px;
-      `;
-    } else if (isHint && ismobile) {
-      return css`
-        margin-bottom: 10px;
-      `;
-    }
-  }}
 `;
 
 export const ReferencedMessageContainer = styled.div<{ width: number }>`

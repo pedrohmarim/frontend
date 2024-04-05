@@ -10,6 +10,7 @@ import notification from 'antd_components/Notification/Notification.component';
 import { Form } from 'antd';
 import theme from 'globalStyles/theme';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
+import { getDiscordleToken } from 'utils/localStorage/User';
 import {
   Modal,
   List,
@@ -64,16 +65,26 @@ export default function SelectChanneInstanceModal({
       if (code.length)
         DiscordleInstanceApi.ValidateCode(code, guildId, channelId).then(
           (validCode) => {
-            if (validCode)
-              router.push({
-                pathname: '/discordle/chooseProfile',
-                query: {
-                  channelId,
-                  guildId,
-                  code,
-                },
-              });
-            else notification.error('Erro', 'Código Inválido');
+            if (validCode) {
+              const token = getDiscordleToken();
+
+              const query = {
+                channelId,
+                guildId,
+                code,
+              };
+
+              if (!token)
+                router.push({
+                  pathname: '/discordle/chooseProfile',
+                  query,
+                });
+              else
+                router.push({
+                  pathname: '/discordle/game',
+                  query,
+                });
+            } else notification.error('Erro', 'Código Inválido');
           }
         );
     },

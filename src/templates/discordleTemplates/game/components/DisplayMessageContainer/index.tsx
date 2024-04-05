@@ -102,12 +102,7 @@ export default function DisplayMessageContainer({
         )}
 
       <Row justify="space-between" align="middle">
-        <S.Title
-          ismobile={windowWidth <= 400}
-          isHint={messageLevel !== MessageLevelEnum.isMain && Boolean(author)}
-        >
-          {titleMessage()}
-        </S.Title>
+        <S.Title>{titleMessage()}</S.Title>
       </Row>
 
       <Row justify="end">

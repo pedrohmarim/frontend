@@ -23,17 +23,17 @@ import {
 } from 'antd_components';
 
 export default function ChoosedMessage({
-  score,
-  tabkey,
-  isOwner,
-  message,
-  openTour,
-  usedHint,
-  openModal,
-  serverName,
-  serverIcon,
-  switchValues,
   authorSelected,
+  switchValues,
+  serverIcon,
+  serverName,
+  openModal,
+  usedHint,
+  openTour,
+  message,
+  isOwner,
+  tabkey,
+  score,
   setUsedHint,
   setOpenTour,
   setOpenModal,
@@ -219,51 +219,21 @@ export default function ChoosedMessage({
           height={38}
           style={{ borderRadius: '50%' }}
         />
+
         <S.ServerName>{serverName}</S.ServerName>
       </Row>
 
-      {totalMessages.map(
-        (
-          {
-            content,
-            formattedAttachs,
-            messageType,
-            timestamp,
-            id,
-            messageLevel,
-            urlLink,
-            referencedMessage,
-            author,
-          },
-          index
-        ) => {
-          const props = {
-            content,
-            formattedAttachs,
-            messageType,
-            timestamp,
-            id,
-            messageLevel,
-            urlLink,
-            key: index,
-            referencedMessage,
-            author,
-            switchValues,
-          };
-
-          return (
-            <S.Container key={index}>
-              {messageLevel === MessageLevelEnum.isMain ? (
-                <S.MainMessageContainer>
-                  <DisplayMessageContainer {...props} />
-                </S.MainMessageContainer>
-              ) : (
-                <DisplayMessageContainer {...props} />
-              )}
-            </S.Container>
-          );
-        }
-      )}
+      {totalMessages.map((message, index) => (
+        <S.Container key={index}>
+          {message.messageLevel === MessageLevelEnum.isMain ? (
+            <S.MainMessageContainer>
+              <DisplayMessageContainer {...message} />
+            </S.MainMessageContainer>
+          ) : (
+            <DisplayMessageContainer {...message} />
+          )}
+        </S.Container>
+      ))}
     </S.PaddingContainer>
   );
 }

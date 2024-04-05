@@ -30,7 +30,7 @@ export const TimerContainer = styled.div`
   border: solid 2px rgba(138, 0, 194, 0.4);
 `;
 
-export const AnswerItem = styled.div<{
+export const AnswerItem = styled.h2<{
   success: boolean | undefined;
   score: number;
 }>`
