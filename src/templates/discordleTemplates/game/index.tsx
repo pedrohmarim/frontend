@@ -112,25 +112,27 @@ export default function GameContainer() {
             setAnswers(data);
             setAlreadyAnswered(data.length === 5);
 
-            const success = data.find(
-              (x) => x.TabKey === activeTabKey
-            )?.Success;
+            const score = data.find((x) => x.TabKey === activeTabKey);
 
-            const description: JSX.Element = (
-              <Fragment>
-                {success
-                  ? 'Quem mandou essa mensagem foi '
-                  : 'A resposta certa era '}
-                <AuthorHighlight color={theme.discordleColors.primary}>
-                  {data.find((x) => x.TabKey === activeTabKey)?.Username}
-                </AuthorHighlight>
-              </Fragment>
-            );
+            if (score) {
+              const { Success, Username } = score;
 
-            if (success) Notification.success('Acertou!', description);
-            else Notification.error('Errou!', description);
+              const description: JSX.Element = (
+                <Fragment>
+                  {Success
+                    ? 'Quem mandou essa mensagem foi '
+                    : 'A resposta certa era '}
+                  <AuthorHighlight color={theme.discordleColors.primary}>
+                    {Username}
+                  </AuthorHighlight>
+                </Fragment>
+              );
 
-            if (!success && activeTabKey === 1) setOpenTour(true);
+              if (Success) Notification.success('Acertou!', description);
+              else Notification.error('Errou!', description);
+
+              if (!Success && activeTabKey === 1) setOpenTour(true);
+            }
           }
         });
       }
