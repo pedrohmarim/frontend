@@ -112,7 +112,10 @@ export default function GameContainer() {
             setAnswers(data);
             setAlreadyAnswered(data.length === 5);
 
-            const success = data[data.length - 1].Success;
+            const success = data.find(
+              (x) => x.TabKey === activeTabKey
+            )?.Success;
+
             const description: JSX.Element = (
               <Fragment>
                 {success
