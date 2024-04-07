@@ -102,9 +102,20 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
   function handleFormatLabel() {
     if (totalGuilds === 0) return 'Nenhum servidor registrado.';
 
-    if (totalGuilds === 1) return 'servidor registrado.';
+    if (totalGuilds === 1)
+      return (
+        <>
+          <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
+          servidor registrado.
+        </>
+      );
 
-    return 'servidores registrados.';
+    return (
+      <>
+        <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
+        servidores registrados.
+      </>
+    );
   }
 
   useEffect(() => {
@@ -257,8 +268,6 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
           </S.ListContainer>
 
           <S.PaginationContainer justify="center" align="middle">
-            <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
-
             {handleFormatLabel()}
           </S.PaginationContainer>
         </S.Container>

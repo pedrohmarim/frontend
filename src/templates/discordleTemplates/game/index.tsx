@@ -131,7 +131,8 @@ export default function GameContainer() {
               if (Success) Notification.success('Acertou!', description);
               else Notification.error('Errou!', description);
 
-              if (!Success && activeTabKey === 1) setOpenTour(true);
+              if (!Success && activeTabKey === 1 && !usedHint)
+                setOpenTour(true);
             }
           }
         });

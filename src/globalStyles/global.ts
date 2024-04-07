@@ -110,7 +110,7 @@ export default createGlobalStyle`
   }
 
   //Discordle
-  .ant-modal-close-x{
+  .ant-modal-close-x {
     color: ${(props) => props.theme.discordleColors.text} !important;
   }
 
@@ -242,6 +242,24 @@ export default createGlobalStyle`
   .ant-select-selection-placeholder {
     font-weight: 500;
     color: ${(props) => props.theme.discordleColors.background} !important;
+  }
+
+  .ant-tour {
+    max-width: 300px !important;
+  }
+  
+  .ant-tour-inner{
+    border: solid 2px rgba(138, 0, 194, 0.5) !important;
+  }
+
+  .ant-tour-arrow::before {
+    background-color: rgba(138, 0, 194, 0.5) !important;
+  }
+
+  .ant-tour-inner, .ant-tour-close {
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+    color: ${(props) => props.theme.discordleColors.text} !important;
   }
 `;
 

@@ -125,7 +125,27 @@ export default function ChoosedMessage({
           )}
         </S.ScoreTextContainer>
 
-        <Row>
+        <Tour
+          open={openTour}
+          placement="right"
+          onClose={() => setOpenTour(!openTour)}
+          steps={[
+            {
+              target: () => ref.current,
+              title: 'Mensagem muito difícil?',
+              description: 'Experimente usar uma dica. 😁',
+              nextButtonProps: {
+                children: 'Entendido',
+                style: {
+                  backgroundColor: theme.discordleColors.primary,
+                  color: theme.discordleColors.text,
+                },
+              },
+            },
+          ]}
+        />
+
+        <Row ref={ref}>
           {totalMessages.length === 1 && (
             <PopConfirm
               title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
@@ -160,7 +180,6 @@ export default function ChoosedMessage({
             >
               <Tooltip title="Mostrar Dica">
                 <Button
-                  ref={ref}
                   onClick={() => setOpenPopConfirm(true)}
                   width={85}
                   backgroundcolor="transparent"
@@ -196,18 +215,6 @@ export default function ChoosedMessage({
           )}
         </Row>
       </S.ScoreContainer>
-
-      <Tour
-        open={openTour}
-        onClose={() => setOpenTour(!openTour)}
-        steps={[
-          {
-            title: 'Save',
-            description: 'Save your changes.',
-            target: () => ref.current,
-          },
-        ]}
-      />
 
       <S.BiggerGameTitle>Discordle</S.BiggerGameTitle>
 
