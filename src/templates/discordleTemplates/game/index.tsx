@@ -25,7 +25,7 @@ export default function GameContainer() {
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
   const [useHint, setUsedHint] = useState<boolean>(false);
-  const [openTour, setOpenTour] = useState<boolean>(false);
+  const [openWarnExistsHint, setWarnExistsHint] = useState<boolean>(false);
   const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
     undefined
   );
@@ -132,7 +132,7 @@ export default function GameContainer() {
               else Notification.error('Errou!', description);
 
               if (!Success && activeTabKey === 1 && !usedHint)
-                setOpenTour(true);
+                setWarnExistsHint(true);
             }
           }
         });
@@ -153,13 +153,13 @@ export default function GameContainer() {
               <MessageTabs
                 setSwitchValues={setSwitchValues}
                 setActiveTabKey={setActiveTabKey}
-                setOpenTour={setOpenTour}
+                setWarnExistsHint={setWarnExistsHint}
                 setUsedHint={setUsedHint}
                 saveScore={saveScore}
                 answers={answers}
                 authors={authors}
                 usedHint={useHint}
-                openTour={openTour}
+                openWarnExistsHint={openWarnExistsHint}
                 activeTabKey={activeTabKey}
                 switchValues={switchValues}
                 choosedMessages={choosedMessages}

@@ -10,6 +10,7 @@ import theme from 'globalStyles/theme';
 import { useRouter } from 'next/router';
 
 export default function MessageTabs({
+  openWarnExistsHint,
   choosedMessages,
   activeTabKey,
   switchValues,
@@ -18,12 +19,11 @@ export default function MessageTabs({
   usedHint,
   answers,
   authors,
-  openTour,
   saveScore,
   setUsedHint,
-  setOpenTour,
   setActiveTabKey,
   setSwitchValues,
+  setWarnExistsHint,
 }: I.IMessageTabs) {
   const router = useRouter();
   const [authorSelected, setAuthorSelected] = useState<string>('');
@@ -118,15 +118,15 @@ export default function MessageTabs({
                 openModal={openModal}
                 isOwner={isOwner}
                 score={score}
-                openTour={openTour}
                 usedHint={usedHint}
                 tabkey={activeTabKey}
                 serverName={serverName}
                 serverIcon={serverIcon}
                 message={choosedMessage}
                 switchValues={switchValues}
+                openWarnExistsHint={openWarnExistsHint}
                 setUsedHint={setUsedHint}
-                setOpenTour={setOpenTour}
+                setWarnExistsHint={setWarnExistsHint}
                 setOpenModal={setOpenModal}
               />
 

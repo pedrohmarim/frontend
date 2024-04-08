@@ -93,7 +93,7 @@ export default createGlobalStyle`
     }
   }
 
-  .ant-popconfirm-title {
+  .ant-popconfirm-title, .ant-popconfirm-description {
     color: ${(props) => props.theme.discordleColors.text} !important;
   }
 

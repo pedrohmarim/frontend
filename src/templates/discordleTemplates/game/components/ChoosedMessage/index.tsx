@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import DiscordleGameApi from 'services/DiscordleService/DiscordleGame';
@@ -18,29 +18,26 @@ import {
   FeatherIcons,
   Row,
   PopConfirm,
-  Tour,
   Tooltip,
 } from 'antd_components';
 
 export default function ChoosedMessage({
+  openWarnExistsHint,
   authorSelected,
   switchValues,
   serverIcon,
   serverName,
   openModal,
   usedHint,
-  openTour,
   message,
   isOwner,
   tabkey,
   score,
   setUsedHint,
-  setOpenTour,
   setOpenModal,
+  setWarnExistsHint,
 }: I.IChoosedMessageComponent) {
   const router = useRouter();
-
-  const ref = useRef(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [openPopConfirm, setOpenPopConfirm] = useState(false);
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
@@ -125,27 +122,7 @@ export default function ChoosedMessage({
           )}
         </S.ScoreTextContainer>
 
-        <Tour
-          open={openTour}
-          placement="right"
-          onClose={() => setOpenTour(!openTour)}
-          steps={[
-            {
-              target: () => ref.current,
-              title: 'Mensagem muito difícil?',
-              description: 'Experimente usar uma dica. 😁',
-              nextButtonProps: {
-                children: 'Entendido',
-                style: {
-                  backgroundColor: theme.discordleColors.primary,
-                  color: theme.discordleColors.text,
-                },
-              },
-            },
-          ]}
-        />
-
-        <Row ref={ref}>
+        <Row>
           {totalMessages.length === 1 && (
             <PopConfirm
               title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
@@ -179,19 +156,49 @@ export default function ChoosedMessage({
               }}
             >
               <Tooltip title="Mostrar Dica">
-                <Button
-                  onClick={() => setOpenPopConfirm(true)}
-                  width={85}
-                  backgroundcolor="transparent"
-                  height={33}
-                  icon={
-                    <FeatherIcons
-                      icon="message-circle"
-                      color={theme.discordleColors.text}
-                      size={20}
-                    />
-                  }
-                />
+                <PopConfirm
+                  open={openWarnExistsHint}
+                  placement="left"
+                  getPopupContainer={(trigger) => trigger}
+                  onConfirm={() => setWarnExistsHint(!openWarnExistsHint)}
+                  title="Mensagem muito difícil?"
+                  description="Experimente usar uma dica. 😁"
+                  okText="Entendido"
+                  overlayStyle={{
+                    backgroundColor: theme.discordleColors.background,
+                    borderRadius: '5px',
+                  }}
+                  overlayInnerStyle={{
+                    border: 'solid 2px rgba(138, 0, 194, 0.5)',
+                    width: '360px',
+                    backgroundColor: theme.discordleColors.background,
+                  }}
+                  okButtonProps={{
+                    style: {
+                      backgroundColor: theme.discordleColors.primary,
+                      border: 'none',
+                    },
+                  }}
+                  cancelButtonProps={{
+                    style: {
+                      display: 'none',
+                    },
+                  }}
+                >
+                  <Button
+                    onClick={() => setOpenPopConfirm(true)}
+                    width={85}
+                    backgroundcolor="transparent"
+                    height={33}
+                    icon={
+                      <FeatherIcons
+                        icon="message-circle"
+                        color={theme.discordleColors.text}
+                        size={20}
+                      />
+                    }
+                  />
+                </PopConfirm>
               </Tooltip>
             </PopConfirm>
           )}

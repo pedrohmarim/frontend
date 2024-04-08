@@ -11,12 +11,12 @@ export interface IMessageTabs {
   answers: IAnswer[];
   serverName: string;
   usedHint: boolean;
-  openTour: boolean;
+  openWarnExistsHint: boolean;
   authors: IAuthor[];
   serverIcon: string;
   switchValues: ISwitchValues | undefined;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenTour: React.Dispatch<React.SetStateAction<boolean>>;
+  setWarnExistsHint: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchValues: React.Dispatch<
     React.SetStateAction<ISwitchValues | undefined>
   >;
