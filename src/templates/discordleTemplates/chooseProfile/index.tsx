@@ -183,7 +183,7 @@ export default function ChooseProfile() {
     <MessageContainer width={windowWidth > 1200 ? '100%' : ''} margin="auto">
       <Row justify="center">
         <GameTitle margin="0 0 15px 0">
-          Escolha seu Perfil para acessar <br /> #{channelName}
+          Escolha seu perfil para acessar <br /> #{channelName}
         </GameTitle>
       </Row>
 
