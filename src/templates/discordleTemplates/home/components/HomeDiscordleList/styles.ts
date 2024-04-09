@@ -13,11 +13,17 @@ export const StyledLottie = styled(Lottie)`
 
 export const Title = styled(Row)`
   font-size: 36pt;
+  margin-bottom: 10px;
 `;
 
-export const Description = styled(Row)<{ width: string }>`
-  font-size: 16pt;
+export const Description = styled(Row)<{
+  width: string;
+  fontSize: string;
+  fontStyle?: string;
+}>`
+  font-size: ${({ fontSize }) => fontSize};
   width: ${({ width }) => width};
+  font-style: ${({ fontStyle }) => fontStyle};
 `;
 
 export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`

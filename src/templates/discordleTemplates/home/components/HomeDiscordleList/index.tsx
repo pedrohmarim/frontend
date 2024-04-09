@@ -162,7 +162,11 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
             </G.HomeSpan>
           </S.Title>
 
-          <S.Description width={!isDesktop ? '100%' : '45%'} justify="end">
+          <S.Description
+            width={!isDesktop ? '100%' : '45%'}
+            justify="end"
+            fontSize="16pt"
+          >
             Teste suas habilidades ao tentar identificar quem escreveu uma das
             cinco frases aleatórias geradas a partir de um canal de texto de seu
             servidor do Discord e desafie seus amigos na disputa pelo topo do
@@ -174,13 +178,23 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
               width={180}
               height={35}
               onClick={onClick}
-              margin="20px 0 0 0"
+              margin="20px 0 20px 0"
               backgroundcolor={theme.discordleColors.primary}
               color={theme.discordleColors.text}
             >
               Convidar Bot
             </Button>
           </Row>
+
+          <S.Description
+            width={!isDesktop ? '100%' : '45%'}
+            justify="end"
+            fontSize="11pt"
+            fontStyle="italic"
+          >
+            *Certifique-se de estar logado com a conta que possui o cargo de
+            dono do servidor
+          </S.Description>
         </S.ApresentationContainer>
 
         {isDesktop && (
