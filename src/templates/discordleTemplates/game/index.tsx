@@ -147,33 +147,31 @@ export default function GameContainer() {
       </Head>
 
       {switchValues && (
-        <Fragment>
-          <MessageContainer>
-            {!alreadyAnswered ? (
-              <MessageTabs
-                setSwitchValues={setSwitchValues}
-                setActiveTabKey={setActiveTabKey}
-                setWarnExistsHint={setWarnExistsHint}
-                setUsedHint={setUsedHint}
-                saveScore={saveScore}
-                answers={answers}
-                authors={authors}
-                usedHint={useHint}
-                openWarnExistsHint={openWarnExistsHint}
-                activeTabKey={activeTabKey}
-                switchValues={switchValues}
-                choosedMessages={choosedMessages}
-                serverName={serverInfos.ServerName}
-                serverIcon={serverInfos.ServerIcon}
-              />
-            ) : (
-              <Result
-                answers={answers}
-                totalScore={switchValues.PointsPerCorrectAnswer}
-              />
-            )}
-          </MessageContainer>
-        </Fragment>
+        <MessageContainer>
+          {!alreadyAnswered ? (
+            <MessageTabs
+              setWarnExistsHint={setWarnExistsHint}
+              setSwitchValues={setSwitchValues}
+              setActiveTabKey={setActiveTabKey}
+              setUsedHint={setUsedHint}
+              saveScore={saveScore}
+              answers={answers}
+              authors={authors}
+              usedHint={useHint}
+              activeTabKey={activeTabKey}
+              switchValues={switchValues}
+              choosedMessages={choosedMessages}
+              serverName={serverInfos.ServerName}
+              serverIcon={serverInfos.ServerIcon}
+              openWarnExistsHint={openWarnExistsHint}
+            />
+          ) : (
+            <Result
+              answers={answers}
+              totalScore={switchValues.PointsPerCorrectAnswer}
+            />
+          )}
+        </MessageContainer>
       )}
     </Fragment>
   );

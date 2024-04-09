@@ -156,10 +156,8 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
       <S.AnimationContainer>
         <S.ApresentationContainer isDesktop={isDesktop}>
           <S.Title justify="end">
-            Bem-vindo ao{' '}
-            <G.HomeSpan margin={isDesktop ? '0 0 0 10px' : ''}>
-              Discordle
-            </G.HomeSpan>
+            Bem-vindo ao
+            <G.HomeSpan margin="0 0 0 10px">Discordle</G.HomeSpan>
           </S.Title>
 
           <S.Description
@@ -192,8 +190,8 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
             fontSize="11pt"
             fontStyle="italic"
           >
-            *Certifique-se de estar logado com a conta que possui o cargo de
-            dono do servidor
+            *Certifique-se de entrar com a conta que possui o cargo de dono do
+            servidor
           </S.Description>
         </S.ApresentationContainer>
 

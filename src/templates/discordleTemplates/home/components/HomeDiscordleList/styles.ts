@@ -95,7 +95,7 @@ export const Container = styled.div<{ ismobile: boolean }>`
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
   padding: 20px;
-  height: 85vh;
+  max-height: 100vh;
 `;
 
 export const ListContainer = styled.div`
