@@ -168,9 +168,9 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
             fontSize="16pt"
           >
             Teste suas habilidades ao tentar identificar quem escreveu uma das
-            cinco frases aleatórias geradas a partir de um canal de texto de seu
-            servidor do Discord e desafie seus amigos na disputa pelo topo do
-            ranking!
+            cinco frases aleatórias geradas diariamente a partir de um canal de
+            texto de seu servidor do Discord e desafie seus amigos na disputa
+            pelo topo do ranking!
           </S.Description>
 
           <Row>
