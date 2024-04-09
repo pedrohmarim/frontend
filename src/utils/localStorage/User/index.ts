@@ -21,3 +21,11 @@ export const getDiscordleToken = () => {
 export const deleteUser = () => {
   localStorage.removeItem('login');
 };
+
+export const deleteDiscordleToken = () => {
+  localStorage.removeItem('discordleToken');
+};
+
+export const deleteRememberMe = () => {
+  localStorage.removeItem('rememberme');
+};

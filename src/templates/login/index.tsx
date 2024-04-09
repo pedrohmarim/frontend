@@ -24,6 +24,7 @@ import {
   Col,
   Divider,
 } from 'antd_components';
+import { deleteRememberMe } from 'utils/localStorage/User';
 
 export default function LoginContainer() {
   const [showImage, setShowImage] = useState(true);
@@ -50,7 +51,7 @@ export default function LoginContainer() {
   }, [form, router]);
 
   function handleRememberme(values: I.ILoginRequest) {
-    window.localStorage.removeItem('rememberme');
+    deleteRememberMe();
 
     if (values.Rememberme) {
       const dto = {

@@ -10,7 +10,10 @@ import notification from 'antd_components/Notification/Notification.component';
 import { Form, Tooltip } from 'antd';
 import theme from 'globalStyles/theme';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
-import { getDiscordleToken } from 'utils/localStorage/User';
+import {
+  deleteDiscordleToken,
+  getDiscordleToken,
+} from 'utils/localStorage/User';
 import {
   Modal,
   List,
@@ -65,7 +68,9 @@ export default function SelectChanneInstanceModal({
 
   const handleDebouncedOnChange = useCallback(
     async (code: string, channelId: string) => {
-      if (code.length)
+      if (code.length) {
+        deleteDiscordleToken();
+
         DiscordleInstanceApi.ValidateCode(code, guildId, channelId).then(
           (validCode) => {
             if (validCode) {
@@ -90,6 +95,7 @@ export default function SelectChanneInstanceModal({
             } else notification.error('Erro', 'Código Inválido');
           }
         );
+      }
     },
     [guildId, router]
   );

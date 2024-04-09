@@ -1,5 +1,10 @@
 import { Notification } from 'antd_components';
-import { getDiscordleToken, getUserToken } from 'utils/localStorage/User';
+import {
+  deleteDiscordleToken,
+  deleteUser,
+  getDiscordleToken,
+  getUserToken,
+} from 'utils/localStorage/User';
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 function ActiveLoading() {
@@ -15,8 +20,8 @@ function DisableLoading() {
 }
 
 function RedirectLogin(description: string) {
-  window.localStorage.removeItem('login');
-  window.localStorage.removeItem('discordleToken');
+  deleteUser();
+  deleteDiscordleToken();
 
   alert(`${description}`);
 

@@ -12,6 +12,7 @@ import {
   Button,
   Popover,
 } from 'antd_components';
+import { deleteUser } from 'utils/localStorage/User';
 
 export default function Header() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Header() {
   function handleLogout() {
     LoginApi.Logout().then(({ Message, Success }) => {
       if (Success) {
-        window.localStorage.removeItem('login');
+        deleteUser();
         setLogin(null);
 
         return Notification.success(Message);
