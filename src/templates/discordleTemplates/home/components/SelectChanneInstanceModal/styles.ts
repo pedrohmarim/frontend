@@ -43,6 +43,12 @@ export const RowContainer = styled(Row)`
   padding: 0 3%;
 `;
 
+export const ButtonContainer = styled.div`
+  position: absolute;
+  right: 8px;
+  top: 120px;
+`;
+
 export const EmptyContent = styled(Row)`
   color: ${(props) => props.theme.discordleColors.text} !important;
 `;

@@ -7,7 +7,7 @@ import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import DiscordleInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import notification from 'antd_components/Notification/Notification.component';
-import { Form } from 'antd';
+import { Form, Tooltip } from 'antd';
 import theme from 'globalStyles/theme';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
 import { getDiscordleToken } from 'utils/localStorage/User';
@@ -20,6 +20,7 @@ import {
   Col,
   Divider,
   Button,
+  FeatherIcons,
 } from 'antd_components';
 
 export default function SelectChanneInstanceModal({
@@ -51,12 +52,14 @@ export default function SelectChanneInstanceModal({
     });
   };
 
+  function getChannels() {
+    DiscordGuildsApi.GetGuildById(guildId, !fromGuildParam).then((channels) =>
+      setInstanceChannels(channels)
+    );
+  }
+
   useEffect(() => {
-    if (router.isReady && guildId) {
-      DiscordGuildsApi.GetGuildById(guildId, !fromGuildParam).then((channels) =>
-        setInstanceChannels(channels)
-      );
-    }
+    if (router.isReady && guildId) getChannels();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guildId, router.isReady, setInstanceChannels]);
 
@@ -157,6 +160,7 @@ export default function SelectChanneInstanceModal({
             <Row align="middle" justify="center">
               <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
                 <Form.Item
+                  tooltip="Caso não apareça os canais, atualize usando o botão á direita"
                   name="channelId"
                   label="Canal de texto:"
                   required
@@ -192,6 +196,17 @@ export default function SelectChanneInstanceModal({
                   </Select>
                 </Form.Item>
               </Col>
+
+              <S.ButtonContainer>
+                <Tooltip title="Atualizar">
+                  <Button
+                    onClick={getChannels}
+                    backgroundcolor="transparent"
+                    color={theme.discordleColors.text}
+                    icon={<FeatherIcons icon="rotate-cw" />}
+                  />
+                </Tooltip>
+              </S.ButtonContainer>
 
               <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
                 <Form.Item
