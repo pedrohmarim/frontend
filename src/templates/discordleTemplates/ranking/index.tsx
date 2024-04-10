@@ -32,10 +32,11 @@ export default function Ranking() {
 
   useEffect(() => {
     if (router.isReady) {
-      const { channelId, guildId } = router.query;
+      const { channelId, guildId, code } = router.query;
 
-      if (channelId && guildId) {
+      if (channelId && guildId && code) {
         DiscordMessagesApi.GetDiscordleHistory(
+          code.toString(),
           channelId.toString(),
           guildId.toString()
         )
@@ -49,10 +50,15 @@ export default function Ranking() {
   }, [router]);
 
   function showDetails(userId: string) {
-    const { channelId } = router.query;
+    const { guildId, channelId, code } = router.query;
 
-    if (channelId)
-      DiscordMessagesApi.GetUserScoreDetail(userId, channelId?.toString())
+    if (channelId && code && guildId)
+      DiscordMessagesApi.GetUserScoreDetail(
+        userId,
+        channelId.toString(),
+        guildId.toString(),
+        code.toString()
+      )
         .then((data) => setScoreDetail(data))
         .finally(() => setOpen(true));
   }
@@ -132,10 +138,11 @@ export default function Ranking() {
   function gridReload() {
     setLoading(true);
 
-    const { channelId, guildId } = router.query;
+    const { channelId, guildId, code } = router.query;
 
-    if (channelId && guildId) {
+    if (channelId && guildId && code) {
       DiscordMessagesApi.GetDiscordleHistory(
+        code.toString(),
         channelId.toString(),
         guildId.toString()
       )
@@ -153,13 +160,14 @@ export default function Ranking() {
   }
 
   function toGame() {
-    const { channelId, guildId } = router.query;
+    const { channelId, guildId, code } = router.query;
 
     router.push({
       pathname: '/discordle/game',
       query: {
         channelId,
         guildId,
+        code,
       },
     });
   }

@@ -38,13 +38,14 @@ export default function Result({ answers, totalScore }: I.IResult) {
   }, [router]);
 
   function toRanking() {
-    const { channelId, guildId } = router.query;
+    const { channelId, guildId, code } = router.query;
 
     router.push({
       pathname: '/discordle/ranking',
       query: {
         channelId,
         guildId,
+        code,
       },
     });
   }

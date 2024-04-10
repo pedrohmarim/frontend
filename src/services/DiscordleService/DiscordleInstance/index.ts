@@ -42,6 +42,7 @@ const ApiAuth = {
       `${baseUrl}/GetSwitchDiscordleInstance`,
       {
         GuildId: data.guildId,
+        Code: data.code,
         ChannelId: data.channelId,
       }
     );

@@ -12,6 +12,7 @@ export interface IConfigurationModal {
 
 export interface IChangeSwitchGet {
   guildId: string;
+  code: string;
   channelId: string;
 }
 

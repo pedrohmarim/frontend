@@ -56,6 +56,7 @@ export interface IDiscordHintsRequest {
 
 export interface IScoreInstance {
   Score: IPostSaveScore;
+  Code: string;
   ChannelId: string;
   GuildId: string;
 }

@@ -37,50 +37,53 @@ export default function GameContainer() {
 
   useEffect(() => {
     if (router.isReady) {
-      const { channelId, guildId } = router.query;
+      const { channelId, guildId, code } = router.query;
 
-      if (channelId && guildId) {
+      if (channelId && guildId && code) {
         DiscordleInstaceApi.GetSwitchDiscordleInstance({
-          channelId: channelId.toString(),
+          code: code.toString(),
           guildId: guildId.toString(),
+          channelId: channelId.toString(),
         }).then((data) => setSwitchValues(data));
 
-        DiscordGameApi.VerifyAlreadyAnswered(channelId.toString()).then(
-          (data) => {
-            if (data.length) {
-              if (data[data.length - 1].UsedHint) {
-                setUsedHint(true);
-                setActiveTabKey(data.length);
-              } else setActiveTabKey(data.length + 1);
-            }
-
-            setAnswers(data);
-
-            const alreadyAnswered =
-              data.length === 5 && !data[data.length - 1].UsedHint;
-
-            setAlreadyAnswered(alreadyAnswered);
-
-            if (!alreadyAnswered) {
-              DiscordGameApi.GetChoosedMessages(channelId.toString()).then(
-                ({ Messages, ServerName, ServerIcon, Authors }) => {
-                  setAuthors(Authors);
-                  setServerInfos({ ServerName, ServerIcon });
-
-                  const filteredMessagesArray: IChoosedMessage[] = [];
-
-                  Messages.forEach((message) => {
-                    filteredMessagesArray.push(
-                      filterMessage(message, MessageLevelEnum.isMain)
-                    );
-                  });
-
-                  setChoosedMessages(filteredMessagesArray);
-                }
-              );
-            }
+        DiscordGameApi.VerifyAlreadyAnswered(
+          channelId.toString(),
+          code.toString()
+        ).then((data) => {
+          if (data.length) {
+            if (data[data.length - 1].UsedHint) {
+              setUsedHint(true);
+              setActiveTabKey(data.length);
+            } else setActiveTabKey(data.length + 1);
           }
-        );
+
+          setAnswers(data);
+
+          const alreadyAnswered =
+            data.length === 5 && !data[data.length - 1].UsedHint;
+
+          setAlreadyAnswered(alreadyAnswered);
+
+          if (!alreadyAnswered) {
+            DiscordGameApi.GetChoosedMessages(
+              channelId.toString(),
+              code.toString()
+            ).then(({ Messages, ServerName, ServerIcon, Authors }) => {
+              setAuthors(Authors);
+              setServerInfos({ ServerName, ServerIcon });
+
+              const filteredMessagesArray: IChoosedMessage[] = [];
+
+              Messages.forEach((message) => {
+                filteredMessagesArray.push(
+                  filterMessage(message, MessageLevelEnum.isMain)
+                );
+              });
+
+              setChoosedMessages(filteredMessagesArray);
+            });
+          }
+        });
       }
     }
   }, [router]);
@@ -91,10 +94,11 @@ export default function GameContainer() {
     usedHint: boolean,
     activeTabKey: number
   ) {
-    const { channelId, guildId } = router.query;
+    const { channelId, guildId, code } = router.query;
 
-    if (channelId && guildId) {
+    if (channelId && guildId && code) {
       const dto: IScoreInstance = {
+        Code: code.toString(),
         ChannelId: channelId.toString(),
         GuildId: guildId.toString(),
         Score: {

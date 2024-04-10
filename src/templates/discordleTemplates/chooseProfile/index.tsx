@@ -143,7 +143,7 @@ export default function ChooseProfile() {
     }
   };
 
-  if (!members.length)
+  if (!members?.length)
     return (
       <MessageContainer>
         <Description>Não há membros á serem exibidos</Description>
