@@ -1,4 +1,5 @@
 import React from 'react';
+import { ServerStyleSheet } from 'styled-components';
 import Document, {
   DocumentInitialProps,
   DocumentContext,
@@ -7,7 +8,6 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
   static async getInitialProps(
@@ -43,8 +43,6 @@ export default class MyDocument extends Document {
       <Html lang="pt">
         <Head>
           <meta charSet="utf-8" />
-
-          <link rel="icon" href="https://rocketseat.com.br/favicon.ico" />
         </Head>
         <body>
           <Main />

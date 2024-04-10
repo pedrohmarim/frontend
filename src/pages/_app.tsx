@@ -4,11 +4,13 @@ import { ThemeProvider } from 'styled-components';
 import theme from 'globalStyles/theme';
 import { ContextProvider } from '../Context';
 import Loading from 'antd_components/Loading';
+import Icon from 'assets/icon.png';
 import Header from 'templates/discordleTemplates/globalComponents/header';
 import GlobalStyle, {
   CenteredContainer,
   OverflowDiscordle,
 } from 'globalStyles/global';
+import Head from 'next/head';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   function renderComponent() {
@@ -48,6 +50,10 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Head>
+        <meta charSet="utf-8" />
+        <link rel="icon" href={Icon.src} />
+      </Head>
       <ContextProvider>
         {renderComponent()}
 

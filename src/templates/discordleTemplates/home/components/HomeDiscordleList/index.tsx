@@ -5,9 +5,8 @@ import * as I from './IHomeDiscordleList';
 import DiscordGuildApi from 'services/DiscordleService/DiscordleGuilds';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Animation from 'assets/homeAnimation.json';
-import theme from 'globalStyles/theme';
 import SelectChanneInstanceModal from '../SelectChanneInstanceModal';
-import { Row, Avatar, FeatherIcons, Input, Col, Button } from 'antd_components';
+import { Row, Avatar, FeatherIcons, Input, Col } from 'antd_components';
 import { useRouter } from 'next/router';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import {
@@ -15,9 +14,12 @@ import {
   IInstanceChannels,
 } from 'services/DiscordleService/IDiscordleService';
 
-export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
+export default function HomeDiscordleList({
+  width,
+  botButton,
+}: I.IHomeDiscordleList) {
   const router = useRouter();
-  const isDesktop = width > 875;
+  const isMobile = width < 875;
   const pageSize = 18;
   const [totalGuilds, setTotalGuilds] = useState<number>(0);
   const [guilds, setGuilds] = useState<IGuildsDto[]>([]);
@@ -31,18 +33,6 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
-
-  function onClick() {
-    const clientIdBot = '1089918362311733378';
-    const permissions = '8'; //'75824';
-
-    const redirectUri = encodeURIComponent(window.location.href);
-
-    const responseType = 'code';
-    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientIdBot}&permissions=${permissions}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=connections%20bot`;
-
-    window.open(url);
-  }
 
   const GetGuilds = useCallback(() => {
     if (noMoreDataToFetch) return;
@@ -154,14 +144,14 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
       )}
 
       <S.AnimationContainer>
-        <S.ApresentationContainer isDesktop={isDesktop}>
+        <S.ApresentationContainer isMobile={isMobile}>
           <S.Title justify="end">
             Bem-vindo ao
             <G.HomeSpan margin="0 0 0 10px">Discordle</G.HomeSpan>
           </S.Title>
 
           <S.Description
-            width={!isDesktop ? '100%' : '45%'}
+            width={isMobile ? '100%' : '45%'}
             justify="end"
             fontSize="16pt"
           >
@@ -171,21 +161,10 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
             pelo topo do ranking!
           </S.Description>
 
-          <Row>
-            <Button
-              width={180}
-              height={35}
-              onClick={onClick}
-              margin="20px 0 20px 0"
-              backgroundcolor={theme.discordleColors.primary}
-              color={theme.discordleColors.text}
-            >
-              Convidar Bot
-            </Button>
-          </Row>
+          {botButton()}
 
           <S.Description
-            width={!isDesktop ? '100%' : '45%'}
+            width={isMobile ? '100%' : '45%'}
             justify="end"
             fontSize="11pt"
             fontStyle="italic"
@@ -195,13 +174,17 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
           </S.Description>
         </S.ApresentationContainer>
 
-        {isDesktop && (
+        {!isMobile && (
           <S.StyledLottie animationData={Animation} loop autoplay />
         )}
 
-        <S.Container ismobile={!isDesktop}>
+        <S.Container
+          margin={`${!isMobile ? '-25%' : '42px'} 25px 0 25px`}
+          maxHeight="100vh"
+          padding="20px"
+        >
           <Row justify="space-between" align="middle">
-            {isDesktop ? (
+            {!isMobile ? (
               <S.EmptyContainer>
                 <FeatherIcons icon="trending-up" />
                 <S.ListTitle>Discordles Criados</S.ListTitle>
@@ -210,7 +193,7 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
               <S.ListTitle>Discordles Criados</S.ListTitle>
             )}
 
-            <S.InputContainer ismobile={!isDesktop}>
+            <S.InputContainer ismobile={isMobile}>
               <Input
                 onChange={(event) => filter(event.target.value)}
                 placeholder="Filtrar"
@@ -228,7 +211,7 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
               scrollableTarget="container"
             >
               <Row
-                style={{ padding: !isDesktop ? '2%' : '10px' }}
+                style={{ padding: isMobile ? '2%' : '10px' }}
                 justify={guilds.length ? 'start' : 'center'}
               >
                 {guilds.length ? (
@@ -262,9 +245,9 @@ export default function HomeDiscordleList({ width }: I.IHomeDiscordleList) {
                             }}
                           />
                           <S.GuildName>
-                            {GuildName.length <= (!isDesktop ? 50 : 90)
+                            {GuildName.length <= (!isMobile ? 50 : 90)
                               ? GuildName
-                              : GuildName.substring(0, !isDesktop ? 50 : 90) +
+                              : GuildName.substring(0, !isMobile ? 50 : 90) +
                                 '...'}
                           </S.GuildName>
                           <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>

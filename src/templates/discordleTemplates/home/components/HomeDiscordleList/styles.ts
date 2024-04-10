@@ -26,7 +26,7 @@ export const Description = styled(Row)<{
   font-style: ${({ fontStyle }) => fontStyle};
 `;
 
-export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`
+export const ApresentationContainer = styled.div<{ isMobile: boolean }>`
   padding: 0 25px;
   text-align: right;
   display: flex;
@@ -38,8 +38,8 @@ export const ApresentationContainer = styled.div<{ isDesktop: boolean }>`
   height: 40%;
   color: ${(props) => props.theme.discordleColors.text};
 
-  ${({ isDesktop }) =>
-    isDesktop
+  ${({ isMobile }) =>
+    !isMobile
       ? css`
           position: absolute;
         `
@@ -84,18 +84,22 @@ export const AnimationContainer = styled.div`
   animation: ${slideAndBounce} 1.5s ease-in-out;
 `;
 
-export const Container = styled.div<{ ismobile: boolean }>`
+export const Container = styled.div<{
+  margin: string;
+  maxHeight: string;
+  padding: string;
+}>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 1) 0px 0px 120px 50px;
-  margin: ${({ ismobile }) => `${!ismobile ? '-25%' : '42px'} 25px 0 25px`};
+  margin: ${({ margin }) => margin};
   color: ${(props) => props.theme.discordleColors.text};
   border-radius: 10px;
-  padding: 20px;
-  max-height: 100vh;
+  padding: ${({ padding }) => padding};
+  max-height: ${({ maxHeight }) => maxHeight};
 `;
 
 export const ListContainer = styled.div`
