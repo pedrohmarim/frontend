@@ -10,21 +10,10 @@ import { Divider } from 'templates/discordleTemplates/game/components/Result/sty
 import ReactCodeInput from 'react-verification-code-input';
 import theme from 'globalStyles/theme';
 import { Description } from '../home/components/SelectChanneInstanceModal/styles';
+import { useMyContext } from 'Context';
 
 export default function ChooseProfile() {
-  const [windowWidth, setWindowWidth] = useState(1920);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setWindowWidth(window.innerWidth);
-
-      const handleResize = () => setWindowWidth(window.innerWidth);
-
-      window.addEventListener('resize', handleResize);
-
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, []);
+  const { windowWidth } = useMyContext();
 
   const router = useRouter();
   const [members, setMembers] = useState<IMember[]>([]);

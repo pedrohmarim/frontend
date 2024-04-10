@@ -20,6 +20,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       return (
         <Fragment>
           <Header />
+
           <CenteredContainer>
             <OverflowDiscordle>
               <Component {...pageProps} />

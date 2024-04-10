@@ -93,12 +93,14 @@ export const Row = styled(RowAntd)`
   animation: ${slideInFromRight} 1.5s ease-in-out forwards;
 `;
 
-export const AbsoluteRow = styled(RowAntd)`
+export const AbsoluteRow = styled.div<{ isMobile: boolean }>`
   cursor: pointer;
-  position: absolute;
-  z-index: 999999;
-  margin-left: 15px;
+  display: flex;
+  position: ${({ isMobile }) => (isMobile ? 'initial' : 'absolute')};
   margin-top: 25px;
+  margin-left: ${({ isMobile }) => (isMobile ? '0' : '25px')};
+  justify-content: ${({ isMobile }) => (isMobile ? 'center' : 'start')};
+  width: ${({ isMobile }) => (isMobile ? '100%' : 'fit-content')};
 `;
 
 export const DrawerTitle = styled.span`

@@ -6,14 +6,16 @@ import * as I from './IHeader';
 import theme from 'globalStyles/theme';
 import Logo from 'assets/logo.png';
 import { Button, FeatherIcons, Row, Image, Tooltip } from 'antd_components';
+import { useMyContext } from 'Context';
 
 export default function Header({
-  windowWidth,
   current,
   isHome,
   setCurrent,
   setAnimationActive,
 }: I.IHeader) {
+  const { windowWidth } = useMyContext();
+
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -25,10 +27,15 @@ export default function Header({
     return () => clearTimeout(timeout);
   }, [setAnimationActive]);
 
+  const isMobile = windowWidth <= 875;
+
   if (!setAnimationActive || !setCurrent || !current || !isHome)
     return (
       <Tooltip title="Voltar para o início" placement="right">
-        <S.AbsoluteRow onClick={() => router.push('/discordle/home')}>
+        <S.AbsoluteRow
+          onClick={() => router.push('/discordle/home')}
+          isMobile={isMobile}
+        >
           <Image src={Logo.src} alt="logo" preview={false} height={70} />
         </S.AbsoluteRow>
       </Tooltip>

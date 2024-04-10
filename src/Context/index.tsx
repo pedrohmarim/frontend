@@ -24,8 +24,22 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
       setLogin(JSON.parse(login) as IGetUserByTokenResponse);
   }, []);
 
+  const [windowWidth, setWindowWidth] = useState<number>(1920);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener('resize', handleResize);
+
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
   return (
-    <MyContext.Provider value={{ login, updateLogin, setLogin }}>
+    <MyContext.Provider value={{ login, updateLogin, setLogin, windowWidth }}>
       {children}
     </MyContext.Provider>
   );

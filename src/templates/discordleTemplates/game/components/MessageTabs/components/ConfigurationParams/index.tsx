@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as I from './IConfigurationSwitches';
 import * as S from './styles';
+import { useMyContext } from 'Context';
 import theme from 'globalStyles/theme';
 import { SwitchNameEnum } from './switchNameEnum';
 import {
@@ -23,19 +24,7 @@ export default function ConfigurationParams({
   onChange,
 }: I.ISwitches) {
   const [loadingSwitch, setLoadingSwitch] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(1920);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setWindowWidth(window.innerWidth);
-
-      const handleResize = () => setWindowWidth(window.innerWidth);
-
-      window.addEventListener('resize', handleResize);
-
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, []);
+  const { windowWidth } = useMyContext();
 
   const isMobile = windowWidth < 375;
 

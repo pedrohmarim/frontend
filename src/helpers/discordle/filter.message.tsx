@@ -70,7 +70,8 @@ export default function filterMessage(
 
   if (
     message.Content.startsWith('https://tenor.com/view') ||
-    message.Content.startsWith('https://www.youtube.com')
+    message.Content.startsWith('https://www.youtube.com') ||
+    message.Content.startsWith('https://youtu.be')
   )
     response.content = '';
   else if (includeLink) {

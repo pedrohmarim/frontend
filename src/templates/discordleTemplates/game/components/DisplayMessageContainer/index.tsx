@@ -1,8 +1,9 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import * as S from './styles';
 import * as I from './IReferencedMessage';
 import Link from 'next/link';
 import { FeatherIcons, Row } from 'antd_components';
+import { useMyContext } from 'Context';
 import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
 import {
   MessageTypeEnum,
@@ -20,15 +21,7 @@ export default function DisplayMessageContainer({
   formattedAttachs,
   referencedMessage,
 }: IChoosedMessage) {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const { windowWidth } = useMyContext();
 
   function titleMessage() {
     switch (messageLevel) {
