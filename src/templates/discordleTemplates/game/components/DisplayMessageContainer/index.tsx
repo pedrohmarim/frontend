@@ -44,7 +44,7 @@ export default function DisplayMessageContainer({
     const parts = content.split(urlLink);
 
     return (
-      <Fragment>
+      <S.DefaultContent>
         {parts[0]}
 
         <Link href={urlLink} target="_blank" rel="noopener noreferrer">
@@ -52,22 +52,23 @@ export default function DisplayMessageContainer({
         </Link>
 
         {parts[1]}
-      </Fragment>
+      </S.DefaultContent>
     );
   };
 
-  const ImageContainer = () => (
-    <S.Carousel
-      infinite={false}
-      draggable
-      cursor={formattedAttachs.length > 1 ? 'grabbing' : 'context-menu'}
-    >
-      {formattedAttachs &&
-        formattedAttachs.map((item, index) => (
+  const ImageContainer = () =>
+    formattedAttachs.length && (
+      <S.Carousel
+        infinite={false}
+        draggable={formattedAttachs.length > 1}
+        dots={formattedAttachs.length > 1}
+        cursor={formattedAttachs.length > 1 ? 'grabbing' : 'context-menu'}
+      >
+        {formattedAttachs.map((item, index) => (
           <Fragment key={index}>{item}</Fragment>
         ))}
-    </S.Carousel>
-  );
+      </S.Carousel>
+    );
 
   const ReferencedMessageContainer = ({ content }: I.IReferencedMessage) => (
     <Row justify="start" align="middle">

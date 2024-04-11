@@ -43,7 +43,6 @@ export const Avatar = styled(AvatarAntd)`
 `;
 
 export const DefaultContent = styled.div`
-  margin-left: 5px;
   padding: 8px;
 `;
 
