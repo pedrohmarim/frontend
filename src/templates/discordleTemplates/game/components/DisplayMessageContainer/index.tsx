@@ -56,19 +56,18 @@ export default function DisplayMessageContainer({
     );
   };
 
-  const ImageContainer = () =>
-    formattedAttachs.length && (
-      <S.Carousel
-        infinite={false}
-        draggable={formattedAttachs.length > 1}
-        dots={formattedAttachs.length > 1}
-        cursor={formattedAttachs.length > 1 ? 'grabbing' : 'context-menu'}
-      >
-        {formattedAttachs.map((item, index) => (
-          <Fragment key={index}>{item}</Fragment>
-        ))}
-      </S.Carousel>
-    );
+  const ImageContainer = () => (
+    <S.Carousel
+      infinite={false}
+      draggable={formattedAttachs.length > 1}
+      dots={formattedAttachs.length > 1}
+      cursor={formattedAttachs.length > 1 ? 'grabbing' : 'context-menu'}
+    >
+      {formattedAttachs.map((item, index) => (
+        <Fragment key={index}>{item}</Fragment>
+      ))}
+    </S.Carousel>
+  );
 
   const ReferencedMessageContainer = ({ content }: I.IReferencedMessage) => (
     <Row justify="start" align="middle">

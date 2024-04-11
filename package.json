@@ -20,6 +20,7 @@
     "react-dom": "18.2.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-verification-code-input": "^1.2.9",
+    "sharp": "^0.33.3",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
