@@ -46,14 +46,15 @@ export default function ChoosedMessage({
 
   function handleGetHints(fromClick?: boolean) {
     if (router.isReady) {
-      const { channelId, guildId } = router.query;
+      const { channelId, guildId, code } = router.query;
 
-      if (!channelId || !guildId) return;
+      if (!channelId || !guildId || !code) return;
 
       const dto: IDiscordHintsRequest = {
         MessageId: message.id,
         AuthorSelected: authorSelected,
         ChannelId: channelId.toString(),
+        Code: code.toString(),
         GuildId: guildId.toString(),
         TabKey: tabkey,
         FromClick: fromClick ?? false,

@@ -48,6 +48,7 @@ export interface IAuthor {
 export interface IDiscordHintsRequest {
   MessageId: string;
   ChannelId: string;
+  Code: string;
   GuildId: string;
   AuthorSelected: string;
   TabKey: number;
