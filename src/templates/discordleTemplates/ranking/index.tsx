@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { ColumnsType } from 'antd/es/table';
 import * as S from './styles';
@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 import { MessageContainer } from 'globalStyles/global';
+import Head from 'next/head';
 import {
   IRankingTableData,
   IUserScoreDetail,
@@ -173,90 +174,96 @@ export default function Ranking() {
   }
 
   return (
-    <MessageContainer>
-      <S.TableContainer>
-        {channelName ? (
-          <GameTitle margin="0 0 15px 0">
-            Discordle | Ranking - #{channelName}
-          </GameTitle>
-        ) : (
-          <GameTitle margin="15px 0 0 0">Erro ao carregar ranking</GameTitle>
-        )}
+    <Fragment>
+      <Head>
+        <title>Discordle | Ranking</title>
+      </Head>
 
-        <Table
-          scroll={{ x: 600 }}
-          loading={loading}
-          size="middle"
-          columns={columns}
-          dataSource={dataSource}
-          rowKey={(record: IRankingTableData) => record.RowId}
-          locale={{ emptyText: <Empty description="Sem registros" /> }}
-          pagination={{
-            pageSize: 10,
-            hideOnSinglePage: true,
-            style: { color: theme.discordleColors.text },
-            total: dataSource.length,
-            showTotal: (total) => `Total de ${total} registros`,
-          }}
-        />
+      <MessageContainer>
+        <S.TableContainer>
+          {channelName ? (
+            <GameTitle margin="0 0 15px 0">
+              Discordle | Ranking - #{channelName}
+            </GameTitle>
+          ) : (
+            <GameTitle margin="15px 0 0 0">Erro ao carregar ranking</GameTitle>
+          )}
 
-        <S.Modal
-          destroyOnClose
-          open={open}
-          style={{ top: '5%' }}
-          title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
-          onCancel={() => setOpen(false)}
-          onOk={() => setOpen(false)}
-          okText="Voltar"
-          cancelButtonProps={{ style: { display: 'none' } }}
-          okButtonProps={{
-            style: {
-              backgroundColor: theme.discordleColors.primary,
-              border: 'none',
-              color: theme.discordleColors.text,
-            },
-          }}
-        >
           <Table
-            scroll={{ x: 450 }}
+            scroll={{ x: 600 }}
             loading={loading}
+            size="middle"
+            columns={columns}
+            dataSource={dataSource}
+            rowKey={(record: IRankingTableData) => record.RowId}
             locale={{ emptyText: <Empty description="Sem registros" /> }}
-            size="small"
-            columns={modalColumns}
-            dataSource={scoreDetail}
-            rowKey={(record: IUserScoreDetail) => record.RowId}
             pagination={{
-              pageSize: 3,
+              pageSize: 10,
               hideOnSinglePage: true,
               style: { color: theme.discordleColors.text },
-              total: scoreDetail.length,
+              total: dataSource.length,
               showTotal: (total) => `Total de ${total} registros`,
             }}
           />
-        </S.Modal>
 
-        <S.ButtonRow justify="space-between" align="middle">
-          <Button
-            onClick={toGame}
-            backgroundcolor={theme.discordleColors.primary}
-            color={theme.discordleColors.text}
-            icon={<FeatherIcons icon="arrow-left" size={18} />}
-            width={120}
+          <S.Modal
+            destroyOnClose
+            open={open}
+            style={{ top: '5%' }}
+            title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
+            onCancel={() => setOpen(false)}
+            onOk={() => setOpen(false)}
+            okText="Voltar"
+            cancelButtonProps={{ style: { display: 'none' } }}
+            okButtonProps={{
+              style: {
+                backgroundColor: theme.discordleColors.primary,
+                border: 'none',
+                color: theme.discordleColors.text,
+              },
+            }}
           >
-            <S.UserSpan>Voltar</S.UserSpan>
-          </Button>
+            <Table
+              scroll={{ x: 450 }}
+              loading={loading}
+              locale={{ emptyText: <Empty description="Sem registros" /> }}
+              size="small"
+              columns={modalColumns}
+              dataSource={scoreDetail}
+              rowKey={(record: IUserScoreDetail) => record.RowId}
+              pagination={{
+                pageSize: 3,
+                hideOnSinglePage: true,
+                style: { color: theme.discordleColors.text },
+                total: scoreDetail.length,
+                showTotal: (total) => `Total de ${total} registros`,
+              }}
+            />
+          </S.Modal>
 
-          <Button
-            onClick={gridReload}
-            backgroundcolor={theme.discordleColors.primary}
-            color={theme.discordleColors.text}
-            icon={<FeatherIcons icon="rotate-cw" size={18} />}
-            width={140}
-          >
-            <S.UserSpan>Recarregar</S.UserSpan>
-          </Button>
-        </S.ButtonRow>
-      </S.TableContainer>
-    </MessageContainer>
+          <S.ButtonRow justify="space-between" align="middle">
+            <Button
+              onClick={toGame}
+              backgroundcolor={theme.discordleColors.primary}
+              color={theme.discordleColors.text}
+              icon={<FeatherIcons icon="arrow-left" size={18} />}
+              width={120}
+            >
+              <S.UserSpan>Voltar</S.UserSpan>
+            </Button>
+
+            <Button
+              onClick={gridReload}
+              backgroundcolor={theme.discordleColors.primary}
+              color={theme.discordleColors.text}
+              icon={<FeatherIcons icon="rotate-cw" size={18} />}
+              width={140}
+            >
+              <S.UserSpan>Recarregar</S.UserSpan>
+            </Button>
+          </S.ButtonRow>
+        </S.TableContainer>
+      </MessageContainer>
+    </Fragment>
   );
 }
