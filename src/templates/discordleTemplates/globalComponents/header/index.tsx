@@ -36,7 +36,7 @@ export default function Header({
           onClick={() => router.push('/discordle/home')}
           isMobile={isMobile}
         >
-          <Image src={Logo.src} alt="logo" preview={false} height={70} />
+          <Image src={Logo.src} alt="logo" preview={false} height={55} />
         </S.AbsoluteRow>
       </Tooltip>
     );
@@ -75,11 +75,12 @@ export default function Header({
       {windowWidth && windowWidth >= 875 ? (
         <S.Row justify="space-between" align="middle">
           <Image
+            onClick={() => setCurrent('home')}
             src={Logo.src}
             alt="logo"
             preview={false}
-            height={70}
-            style={{ marginLeft: '15px' }}
+            height={55}
+            style={{ marginLeft: '15px', cursor: 'pointer' }}
           />
 
           <S.DesktopMenu

@@ -25,8 +25,12 @@ export const Card = styled(AntdCard)`
   color: ${(props) => props.theme.discordleColors.text};
 `;
 
-export const CardImage = styled.img`
+export const CardImage = styled.div`
   width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
 `;
 

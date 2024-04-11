@@ -6,5 +6,5 @@ export interface IHowWorks {
 export interface IHowWorksCard {
   title: string;
   description: string;
-  image: string;
+  image: React.ReactNode;
 }
