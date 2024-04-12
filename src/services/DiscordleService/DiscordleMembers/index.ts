@@ -1,17 +1,32 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import { IGetMemberResponse } from '../IDiscordleService';
+import { IMember } from '../IDiscordleService';
 
 const http = baseService();
 const baseUrl = 'DiscordleMembers';
 
 const ApiAuth = {
   GetChannelMembers: async function (channelId: string, code: string) {
-    const response: AxiosResponse<IGetMemberResponse> = await http.post(
+    const response: AxiosResponse<IMember[]> = await http.post(
       `${baseUrl}/GetChannelMembers`,
       {
         ChannelId: channelId,
         Code: code,
+      }
+    );
+    return response.data;
+  },
+  GetChannelMemberBySearchValue: async function (
+    searchValue: string,
+    channelId: string,
+    code: string
+  ) {
+    const response: AxiosResponse<IMember[]> = await http.post(
+      `${baseUrl}/GetChannelMemberBySearchValue`,
+      {
+        SearchValue: searchValue,
+        Code: code,
+        ChannelId: channelId,
       }
     );
     return response.data;

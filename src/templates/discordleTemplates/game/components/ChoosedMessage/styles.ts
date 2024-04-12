@@ -8,10 +8,6 @@ export const GameTitle = styled.h2<{ margin?: string }>`
   word-break: break-all;
 `;
 
-export const BiggerGameTitle = styled.h1`
-  color: ${(props) => props.theme.discordleColors.primary};
-`;
-
 export const ScoreContainer = styled(Row)`
   margin-bottom: 10px;
   color: ${(props) => props.theme.discordleColors.text};
@@ -33,19 +29,10 @@ export const Container = styled.div`
   }
 `;
 
-export const ServerName = styled.span`
-  margin-top: 2px;
-  margin-left: 8px;
-`;
-
 export const MainMessageContainer = styled.div`
   border: solid 2px rgba(138, 0, 194, 0.4);
   box-shadow: 0px 0px 15px 15px rgba(255, 255, 255, 0.08);
   padding: 10px;
   border-radius: 4px;
   margin: 30px 0;
-`;
-
-export const PaddingContainer = styled.div`
-  padding: 20px 0;
 `;

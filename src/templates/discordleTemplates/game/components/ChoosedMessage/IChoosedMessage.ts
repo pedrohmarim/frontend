@@ -11,12 +11,10 @@ export interface IChoosedMessageComponent {
   openModal: boolean;
   score: number;
   message: IChoosedMessage;
-  serverName: string;
   authorSelected: string;
   usedHint: boolean;
   openWarnExistsHint: boolean;
   tabkey: number;
-  serverIcon: string;
   setWarnExistsHint: React.Dispatch<React.SetStateAction<boolean>>;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;

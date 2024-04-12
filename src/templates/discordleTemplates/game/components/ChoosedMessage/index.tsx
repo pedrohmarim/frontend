@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import DiscordleGameApi from 'services/DiscordleService/DiscordleGame';
@@ -8,7 +8,6 @@ import DisplayMessageContainer from 'templates/discordleTemplates/game/component
 import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import {
   MessageTypeEnum,
   MessageLevelEnum,
@@ -25,8 +24,6 @@ export default function ChoosedMessage({
   openWarnExistsHint,
   authorSelected,
   switchValues,
-  serverIcon,
-  serverName,
   openModal,
   usedHint,
   message,
@@ -113,7 +110,7 @@ export default function ChoosedMessage({
     });
 
   return (
-    <S.PaddingContainer>
+    <Fragment>
       <S.ScoreContainer align="middle" justify="space-between">
         <S.ScoreTextContainer>
           {switchValues && (
@@ -224,20 +221,6 @@ export default function ChoosedMessage({
         </Row>
       </S.ScoreContainer>
 
-      <S.BiggerGameTitle>Discordle</S.BiggerGameTitle>
-
-      <Row justify="center" align="middle">
-        <Image
-          src={serverIcon}
-          alt="img"
-          width={38}
-          height={38}
-          style={{ borderRadius: '50%' }}
-        />
-
-        <S.ServerName>{serverName}</S.ServerName>
-      </Row>
-
       {totalMessages.map((message, index) => (
         <S.Container key={index}>
           {message.messageLevel === MessageLevelEnum.isMain ? (
@@ -249,6 +232,6 @@ export default function ChoosedMessage({
           )}
         </S.Container>
       ))}
-    </S.PaddingContainer>
+    </Fragment>
   );
 }

@@ -96,7 +96,6 @@ export const Row = styled(RowAntd)`
 export const AbsoluteRow = styled.div<{ isMobile: boolean }>`
   cursor: pointer;
   display: flex;
-  position: ${({ isMobile }) => (isMobile ? 'initial' : 'absolute')};
   margin-top: 25px;
   margin-left: ${({ isMobile }) => (isMobile ? '0' : '25px')};
   justify-content: ${({ isMobile }) => (isMobile ? 'center' : 'start')};

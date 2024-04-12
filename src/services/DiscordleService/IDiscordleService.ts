@@ -1,12 +1,15 @@
 import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 
+export interface IGuildInfo {
+  ServerName: string;
+  ServerIcon: string;
+}
+
 export interface IMessageInstance {
   Messages: IMessage[];
   Authors: IAuthor[];
   ChannelId: string;
   GuildId: string;
-  ServerName: string;
-  ServerIcon: string;
 }
 
 export interface IGetDiscordHintsResponse {
@@ -88,11 +91,6 @@ export interface IGuildsDto {
   GuildName: string;
   GuildId: string;
   Icon: string;
-}
-
-export interface IGetMemberResponse {
-  Members: IMember[];
-  ChannelName: string;
 }
 
 export interface IMember {

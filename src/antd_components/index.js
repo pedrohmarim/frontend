@@ -36,8 +36,10 @@ import Switch from './Switch/Switch.component';
 import Pagination from './Pagination/Pagination.component';
 import List from './List/List.component';
 import Tour from './Tour/Tour.component';
+import Steps from './Steps/Steps.component';
 
 export {
+  Steps,
   Tour,
   List,
   Switch,

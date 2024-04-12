@@ -1,13 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { IGetUserByTokenResponse } from 'services/Login/ILoginService';
 import * as I from './IContext';
+import { useRouter } from 'next/router';
 import LoginApi from 'services/Login/';
+import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
 
 const MyContext = createContext<I.IContextProps | undefined>(undefined);
 
 export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   children,
 }) => {
+  const router = useRouter();
   const [login, setLogin] = useState<IGetUserByTokenResponse | null>(null);
 
   function updateLogin(token: string) {
@@ -38,8 +41,37 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (router.isReady) {
+      const { channelId, code } = router.query;
+
+      if (channelId && code) {
+        DiscordGameApi.GetGuildInfo(channelId.toString(), code.toString()).then(
+          ({ ServerIcon, ServerName }) =>
+            setServerInfos({
+              ServerIcon,
+              ServerName,
+            })
+        );
+      }
+    }
+  }, [router]);
+
+  const [serverInfos, setServerInfos] = useState<{
+    ServerName: string;
+    ServerIcon: string;
+  }>({} as { ServerName: string; ServerIcon: string });
+
   return (
-    <MyContext.Provider value={{ login, updateLogin, setLogin, windowWidth }}>
+    <MyContext.Provider
+      value={{
+        login,
+        updateLogin,
+        setLogin,
+        windowWidth,
+        serverInfos,
+      }}
+    >
       {children}
     </MyContext.Provider>
   );

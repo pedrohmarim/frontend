@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Row as AntdRow } from 'antd_components';
 
 export const Card = styled.div`
   display: flex;
@@ -10,19 +11,25 @@ export const Card = styled.div`
   width: fit-content;
   border: solid 1px rgba(255, 255, 255, 0.1);
   transition: all 0.2s;
-  scale: calc(0.9);
+  margin: 0px 20px 20px 0px;
   min-width: 180px;
   max-width: 180px;
 
   :hover {
     cursor: pointer;
     box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
-    scale: calc(1);
+    scale: calc(1.1);
   }
+`;
+
+export const Row = styled(AntdRow)`
+  margin-bottom: 10px;
 `;
 
 export const Username = styled.span`
   margin-top: 10px;
+  max-width: 100%;
+  word-break: break-all;
   font-size: 14pt;
 `;
 
@@ -38,15 +45,24 @@ export const InvalidText = styled.span`
   font-size: 11pt;
 `;
 
-export const MemberRow = styled.div`
-  margin: -20px 0 -5px 0;
-  overflow-x: auto;
-  padding: 15px;
+export const Empty = styled.div`
+  width: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const MemberRow = styled.div<{ empty: boolean; onlyOneMember: boolean }>`
+  overflow-x: auto;
+  padding: 20px;
+  display: flex;
+  justify-content: ${({ onlyOneMember }) =>
+    onlyOneMember ? 'center' : 'start'};
   scroll-snap-type: x mandatory;
   transition: scroll-left 0.5s ease-out;
-  max-width: 1000px;
-  cursor: grab;
+  max-width: 100vw;
+  height: 300px;
+  cursor: ${({ empty }) => (empty ? 'default' : 'grab')} !important;
 
   ::-webkit-scrollbar {
     height: 10px;

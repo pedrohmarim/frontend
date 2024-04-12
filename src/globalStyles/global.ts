@@ -1,5 +1,4 @@
 import styled, { createGlobalStyle } from 'styled-components';
-import { Card } from 'antd_components';
 
 export default createGlobalStyle`
   * {
@@ -48,8 +47,10 @@ export default createGlobalStyle`
   }
 
   .codeInput {
-    background-color: ${(props) => props.theme.colors.textSecondary};
+    background-color: transparent;
     border-radius: 5px;
+    max-width: 100%;
+    margin-bottom: 10px;
   }
 
   input[type="tel"][data-id="0"],
@@ -142,7 +143,7 @@ export default createGlobalStyle`
   }
 
   .ant-tabs-top >.ant-tabs-nav::before {
-    border-color: rgba(255,255,255,0.29)
+    border-color: rgba(255,255,255,0.15)
   }
 
   .ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -335,11 +336,12 @@ export const OverflowDiscordle = styled.div`
   }
 `;
 
-export const MessageContainer = styled(Card)<{
+export const MessageContainer = styled.div<{
   width?: string;
   margin?: string;
   maxWidth?: string;
 }>`
+  padding: 10px;
   text-align: center;
   width: ${({ width }) => width};
   max-width: ${({ maxWidth }) => maxWidth};
@@ -350,5 +352,4 @@ export const MessageContainer = styled(Card)<{
   background-color: #17171a;
   border-radius: 8px;
   border-color: rgba(255, 255, 255, 0.09);
-  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 `;

@@ -5,7 +5,7 @@ import * as S from './styles';
 import * as I from './IHeader';
 import theme from 'globalStyles/theme';
 import Logo from 'assets/logo.png';
-import { Button, FeatherIcons, Row, Image, Tooltip } from 'antd_components';
+import { Button, FeatherIcons, Row, Image } from 'antd_components';
 import { useMyContext } from 'Context';
 
 export default function Header({
@@ -31,14 +31,12 @@ export default function Header({
 
   if (!setAnimationActive || !setCurrent || !current || !isHome)
     return (
-      <Tooltip title="Voltar para o início" placement="right">
-        <S.AbsoluteRow
-          onClick={() => router.push('/discordle/home')}
-          isMobile={isMobile}
-        >
-          <Image src={Logo.src} alt="logo" preview={false} height={55} />
-        </S.AbsoluteRow>
-      </Tooltip>
+      <S.AbsoluteRow
+        onClick={() => router.push('/discordle/home')}
+        isMobile={isMobile}
+      >
+        <Image src={Logo.src} alt="logo" preview={false} height={60} />
+      </S.AbsoluteRow>
     );
 
   const items: MenuProps['items'] = [
@@ -80,7 +78,7 @@ export default function Header({
             alt="logo"
             preview={false}
             height={55}
-            style={{ marginLeft: '15px', cursor: 'pointer' }}
+            style={{ marginLeft: '25px', cursor: 'pointer' }}
           />
 
           <S.DesktopMenu

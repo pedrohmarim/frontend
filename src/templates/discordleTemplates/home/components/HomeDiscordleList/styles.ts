@@ -88,10 +88,12 @@ export const Container = styled.div<{
   margin: string;
   maxHeight: string;
   padding: string;
+  alignItems?: string;
 }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: ${({ alignItems }) => alignItems};
   background-color: ${(props) =>
     props.theme.discordleColors.background} !important;
   box-shadow: rgba(0, 0, 0, 1) 0px 0px 120px 50px;

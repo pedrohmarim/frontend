@@ -1,8 +1,14 @@
-import React, { useEffect, useState, useRef, Fragment } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  Fragment,
+  useCallback,
+} from 'react';
 import { IMember } from 'services/DiscordleService/IDiscordleService';
 import * as S from './styles';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
-import { Image, Row, Col, Button } from 'antd_components';
+import { Image, Row, Col, Button, Input, FeatherIcons } from 'antd_components';
 import { useRouter } from 'next/router';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
@@ -10,14 +16,19 @@ import { Divider } from 'templates/discordleTemplates/game/components/Result/sty
 import ReactCodeInput from 'react-verification-code-input';
 import theme from 'globalStyles/theme';
 import { Description } from '../home/components/SelectChanneInstanceModal/styles';
+import GuildInfo from '../globalComponents/guildInfo';
 import { useMyContext } from 'Context';
+import {
+  Container,
+  InputContainer,
+} from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
+import { deleteDiscordleToken } from 'utils/localStorage/User';
 
 export default function ChooseProfile() {
-  const { windowWidth } = useMyContext();
-
   const router = useRouter();
+  const { windowWidth, serverInfos } = useMyContext();
+  const isMobile = windowWidth <= 875;
   const [members, setMembers] = useState<IMember[]>([]);
-  const [channelName, setChannelName] = useState<string>('');
   const [validToken, setValidToken] = useState<boolean>(true);
   const [showTokenInput, setShowTokenInput] = useState<{
     view: boolean;
@@ -29,7 +40,7 @@ export default function ChooseProfile() {
     selectedItemIndex: null,
   });
 
-  useEffect(() => {
+  function getMembers() {
     if (router.isReady) {
       const { channelId, code } = router.query;
 
@@ -37,12 +48,14 @@ export default function ChooseProfile() {
         DiscordMembersApi.GetChannelMembers(
           channelId.toString(),
           code.toString()
-        ).then(({ ChannelName, Members }) => {
-          setMembers(Members);
-          setChannelName(ChannelName);
-        });
+        ).then((members) => setMembers(members));
       }
     }
+  }
+
+  useEffect(() => {
+    getMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const [secondsRemaining, setSecondsRemaining] = useState<number | null>(null);
@@ -81,6 +94,8 @@ export default function ChooseProfile() {
   };
 
   const debouncedHandleSaveUser = debounce((token: string) => {
+    deleteDiscordleToken();
+
     const { channelId, guildId, code, backRoute } = router.query;
 
     if (channelId && guildId && code) {
@@ -118,7 +133,7 @@ export default function ChooseProfile() {
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     if (memberRowRef.current) {
-      memberRowRef.current.style.cursor = 'grabbing';
+      if (members.length) memberRowRef.current.style.cursor = 'grabbing';
       const startX = e.pageX - memberRowRef.current.offsetLeft;
       const scrollLeftStart = memberRowRef.current.scrollLeft;
 
@@ -132,7 +147,7 @@ export default function ChooseProfile() {
 
       const handleMouseUp = () => {
         if (memberRowRef.current) {
-          memberRowRef.current.style.cursor = 'grab';
+          if (members.length) memberRowRef.current.style.cursor = 'grab';
           document.removeEventListener('mousemove', handleMouseMove);
           document.removeEventListener('mouseup', handleMouseUp);
         }
@@ -143,7 +158,52 @@ export default function ChooseProfile() {
     }
   };
 
-  if (!members?.length)
+  const handleDebouncedSearch = useCallback(
+    async (searchValue: string) => {
+      setShowTokenInput({
+        view: false,
+        userId: '',
+        selectedItemIndex: null,
+      });
+
+      if (searchValue.length) {
+        const { channelId, code } = router.query;
+
+        if (channelId && code) {
+          DiscordMembersApi.GetChannelMemberBySearchValue(
+            searchValue,
+            channelId.toString(),
+            code.toString()
+          ).then((members) => setMembers(members));
+        }
+      } else getMembers();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [router]
+  );
+
+  const debounceSearchMember = useCallback(
+    (func: (value: string) => void, delay: number) => {
+      let timerId: NodeJS.Timeout;
+
+      return function (value: string) {
+        if (timerId) clearTimeout(timerId);
+
+        timerId = setTimeout(() => {
+          func(value);
+        }, delay);
+      };
+    },
+    []
+  );
+
+  const debouncedFilter = debounceSearchMember(handleDebouncedSearch, 1000);
+
+  function filter(searchValue: string) {
+    debouncedFilter(searchValue);
+  }
+
+  if (!router.query.code || !router.query.channelId || !router.query.guildId)
     return (
       <MessageContainer>
         <Description>Não há membros á serem exibidos</Description>
@@ -169,79 +229,107 @@ export default function ChooseProfile() {
     );
 
   return (
-    <MessageContainer width={windowWidth > 1200 ? '100%' : ''} margin="auto">
-      <Row justify="center">
-        <GameTitle margin="0 0 15px 0">
-          Escolha seu perfil para acessar <br /> #{channelName}
-        </GameTitle>
-      </Row>
+    <Container margin="25px" maxHeight="100%" padding="20px">
+      <GuildInfo />
 
-      <S.MemberRow ref={memberRowRef} onMouseDown={handleMouseDown}>
-        {members.map(({ AvatarUrl, Id, Username }, index) => (
-          <S.Card
-            className={
-              showTokenInput.selectedItemIndex === index
-                ? 'active-item-row '
-                : ''
-            }
-            key={index}
-            onClick={() =>
-              setShowTokenInput({
-                view: true,
-                userId: Id,
-                selectedItemIndex: index,
-              })
-            }
-          >
-            <Image
-              alt="avatarUrl"
-              src={AvatarUrl}
-              preview={false}
-              width={130}
-            />
-            <S.Username>{Username}</S.Username>
-          </S.Card>
-        ))}
-      </S.MemberRow>
+      <S.Row justify="space-between">
+        <Row justify="center" align="middle">
+          <GameTitle margin="0 6px 0 0">
+            Escolha seu perfil para começar a jogar
+          </GameTitle>
+        </Row>
 
-      {showTokenInput.view && (
-        <Fragment>
-          <Divider />
+        <InputContainer ismobile={isMobile}>
+          <Input
+            onChange={(event) => filter(event.target.value)}
+            placeholder="Filtrar"
+            suffix={<FeatherIcons icon="search" size={18} />}
+          />
+        </InputContainer>
+      </S.Row>
 
-          <Row justify="center" align="middle" gutter={[16, 16]}>
-            <Col span={24}>
-              <Description fontSize="12pt">
-                Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto
-                <HomeSpan> #{channelName}</HomeSpan>
-                <br />
-                para gerar seu token.
-              </Description>
-            </Col>
-
-            <Row justify="center">
-              <Col span={24}>
-                <ReactCodeInput
-                  onChange={() => setValidToken(true)}
-                  disabled={secondsRemaining != null}
-                  className="codeInput"
-                  onComplete={debouncedHandleSaveUser}
-                  fields={5}
+      <MessageContainer maxWidth="100%" margin="10px 0 0 0">
+        <S.MemberRow
+          onlyOneMember={members.length === 1}
+          ref={memberRowRef}
+          onMouseDown={handleMouseDown}
+          empty={members.length === 0}
+        >
+          {members.length ? (
+            members.map(({ AvatarUrl, Id, Username }, index) => (
+              <S.Card
+                className={
+                  showTokenInput.selectedItemIndex === index
+                    ? 'active-item-row '
+                    : ''
+                }
+                key={index}
+                onClick={() =>
+                  setShowTokenInput({
+                    view: true,
+                    userId: Id,
+                    selectedItemIndex: index,
+                  })
+                }
+              >
+                <Image
+                  alt="avatarUrl"
+                  src={AvatarUrl}
+                  preview={false}
+                  width={130}
+                  style={{ borderRadius: '4px' }}
                 />
 
-                {!validToken && <S.InvalidText>Codigo Inválido!</S.InvalidText>}
+                <S.Username>{Username}</S.Username>
+              </S.Card>
+            ))
+          ) : (
+            <S.Empty>Nenhum resultado encontrado.</S.Empty>
+          )}
+        </S.MemberRow>
 
-                {secondsRemaining && (
-                  <Row justify="center">
-                    <S.TimerText>
-                      Tente novamente em <HomeSpan>{secondsRemaining}</HomeSpan>
-                    </S.TimerText>
-                  </Row>
-                )}
+        {members.length > 0 && showTokenInput.view && (
+          <Fragment>
+            <Divider />
+
+            <Row justify="center" align="middle" gutter={[16, 16]}>
+              <Col span={24}>
+                <Description fontSize="12pt">
+                  Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto
+                  #{serverInfos.ServerName.split('#')[1]}
+                  <br /> <br />
+                  para gerar seu token.
+                </Description>
               </Col>
+
+              <Row justify="center">
+                <Col span={24}>
+                  <ReactCodeInput
+                    onChange={() => setValidToken(true)}
+                    disabled={secondsRemaining != null}
+                    className="codeInput"
+                    onComplete={debouncedHandleSaveUser}
+                    fields={5}
+                  />
+
+                  {!validToken && (
+                    <S.InvalidText>Codigo Inválido!</S.InvalidText>
+                  )}
+
+                  {secondsRemaining && (
+                    <Row justify="center">
+                      <S.TimerText>
+                        Tente novamente em{' '}
+                        <HomeSpan>{secondsRemaining}</HomeSpan>
+                      </S.TimerText>
+                    </Row>
+                  )}
+                </Col>
+              </Row>
             </Row>
-          </Row>
-        </Fragment>
-      )}
-    </MessageContainer>
+          </Fragment>
+        )}
+      </MessageContainer>
+    </Container>
   );
 }

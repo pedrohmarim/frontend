@@ -19,7 +19,6 @@ const AuthorSelect = ({
       allowClear
       placeholder="Selecione um membro"
       showSearch
-      dropdownMatchSelectWidth
       getPopupContainer={(trigger) => trigger}
       notFoundContent={<Row justify="center">Sem dados</Row>}
       filterOption={(inputValue, option) => {

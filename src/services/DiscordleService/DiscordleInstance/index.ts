@@ -4,7 +4,7 @@ import { ISwitchValues } from 'templates/discordleTemplates/game/IGame';
 import {
   IChangeSwitchGet,
   IChangeSwitchRequest,
-} from 'templates/discordleTemplates/game/components/MessageTabs/components/ConfigurationModal/IConfigurationModal';
+} from 'templates/discordleTemplates/game/components/ConfigurationModal/IConfigurationModal';
 
 const http = baseService();
 const baseUrl = 'DiscordleInstance';

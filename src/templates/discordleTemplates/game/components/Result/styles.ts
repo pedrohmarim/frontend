@@ -8,8 +8,7 @@ export const Subtitle = styled.span`
 `;
 
 export const Divider = styled(DividerAntd)`
-  border-color: ${(props) => props.theme.discordleColors.text};
-  opacity: 0.2;
+  border-color: rgba(255, 255, 255, 0.15);
 `;
 
 export const MarginSpan = styled.span<{ margin: string }>`
