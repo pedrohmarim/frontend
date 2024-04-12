@@ -16,11 +16,11 @@ import { Container } from 'templates/discordleTemplates/home/components/HomeDisc
 import GuildInfo from '../globalComponents/guildInfo';
 import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
 import MessageSteps from './components/MessageSteps';
+import { useMyContext } from 'Context';
 import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
-import { useMyContext } from 'Context';
 
 export default function GameContainer() {
   const router = useRouter();
@@ -112,6 +112,7 @@ export default function GameContainer() {
 
       if (!alreadyAnswered) {
         const data = await DiscordGameApi.SaveScore(dto);
+
         if (data.length) {
           setUsedHint(false);
           setAnswers(data);

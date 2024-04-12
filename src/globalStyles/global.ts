@@ -341,7 +341,7 @@ export const MessageContainer = styled.div<{
   margin?: string;
   maxWidth?: string;
 }>`
-  padding: 10px;
+  padding: 20px;
   text-align: center;
   width: ${({ width }) => width};
   max-width: ${({ maxWidth }) => maxWidth};

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChoosedMessage';
 import DiscordleGameApi from 'services/DiscordleService/DiscordleGame';
@@ -8,6 +8,7 @@ import DisplayMessageContainer from 'templates/discordleTemplates/game/component
 import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
+import { useMyContext } from 'Context';
 import {
   MessageTypeEnum,
   MessageLevelEnum,
@@ -18,6 +19,7 @@ import {
   Row,
   PopConfirm,
   Tooltip,
+  Tour,
 } from 'antd_components';
 
 export default function ChoosedMessage({
@@ -33,7 +35,10 @@ export default function ChoosedMessage({
   setOpenModal,
   setWarnExistsHint,
 }: I.IChoosedMessageComponent) {
+  const ref = useRef(null);
   const router = useRouter();
+  const { windowWidth } = useMyContext();
+  const isMobile = windowWidth <= 875;
   const [loading, setLoading] = useState<boolean>(false);
   const [openPopConfirm, setOpenPopConfirm] = useState(false);
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
@@ -110,8 +115,33 @@ export default function ChoosedMessage({
 
   return (
     <Fragment>
-      <S.ScoreContainer align="middle" justify="space-between">
-        <Row>
+      <Tour
+        open={openWarnExistsHint}
+        placement="top"
+        onClose={() => setWarnExistsHint(!openWarnExistsHint)}
+        steps={[
+          {
+            title: 'Mensagem muito difícil?',
+            description: 'Experimente usar uma dica. 😁',
+            closable: true,
+            onClose: () => setWarnExistsHint(false),
+            nextButtonProps: {
+              children: 'Entendido',
+              style: {
+                backgroundColor: theme.discordleColors.primary,
+                color: theme.discordleColors.text,
+              },
+            },
+            target: () => ref.current,
+          },
+        ]}
+      />
+
+      <Row
+        justify={isMobile ? 'center' : 'end'}
+        style={{ marginBottom: isMobile && usedHint ? '20px' : '0' }}
+      >
+        <S.HintContainer ref={ref}>
           {totalMessages.length === 1 && (
             <PopConfirm
               title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
@@ -120,7 +150,7 @@ export default function ChoosedMessage({
               onConfirm={confirm}
               getPopupContainer={(trigger) => trigger}
               onCancel={() => setOpenPopConfirm(false)}
-              placement="bottom"
+              placement="left"
               open={openPopConfirm || loading}
               overlayStyle={{
                 backgroundColor: theme.discordleColors.background,
@@ -145,72 +175,49 @@ export default function ChoosedMessage({
               }}
             >
               <Tooltip title="Mostrar Dica">
-                <PopConfirm
-                  open={openWarnExistsHint}
-                  placement="left"
-                  getPopupContainer={(trigger) => trigger}
-                  onConfirm={() => setWarnExistsHint(!openWarnExistsHint)}
-                  title="Mensagem muito difícil?"
-                  description="Experimente usar uma dica. 😁"
-                  okText="Entendido"
-                  overlayStyle={{
-                    backgroundColor: theme.discordleColors.background,
-                    borderRadius: '5px',
-                  }}
-                  overlayInnerStyle={{
-                    border: 'solid 2px rgba(138, 0, 194, 0.5)',
-                    width: '360px',
-                    backgroundColor: theme.discordleColors.background,
-                  }}
-                  okButtonProps={{
-                    style: {
-                      backgroundColor: theme.discordleColors.primary,
-                      border: 'none',
-                    },
-                  }}
-                  cancelButtonProps={{
-                    style: {
-                      display: 'none',
-                    },
-                  }}
+                <Button
+                  onClick={() => setOpenPopConfirm(true)}
+                  color={theme.discordleColors.text}
+                  backgroundcolor={theme.discordleColors.primary}
+                  height={33}
+                  width="fit-content"
+                  icon={
+                    <FeatherIcons
+                      icon="message-circle"
+                      color={theme.discordleColors.text}
+                      size={20}
+                    />
+                  }
                 >
-                  <Button
-                    onClick={() => setOpenPopConfirm(true)}
-                    width={85}
-                    backgroundcolor="transparent"
-                    height={33}
-                    icon={
-                      <FeatherIcons
-                        icon="message-circle"
-                        color={theme.discordleColors.text}
-                        size={20}
-                      />
-                    }
-                  />
-                </PopConfirm>
+                  {!isMobile ? 'Mostrar Dica' : 'Dica'}
+                </Button>
               </Tooltip>
             </PopConfirm>
           )}
+        </S.HintContainer>
 
-          {isOwner && (
-            <Tooltip title="Configurações">
-              <Button
-                onClick={() => setOpenModal(!openModal)}
-                height={33}
-                margin="0 0 0 10px"
-                backgroundcolor="transparent"
-                icon={
-                  <FeatherIcons
-                    icon="settings"
-                    color={theme.discordleColors.text}
-                    size={20}
-                  />
-                }
-              />
-            </Tooltip>
-          )}
-        </Row>
-      </S.ScoreContainer>
+        {isOwner && (
+          <Tooltip title="Configurações">
+            <Button
+              margin="0 0 0 20px"
+              onClick={() => setOpenModal(!openModal)}
+              color={theme.discordleColors.text}
+              backgroundcolor={theme.discordleColors.primary}
+              height={33}
+              width="fit-content"
+              icon={
+                <FeatherIcons
+                  icon="settings"
+                  color={theme.discordleColors.text}
+                  size={20}
+                />
+              }
+            >
+              {!isMobile ? 'Configurações' : ''}
+            </Button>
+          </Tooltip>
+        )}
+      </Row>
 
       {totalMessages.map((message, index) => (
         <S.Container key={index}>
