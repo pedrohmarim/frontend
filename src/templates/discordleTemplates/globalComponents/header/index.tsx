@@ -31,12 +31,12 @@ export default function Header({
 
   if (!setAnimationActive || !setCurrent || !current || !isHome)
     return (
-      <S.AbsoluteRow
+      <S.OnlyLogoRow
         onClick={() => router.push('/discordle/home')}
         isMobile={isMobile}
       >
         <Image src={Logo.src} alt="logo" preview={false} height={60} />
-      </S.AbsoluteRow>
+      </S.OnlyLogoRow>
     );
 
   const items: MenuProps['items'] = [

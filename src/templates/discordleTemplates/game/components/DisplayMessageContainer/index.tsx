@@ -95,7 +95,9 @@ export default function DisplayMessageContainer({
         )}
 
       <Row justify="space-between" align="middle">
-        <S.Title>{titleMessage()}</S.Title>
+        <S.Title isHint={messageLevel !== MessageLevelEnum.isMain}>
+          {titleMessage()}
+        </S.Title>
       </Row>
 
       <Row justify="end">

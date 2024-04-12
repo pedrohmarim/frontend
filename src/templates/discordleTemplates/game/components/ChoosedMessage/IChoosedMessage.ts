@@ -9,7 +9,6 @@ export interface IChoosedMessageComponent {
   isOwner: boolean;
   switchValues: ISwitchValues | undefined;
   openModal: boolean;
-  score: number;
   message: IChoosedMessage;
   authorSelected: string;
   usedHint: boolean;

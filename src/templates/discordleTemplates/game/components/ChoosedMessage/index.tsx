@@ -29,7 +29,6 @@ export default function ChoosedMessage({
   message,
   isOwner,
   tabkey,
-  score,
   setUsedHint,
   setOpenModal,
   setWarnExistsHint,
@@ -112,14 +111,6 @@ export default function ChoosedMessage({
   return (
     <Fragment>
       <S.ScoreContainer align="middle" justify="space-between">
-        <S.ScoreTextContainer>
-          {switchValues && (
-            <S.ScoreText>
-              Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
-            </S.ScoreText>
-          )}
-        </S.ScoreTextContainer>
-
         <Row>
           {totalMessages.length === 1 && (
             <PopConfirm
@@ -225,10 +216,13 @@ export default function ChoosedMessage({
         <S.Container key={index}>
           {message.messageLevel === MessageLevelEnum.isMain ? (
             <S.MainMessageContainer>
-              <DisplayMessageContainer {...message} />
+              <DisplayMessageContainer
+                {...message}
+                switchValues={switchValues}
+              />
             </S.MainMessageContainer>
           ) : (
-            <DisplayMessageContainer {...message} />
+            <DisplayMessageContainer {...message} switchValues={switchValues} />
           )}
         </S.Container>
       ))}

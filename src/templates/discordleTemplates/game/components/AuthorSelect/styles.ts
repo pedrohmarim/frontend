@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Select as SelectAntd } from 'antd_components';
 
 export const Select = styled(SelectAntd)`
+  margin-top: 30px;
   width: 300px;
 
   @media screen and (max-width: 350px) {

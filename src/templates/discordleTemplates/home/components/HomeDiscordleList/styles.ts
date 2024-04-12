@@ -90,6 +90,7 @@ export const Container = styled.div<{
   padding: string;
   alignItems?: string;
 }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

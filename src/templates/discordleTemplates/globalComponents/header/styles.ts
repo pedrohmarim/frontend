@@ -90,16 +90,20 @@ const slideInFromRight = keyframes`
 
 export const Row = styled(RowAntd)`
   width: 100%;
+  z-index: 999999;
+  position: relative;
   animation: ${slideInFromRight} 1.5s ease-in-out forwards;
 `;
 
-export const AbsoluteRow = styled.div<{ isMobile: boolean }>`
+export const OnlyLogoRow = styled.div<{ isMobile: boolean }>`
   cursor: pointer;
   display: flex;
   margin-top: 25px;
   margin-left: ${({ isMobile }) => (isMobile ? '0' : '25px')};
   justify-content: ${({ isMobile }) => (isMobile ? 'center' : 'start')};
   width: ${({ isMobile }) => (isMobile ? '100%' : 'fit-content')};
+  z-index: 999999;
+  position: relative;
 `;
 
 export const DrawerTitle = styled.span`

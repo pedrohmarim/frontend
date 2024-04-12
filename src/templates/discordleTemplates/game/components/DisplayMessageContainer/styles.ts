@@ -1,15 +1,23 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   Row,
   Carousel as CarouselAntd,
   Avatar as AvatarAntd,
 } from 'antd_components';
 
-export const Title = styled.div`
+export const Title = styled.div<{ isHint: boolean }>`
   text-align: left;
   font-size: 13pt;
   font-weight: 100;
   margin-bottom: 5px;
+
+  ${({ isHint }) => {
+    if (isHint) {
+      return css`
+        margin-bottom: -33px;
+      `;
+    }
+  }}
 `;
 
 export const ReferencedMessageContainer = styled.div<{ width: number }>`
@@ -44,6 +52,10 @@ export const Avatar = styled(AvatarAntd)`
 
 export const DefaultContent = styled.div`
   padding: 8px;
+
+  a {
+    color: blueviolet !important;
+  }
 `;
 
 export const Message = styled.div`

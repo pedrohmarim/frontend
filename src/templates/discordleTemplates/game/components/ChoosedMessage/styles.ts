@@ -16,13 +16,10 @@ export const ScoreContainer = styled(Row)`
 
 export const ScoreTextContainer = styled.div``;
 
-export const ScoreText = styled.span`
-  margin-left: 5px;
-`;
-
 export const Container = styled.div`
   margin-top: 25px;
   max-width: 650px;
+  margin: auto;
 
   @media screen and (min-width: 700px) {
     min-width: 600px;

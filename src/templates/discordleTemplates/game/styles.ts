@@ -1,35 +1,23 @@
-import styled from 'styled-components';
-import { Steps as StepsAntd } from 'antd_components';
+import styled, { css } from 'styled-components';
 
-export const Steps = styled(StepsAntd)`
-  .ant-steps-item-icon {
-    margin-top: 3px !important;
-    margin-right: 5px;
-  }
-
-  .ant-steps-item-title {
-    color: ${(props) => props.theme.discordleColors.text} !important;
-  }
-
-  .ant-steps-item-title::after {
-    background-color: ${(props) => props.theme.discordleColors.text} !important;
-  }
+export const ScoreTextContainer = styled.div<{ isMobile: boolean }>`
+  ${({ isMobile }) => {
+    if (isMobile) {
+      return css`
+        position: relative;
+        margin-bottom: 20px;
+      `;
+    } else {
+      return css`
+        position: absolute;
+        right: 0;
+        margin-top: 40px;
+      `;
+    }
+  }}
+  margin-right: 20px;
 `;
 
-export const MessageTabTitle = styled.span`
-  margin-top: -1px;
-  margin-left: 4px;
-`;
-
-export const SwitchDescription = styled.span`
-  color: ${(props) => props.theme.discordleColors.text};
-  font-size: 12pt;
-  margin-left: 10px;
-`;
-
-export const ModalTitle = styled.span`
-  color: ${(props) => props.theme.discordleColors.text};
-  font-size: 20pt;
-  margin-left: 10px;
-  margin-right: 10px;
+export const ScoreText = styled.span`
+  font-size: 15pt;
 `;

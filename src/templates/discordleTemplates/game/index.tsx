@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import * as I from './IGame';
-import * as S from './styles';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
 import { Notification } from 'antd_components';
 import Head from 'next/head';
 import filterMessage from 'helpers/discordle/filter.message';
 import Result from './components/Result';
+import * as S from './styles';
 import { useRouter } from 'next/router';
 import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
@@ -14,27 +14,24 @@ import { IChoosedMessage } from './components/ChoosedMessage/IChoosedMessage';
 import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 import { Container } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
 import GuildInfo from '../globalComponents/guildInfo';
-import ChoosedMessage from 'templates/discordleTemplates/game/components/ChoosedMessage';
-import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
 import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
-import ConfigurationModal from './components/ConfigurationModal';
-import { FeatherIcons } from 'antd_components';
-import { MessageContainer } from 'globalStyles/global';
+import MessageSteps from './components/MessageSteps';
 import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
+import { useMyContext } from 'Context';
 
 export default function GameContainer() {
   const router = useRouter();
-  const [activeTabKey, setActiveTabKey] = useState<number>(1);
+  const { windowWidth } = useMyContext();
+  const isMobile = windowWidth <= 875;
+  const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
   const [answers, setAnswers] = useState<I.IAnswer[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
-  const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
+  const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [usedHint, setUsedHint] = useState<boolean>(false);
-  const [authorSelected, setAuthorSelected] = useState<string>('');
   const [isOwner, setIsOwner] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState<boolean>(false);
   const [openWarnExistsHint, setWarnExistsHint] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<IChoosedMessage[]>([]);
   const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
@@ -158,76 +155,9 @@ export default function GameContainer() {
     }
   }, [router]);
 
-  function handleIcon(index: number, current: number, color: string) {
-    let icon = '';
-
-    if (!answers[index]?.Success || answers[index]?.UsedHint)
-      icon = 'help-circle';
-
-    if (
-      answers[index]?.TabKey === current &&
-      answers[index]?.Success &&
-      !answers[index]?.UsedHint
-    ) {
-      icon = 'check-circle';
-      color = answers[index]?.Score % 2 === 0 ? '#009e3f' : '#d48a00';
-    }
-
-    if (
-      answers[index]?.TabKey === current &&
-      !answers[index]?.Success &&
-      !answers[index]?.UsedHint
-    ) {
-      icon = 'x-circle';
-      color = '#a61f1f';
-    }
-
-    return <FeatherIcons icon={icon} color={color} />;
-  }
-
   const score = answers.reduce((accumulator, curValue) => {
     return accumulator + curValue.Score;
   }, 0);
-
-  const steps = choosedMessages.map((choosedMessage, index) => {
-    return {
-      title: <S.MessageTabTitle>{`Mensagem ${index + 1}`}</S.MessageTabTitle>,
-      icon: handleIcon(
-        index,
-        index + 1,
-        index + 1 === activeTabKey ? theme.discordleColors.primary : '#fff'
-      ),
-      content: (
-        <Fragment>
-          <ChoosedMessage
-            authorSelected={authorSelected}
-            openModal={openModal}
-            isOwner={isOwner}
-            score={score}
-            usedHint={usedHint}
-            tabkey={activeTabKey}
-            message={choosedMessage}
-            switchValues={switchValues}
-            openWarnExistsHint={openWarnExistsHint}
-            setUsedHint={setUsedHint}
-            setWarnExistsHint={setWarnExistsHint}
-            setOpenModal={setOpenModal}
-          />
-
-          <AuthorSelect
-            messageId={choosedMessage.id}
-            activeTabKey={activeTabKey}
-            usedHint={usedHint}
-            authors={authors}
-            saveScore={saveScore}
-            setUsedHint={setUsedHint}
-            setActiveTabKey={setActiveTabKey}
-            setAuthorSelected={setAuthorSelected}
-          />
-        </Fragment>
-      ),
-    };
-  });
 
   return (
     <Container
@@ -243,26 +173,31 @@ export default function GameContainer() {
       <GuildInfo />
 
       {switchValues && (
+        <S.ScoreTextContainer isMobile={isMobile}>
+          <S.ScoreText>
+            Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
+          </S.ScoreText>
+        </S.ScoreTextContainer>
+      )}
+
+      {switchValues && (
         <Fragment>
           {!alreadyAnswered ? (
-            <Fragment>
-              <ConfigurationModal
-                openModal={openModal}
-                switchValues={switchValues}
-                setOpenModal={setOpenModal}
-                setSwitchValues={setSwitchValues}
-              />
-
-              {steps.length === 5 && (
-                <Fragment>
-                  <S.Steps current={activeTabKey - 1} items={steps} />
-
-                  <MessageContainer width="100%" margin="10px 0 0 0">
-                    {steps[activeTabKey - 1].content}
-                  </MessageContainer>
-                </Fragment>
-              )}
-            </Fragment>
+            <MessageSteps
+              openWarnExistsHint={openWarnExistsHint}
+              choosedMessages={choosedMessages}
+              switchValues={switchValues}
+              activeTabKey={activeTabKey}
+              usedHint={usedHint}
+              isOwner={isOwner}
+              answers={answers}
+              authors={authors}
+              saveScore={saveScore}
+              setUsedHint={setUsedHint}
+              setSwitchValues={setSwitchValues}
+              setActiveTabKey={setActiveTabKey}
+              setWarnExistsHint={setWarnExistsHint}
+            />
           ) : (
             <Result
               answers={answers}
