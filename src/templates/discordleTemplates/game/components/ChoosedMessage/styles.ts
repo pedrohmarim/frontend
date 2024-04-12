@@ -1,4 +1,3 @@
-import { Row } from 'antd_components';
 import styled from 'styled-components';
 
 export const GameTitle = styled.h2<{ margin?: string }>`
