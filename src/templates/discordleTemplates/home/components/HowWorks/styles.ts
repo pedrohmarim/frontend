@@ -16,6 +16,8 @@ export const Description = styled.span`
   text-align: center;
   font-size: 12pt;
   letter-spacing: 1px;
+  position: relative;
+  z-index: 999999;
 `;
 
 export const Card = styled(AntdCard)`

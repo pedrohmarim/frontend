@@ -3,6 +3,11 @@ import { Row as AntdRow, Modal as AntdModal } from 'antd_components';
 
 export const TableContainer = styled.div``;
 
+export const ClassificationTitle = styled(AntdRow)`
+  font-size: 20pt;
+  margin-bottom: 20px;
+`;
+
 export const Row = styled(AntdRow)`
   cursor: pointer;
 `;

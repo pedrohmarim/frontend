@@ -1,5 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
+import React, { useEffect, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordleService/DiscordleRanking';
@@ -9,6 +8,7 @@ import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 import { MessageContainer } from 'globalStyles/global';
 import { Container } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
 import Head from 'next/head';
+import GuildInfo from '../globalComponents/guildInfo';
 import {
   IRankingTableData,
   IUserScoreDetail,
@@ -28,26 +28,29 @@ export default function Ranking() {
   const [loading, setLoading] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
-  const [channelName, setChannelName] = useState<string>('');
   const router = useRouter();
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
+
+  function getDiscordleHistory(
+    code: string,
+    channelId: string,
+    guildId: string
+  ) {
+    DiscordMessagesApi.GetDiscordleHistory(code, channelId, guildId)
+      .then((data) => setDataSource(data))
+      .finally(() => setLoading(false));
+  }
 
   useEffect(() => {
     if (router.isReady) {
       const { channelId, guildId, code } = router.query;
 
-      if (channelId && guildId && code) {
-        DiscordMessagesApi.GetDiscordleHistory(
+      if (channelId && guildId && code)
+        getDiscordleHistory(
           code.toString(),
           channelId.toString(),
           guildId.toString()
-        )
-          .then(({ ChannelName, RankingTableData }) => {
-            setChannelName(ChannelName);
-            setDataSource(RankingTableData);
-          })
-          .finally(() => setLoading(false));
-      }
+        );
     }
   }, [router]);
 
@@ -142,23 +145,12 @@ export default function Ranking() {
 
     const { channelId, guildId, code } = router.query;
 
-    if (channelId && guildId && code) {
-      DiscordMessagesApi.GetDiscordleHistory(
+    if (channelId && guildId && code)
+      getDiscordleHistory(
         code.toString(),
         channelId.toString(),
         guildId.toString()
-      )
-        .then(
-          ({
-            ChannelName: channelName,
-            RankingTableData: rankingTableData,
-          }) => {
-            setChannelName(channelName);
-            setDataSource(rankingTableData);
-          }
-        )
-        .finally(() => setLoading(false));
-    }
+      );
   }
 
   function toGame() {
@@ -186,15 +178,13 @@ export default function Ranking() {
       </Head>
 
       <MessageContainer width="100%">
-        <S.TableContainer>
-          {channelName ? (
-            <GameTitle margin="0 0 15px 0">
-              Discordle | Ranking - #{channelName}
-            </GameTitle>
-          ) : (
-            <GameTitle margin="15px 0 0 0">Erro ao carregar ranking</GameTitle>
-          )}
+        <GuildInfo />
 
+        <S.ClassificationTitle justify="center">
+          Ranking geral
+        </S.ClassificationTitle>
+
+        <S.TableContainer>
           <Table
             scroll={{ x: 600 }}
             loading={loading}

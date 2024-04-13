@@ -1,6 +1,6 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import { IGetTableResponse, IUserScoreDetail } from '../IDiscordleService';
+import { IRankingTableData, IUserScoreDetail } from '../IDiscordleService';
 
 const http = baseService();
 const baseUrl = 'DiscordleScore';
@@ -11,7 +11,7 @@ const ApiAuth = {
     channelId: string,
     guildId: string
   ) {
-    const response: AxiosResponse<IGetTableResponse> = await http.post(
+    const response: AxiosResponse<IRankingTableData[]> = await http.post(
       `${baseUrl}/GetDiscordleHistory`,
       {
         GuildId: guildId,

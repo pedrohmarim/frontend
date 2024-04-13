@@ -107,11 +107,6 @@ export interface IMember {
   AvatarUrl: string;
 }
 
-export interface IGetTableResponse {
-  ChannelName: string;
-  RankingTableData: IRankingTableData[];
-}
-
 export interface IRankingTableData {
   RowId: string;
   Position: number;

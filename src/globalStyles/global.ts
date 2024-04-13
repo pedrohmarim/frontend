@@ -262,6 +262,11 @@ export default createGlobalStyle`
       props.theme.discordleColors.background} !important;
     color: ${(props) => props.theme.discordleColors.text} !important;
   }
+
+  .ant-table-content{
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+  }
 `;
 
 export const HomeSpan = styled.span<{ margin?: string }>`
