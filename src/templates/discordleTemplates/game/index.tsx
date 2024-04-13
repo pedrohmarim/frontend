@@ -173,7 +173,7 @@ export default function GameContainer() {
 
       <GuildInfo />
 
-      {switchValues && (
+      {switchValues && !alreadyAnswered && (
         <S.ScoreTextContainer isMobile={isMobile}>
           <S.ScoreText>
             Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
