@@ -55,6 +55,17 @@ const ApiAuth = {
     );
     return response.data;
   },
+  GetResultDetails: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
+    const response: AxiosResponse<I.IResultDetails[]> = await http.post(
+      `${baseUrl}/GetResultDetails`,
+      { ChannelId: channelId, Code: code, GuildId: guildId }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;

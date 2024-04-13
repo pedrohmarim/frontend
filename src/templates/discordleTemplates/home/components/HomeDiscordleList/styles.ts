@@ -87,6 +87,7 @@ export const AnimationContainer = styled.div`
 export const Container = styled.div<{
   margin: string;
   maxHeight: string;
+  height?: string;
   padding: string;
   alignItems?: string;
 }>`
@@ -103,6 +104,7 @@ export const Container = styled.div<{
   border-radius: 10px;
   padding: ${({ padding }) => padding};
   max-height: ${({ maxHeight }) => maxHeight};
+  height: ${({ height }) => height};
 `;
 
 export const ListContainer = styled.div`

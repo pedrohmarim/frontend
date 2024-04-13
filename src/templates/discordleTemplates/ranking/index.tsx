@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 import { MessageContainer } from 'globalStyles/global';
+import { Container } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
 import Head from 'next/head';
 import {
   IRankingTableData,
@@ -174,12 +175,17 @@ export default function Ranking() {
   }
 
   return (
-    <Fragment>
+    <Container
+      margin="25px"
+      maxHeight="100%"
+      padding="20px"
+      alignItems="center"
+    >
       <Head>
         <title>Discordle | Ranking</title>
       </Head>
 
-      <MessageContainer>
+      <MessageContainer width="100%">
         <S.TableContainer>
           {channelName ? (
             <GameTitle margin="0 0 15px 0">
@@ -264,6 +270,6 @@ export default function Ranking() {
           </S.ButtonRow>
         </S.TableContainer>
       </MessageContainer>
-    </Fragment>
+    </Container>
   );
 }

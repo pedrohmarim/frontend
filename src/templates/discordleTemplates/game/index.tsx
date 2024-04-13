@@ -47,42 +47,45 @@ export default function GameContainer() {
           code: code.toString(),
           guildId: guildId.toString(),
           channelId: channelId.toString(),
-        }).then((data) => setSwitchValues(data));
+        }).then((data) => {
+          setSwitchValues(data);
 
-        DiscordGameApi.VerifyAlreadyAnswered(
-          channelId.toString(),
-          code.toString()
-        ).then((data) => {
-          const latestAnswer = data[data.length - 1];
-          if (latestAnswer) {
-            if (latestAnswer.UsedHint) {
-              setUsedHint(true);
-              setActiveTabKey(data.length);
-            } else {
-              setActiveTabKey(data.length + 1);
+          DiscordGameApi.VerifyAlreadyAnswered(
+            channelId.toString(),
+            code.toString()
+          ).then((data) => {
+            const latestAnswer = data[data.length - 1];
+            if (latestAnswer) {
+              if (latestAnswer.UsedHint) {
+                setUsedHint(true);
+                setActiveTabKey(data.length);
+              } else {
+                setActiveTabKey(data.length + 1);
+              }
             }
-          }
 
-          setAnswers(data);
+            setAnswers(data);
 
-          const alreadyAnswered = data.length === 5 && !latestAnswer?.UsedHint;
+            const alreadyAnswered =
+              data.length === 5 && !latestAnswer?.UsedHint;
 
-          setAlreadyAnswered(alreadyAnswered);
+            setAlreadyAnswered(alreadyAnswered);
 
-          if (!alreadyAnswered) {
-            DiscordGameApi.GetChoosedMessages(
-              channelId.toString(),
-              code.toString()
-            ).then(({ Messages, Authors }) => {
-              setAuthors(Authors);
+            if (!alreadyAnswered) {
+              DiscordGameApi.GetChoosedMessages(
+                channelId.toString(),
+                code.toString()
+              ).then(({ Messages, Authors }) => {
+                setAuthors(Authors);
 
-              const filteredMessagesArray: IChoosedMessage[] = Messages.map(
-                (message) => filterMessage(message, MessageLevelEnum.isMain)
-              );
+                const filteredMessagesArray: IChoosedMessage[] = Messages.map(
+                  (message) => filterMessage(message, MessageLevelEnum.isMain)
+                );
 
-              setChoosedMessages(filteredMessagesArray);
-            });
-          }
+                setChoosedMessages(filteredMessagesArray);
+              });
+            }
+          });
         });
       }
     }

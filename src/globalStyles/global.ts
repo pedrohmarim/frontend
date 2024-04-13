@@ -340,16 +340,24 @@ export const MessageContainer = styled.div<{
   width?: string;
   margin?: string;
   maxWidth?: string;
+  minWidth?: string;
+  minHeigth?: string;
+  maxHeigth?: string;
+  padding?: string;
 }>`
-  padding: 20px;
+  padding: ${({ padding }) => padding || '20px'};
   text-align: center;
   width: ${({ width }) => width};
   max-width: ${({ maxWidth }) => maxWidth};
+  min-width: ${({ minWidth }) => minWidth};
+  min-height: ${({ minHeigth }) => minHeigth};
+  max-height: ${({ maxHeigth }) => maxHeigth};
   margin: ${({ margin }) => margin};
   font-size: 15pt;
   font-weight: 500;
   color: ${(props) => props.theme.discordleColors.text};
   background-color: #17171a;
   border-radius: 8px;
+  word-break: break-all;
   border-color: rgba(255, 255, 255, 0.09);
 `;
