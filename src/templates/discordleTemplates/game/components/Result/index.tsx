@@ -74,7 +74,7 @@ export default function Result({ answers, totalScore }: I.IResult) {
     }
   }, [router]);
 
-  if (!resultDetails.length) return;
+  if (!resultDetails.length) return <Fragment />;
 
   return (
     <Fragment>
