@@ -365,4 +365,19 @@ export const MessageContainer = styled.div<{
   border-radius: 8px;
   word-break: break-all;
   border-color: rgba(255, 255, 255, 0.09);
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${(props) =>
+      props.theme.discordleColors.primary} !important;
+  }
 `;

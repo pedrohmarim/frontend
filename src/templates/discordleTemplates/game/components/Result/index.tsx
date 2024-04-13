@@ -116,8 +116,8 @@ export default function Result({ answers, totalScore }: I.IResult) {
 
               <MessageContainer
                 width="300px"
-                minHeigth="200px"
-                maxHeigth="400px"
+                minHeigth="350px"
+                maxHeigth="350px"
                 margin="10px 0 0 0"
                 padding="10px"
               >
