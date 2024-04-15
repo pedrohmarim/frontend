@@ -48,10 +48,14 @@ const ApiAuth = {
     );
     return response.data;
   },
-  GetGuildInfo: async function (channelId: string, code: string) {
-    const response: AxiosResponse<I.IGuildInfo> = await http.post(
+  GetGuildInfo: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
+    const response: AxiosResponse<I.IGuildInfoGet> = await http.post(
       `${baseUrl}/GetGuildInfo`,
-      { ChannelId: channelId, Code: code }
+      { GuildId: guildId, ChannelId: channelId, Code: code }
     );
     return response.data;
   },

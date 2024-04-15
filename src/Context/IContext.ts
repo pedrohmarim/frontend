@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { ISessionUser } from 'services/DiscordleService/IDiscordleService';
 import { IGetUserByTokenResponse } from 'services/Login/ILoginService';
 
 export interface IContextProps {
@@ -8,6 +9,7 @@ export interface IContextProps {
     ServerIcon: string;
   };
   windowWidth: number;
+  sessionUser: ISessionUser | null;
   updateLogin: (token: string) => void;
   setLogin: React.Dispatch<
     React.SetStateAction<IGetUserByTokenResponse | null>

@@ -4,6 +4,8 @@ import * as I from './IContext';
 import { useRouter } from 'next/router';
 import LoginApi from 'services/Login/';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
+import DiscordMemberApi from 'services/DiscordleService/DiscordleMembers';
+import { ISessionUser } from 'services/DiscordleService/IDiscordleService';
 
 const MyContext = createContext<I.IContextProps | undefined>(undefined);
 
@@ -12,6 +14,11 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
 }) => {
   const router = useRouter();
   const [login, setLogin] = useState<IGetUserByTokenResponse | null>(null);
+  const [sessionUser, setSessionUser] = useState<ISessionUser | null>(null);
+  const [serverInfos, setServerInfos] = useState<{
+    ServerName: string;
+    ServerIcon: string;
+  }>({} as { ServerName: string; ServerIcon: string });
 
   function updateLogin(token: string) {
     LoginApi.GetUserByToken(token).then((login) => {
@@ -43,33 +50,39 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
 
   useEffect(() => {
     if (router.isReady) {
-      const { channelId, code } = router.query;
+      const { guildId, channelId, code } = router.query;
 
-      if (channelId && code) {
-        DiscordGameApi.GetGuildInfo(channelId.toString(), code.toString()).then(
-          ({ ServerIcon, ServerName }) =>
-            setServerInfos({
-              ServerIcon,
-              ServerName,
-            })
-        );
+      if (guildId && channelId && code) {
+        DiscordGameApi.GetGuildInfo(
+          guildId.toString(),
+          channelId.toString(),
+          code.toString()
+        ).then(({ ServerIcon, ServerName }) => {
+          setServerInfos({
+            ServerIcon,
+            ServerName,
+          });
+
+          if (!window.location.pathname.includes('/discordle/chooseProfile'))
+            DiscordMemberApi.GetUserByToken(
+              guildId.toString(),
+              channelId.toString(),
+              code.toString()
+            ).then((data) => setSessionUser(data));
+        });
       }
     }
   }, [router]);
-
-  const [serverInfos, setServerInfos] = useState<{
-    ServerName: string;
-    ServerIcon: string;
-  }>({} as { ServerName: string; ServerIcon: string });
 
   return (
     <MyContext.Provider
       value={{
         login,
+        windowWidth,
+        sessionUser,
+        serverInfos,
         updateLogin,
         setLogin,
-        windowWidth,
-        serverInfos,
       }}
     >
       {children}

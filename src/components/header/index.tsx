@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
 import { MenuProps } from 'antd';
 import theme from 'globalStyles/theme';
+import { deleteUser } from 'utils/localStorage/User';
 import {
   FeatherIcons,
   Menu,
@@ -12,7 +13,6 @@ import {
   Button,
   Popover,
 } from 'antd_components';
-import { deleteUser } from 'utils/localStorage/User';
 
 export default function Header() {
   const router = useRouter();

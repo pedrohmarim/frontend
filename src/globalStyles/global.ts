@@ -111,6 +111,21 @@ export default createGlobalStyle`
   }
 
   //Discordle
+  .ant-menu-item {
+    background-color: red  !important;
+   }
+
+  .ant-popover-content{
+    border: solid 2px rgba(138, 0, 194, 0.5) !important;
+    border-radius: 4px;
+    padding: 0 !important;
+  }
+
+  .ant-popover-content, .ant-popover-inner, .ant-menu {
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+  }
+
   .ant-modal-close-x {
     color: ${(props) => props.theme.discordleColors.text} !important;
   }

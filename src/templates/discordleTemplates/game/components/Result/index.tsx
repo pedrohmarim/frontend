@@ -81,6 +81,13 @@ export default function Result({
 
   return (
     <Fragment>
+      <Row justify="center">
+        <FeatherIcons icon="star" size={26} />
+        <S.Subtitle>
+          Pontuação final: {score}/{totalScore * 5}
+        </S.Subtitle>
+      </Row>
+
       <S.AsideGuildInfo isMobile={isMobile}>
         <S.Span>Próxima atualização em:</S.Span>
 
@@ -93,17 +100,6 @@ export default function Result({
           </Description>
         </Row>
       </S.AsideGuildInfo>
-
-      {isMobile && <S.Divider />}
-
-      <S.MarginSpan>Resultado</S.MarginSpan>
-
-      <Row justify="center">
-        <FeatherIcons icon="star" size={21} />
-        <S.Subtitle>
-          Pontuação final: {score}/{totalScore * 5}
-        </S.Subtitle>
-      </Row>
 
       <S.Divider />
 

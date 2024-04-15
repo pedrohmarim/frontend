@@ -1,6 +1,6 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import { IMember } from '../IDiscordleService';
+import { IMember, ISessionUser } from '../IDiscordleService';
 
 const http = baseService();
 const baseUrl = 'DiscordleMembers';
@@ -43,6 +43,17 @@ const ApiAuth = {
         Token: token,
         ChannelId: channelId,
       }
+    );
+    return response.data;
+  },
+  GetUserByToken: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
+    const response: AxiosResponse<ISessionUser> = await http.post(
+      `${baseUrl}/GetUserByToken`,
+      { GuildId: guildId, ChannelId: channelId, Code: code }
     );
     return response.data;
   },

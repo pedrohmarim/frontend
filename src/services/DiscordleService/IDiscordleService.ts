@@ -1,8 +1,13 @@
 import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 
-export interface IGuildInfo {
+export interface IGuildInfoGet {
   ServerName: string;
   ServerIcon: string;
+}
+
+export interface ISessionUser {
+  AvatarUrl: string;
+  Username: string;
 }
 
 export interface IMessageInstance {

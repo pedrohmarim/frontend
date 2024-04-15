@@ -50,6 +50,10 @@ export default function GameContainer() {
         }).then((data) => {
           setSwitchValues(data);
 
+          DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
+            (isOwner) => setIsOwner(isOwner)
+          );
+
           DiscordGameApi.VerifyAlreadyAnswered(
             channelId.toString(),
             code.toString()
@@ -147,17 +151,6 @@ export default function GameContainer() {
       }
     }
   }
-
-  useEffect(() => {
-    if (router.isReady) {
-      const { guildId } = router.query;
-
-      if (guildId)
-        DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
-          (isOwner) => setIsOwner(isOwner)
-        );
-    }
-  }, [router]);
 
   const score = answers.reduce((accumulator, curValue) => {
     return accumulator + curValue.Score;

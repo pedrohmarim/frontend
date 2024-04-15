@@ -1,9 +1,10 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Divider as DividerAntd, Row as AntdRow } from 'antd_components';
 
 export const Subtitle = styled.span`
   margin-left: 5px;
-  font-size: 12pt;
+  margin-bottom: 25px;
+  font-size: 18pt;
 `;
 
 export const Row = styled(AntdRow)`
@@ -12,7 +13,7 @@ export const Row = styled(AntdRow)`
 `;
 
 export const Divider = styled(DividerAntd)`
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.1);
 `;
 
 export const MarginSpan = styled.div`
@@ -29,7 +30,7 @@ export const TimerContainer = styled.div`
   margin: auto;
   font-size: 14pt;
   padding: 10px;
-  margin: 5px 0;
+  margin: 20px 0;
   border-radius: 4px;
   box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.08);
   border: solid 2px rgba(138, 0, 194, 0.4);
@@ -68,18 +69,4 @@ export const AsideGuildInfo = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  ${({ isMobile }) => {
-    if (isMobile) {
-      return css`
-        position: relative;
-      `;
-    } else {
-      return css`
-        margin-right: 20px;
-        position: absolute;
-        right: 0;
-      `;
-    }
-  }}
 `;
