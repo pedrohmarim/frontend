@@ -43,7 +43,8 @@ export const ReferecendMessageContent = styled.div<{ width: number }>`
 export const AuthorContainer = styled(Row)<{ fromresult: boolean }>`
   width: ${({ fromresult }) => (fromresult ? '100%' : 'fit-content')};
   background-color: ${(props) => props.theme.discordleColors.background};
-  border-bottom: solid 1px rgba(255, 255, 255, 0.05);
+  border-bottom: ${({ fromresult }) =>
+    fromresult ? 'none' : 'solid 1px rgba(255, 255, 255, 0.05)'};
   padding: 6px;
 `;
 
