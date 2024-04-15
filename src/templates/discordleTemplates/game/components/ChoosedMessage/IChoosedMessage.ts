@@ -30,4 +30,5 @@ export interface IChoosedMessage {
   referencedMessage?: string;
   author?: IAuthor;
   switchValues?: ISwitchValues | undefined;
+  fromResult?: boolean;
 }

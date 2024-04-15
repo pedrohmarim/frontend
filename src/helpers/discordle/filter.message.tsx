@@ -24,6 +24,8 @@ export default function filterMessage(
     response.messageType = MessageTypeEnum.isImage;
 
     message.Attachments.forEach(({ Url }, index) => {
+      if (!Url.length) return;
+
       response.formattedAttachs.push(
         <Image
           preview={false}
@@ -48,10 +50,10 @@ export default function filterMessage(
           response.formattedAttachs.push(
             <video
               height="100%"
+              width="100%"
               src={Video.Url}
               loop
               autoPlay
-              width="100%"
               muted
             />
           );

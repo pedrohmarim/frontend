@@ -24,10 +24,6 @@ export const Span = styled.span`
   font-size: 14pt;
 `;
 
-export const MessageContent = styled.div`
-  margin-top: 20px;
-`;
-
 export const TimerContainer = styled.div`
   width: fit-content;
   margin: auto;
@@ -40,11 +36,15 @@ export const TimerContainer = styled.div`
 `;
 
 export const AnswerContainer = styled.div<{ isMobile: boolean }>`
-  margin: 0px 20px 0 20px;
+  margin: ${({ isMobile }) => `0px 20px ${isMobile ? '30px' : 0} 20px`};
   display: flex;
   width: ${({ isMobile }) => (isMobile ? '100%' : '')};
   flex-direction: column;
   align-items: center;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 export const AnswerItem = styled.h2<{

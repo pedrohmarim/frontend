@@ -60,7 +60,7 @@ const ApiAuth = {
     channelId: string,
     code: string
   ) {
-    const response: AxiosResponse<I.IResultDetails[]> = await http.post(
+    const response: AxiosResponse<I.IMessage[]> = await http.post(
       `${baseUrl}/GetResultDetails`,
       { ChannelId: channelId, Code: code, GuildId: guildId }
     );

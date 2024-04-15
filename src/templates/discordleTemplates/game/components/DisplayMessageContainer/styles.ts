@@ -40,7 +40,8 @@ export const ReferecendMessageContent = styled.div<{ width: number }>`
   justify-content: space-between;
 `;
 
-export const AuthorContainer = styled(Row)`
+export const AuthorContainer = styled(Row)<{ fromresult: boolean }>`
+  width: ${({ fromresult }) => (fromresult ? '100%' : 'fit-content')};
   background-color: ${(props) => props.theme.discordleColors.background};
   border-bottom: solid 1px rgba(255, 255, 255, 0.05);
   padding: 6px;
@@ -58,12 +59,36 @@ export const DefaultContent = styled.div`
   }
 `;
 
-export const Message = styled.div`
+export const Container = styled.div<{ fromResult: boolean }>`
+  ${({ fromResult }) => {
+    if (fromResult) {
+      return css`
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      `;
+    }
+  }}
+`;
+
+export const Message = styled.div<{ fromResult: boolean }>`
   text-align: left;
   font-size: 12pt;
   font-weight: 1;
   background-color: ${(props) => props.theme.discordleColors.background};
   word-break: break-all;
+
+  ${({ fromResult }) => {
+    if (fromResult) {
+      return css`
+        text-align: center;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      `;
+    }
+  }}
 `;
 
 export const ImageContainer = styled.div`

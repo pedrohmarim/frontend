@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FeatherIcons, Row } from 'antd_components';
 import { useMyContext } from 'Context';
 import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
+import { Divider } from '../Result/styles';
 import {
   MessageTypeEnum,
   MessageLevelEnum,
@@ -20,6 +21,7 @@ export default function DisplayMessageContainer({
   messageLevel,
   formattedAttachs,
   referencedMessage,
+  fromResult = false,
 }: IChoosedMessage) {
   const { windowWidth } = useMyContext();
 
@@ -41,17 +43,11 @@ export default function DisplayMessageContainer({
   };
 
   const LinkContainer = () => {
-    const parts = content.split(urlLink);
-
     return (
       <S.DefaultContent>
-        {parts[0]}
-
         <Link href={urlLink} target="_blank" rel="noopener noreferrer">
           {urlLink}
         </Link>
-
-        {parts[1]}
       </S.DefaultContent>
     );
   };
@@ -87,29 +83,39 @@ export default function DisplayMessageContainer({
   );
 
   return (
-    <Fragment>
+    <S.Container fromResult={fromResult}>
       {switchValues &&
         Boolean(switchValues.ShowReferencedMessage) &&
         referencedMessage && (
           <ReferencedMessageContainer content={referencedMessage} />
         )}
 
-      <Row justify="space-between" align="middle">
-        <S.Title isHint={messageLevel !== MessageLevelEnum.isMain}>
-          {titleMessage()}
-        </S.Title>
-      </Row>
+      {!fromResult && (
+        <Row justify="space-between" align="middle">
+          <S.Title isHint={messageLevel !== MessageLevelEnum.isMain}>
+            {titleMessage()}
+          </S.Title>
+        </Row>
+      )}
 
       <Row justify="end">
         {switchValues && Boolean(switchValues.ShowHintsAuthors) && author && (
-          <S.AuthorContainer align="middle" justify="start">
+          <S.AuthorContainer
+            align="middle"
+            justify="start"
+            fromresult={fromResult}
+          >
             <S.Avatar src={author?.Avatar} size={28} />
             <S.HintAuthorUsername>{author.Username}</S.HintAuthorUsername>
           </S.AuthorContainer>
         )}
+
+        {fromResult && (
+          <Divider style={{ marginTop: '10px', marginBottom: '10px' }} />
+        )}
       </Row>
 
-      <S.Message>
+      <S.Message fromResult={fromResult}>
         {messageType === MessageTypeEnum.isText && <DefaultContent />}
         {messageType === MessageTypeEnum.isLink && <LinkContainer />}
         {messageType === MessageTypeEnum.isEmbed && <EmbedContainer />}
@@ -124,7 +130,7 @@ export default function DisplayMessageContainer({
 
         {messageType === MessageTypeEnum.isImageWithTextAndLink && (
           <Fragment>
-            <LinkContainer />
+            {urlLink && <LinkContainer />}
             <ImageContainer />
           </Fragment>
         )}
@@ -141,6 +147,6 @@ export default function DisplayMessageContainer({
           })}
         </S.Date>
       )}
-    </Fragment>
+    </S.Container>
   );
 }

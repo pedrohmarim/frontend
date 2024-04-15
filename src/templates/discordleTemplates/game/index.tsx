@@ -204,6 +204,7 @@ export default function GameContainer() {
             />
           ) : (
             <Result
+              switchValues={switchValues}
               answers={answers}
               totalScore={switchValues.PointsPerCorrectAnswer}
             />

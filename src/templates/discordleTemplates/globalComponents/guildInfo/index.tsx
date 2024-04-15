@@ -26,13 +26,15 @@ export default function GuildInfo() {
         align="middle"
         justify={isMobile ? 'center' : 'start'}
       >
-        <Image
-          src={serverInfos.ServerIcon}
-          alt="img"
-          width={90}
-          height={90}
-          style={{ borderRadius: '50%' }}
-        />
+        {serverInfos.ServerIcon && (
+          <Image
+            src={serverInfos.ServerIcon}
+            alt="img"
+            width={90}
+            height={90}
+            style={{ borderRadius: '50%' }}
+          />
+        )}
 
         <Col xs={24} sm={16} md={18} lg={18} xl={18} xxl={18}>
           <Row gutter={[0, 5]} justify={isMobile ? 'center' : 'start'}>

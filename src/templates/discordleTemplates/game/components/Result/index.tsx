@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Avatar, Button } from 'antd_components';
+import { Button } from 'antd_components';
 import countdown from 'helpers/discordle/formatDate';
 import { Row, FeatherIcons } from 'antd_components';
 import { useRouter } from 'next/router';
@@ -10,15 +10,18 @@ import theme from 'globalStyles/theme';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
 import { Description } from 'templates/discordleTemplates/home/components/SelectChanneInstanceModal/styles';
 import { useMyContext } from 'Context';
-import { IResultDetails } from 'services/DiscordleService/IDiscordleService';
-import {
-  AuthorContainer,
-  HintAuthorUsername,
-} from '../DisplayMessageContainer/styles';
+import filterMessage from 'helpers/discordle/filter.message';
+import { IMessage } from 'services/DiscordleService/IDiscordleService';
+import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
+import DisplayMessageContainer from '../DisplayMessageContainer';
 
-export default function Result({ answers, totalScore }: I.IResult) {
+export default function Result({
+  answers,
+  totalScore,
+  switchValues,
+}: I.IResult) {
   const router = useRouter();
-  const [resultDetails, setResultDetails] = useState<IResultDetails[]>([]);
+  const [resultDetails, setResultDetails] = useState<IMessage[]>([]);
   const { windowWidth } = useMyContext();
   const isMobile = windowWidth <= 875;
 
@@ -123,16 +126,14 @@ export default function Result({ answers, totalScore }: I.IResult) {
                 margin="10px 0 0 0"
                 padding="10px"
               >
-                <AuthorContainer align="middle" justify="start">
-                  <Avatar src={resultDetails[index].AuthorAvatar} size={28} />
-                  <HintAuthorUsername>
-                    {resultDetails[index].Author}
-                  </HintAuthorUsername>
-                </AuthorContainer>
-
-                <S.MessageContent>
-                  {resultDetails[index].Content}
-                </S.MessageContent>
+                <DisplayMessageContainer
+                  {...filterMessage(
+                    resultDetails[index],
+                    MessageLevelEnum.isMain
+                  )}
+                  fromResult
+                  switchValues={switchValues}
+                />
               </MessageContainer>
             </S.AnswerContainer>
           ))}

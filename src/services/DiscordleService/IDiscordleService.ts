@@ -1,13 +1,5 @@
 import { IAnswer } from 'templates/discordleTemplates/game/IGame';
 
-export interface IResultDetails {
-  Id: string;
-  Timestamp: Date;
-  Content: string;
-  Author: string;
-  AuthorAvatar: string;
-}
-
 export interface IGuildInfo {
   ServerName: string;
   ServerIcon: string;

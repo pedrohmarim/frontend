@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Select, Image } from 'antd_components';
 import * as S from './styles';
 import * as I from './IAuthorSelect';
+import { useMyContext } from 'Context';
 
 const AuthorSelect = ({
   activeTabKey,
@@ -13,8 +14,12 @@ const AuthorSelect = ({
   setActiveTabKey,
   setAuthorSelected,
 }: I.IAuthorSelect) => {
+  const { windowWidth } = useMyContext();
+  const isMobile = windowWidth <= 875;
+
   return (
     <S.Select
+      isMobile={isMobile}
       disabled={!authors?.length}
       allowClear
       placeholder="Selecione um membro"

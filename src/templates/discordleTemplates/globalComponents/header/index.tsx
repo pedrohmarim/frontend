@@ -77,7 +77,8 @@ export default function Header({
             src={Logo.src}
             alt="logo"
             preview={false}
-            height={55}
+            height={60}
+            width={210}
             style={{ marginLeft: '25px', cursor: 'pointer' }}
           />
 
