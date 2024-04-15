@@ -11,6 +11,7 @@ export interface IContextProps {
   windowWidth: number;
   sessionUser: ISessionUser | null;
   updateLogin: (token: string) => void;
+  setSessionUser: React.Dispatch<React.SetStateAction<ISessionUser | null>>;
   setLogin: React.Dispatch<
     React.SetStateAction<IGetUserByTokenResponse | null>
   >;

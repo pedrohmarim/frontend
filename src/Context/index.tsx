@@ -77,12 +77,13 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   return (
     <MyContext.Provider
       value={{
-        login,
         windowWidth,
         sessionUser,
         serverInfos,
-        updateLogin,
+        login,
         setLogin,
+        updateLogin,
+        setSessionUser,
       }}
     >
       {children}

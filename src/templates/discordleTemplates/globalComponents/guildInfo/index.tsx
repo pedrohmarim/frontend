@@ -20,7 +20,8 @@ import {
 export default function GuildInfo() {
   const [stateCopy, setStateCopy] = useState<boolean>(false);
   const router = useRouter();
-  const { serverInfos, windowWidth, sessionUser } = useMyContext();
+  const { serverInfos, windowWidth, sessionUser, setSessionUser } =
+    useMyContext();
   const isMobile = windowWidth <= 875;
 
   function handleCopy() {
@@ -48,6 +49,7 @@ export default function GuildInfo() {
 
   function handleLogout() {
     const { guildId, channelId, code } = router.query;
+    setSessionUser(null);
     deleteDiscordleToken();
     router.push({
       pathname: 'chooseProfile',
