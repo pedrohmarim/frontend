@@ -6,11 +6,9 @@ import { ContextProvider } from '../Context';
 import Loading from 'antd_components/Loading';
 import Icon from 'assets/icon.png';
 import Header from 'templates/discordleTemplates/globalComponents/header';
-import GlobalStyle, {
-  CenteredContainer,
-  OverflowDiscordle,
-} from 'globalStyles/global';
+import GlobalStyle, { CenteredContainer } from 'globalStyles/global';
 import Head from 'next/head';
+import Announcement from 'templates/discordleTemplates/globalComponents/announcement';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   function renderComponent() {
@@ -23,18 +21,6 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
         <Fragment>
           <Header />
           <Component {...pageProps} />
-        </Fragment>
-      );
-
-      return (
-        <Fragment>
-          <Header />
-
-          <CenteredContainer>
-            <OverflowDiscordle>
-              <Component {...pageProps} />
-            </OverflowDiscordle>
-          </CenteredContainer>
         </Fragment>
       );
     }
@@ -63,6 +49,8 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {
       </Head>
       <ContextProvider>
         {renderComponent()}
+
+        <Announcement />
 
         <GlobalStyle />
 

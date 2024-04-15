@@ -304,43 +304,6 @@ export const CenteredContainer = styled.div`
   }
 `;
 
-export const OverflowDiscordle = styled.div`
-  max-height: 820px;
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: ${(props) =>
-      props.theme.discordleColors.background} !important;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: ${(props) =>
-      props.theme.discordleColors.primary} !important;
-  }
-
-  /* Media query para dispositivos com largura de tela até 768px pixels (por exemplo, smartphones em modo retrato) */
-  @media screen and (max-width: 768px) {
-    max-height: 100%; /* Ajuste conforme necessário para dispositivos móveis */
-  }
-
-  /* Media query para dispositivos com largura de tela de 769 a 1600px pixels (por exemplo, tablets em modo paisagem) */
-  @media screen and (min-width: 769px) and (max-width: 1600px) {
-    max-height: 700px; /* Ajuste conforme necessário para dispositivos móveis */
-  }
-
-  iframe {
-    width: 100% !important;
-    height: 700px !important;
-    max-height: 700px !important;
-    border: none;
-  }
-`;
-
 export const MessageContainer = styled.div<{
   width?: string;
   margin?: string;

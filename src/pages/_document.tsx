@@ -43,6 +43,11 @@ export default class MyDocument extends Document {
       <Html lang="pt">
         <Head>
           <meta charSet="utf-8" />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8292029543793408"
+            crossOrigin="anonymous"
+          />
         </Head>
         <body>
           <Main />
