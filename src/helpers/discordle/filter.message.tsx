@@ -58,7 +58,12 @@ export default function filterMessage(
           break;
         case EmbedTypeEnum.Video:
           response.formattedAttachs.push(
-            <iframe src={Video.Url} allowFullScreen height="100vh" />
+            <iframe
+              src={Video.Url}
+              allowFullScreen
+              height="600px"
+              width="100%"
+            />
           );
         default:
       }

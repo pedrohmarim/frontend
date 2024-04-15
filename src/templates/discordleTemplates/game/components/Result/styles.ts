@@ -4,7 +4,6 @@ import { Divider as DividerAntd, Row as AntdRow } from 'antd_components';
 export const Subtitle = styled.span`
   margin-left: 5px;
   font-size: 12pt;
-  margin-bottom: 30px;
 `;
 
 export const Row = styled(AntdRow)`
@@ -41,7 +40,7 @@ export const TimerContainer = styled.div`
 `;
 
 export const AnswerContainer = styled.div<{ isMobile: boolean }>`
-  margin: 20px 20px 0 20px;
+  margin: 0px 20px 0 20px;
   display: flex;
   width: ${({ isMobile }) => (isMobile ? '100%' : '')};
   flex-direction: column;

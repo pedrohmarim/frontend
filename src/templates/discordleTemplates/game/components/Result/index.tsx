@@ -93,7 +93,7 @@ export default function Result({ answers, totalScore }: I.IResult) {
 
       {isMobile && <S.Divider />}
 
-      <S.MarginSpan>🥳🎉Resultado🎉🥳</S.MarginSpan>
+      <S.MarginSpan>Resultado</S.MarginSpan>
 
       <Row justify="center">
         <FeatherIcons icon="star" size={21} />
@@ -101,6 +101,8 @@ export default function Result({ answers, totalScore }: I.IResult) {
           Pontuação final: {score}/{totalScore * 5}
         </S.Subtitle>
       </Row>
+
+      <S.Divider />
 
       <Row justify="center">
         {answers
