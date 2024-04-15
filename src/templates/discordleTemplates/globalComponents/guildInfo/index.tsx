@@ -108,12 +108,7 @@ export default function GuildInfo() {
         </Row>
 
         {sessionUser && (
-          <S.Popover
-            content={content}
-            ismobile={isMobile}
-            placement="bottom"
-            open
-          >
+          <S.Popover content={content} ismobile={isMobile} placement="bottom">
             <Avatar src={sessionUser.AvatarUrl} size={60} />
           </S.Popover>
         )}
