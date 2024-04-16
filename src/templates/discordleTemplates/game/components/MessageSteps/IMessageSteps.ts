@@ -3,7 +3,7 @@ import { IChoosedMessage } from '../ChoosedMessage/IChoosedMessage';
 import { IAnswer, ISwitchValues } from '../../IGame';
 
 export interface IMessageSteps {
-  isOwner: boolean;
+  openModal: boolean;
   answers: IAnswer[];
   authors: IAuthor[];
   usedHint: boolean;
@@ -17,10 +17,11 @@ export interface IMessageSteps {
   activeTabKey: number;
   choosedMessages: IChoosedMessage[];
   openWarnExistsHint: boolean;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   setUsedHint: React.Dispatch<React.SetStateAction<boolean>>;
+  setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
+  setWarnExistsHint: React.Dispatch<React.SetStateAction<boolean>>;
   setSwitchValues: React.Dispatch<
     React.SetStateAction<ISwitchValues | undefined>
   >;
-  setActiveTabKey: React.Dispatch<React.SetStateAction<number>>;
-  setWarnExistsHint: React.Dispatch<React.SetStateAction<boolean>>;
 }

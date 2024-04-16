@@ -13,17 +13,17 @@ export default function MessageSteps({
   choosedMessages,
   switchValues,
   activeTabKey,
+  openModal,
   usedHint,
-  isOwner,
   answers,
   authors,
   saveScore,
   setUsedHint,
+  setOpenModal,
   setSwitchValues,
   setActiveTabKey,
   setWarnExistsHint,
 }: I.IMessageSteps) {
-  const [openModal, setOpenModal] = useState<boolean>(false);
   const [authorSelected, setAuthorSelected] = useState<string>('');
 
   function handleIcon(index: number, current: number, color: string) {
@@ -53,6 +53,10 @@ export default function MessageSteps({
     return <FeatherIcons icon={icon} color={color} />;
   }
 
+  const score = answers.reduce((accumulator, curValue) => {
+    return accumulator + curValue.Score;
+  }, 0);
+
   const steps = choosedMessages.map((choosedMessage, index) => {
     return {
       title: <S.MessageTabTitle>{`Mensagem ${index + 1}`}</S.MessageTabTitle>,
@@ -65,8 +69,7 @@ export default function MessageSteps({
         <Fragment>
           <ChoosedMessage
             authorSelected={authorSelected}
-            openModal={openModal}
-            isOwner={isOwner}
+            score={score}
             usedHint={usedHint}
             tabkey={activeTabKey}
             message={choosedMessage}
@@ -74,7 +77,6 @@ export default function MessageSteps({
             openWarnExistsHint={openWarnExistsHint}
             setUsedHint={setUsedHint}
             setWarnExistsHint={setWarnExistsHint}
-            setOpenModal={setOpenModal}
           />
 
           <AuthorSelect

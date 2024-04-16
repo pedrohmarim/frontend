@@ -1,11 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import * as I from './IGame';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
-import { Notification } from 'antd_components';
+import { FeatherIcons, Notification } from 'antd_components';
 import Head from 'next/head';
 import filterMessage from 'helpers/discordle/filter.message';
 import Result from './components/Result';
-import * as S from './styles';
 import { useRouter } from 'next/router';
 import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
@@ -16,7 +15,6 @@ import { Container } from 'templates/discordleTemplates/home/components/HomeDisc
 import GuildInfo from '../globalComponents/guildInfo';
 import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
 import MessageSteps from './components/MessageSteps';
-import { useMyContext } from 'Context';
 import {
   IAuthor,
   IScoreInstance,
@@ -24,14 +22,13 @@ import {
 
 export default function GameContainer() {
   const router = useRouter();
-  const { windowWidth } = useMyContext();
-  const isMobile = windowWidth <= 875;
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
   const [answers, setAnswers] = useState<I.IAnswer[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [usedHint, setUsedHint] = useState<boolean>(false);
   const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [openWarnExistsHint, setWarnExistsHint] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<IChoosedMessage[]>([]);
   const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
@@ -152,9 +149,28 @@ export default function GameContainer() {
     }
   }
 
-  const score = answers.reduce((accumulator, curValue) => {
-    return accumulator + curValue.Score;
-  }, 0);
+  function getItem(
+    label: React.ReactNode,
+    key: React.Key,
+    icon?: React.ReactNode,
+    onClick?: () => void
+  ): I.MenuItem {
+    return {
+      key,
+      icon,
+      label,
+      onClick,
+    } as I.MenuItem;
+  }
+
+  const moreItems: I.MenuItem[] = [];
+
+  if (isOwner)
+    moreItems.push(
+      getItem('Configurações', '1', <FeatherIcons icon="settings" />, () =>
+        setOpenModal(!openModal)
+      )
+    );
 
   return (
     <Container
@@ -167,15 +183,7 @@ export default function GameContainer() {
         <title>Discordle | Game</title>
       </Head>
 
-      <GuildInfo />
-
-      {switchValues && !alreadyAnswered && (
-        <S.ScoreTextContainer isMobile={isMobile}>
-          <S.ScoreText>
-            Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
-          </S.ScoreText>
-        </S.ScoreTextContainer>
-      )}
+      <GuildInfo moreItems={moreItems} />
 
       {switchValues && (
         <Fragment>
@@ -185,12 +193,13 @@ export default function GameContainer() {
               choosedMessages={choosedMessages}
               switchValues={switchValues}
               activeTabKey={activeTabKey}
+              openModal={openModal}
               usedHint={usedHint}
-              isOwner={isOwner}
               answers={answers}
               authors={authors}
               saveScore={saveScore}
               setUsedHint={setUsedHint}
+              setOpenModal={setOpenModal}
               setSwitchValues={setSwitchValues}
               setActiveTabKey={setActiveTabKey}
               setWarnExistsHint={setWarnExistsHint}

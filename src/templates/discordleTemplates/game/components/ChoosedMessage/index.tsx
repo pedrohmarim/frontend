@@ -26,13 +26,11 @@ export default function ChoosedMessage({
   openWarnExistsHint,
   authorSelected,
   switchValues,
-  openModal,
   usedHint,
   message,
-  isOwner,
   tabkey,
+  score,
   setUsedHint,
-  setOpenModal,
   setWarnExistsHint,
 }: I.IChoosedMessageComponent) {
   const ref = useRef(null);
@@ -138,9 +136,21 @@ export default function ChoosedMessage({
       />
 
       <Row
-        justify={isMobile ? 'center' : 'end'}
-        style={{ marginBottom: isMobile && usedHint ? '20px' : '0' }}
+        justify="center"
+        align="middle"
+        style={{
+          marginBottom: isMobile && usedHint ? '20px' : '0',
+          position: 'relative',
+        }}
       >
+        {switchValues && (
+          <S.ScoreTextContainer isMobile={isMobile}>
+            <S.ScoreText>
+              Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
+            </S.ScoreText>
+          </S.ScoreTextContainer>
+        )}
+
         <S.HintContainer ref={ref}>
           {totalMessages.length === 1 && (
             <PopConfirm
@@ -195,28 +205,6 @@ export default function ChoosedMessage({
             </PopConfirm>
           )}
         </S.HintContainer>
-
-        {isOwner && (
-          <Tooltip title="Configurações">
-            <Button
-              margin="0 0 0 20px"
-              onClick={() => setOpenModal(!openModal)}
-              color={theme.discordleColors.text}
-              backgroundcolor={theme.discordleColors.primary}
-              height={33}
-              width="fit-content"
-              icon={
-                <FeatherIcons
-                  icon="settings"
-                  color={theme.discordleColors.text}
-                  size={20}
-                />
-              }
-            >
-              {!isMobile ? 'Configurações' : ''}
-            </Button>
-          </Tooltip>
-        )}
       </Row>
 
       {totalMessages.map((message, index) => (

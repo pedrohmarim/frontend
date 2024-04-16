@@ -92,7 +92,12 @@ export default function DisplayMessageContainer({
 
       {!fromResult && (
         <Row justify="space-between" align="middle">
-          <S.Title isHint={messageLevel !== MessageLevelEnum.isMain}>
+          <S.Title
+            isHint={
+              messageLevel !== MessageLevelEnum.isMain &&
+              Boolean(switchValues?.ShowHintsAuthors)
+            }
+          >
             {titleMessage()}
           </S.Title>
         </Row>

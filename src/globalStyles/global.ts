@@ -72,9 +72,16 @@ export default createGlobalStyle`
     font-size: 12pt;
   }
 
+  .ant-popover-inner {
+    padding: 2px !important;
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+    border: solid 2px rgba(138, 0, 194, 0.5) !important;
+  }
+
   .ant-menu {
-    background-color: ${(props) => props.theme.colors.textSecondary} !important;
-    border: solid 1px rgba(0, 0, 0, 0.2);
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
     border-radius: 8px;
   }
   
@@ -83,13 +90,14 @@ export default createGlobalStyle`
   }
 
   .ant-menu-item {
+    color: ${(props) => props.theme.discordleColors.text} !important;
+    width: 100% !important;
     margin: 0 !important;
-    border-bottom: solid 1px rgba(0, 0, 0, 0.2);
-    color: ${(props) => props.theme.colors.background} !important;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.1);
     font-weight: 500 !important;
 
     :hover {
-      color: ${(props) => props.theme.colors.textPrimary} !important;
+      color: ${(props) => props.theme.discordleColors.text} !important;
       background-color: rgba(0, 0, 0, 0.1) !important;
     }
   }

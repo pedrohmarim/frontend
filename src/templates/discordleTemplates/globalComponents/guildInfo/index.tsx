@@ -7,6 +7,7 @@ import { useMyContext } from 'Context';
 import { HomeSpan } from 'globalStyles/global';
 import { deleteDiscordleToken } from 'utils/localStorage/User';
 import { MenuProps } from 'antd';
+import * as I from './IGuildInfo';
 import {
   Avatar,
   Col,
@@ -17,7 +18,7 @@ import {
   Tooltip,
 } from 'antd_components';
 
-export default function GuildInfo() {
+export default function GuildInfo({ moreItems = [] }: I.IGuildInfo) {
   const [stateCopy, setStateCopy] = useState<boolean>(false);
   const router = useRouter();
   const { serverInfos, windowWidth, sessionUser, setSessionUser } =
@@ -49,8 +50,10 @@ export default function GuildInfo() {
 
   function handleLogout() {
     const { guildId, channelId, code } = router.query;
-    setSessionUser(null);
+
     deleteDiscordleToken();
+    setSessionUser(null);
+
     router.push({
       pathname: 'chooseProfile',
       query: {
@@ -61,9 +64,9 @@ export default function GuildInfo() {
     });
   }
 
-  const items: MenuItem[] = [
+  const items: MenuItem[] = moreItems.concat([
     getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout),
-  ];
+  ]);
 
   const content = <Menu mode="inline" theme="dark" items={items} />;
 
@@ -108,7 +111,11 @@ export default function GuildInfo() {
         </Row>
 
         {sessionUser && (
-          <S.Popover content={content} ismobile={isMobile} placement="bottom">
+          <S.Popover
+            content={content}
+            ismobile={isMobile}
+            placement="bottomRight"
+          >
             <Avatar src={sessionUser.AvatarUrl} size={60} />
           </S.Popover>
         )}

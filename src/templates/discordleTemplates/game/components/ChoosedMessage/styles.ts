@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const GameTitle = styled.h2<{ margin?: string }>`
   text-align: center;
@@ -7,9 +7,15 @@ export const GameTitle = styled.h2<{ margin?: string }>`
   word-break: break-all;
 `;
 
-export const ScoreTextContainer = styled.div``;
+export const HintContainer = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
 
-export const HintContainer = styled.div``;
+  .ant-popover-inner {
+    padding: 10px !important;
+  }
+`;
 
 export const Container = styled.div`
   margin-top: 25px;
@@ -27,4 +33,19 @@ export const MainMessageContainer = styled.div`
   padding: 10px;
   border-radius: 4px;
   margin: 30px 0;
+`;
+
+export const ScoreTextContainer = styled.div<{ isMobile: boolean }>`
+  ${({ isMobile }) => {
+    if (isMobile) {
+      return css`
+        position: relative;
+        margin-bottom: 20px;
+      `;
+    }
+  }}
+`;
+
+export const ScoreText = styled.span`
+  font-size: 18pt;
 `;

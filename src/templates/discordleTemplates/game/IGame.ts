@@ -1,3 +1,5 @@
+import { MenuProps } from 'antd';
+
 export interface IAnswer {
   Score: number;
   Success: boolean;
@@ -11,3 +13,5 @@ export interface ISwitchValues {
   ShowReferencedMessage: number;
   PointsPerCorrectAnswer: number;
 }
+
+export type MenuItem = Required<MenuProps>['items'][number];

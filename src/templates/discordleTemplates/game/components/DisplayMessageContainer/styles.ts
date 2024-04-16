@@ -5,7 +5,9 @@ import {
   Avatar as AvatarAntd,
 } from 'antd_components';
 
-export const Title = styled.div<{ isHint: boolean }>`
+export const Title = styled.div<{
+  isHint: boolean;
+}>`
   text-align: left;
   font-size: 13pt;
   font-weight: 100;
