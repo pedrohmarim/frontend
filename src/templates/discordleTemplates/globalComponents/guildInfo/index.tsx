@@ -74,7 +74,7 @@ export default function GuildInfo({
   }
 
   const items: MenuItem[] = moreItems.concat([
-    getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout), //aq precisa continuar a mostrar o menu
+    getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout),
   ]);
 
   const content = <Menu mode="inline" theme="dark" items={items} />;
