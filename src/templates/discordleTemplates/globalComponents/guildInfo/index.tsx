@@ -66,6 +66,12 @@ export default function GuildInfo({ moreItems = [] }: I.IGuildInfo) {
 
   const items: MenuItem[] = moreItems.concat([
     getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout),
+    getItem(
+      'Configurações',
+      '1',
+      <FeatherIcons icon="log-out" />,
+      handleLogout
+    ),
   ]);
 
   const content = <Menu mode="inline" theme="dark" items={items} />;
@@ -112,6 +118,7 @@ export default function GuildInfo({ moreItems = [] }: I.IGuildInfo) {
 
         {sessionUser && (
           <S.Popover
+            open
             content={content}
             ismobile={isMobile}
             placement="bottomRight"

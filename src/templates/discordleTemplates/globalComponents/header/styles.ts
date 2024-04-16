@@ -16,6 +16,7 @@ export const DesktopMenu = styled(AntdMenu)`
     props.theme.discordleColors.background} !important;
 
   .ant-menu-item {
+    max-width: fit-content !important;
     min-width: 100px;
     text-align: center;
     font-size: 16pt;
