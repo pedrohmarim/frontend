@@ -27,14 +27,9 @@ export default function Header({
     return () => clearTimeout(timeout);
   }, [setAnimationActive]);
 
-  const isMobile = windowWidth <= 875;
-
   if (!setAnimationActive || !setCurrent || !current || !isHome)
     return (
-      <S.OnlyLogoRow
-        onClick={() => router.push('/discordle/home')}
-        isMobile={isMobile}
-      >
+      <S.OnlyLogoRow onClick={() => router.push('/discordle/home')}>
         <Image src={Logo.src} alt="logo" preview={false} height={60} />
       </S.OnlyLogoRow>
     );

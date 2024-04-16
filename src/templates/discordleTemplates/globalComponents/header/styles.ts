@@ -96,7 +96,7 @@ export const Row = styled(RowAntd)`
   animation: ${slideInFromRight} 1.5s ease-in-out forwards;
 `;
 
-export const OnlyLogoRow = styled.div<{ isMobile: boolean }>`
+export const OnlyLogoRow = styled.div`
   cursor: pointer;
   display: flex;
   margin-top: 25px;
