@@ -100,9 +100,8 @@ export const OnlyLogoRow = styled.div<{ isMobile: boolean }>`
   cursor: pointer;
   display: flex;
   margin-top: 25px;
-  margin-left: ${({ isMobile }) => (isMobile ? '0' : '25px')};
-  justify-content: ${({ isMobile }) => (isMobile ? 'center' : 'start')};
-  width: ${({ isMobile }) => (isMobile ? '100%' : 'fit-content')};
+  margin-left: 25px;
+  justify-content: start;
   z-index: 999999;
   position: relative;
 `;

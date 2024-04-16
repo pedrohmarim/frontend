@@ -110,6 +110,20 @@ export default function Result({
 
       <S.Divider />
 
+      <Row justify="center">
+        <Button
+          width={150}
+          backgroundcolor={theme.discordleColors.primary}
+          color={theme.discordleColors.text}
+          onClick={toRanking}
+          icon={<FeatherIcons icon="award" size={20} />}
+        >
+          Ranking
+        </Button>
+      </Row>
+
+      <S.Divider />
+
       <Skeleton loading={guildInfoLoading} active={guildInfoLoading}>
         <Row justify="center">
           {answers
@@ -141,20 +155,6 @@ export default function Result({
                 </MessageContainer>
               </S.AnswerContainer>
             ))}
-        </Row>
-
-        <S.Divider />
-
-        <Row justify="center">
-          <Button
-            width={150}
-            backgroundcolor={theme.discordleColors.primary}
-            color={theme.discordleColors.text}
-            onClick={toRanking}
-            icon={<FeatherIcons icon="award" size={20} />}
-          >
-            Ranking
-          </Button>
         </Row>
       </Skeleton>
     </Fragment>
