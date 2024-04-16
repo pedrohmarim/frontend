@@ -7,6 +7,7 @@ export interface IMessageSteps {
   answers: IAnswer[];
   authors: IAuthor[];
   usedHint: boolean;
+  loading: boolean;
   saveScore: (
     messageId: string,
     authorSelected: string,

@@ -37,9 +37,11 @@ import Pagination from './Pagination/Pagination.component';
 import List from './List/List.component';
 import Tour from './Tour/Tour.component';
 import Steps from './Steps/Steps.component';
+import Skeleton from './Skeleton/Skeleton.component';
 
 export {
   Steps,
+  Skeleton,
   Tour,
   List,
   Switch,

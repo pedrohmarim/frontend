@@ -65,7 +65,7 @@ export const AnswerItem = styled.h2<{
   font-weight: bold;
 `;
 
-export const AsideGuildInfo = styled.div<{ isMobile: boolean }>`
+export const Container = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;

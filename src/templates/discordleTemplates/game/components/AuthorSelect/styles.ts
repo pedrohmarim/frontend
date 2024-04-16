@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 import { Select as SelectAntd } from 'antd_components';
 
-export const Select = styled(SelectAntd)<{ isMobile: boolean }>`
-  margin-top: 30px;
+export const Select = styled(SelectAntd)<{
+  isMobile: boolean;
+  usedHint: boolean;
+}>`
+  margin-top: ${({ usedHint }) => (usedHint ? '30px' : '0px')};
   width: ${({ isMobile }) => (isMobile ? '100%' : '300px')};
 
   @media screen and (max-width: 350px) {

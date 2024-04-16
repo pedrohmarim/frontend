@@ -29,6 +29,7 @@ export default function GameContainer() {
   const [usedHint, setUsedHint] = useState<boolean>(false);
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [openWarnExistsHint, setWarnExistsHint] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<IChoosedMessage[]>([]);
   const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
@@ -76,15 +77,17 @@ export default function GameContainer() {
               DiscordGameApi.GetChoosedMessages(
                 channelId.toString(),
                 code.toString()
-              ).then(({ Messages, Authors }) => {
-                setAuthors(Authors);
+              )
+                .then(({ Messages, Authors }) => {
+                  setAuthors(Authors);
 
-                const filteredMessagesArray: IChoosedMessage[] = Messages.map(
-                  (message) => filterMessage(message, MessageLevelEnum.isMain)
-                );
+                  const filteredMessagesArray: IChoosedMessage[] = Messages.map(
+                    (message) => filterMessage(message, MessageLevelEnum.isMain)
+                  );
 
-                setChoosedMessages(filteredMessagesArray);
-              });
+                  setChoosedMessages(filteredMessagesArray);
+                })
+                .finally(() => setLoading(false));
             }
           });
         });
@@ -183,7 +186,7 @@ export default function GameContainer() {
         <title>Discordle | Game</title>
       </Head>
 
-      <GuildInfo moreItems={moreItems} />
+      <GuildInfo moreItems={moreItems} openModal={openModal} />
 
       {switchValues && (
         <Fragment>
@@ -195,6 +198,7 @@ export default function GameContainer() {
               activeTabKey={activeTabKey}
               openModal={openModal}
               usedHint={usedHint}
+              loading={loading}
               answers={answers}
               authors={authors}
               saveScore={saveScore}

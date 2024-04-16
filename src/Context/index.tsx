@@ -15,6 +15,7 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   const router = useRouter();
   const [login, setLogin] = useState<IGetUserByTokenResponse | null>(null);
   const [sessionUser, setSessionUser] = useState<ISessionUser | null>(null);
+  const [guildInfoLoading, setGuildInfoLoading] = useState<boolean>(true);
   const [serverInfos, setServerInfos] = useState<{
     ServerName: string;
     ServerIcon: string;
@@ -57,19 +58,26 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
           guildId.toString(),
           channelId.toString(),
           code.toString()
-        ).then(({ ServerIcon, ServerName }) => {
-          setServerInfos({
-            ServerIcon,
-            ServerName,
-          });
+        )
+          .then(({ ServerIcon, ServerName }) => {
+            setServerInfos({
+              ServerIcon,
+              ServerName,
+            });
 
-          if (!window.location.pathname.includes('/discordle/chooseProfile'))
-            DiscordMemberApi.GetUserByToken(
-              guildId.toString(),
-              channelId.toString(),
-              code.toString()
-            ).then((data) => setSessionUser(data));
-        });
+            if (!window.location.pathname.includes('/discordle/chooseProfile'))
+              DiscordMemberApi.GetUserByToken(
+                guildId.toString(),
+                channelId.toString(),
+                code.toString()
+              )
+                .then((data) => setSessionUser(data))
+                .finally(() => setGuildInfoLoading(false));
+          })
+          .finally(() => {
+            if (window.location.pathname.includes('/discordle/chooseProfile'))
+              setGuildInfoLoading(false);
+          });
       }
     }
   }, [router]);
@@ -77,6 +85,7 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   return (
     <MyContext.Provider
       value={{
+        guildInfoLoading,
         windowWidth,
         sessionUser,
         serverInfos,

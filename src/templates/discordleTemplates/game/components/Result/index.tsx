@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Button } from 'antd_components';
+import { Button, Skeleton } from 'antd_components';
 import countdown from 'helpers/discordle/formatDate';
 import { Row, FeatherIcons } from 'antd_components';
 import { useRouter } from 'next/router';
@@ -22,6 +22,7 @@ export default function Result({
 }: I.IResult) {
   const router = useRouter();
   const [resultDetails, setResultDetails] = useState<IMessage[]>([]);
+  const [guildInfoLoading, setGuildInfoLoading] = useState<boolean>(true);
   const { windowWidth } = useMyContext();
   const isMobile = windowWidth <= 875;
 
@@ -72,7 +73,9 @@ export default function Result({
           guildId.toString(),
           channelId.toString(),
           code.toString()
-        ).then((data) => setResultDetails(data));
+        )
+          .then((data) => setResultDetails(data))
+          .finally(() => setGuildInfoLoading(false));
       }
     }
   }, [router]);
@@ -81,73 +84,77 @@ export default function Result({
 
   return (
     <Fragment>
-      <Row justify="center">
-        <FeatherIcons icon="star" size={26} />
-        <S.Subtitle>
-          Pontuação final: {score}/{totalScore * 5}
-        </S.Subtitle>
-      </Row>
-
-      <S.AsideGuildInfo isMobile={isMobile}>
-        <S.Span>Próxima atualização em:</S.Span>
-
-        <S.TimerContainer>{timer}</S.TimerContainer>
-
-        <Row justify="end">
-          <Description fontSize="10.5pt" fontStyle="italic">
-            Atualização todos os dias ás
-            <HomeSpan> 23:59 </HomeSpan>
-          </Description>
+      <Skeleton loading={guildInfoLoading} active={guildInfoLoading}>
+        <Row justify="center">
+          <FeatherIcons icon="star" size={26} />
+          <S.Subtitle>
+            Pontuação final: {score}/{totalScore * 5}
+          </S.Subtitle>
         </Row>
-      </S.AsideGuildInfo>
+
+        <S.Container isMobile={isMobile}>
+          <S.Span>Próxima atualização em:</S.Span>
+
+          <S.TimerContainer>{timer}</S.TimerContainer>
+
+          <Row justify="end">
+            <Description fontSize="10.5pt" fontStyle="italic">
+              Atualização todos os dias ás
+              <HomeSpan> 23:59 </HomeSpan>
+            </Description>
+          </Row>
+        </S.Container>
+      </Skeleton>
 
       <S.Divider />
 
-      <Row justify="center">
-        {answers
-          .sort((a, b) => a.TabKey - b.TabKey)
-          .map(({ Score, Success, TabKey }, index) => (
-            <S.AnswerContainer key={index} isMobile={isMobile}>
-              <S.Row align="middle" justify="center">
-                <S.AnswerItem success={Success} score={Score}>
-                  <FeatherIcons icon={Success ? 'check' : 'x'} />
-                </S.AnswerItem>
-                {TabKey}º Mensagem
-              </S.Row>
+      <Skeleton loading={guildInfoLoading} active={guildInfoLoading}>
+        <Row justify="center">
+          {answers
+            .sort((a, b) => a.TabKey - b.TabKey)
+            .map(({ Score, Success, TabKey }, index) => (
+              <S.AnswerContainer key={index} isMobile={isMobile}>
+                <S.Row align="middle" justify="center">
+                  <S.AnswerItem success={Success} score={Score}>
+                    <FeatherIcons icon={Success ? 'check' : 'x'} />
+                  </S.AnswerItem>
+                  {TabKey}º Mensagem
+                </S.Row>
 
-              <MessageContainer
-                width="300px"
-                minHeigth="350px"
-                maxHeigth="350px"
-                margin="10px 0 0 0"
-                padding="10px"
-              >
-                <DisplayMessageContainer
-                  {...filterMessage(
-                    resultDetails[index],
-                    MessageLevelEnum.isMain
-                  )}
-                  fromResult
-                  switchValues={switchValues}
-                />
-              </MessageContainer>
-            </S.AnswerContainer>
-          ))}
-      </Row>
+                <MessageContainer
+                  width="300px"
+                  minHeigth="350px"
+                  maxHeigth="350px"
+                  margin="10px 0 0 0"
+                  padding="10px"
+                >
+                  <DisplayMessageContainer
+                    {...filterMessage(
+                      resultDetails[index],
+                      MessageLevelEnum.isMain
+                    )}
+                    fromResult
+                    switchValues={switchValues}
+                  />
+                </MessageContainer>
+              </S.AnswerContainer>
+            ))}
+        </Row>
 
-      <S.Divider />
+        <S.Divider />
 
-      <Row justify="center">
-        <Button
-          width={150}
-          backgroundcolor={theme.discordleColors.primary}
-          color={theme.discordleColors.text}
-          onClick={toRanking}
-          icon={<FeatherIcons icon="award" size={20} />}
-        >
-          Ranking
-        </Button>
-      </Row>
+        <Row justify="center">
+          <Button
+            width={150}
+            backgroundcolor={theme.discordleColors.primary}
+            color={theme.discordleColors.text}
+            onClick={toRanking}
+            icon={<FeatherIcons icon="award" size={20} />}
+          >
+            Ranking
+          </Button>
+        </Row>
+      </Skeleton>
     </Fragment>
   );
 }

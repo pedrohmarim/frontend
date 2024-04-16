@@ -9,18 +9,11 @@ import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
+import { Button, FeatherIcons, Row, PopConfirm, Tour } from 'antd_components';
 import {
   MessageTypeEnum,
   MessageLevelEnum,
 } from 'helpers/discordle/filterMessageEnum';
-import {
-  Button,
-  FeatherIcons,
-  Row,
-  PopConfirm,
-  Tooltip,
-  Tour,
-} from 'antd_components';
 
 export default function ChoosedMessage({
   openWarnExistsHint,
@@ -134,7 +127,6 @@ export default function ChoosedMessage({
           },
         ]}
       />
-
       <Row
         justify="center"
         align="middle"
@@ -154,7 +146,12 @@ export default function ChoosedMessage({
         <S.HintContainer ref={ref}>
           {totalMessages.length === 1 && (
             <PopConfirm
-              title="Aviso! Ao mostrar uma dica, a resposta correta valerá 1 ponto ao invés de 2."
+              title={
+                <>
+                  Aviso! Ao mostrar uma dica, a resposta correta <br></br>
+                  valerá 1 ponto ao invés de 2.
+                </>
+              }
               okText="Mostrar"
               cancelText="Cancelar"
               onConfirm={confirm}
@@ -184,29 +181,26 @@ export default function ChoosedMessage({
                 },
               }}
             >
-              <Tooltip title="Mostrar Dica">
-                <Button
-                  onClick={() => setOpenPopConfirm(true)}
-                  color={theme.discordleColors.text}
-                  backgroundcolor={theme.discordleColors.primary}
-                  height={33}
-                  width="fit-content"
-                  icon={
-                    <FeatherIcons
-                      icon="message-circle"
-                      color={theme.discordleColors.text}
-                      size={20}
-                    />
-                  }
-                >
-                  {!isMobile ? 'Mostrar Dica' : 'Dica'}
-                </Button>
-              </Tooltip>
+              <Button
+                onClick={() => setOpenPopConfirm(true)}
+                color={theme.discordleColors.text}
+                backgroundcolor={theme.discordleColors.primary}
+                height={33}
+                width="fit-content"
+                icon={
+                  <FeatherIcons
+                    icon="message-circle"
+                    color={theme.discordleColors.text}
+                    size={20}
+                  />
+                }
+              >
+                {!isMobile ? 'Mostrar Dica' : 'Dica'}
+              </Button>
             </PopConfirm>
           )}
         </S.HintContainer>
       </Row>
-
       {totalMessages.map((message, index) => (
         <S.Container key={index}>
           {message.messageLevel === MessageLevelEnum.isMain ? (

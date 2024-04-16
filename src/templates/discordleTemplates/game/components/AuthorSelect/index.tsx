@@ -19,12 +19,12 @@ const AuthorSelect = ({
 
   return (
     <S.Select
+      usedHint={usedHint}
       isMobile={isMobile}
       disabled={!authors?.length}
       allowClear
       placeholder="Selecione um membro"
       showSearch
-      getPopupContainer={(trigger) => trigger}
       notFoundContent={<Row justify="center">Sem dados</Row>}
       filterOption={(inputValue, option) => {
         return option?.children?.props?.children[1].props?.children

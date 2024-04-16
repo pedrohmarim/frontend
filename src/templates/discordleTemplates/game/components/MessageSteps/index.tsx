@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { FeatherIcons } from 'antd_components';
+import { FeatherIcons, Skeleton } from 'antd_components';
 import * as S from './styles';
 import * as I from './IMessageSteps';
 import theme from 'globalStyles/theme';
@@ -15,6 +15,7 @@ export default function MessageSteps({
   activeTabKey,
   openModal,
   usedHint,
+  loading,
   answers,
   authors,
   saveScore,
@@ -67,28 +68,36 @@ export default function MessageSteps({
       ),
       content: (
         <Fragment>
-          <ChoosedMessage
-            authorSelected={authorSelected}
-            score={score}
-            usedHint={usedHint}
-            tabkey={activeTabKey}
-            message={choosedMessage}
-            switchValues={switchValues}
-            openWarnExistsHint={openWarnExistsHint}
-            setUsedHint={setUsedHint}
-            setWarnExistsHint={setWarnExistsHint}
-          />
+          <Skeleton active={loading} loading={loading}>
+            <ChoosedMessage
+              authorSelected={authorSelected}
+              score={score}
+              usedHint={usedHint}
+              tabkey={activeTabKey}
+              message={choosedMessage}
+              switchValues={switchValues}
+              openWarnExistsHint={openWarnExistsHint}
+              setUsedHint={setUsedHint}
+              setWarnExistsHint={setWarnExistsHint}
+            />
+          </Skeleton>
 
-          <AuthorSelect
-            messageId={choosedMessage.id}
-            activeTabKey={activeTabKey}
-            usedHint={usedHint}
-            authors={authors}
-            saveScore={saveScore}
-            setUsedHint={setUsedHint}
-            setActiveTabKey={setActiveTabKey}
-            setAuthorSelected={setAuthorSelected}
-          />
+          <Skeleton
+            active={loading}
+            loading={loading}
+            style={{ marginTop: '50px' }}
+          >
+            <AuthorSelect
+              messageId={choosedMessage.id}
+              activeTabKey={activeTabKey}
+              usedHint={usedHint}
+              authors={authors}
+              saveScore={saveScore}
+              setUsedHint={setUsedHint}
+              setActiveTabKey={setActiveTabKey}
+              setAuthorSelected={setAuthorSelected}
+            />
+          </Skeleton>
         </Fragment>
       ),
     };
@@ -107,7 +116,9 @@ export default function MessageSteps({
         activeTabKey >= 1 &&
         activeTabKey <= steps.length && (
           <Fragment>
-            <S.Steps current={activeTabKey - 1} items={steps} />
+            <Skeleton paragraph={false} active={loading} loading={loading}>
+              <S.Steps current={activeTabKey - 1} items={steps} />
+            </Skeleton>
 
             <MessageContainer width="100%" margin="10px 0 0 0">
               {steps.map((step, index) => {

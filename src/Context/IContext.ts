@@ -9,6 +9,7 @@ export interface IContextProps {
     ServerIcon: string;
   };
   windowWidth: number;
+  guildInfoLoading: boolean;
   sessionUser: ISessionUser | null;
   updateLogin: (token: string) => void;
   setSessionUser: React.Dispatch<React.SetStateAction<ISessionUser | null>>;

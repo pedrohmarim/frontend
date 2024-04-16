@@ -89,6 +89,11 @@ export default createGlobalStyle`
     border-bottom: none;
   }
 
+  .ant-menu-item-selected  {
+    background-color: ${(props) =>
+      props.theme.discordleColors.background} !important;
+  }
+
   .ant-menu-item {
     color: ${(props) => props.theme.discordleColors.text} !important;
     width: 100% !important;
@@ -119,6 +124,19 @@ export default createGlobalStyle`
   }
 
   //Discordle
+  .ant-skeleton-content {
+    .ant-skeleton-title, .ant-skeleton-paragraph li {
+      background-image: linear-gradient(
+        90deg,
+        rgba(138, 0, 194, 0.1) 0%, /* Cor base #8a00c2 */
+        rgba(138, 0, 194, 0.5) 40%, /* Opacidade reduzida da cor base */
+        rgba(255, 255, 255, 0.1) 50%, /* Branco com opacidade baixa */
+        rgba(255, 255, 255, 0.1) 60%, /* Branco com opacidade baixa */
+        rgba(138, 0, 194, 0.1) 100% /* Cor base com opacidade reduzida */
+      ) !important;
+    }
+  }
+
   .ant-modal-close-x {
     color: ${(props) => props.theme.discordleColors.text} !important;
   }
