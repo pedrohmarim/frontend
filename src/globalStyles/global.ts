@@ -91,7 +91,7 @@ export default createGlobalStyle`
 
   .ant-menu-item {
     color: ${(props) => props.theme.discordleColors.text} !important;
-    width: 100% !important;
+    /* width: 100% !important; */
     margin: 0 !important;
     border-bottom: solid 1px rgba(255, 255, 255, 0.1);
     font-weight: 500 !important;

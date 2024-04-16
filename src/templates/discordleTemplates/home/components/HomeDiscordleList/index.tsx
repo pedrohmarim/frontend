@@ -26,10 +26,10 @@ export default function HomeDiscordleList({
   const [pageNumber, setPageNumber] = useState<number>(0);
   const [noMoreDataToFetch, setNoMoreDataToFetch] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+  const [selectedGuildId, setSelectedGuildId] = useState<string | null>(null);
   const [selectedGuildName, setSelectedGuildName] = useState<string | null>(
     null
   );
-  const [selectedGuildId, setSelectedGuildId] = useState<string | null>(null);
   const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
     []
   );
@@ -39,11 +39,7 @@ export default function HomeDiscordleList({
 
     DiscordGuildApi.GetGuilds(pageSize, pageNumber).then(
       ({ Guilds, Count }) => {
-        setGuilds((prevGuilds) =>
-          [...prevGuilds, ...Guilds].length === Count
-            ? [...prevGuilds, ...Guilds]
-            : Guilds
-        );
+        setGuilds((prevGuilds) => [...prevGuilds, ...Guilds]);
 
         setTotalGuilds(Count);
 
@@ -59,7 +55,10 @@ export default function HomeDiscordleList({
       DiscordGuildApi.SearchGuildsByValue(searchValue).then((guilds) =>
         setGuilds(guilds)
       );
-    else GetGuilds();
+    else {
+      setGuilds([]);
+      GetGuilds();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
