@@ -4,7 +4,7 @@ import {
 } from 'templates/discordleTemplates/game/IGame';
 
 export interface IResult {
-  totalScore: number;
+  totalScore: number | undefined;
   answers: IAnswer[];
   switchValues: ISwitchValues | undefined;
 }

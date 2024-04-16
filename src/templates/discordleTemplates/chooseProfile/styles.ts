@@ -52,10 +52,15 @@ export const Empty = styled.div`
   align-items: center;
 `;
 
-export const MemberRow = styled.div<{ empty: boolean; onlyOneMember: boolean }>`
+export const MemberRow = styled.div<{
+  empty: boolean;
+  onlyOneMember: boolean;
+  showSkeleton: boolean;
+}>`
   overflow-x: auto;
   padding: 20px;
   display: flex;
+  align-items: ${({ showSkeleton }) => (showSkeleton ? 'center' : '')};
   justify-content: ${({ onlyOneMember }) =>
     onlyOneMember ? 'center' : 'start'};
   scroll-snap-type: x mandatory;

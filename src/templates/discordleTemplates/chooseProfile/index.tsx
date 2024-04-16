@@ -8,7 +8,15 @@ import React, {
 import { IMember } from 'services/DiscordleService/IDiscordleService';
 import * as S from './styles';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
-import { Image, Row, Col, Button, Input, FeatherIcons } from 'antd_components';
+import {
+  Image,
+  Row,
+  Col,
+  Button,
+  Input,
+  FeatherIcons,
+  Skeleton,
+} from 'antd_components';
 import { useRouter } from 'next/router';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
@@ -203,7 +211,10 @@ export default function ChooseProfile() {
     debouncedFilter(searchValue);
   }
 
-  if (!router.query.code || !router.query.channelId || !router.query.guildId)
+  if (
+    router.isReady &&
+    (!router.query.code || !router.query.channelId || !router.query.guildId)
+  )
     return (
       <MessageContainer>
         <Description>Não há membros á serem exibidos</Description>
@@ -253,39 +264,45 @@ export default function ChooseProfile() {
           onlyOneMember={members.length === 1}
           ref={memberRowRef}
           onMouseDown={handleMouseDown}
+          showSkeleton={!Boolean(members.length)}
           empty={members.length === 0}
         >
-          {members.length ? (
-            members.map(({ AvatarUrl, Id, Username }, index) => (
-              <S.Card
-                className={
-                  showTokenInput.selectedItemIndex === index
-                    ? 'active-item-row '
-                    : ''
-                }
-                key={index}
-                onClick={() =>
-                  setShowTokenInput({
-                    view: true,
-                    userId: Id,
-                    selectedItemIndex: index,
-                  })
-                }
-              >
-                <Image
-                  alt="avatarUrl"
-                  src={AvatarUrl}
-                  preview={false}
-                  width={130}
-                  style={{ borderRadius: '4px' }}
-                />
+          <Skeleton
+            loading={!Boolean(members.length)}
+            active={!Boolean(members.length)}
+          >
+            {members.length ? (
+              members.map(({ AvatarUrl, Id, Username }, index) => (
+                <S.Card
+                  className={
+                    showTokenInput.selectedItemIndex === index
+                      ? 'active-item-row '
+                      : ''
+                  }
+                  key={index}
+                  onClick={() =>
+                    setShowTokenInput({
+                      view: true,
+                      userId: Id,
+                      selectedItemIndex: index,
+                    })
+                  }
+                >
+                  <Image
+                    alt="avatarUrl"
+                    src={AvatarUrl}
+                    preview={false}
+                    width={130}
+                    style={{ borderRadius: '4px' }}
+                  />
 
-                <S.Username>{Username}</S.Username>
-              </S.Card>
-            ))
-          ) : (
-            <S.Empty>Nenhum resultado encontrado.</S.Empty>
-          )}
+                  <S.Username>{Username}</S.Username>
+                </S.Card>
+              ))
+            ) : (
+              <S.Empty>Nenhum resultado encontrado.</S.Empty>
+            )}
+          </Skeleton>
         </S.MemberRow>
 
         {members.length > 0 && showTokenInput.view && (

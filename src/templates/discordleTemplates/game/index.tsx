@@ -45,40 +45,40 @@ export default function GameContainer() {
           code: code.toString(),
           guildId: guildId.toString(),
           channelId: channelId.toString(),
-        }).then((data) => {
-          setSwitchValues(data);
+        })
+          .then((data) => {
+            setSwitchValues(data);
 
-          DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
-            (isOwner) => setIsOwner(isOwner)
-          );
+            DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
+              (isOwner) => setIsOwner(isOwner)
+            );
 
-          DiscordGameApi.VerifyAlreadyAnswered(
-            channelId.toString(),
-            code.toString()
-          ).then((data) => {
-            const latestAnswer = data[data.length - 1];
-            if (latestAnswer) {
-              if (latestAnswer.UsedHint) {
-                setUsedHint(true);
-                setActiveTabKey(data.length);
-              } else {
-                setActiveTabKey(data.length + 1);
+            DiscordGameApi.VerifyAlreadyAnswered(
+              channelId.toString(),
+              code.toString()
+            ).then((data) => {
+              const latestAnswer = data[data.length - 1];
+              if (latestAnswer) {
+                if (latestAnswer.UsedHint) {
+                  setUsedHint(true);
+                  setActiveTabKey(data.length);
+                } else {
+                  setActiveTabKey(data.length + 1);
+                }
               }
-            }
 
-            setAnswers(data);
+              setAnswers(data);
 
-            const alreadyAnswered =
-              data.length === 5 && !latestAnswer?.UsedHint;
+              const alreadyAnswered =
+                data.length === 5 && !latestAnswer?.UsedHint;
 
-            setAlreadyAnswered(alreadyAnswered);
+              setAlreadyAnswered(alreadyAnswered);
 
-            if (!alreadyAnswered) {
-              DiscordGameApi.GetChoosedMessages(
-                channelId.toString(),
-                code.toString()
-              )
-                .then(({ Messages, Authors }) => {
+              if (!alreadyAnswered) {
+                DiscordGameApi.GetChoosedMessages(
+                  channelId.toString(),
+                  code.toString()
+                ).then(({ Messages, Authors }) => {
                   setAuthors(Authors);
 
                   const filteredMessagesArray: IChoosedMessage[] = Messages.map(
@@ -86,11 +86,11 @@ export default function GameContainer() {
                   );
 
                   setChoosedMessages(filteredMessagesArray);
-                })
-                .finally(() => setLoading(false));
-            }
-          });
-        });
+                });
+              }
+            });
+          })
+          .then(() => setLoading(false));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -188,35 +188,33 @@ export default function GameContainer() {
 
       <GuildInfo moreItems={moreItems} openModal={openModal} />
 
-      {switchValues && (
-        <Fragment>
-          {!alreadyAnswered ? (
-            <MessageSteps
-              openWarnExistsHint={openWarnExistsHint}
-              choosedMessages={choosedMessages}
-              switchValues={switchValues}
-              activeTabKey={activeTabKey}
-              openModal={openModal}
-              usedHint={usedHint}
-              loading={loading}
-              answers={answers}
-              authors={authors}
-              saveScore={saveScore}
-              setUsedHint={setUsedHint}
-              setOpenModal={setOpenModal}
-              setSwitchValues={setSwitchValues}
-              setActiveTabKey={setActiveTabKey}
-              setWarnExistsHint={setWarnExistsHint}
-            />
-          ) : (
-            <Result
-              switchValues={switchValues}
-              answers={answers}
-              totalScore={switchValues.PointsPerCorrectAnswer}
-            />
-          )}
-        </Fragment>
-      )}
+      <Fragment>
+        {!alreadyAnswered ? (
+          <MessageSteps
+            openWarnExistsHint={openWarnExistsHint}
+            choosedMessages={choosedMessages}
+            switchValues={switchValues}
+            activeTabKey={activeTabKey}
+            openModal={openModal}
+            usedHint={usedHint}
+            loading={loading}
+            answers={answers}
+            authors={authors}
+            saveScore={saveScore}
+            setUsedHint={setUsedHint}
+            setOpenModal={setOpenModal}
+            setSwitchValues={setSwitchValues}
+            setActiveTabKey={setActiveTabKey}
+            setWarnExistsHint={setWarnExistsHint}
+          />
+        ) : (
+          <Result
+            switchValues={switchValues}
+            answers={answers}
+            totalScore={switchValues?.PointsPerCorrectAnswer}
+          />
+        )}
+      </Fragment>
     </Container>
   );
 }

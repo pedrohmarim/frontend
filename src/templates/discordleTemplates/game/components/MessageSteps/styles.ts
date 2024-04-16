@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Steps as StepsAntd } from 'antd_components';
+import { Row, Steps as StepsAntd } from 'antd_components';
 
 export const Steps = styled(StepsAntd)`
   .ant-steps-item-icon {
@@ -14,6 +14,11 @@ export const Steps = styled(StepsAntd)`
   .ant-steps-item-title::after {
     background-color: ${(props) => props.theme.discordleColors.text} !important;
   }
+`;
+
+export const Load = styled(Row)`
+  height: 250px;
+  font-size: 20pt;
 `;
 
 export const MessageTabTitle = styled.span`

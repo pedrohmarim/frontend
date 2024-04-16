@@ -7,6 +7,7 @@ import ChoosedMessage from 'templates/discordleTemplates/game/components/Choosed
 import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
 import ConfigurationModal from '../ConfigurationModal';
 import { MessageContainer } from 'globalStyles/global';
+import { LoadingOutlined } from '@ant-design/icons';
 
 export default function MessageSteps({
   openWarnExistsHint,
@@ -68,36 +69,28 @@ export default function MessageSteps({
       ),
       content: (
         <Fragment>
-          <Skeleton active={loading} loading={loading}>
-            <ChoosedMessage
-              authorSelected={authorSelected}
-              score={score}
-              usedHint={usedHint}
-              tabkey={activeTabKey}
-              message={choosedMessage}
-              switchValues={switchValues}
-              openWarnExistsHint={openWarnExistsHint}
-              setUsedHint={setUsedHint}
-              setWarnExistsHint={setWarnExistsHint}
-            />
-          </Skeleton>
+          <ChoosedMessage
+            authorSelected={authorSelected}
+            score={score}
+            usedHint={usedHint}
+            tabkey={activeTabKey}
+            message={choosedMessage}
+            switchValues={switchValues}
+            openWarnExistsHint={openWarnExistsHint}
+            setUsedHint={setUsedHint}
+            setWarnExistsHint={setWarnExistsHint}
+          />
 
-          <Skeleton
-            active={loading}
-            loading={loading}
-            style={{ marginTop: '50px' }}
-          >
-            <AuthorSelect
-              messageId={choosedMessage.id}
-              activeTabKey={activeTabKey}
-              usedHint={usedHint}
-              authors={authors}
-              saveScore={saveScore}
-              setUsedHint={setUsedHint}
-              setActiveTabKey={setActiveTabKey}
-              setAuthorSelected={setAuthorSelected}
-            />
-          </Skeleton>
+          <AuthorSelect
+            messageId={choosedMessage.id}
+            activeTabKey={activeTabKey}
+            usedHint={usedHint}
+            authors={authors}
+            saveScore={saveScore}
+            setUsedHint={setUsedHint}
+            setActiveTabKey={setActiveTabKey}
+            setAuthorSelected={setAuthorSelected}
+          />
         </Fragment>
       ),
     };
@@ -112,21 +105,32 @@ export default function MessageSteps({
         setSwitchValues={setSwitchValues}
       />
 
-      {steps.length === 5 &&
-        activeTabKey >= 1 &&
-        activeTabKey <= steps.length && (
-          <Fragment>
-            <Skeleton paragraph={false} active={loading} loading={loading}>
-              <S.Steps current={activeTabKey - 1} items={steps} />
-            </Skeleton>
+      <Skeleton paragraph={false} active={loading} loading={loading}>
+        <S.Steps current={activeTabKey - 1} items={steps} />
+      </Skeleton>
 
-            <MessageContainer width="100%" margin="10px 0 0 0">
-              {steps.map((step, index) => {
-                if (index === activeTabKey - 1) return step.content;
-              })}
-            </MessageContainer>
-          </Fragment>
-        )}
+      <MessageContainer width="100%" margin="10px 0 0 0">
+        <Skeleton
+          active={loading}
+          loading={loading}
+          style={{ height: '250px', display: 'flex', alignItems: 'center' }}
+        >
+          {activeTabKey > 5 ? (
+            <S.Load justify="center" align="middle">
+              <LoadingOutlined
+                style={{
+                  marginRight: '15px',
+                }}
+              />
+              Gerando resultado ...
+            </S.Load>
+          ) : (
+            steps.map((step, index) => {
+              if (index === activeTabKey - 1) return step.content;
+            })
+          )}
+        </Skeleton>
+      </MessageContainer>
     </Fragment>
   );
 }

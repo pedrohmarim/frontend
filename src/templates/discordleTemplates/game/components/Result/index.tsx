@@ -87,9 +87,11 @@ export default function Result({
       <Skeleton loading={guildInfoLoading} active={guildInfoLoading}>
         <Row justify="center">
           <FeatherIcons icon="star" size={26} />
-          <S.Subtitle>
-            Pontuação final: {score}/{totalScore * 5}
-          </S.Subtitle>
+          {totalScore && (
+            <S.Subtitle>
+              Pontuação final: {score}/{totalScore * 5}
+            </S.Subtitle>
+          )}
         </Row>
 
         <S.Container isMobile={isMobile}>

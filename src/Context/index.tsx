@@ -70,14 +70,9 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
                 guildId.toString(),
                 channelId.toString(),
                 code.toString()
-              )
-                .then((data) => setSessionUser(data))
-                .finally(() => setGuildInfoLoading(false));
+              ).then((data) => setSessionUser(data));
           })
-          .finally(() => {
-            if (window.location.pathname.includes('/discordle/chooseProfile'))
-              setGuildInfoLoading(false);
-          });
+          .then(() => setGuildInfoLoading(false));
       }
     }
   }, [router]);
