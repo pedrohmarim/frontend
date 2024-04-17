@@ -1,10 +1,6 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import {
-  IRankingTableData,
-  IResetRanking,
-  IUserScoreDetail,
-} from '../IDiscordleService';
+import { IRankingTableData, IUserScoreDetail } from '../IDiscordleService';
 
 const http = baseService();
 const baseUrl = 'DiscordleScore';
