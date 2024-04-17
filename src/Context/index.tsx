@@ -80,8 +80,10 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
               ).then((data) => setSessionUser(data));
           })
           .then(() => {
-            DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
-              (isOwner) => {
+            if (!window.location.pathname.includes('/discordle/chooseProfile'))
+              DiscordleGameAPI.VerifyIfIsDiscordleOwner(
+                guildId.toString()
+              ).then((isOwner) => {
                 setIsOwner(isOwner);
 
                 DiscordleInstaceApi.GetSwitchDiscordleInstance({
@@ -92,8 +94,7 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
                   setSwitchValues(data);
                   setGuildInfoLoading(false);
                 });
-              }
-            );
+              });
           });
       }
     }
