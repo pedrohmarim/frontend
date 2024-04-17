@@ -92,10 +92,10 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
                   channelId: channelId.toString(),
                 }).then((data) => {
                   setSwitchValues(data);
-                  setGuildInfoLoading(false);
                 });
               });
-          });
+          })
+          .then(() => setGuildInfoLoading(false));
       }
     }
   }, [router]);
