@@ -44,6 +44,7 @@ export default function GameContainer() {
         )
           .then((data) => {
             const latestAnswer = data[data.length - 1];
+
             if (latestAnswer) {
               if (latestAnswer.UsedHint) {
                 setUsedHint(true);

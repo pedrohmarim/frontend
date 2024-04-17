@@ -9,7 +9,14 @@ import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
-import { Button, FeatherIcons, Row, PopConfirm, Tour } from 'antd_components';
+import {
+  Button,
+  FeatherIcons,
+  Row,
+  PopConfirm,
+  Tour,
+  Skeleton,
+} from 'antd_components';
 import {
   MessageTypeEnum,
   MessageLevelEnum,
@@ -31,6 +38,7 @@ export default function ChoosedMessage({
   const { windowWidth } = useMyContext();
   const isMobile = windowWidth <= 875;
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingHint, setLoadingHint] = useState<boolean>(usedHint);
   const [openPopConfirm, setOpenPopConfirm] = useState(false);
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     message,
@@ -38,6 +46,9 @@ export default function ChoosedMessage({
 
   function handleGetHints(fromClick?: boolean) {
     if (router.isReady) {
+      setLoadingHint(true);
+      setTotalMessages([{} as IChoosedMessage, message, {} as IChoosedMessage]);
+
       const { channelId, guildId, code } = router.query;
 
       if (!channelId || !guildId || !code) return;
@@ -52,8 +63,8 @@ export default function ChoosedMessage({
         FromClick: fromClick ?? false,
       };
 
-      DiscordleGameApi.GetDiscordHints(dto).then(
-        ({ ConsecutivePosition, PreviousPosition }) => {
+      DiscordleGameApi.GetDiscordHints(dto)
+        .then(({ ConsecutivePosition, PreviousPosition }) => {
           let previousMessage = {} as I.IChoosedMessage;
           let consecutiveMessage = {} as I.IChoosedMessage;
 
@@ -82,8 +93,8 @@ export default function ChoosedMessage({
           }
 
           setTotalMessages([consecutiveMessage, message, previousMessage]);
-        }
-      );
+        })
+        .finally(() => setLoadingHint(false));
     }
   }
 
@@ -127,6 +138,7 @@ export default function ChoosedMessage({
           },
         ]}
       />
+
       <Row
         justify="center"
         align="middle"
@@ -135,15 +147,24 @@ export default function ChoosedMessage({
           position: 'relative',
         }}
       >
-        {switchValues && (
-          <S.ScoreTextContainer isMobile={isMobile}>
-            <S.ScoreText>
-              Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
-            </S.ScoreText>
-          </S.ScoreTextContainer>
-        )}
+        <Skeleton
+          paragraph={false}
+          style={{ width: '600px', marginBottom: '30px' }}
+          active={!Boolean(switchValues && switchValues.PointsPerCorrectAnswer)}
+          loading={
+            !Boolean(switchValues && switchValues.PointsPerCorrectAnswer)
+          }
+        >
+          {switchValues && (
+            <S.ScoreTextContainer isMobile={isMobile} usedHint={usedHint}>
+              <S.ScoreText>
+                Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
+              </S.ScoreText>
+            </S.ScoreTextContainer>
+          )}
+        </Skeleton>
 
-        <S.HintContainer ref={ref}>
+        <S.HintContainer ref={ref} isMobile={windowWidth <= 500}>
           {totalMessages.length === 1 && (
             <PopConfirm
               title={
@@ -186,7 +207,7 @@ export default function ChoosedMessage({
                 color={theme.discordleColors.text}
                 backgroundcolor={theme.discordleColors.primary}
                 height={33}
-                width="fit-content"
+                width={isMobile ? '' : 'fit-content'}
                 icon={
                   <FeatherIcons
                     icon="message-circle"
@@ -201,20 +222,34 @@ export default function ChoosedMessage({
           )}
         </S.HintContainer>
       </Row>
-      {totalMessages.map((message, index) => (
-        <S.Container key={index}>
-          {message.messageLevel === MessageLevelEnum.isMain ? (
-            <S.MainMessageContainer>
-              <DisplayMessageContainer
-                {...message}
-                switchValues={switchValues}
-              />
-            </S.MainMessageContainer>
-          ) : (
-            <DisplayMessageContainer {...message} switchValues={switchValues} />
-          )}
-        </S.Container>
-      ))}
+
+      {totalMessages.map((message, index) => {
+        const isMainMessage = message.messageLevel === MessageLevelEnum.isMain;
+
+        return (
+          <S.Container key={index}>
+            <Skeleton
+              active={!isMainMessage && usedHint && loadingHint}
+              loading={!isMainMessage && usedHint && loadingHint}
+              style={{ width: '650px', marginBottom: '10px' }}
+            >
+              {isMainMessage ? (
+                <S.MainMessageContainer>
+                  <DisplayMessageContainer
+                    {...message}
+                    switchValues={switchValues}
+                  />
+                </S.MainMessageContainer>
+              ) : (
+                <DisplayMessageContainer
+                  {...message}
+                  switchValues={switchValues}
+                />
+              )}
+            </Skeleton>
+          </S.Container>
+        );
+      })}
     </Fragment>
   );
 }

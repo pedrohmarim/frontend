@@ -84,7 +84,8 @@ export default function DisplayMessageContainer({
 
   return (
     <S.Container fromResult={fromResult}>
-      {switchValues &&
+      {!fromResult &&
+        switchValues &&
         Boolean(switchValues.ShowReferencedMessage) &&
         referencedMessage && (
           <ReferencedMessageContainer content={referencedMessage} />

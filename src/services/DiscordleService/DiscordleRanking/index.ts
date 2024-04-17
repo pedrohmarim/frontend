@@ -1,6 +1,10 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import { IRankingTableData, IUserScoreDetail } from '../IDiscordleService';
+import {
+  IRankingTableData,
+  IResetRanking,
+  IUserScoreDetail,
+} from '../IDiscordleService';
 
 const http = baseService();
 const baseUrl = 'DiscordleScore';
@@ -31,6 +35,21 @@ const ApiAuth = {
       `${baseUrl}/GetUserScoreDetail`,
       {
         UserId: userId,
+        ChannelId: channelId,
+        GuildId: guildId,
+        Code: code,
+      }
+    );
+    return response.data;
+  },
+  ResetRanking: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
+    const response: AxiosResponse<string> = await http.post(
+      `${baseUrl}/ResetRanking`,
+      {
         ChannelId: channelId,
         GuildId: guildId,
         Code: code,

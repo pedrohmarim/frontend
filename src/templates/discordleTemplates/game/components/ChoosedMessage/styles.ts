@@ -7,10 +7,20 @@ export const GameTitle = styled.h2<{ margin?: string }>`
   word-break: break-all;
 `;
 
-export const HintContainer = styled.div`
-  position: absolute;
-  right: 0;
-  top: 0;
+export const HintContainer = styled.div<{ isMobile: boolean }>`
+  ${({ isMobile }) => {
+    if (isMobile) {
+      return css`
+        width: 100%;
+      `;
+    } else {
+      return css`
+        position: absolute;
+        right: 0;
+        top: 0;
+      `;
+    }
+  }}
 
   .ant-popover-inner {
     padding: 10px !important;
@@ -35,12 +45,19 @@ export const MainMessageContainer = styled.div`
   margin: 30px 0;
 `;
 
-export const ScoreTextContainer = styled.div<{ isMobile: boolean }>`
-  ${({ isMobile }) => {
+export const ScoreTextContainer = styled.div<{
+  isMobile: boolean;
+  usedHint: boolean;
+}>`
+  ${({ isMobile, usedHint }) => {
     if (isMobile) {
       return css`
         position: relative;
         margin-bottom: 20px;
+      `;
+    } else if (usedHint) {
+      return css`
+        margin-bottom: 30px;
       `;
     }
   }}

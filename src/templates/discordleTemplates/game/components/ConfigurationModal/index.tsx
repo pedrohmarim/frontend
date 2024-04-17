@@ -40,7 +40,7 @@ export default function ConfigurationModal({
         <Row justify="center" align="middle">
           <FeatherIcons
             icon="settings"
-            size={25}
+            size={35}
             color={theme.discordleColors.primary}
           />
 
