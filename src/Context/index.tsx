@@ -6,6 +6,9 @@ import LoginApi from 'services/Login/';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
 import DiscordMemberApi from 'services/DiscordleService/DiscordleMembers';
 import { ISessionUser } from 'services/DiscordleService/IDiscordleService';
+import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
+import { ISwitchValues } from 'templates/discordleTemplates/game/IGame';
+import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
 
 const MyContext = createContext<I.IContextProps | undefined>(undefined);
 
@@ -16,10 +19,14 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   const [login, setLogin] = useState<IGetUserByTokenResponse | null>(null);
   const [sessionUser, setSessionUser] = useState<ISessionUser | null>(null);
   const [guildInfoLoading, setGuildInfoLoading] = useState<boolean>(true);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [serverInfos, setServerInfos] = useState<{
     ServerName: string;
     ServerIcon: string;
   }>({} as { ServerName: string; ServerIcon: string });
+  const [switchValues, setSwitchValues] = useState<ISwitchValues>(
+    {} as ISwitchValues
+  );
 
   function updateLogin(token: string) {
     LoginApi.GetUserByToken(token).then((login) => {
@@ -72,7 +79,22 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
                 code.toString()
               ).then((data) => setSessionUser(data));
           })
-          .then(() => setGuildInfoLoading(false));
+          .then(() => {
+            DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
+              (isOwner) => {
+                setIsOwner(isOwner);
+
+                DiscordleInstaceApi.GetSwitchDiscordleInstance({
+                  code: code.toString(),
+                  guildId: guildId.toString(),
+                  channelId: channelId.toString(),
+                }).then((data) => {
+                  setSwitchValues(data);
+                  setGuildInfoLoading(false);
+                });
+              }
+            );
+          });
       }
     }
   }, [router]);
@@ -81,13 +103,16 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
     <MyContext.Provider
       value={{
         guildInfoLoading,
+        switchValues,
         windowWidth,
         sessionUser,
         serverInfos,
+        isOwner,
         login,
         setLogin,
         updateLogin,
         setSessionUser,
+        setSwitchValues,
       }}
     >
       {children}

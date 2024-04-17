@@ -5,7 +5,6 @@ import * as I from './IMessageSteps';
 import theme from 'globalStyles/theme';
 import ChoosedMessage from 'templates/discordleTemplates/game/components/ChoosedMessage';
 import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
-import ConfigurationModal from '../ConfigurationModal';
 import { MessageContainer } from 'globalStyles/global';
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -14,15 +13,12 @@ export default function MessageSteps({
   choosedMessages,
   switchValues,
   activeTabKey,
-  openModal,
   usedHint,
   loading,
   answers,
   authors,
   saveScore,
   setUsedHint,
-  setOpenModal,
-  setSwitchValues,
   setActiveTabKey,
   setWarnExistsHint,
 }: I.IMessageSteps) {
@@ -98,13 +94,6 @@ export default function MessageSteps({
 
   return (
     <Fragment>
-      <ConfigurationModal
-        openModal={openModal}
-        switchValues={switchValues}
-        setOpenModal={setOpenModal}
-        setSwitchValues={setSwitchValues}
-      />
-
       <Skeleton paragraph={false} active={loading} loading={loading}>
         <S.Steps current={activeTabKey - 1} items={steps} />
       </Skeleton>

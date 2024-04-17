@@ -20,18 +20,21 @@ import {
 } from 'antd_components';
 
 export default function GuildInfo({
-  moreItems = [],
   openModal = false,
+  setOpenModal,
 }: I.IGuildInfo) {
   const [stateCopy, setStateCopy] = useState<boolean>(false);
   const router = useRouter();
+
   const {
+    isOwner,
     serverInfos,
     windowWidth,
     sessionUser,
     guildInfoLoading,
     setSessionUser,
   } = useMyContext();
+
   const isMobile = windowWidth <= 875;
 
   function handleCopy() {
@@ -39,22 +42,6 @@ export default function GuildInfo({
       copy(router.query.code.toString());
       setStateCopy(true);
     }
-  }
-
-  type MenuItem = Required<MenuProps>['items'][number];
-
-  function getItem(
-    label: React.ReactNode,
-    key: React.Key,
-    icon?: React.ReactNode,
-    onClick?: () => void
-  ): MenuItem {
-    return {
-      key,
-      icon,
-      label,
-      onClick,
-    } as MenuItem;
   }
 
   function handleLogout() {
@@ -73,11 +60,45 @@ export default function GuildInfo({
     });
   }
 
-  const items: MenuItem[] = moreItems.concat([
-    getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout),
-  ]);
+  type MenuItem = Required<MenuProps>['items'][number];
 
-  const content = <Menu mode="inline" theme="dark" items={items} />;
+  function getItem(
+    label: React.ReactNode,
+    key: React.Key,
+    icon?: React.ReactNode,
+    onClick?: () => void
+  ): MenuItem {
+    return {
+      key,
+      icon,
+      label,
+      onClick,
+    } as MenuItem;
+  }
+
+  const items: MenuItem[] = [
+    getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout),
+  ];
+
+  if (isOwner && setOpenModal)
+    items.push(
+      getItem('Configurações', '2', <FeatherIcons icon="settings" />, () =>
+        setOpenModal(!openModal)
+      )
+    );
+
+  const content = (
+    <Menu
+      mode="inline"
+      theme="dark"
+      items={items
+        .slice()
+        .sort(
+          (a, b) =>
+            parseInt(b?.key as string, 10) - parseInt(a?.key as string, 10)
+        )}
+    />
+  );
 
   return (
     <Fragment>
@@ -132,6 +153,7 @@ export default function GuildInfo({
           )}
         </S.ServerInfoContainer>
       </Skeleton>
+
       <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
     </Fragment>
   );

@@ -1,10 +1,8 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
 import { ISwitchValues } from 'templates/discordleTemplates/game/IGame';
-import {
-  IChangeSwitchGet,
-  IChangeSwitchRequest,
-} from 'templates/discordleTemplates/game/components/ConfigurationModal/IConfigurationModal';
+import { IChangeSwitchGet } from 'templates/discordleTemplates/game/components/ConfigurationModal/IConfigurationModal';
+import { IChangeSwitchRequest } from 'templates/discordleTemplates/game/components/ConfigurationModal/components/GameConfig/IGameConfig';
 
 const http = baseService();
 const baseUrl = 'DiscordleInstance';

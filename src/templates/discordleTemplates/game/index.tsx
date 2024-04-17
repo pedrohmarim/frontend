@@ -1,94 +1,79 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import * as I from './IGame';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
-import { FeatherIcons, Notification } from 'antd_components';
+import { Notification } from 'antd_components';
 import Head from 'next/head';
 import filterMessage from 'helpers/discordle/filter.message';
 import Result from './components/Result';
 import { useRouter } from 'next/router';
-import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import { AuthorHighlight } from './components/AuthorSelect/styles';
 import theme from 'globalStyles/theme';
 import { IChoosedMessage } from './components/ChoosedMessage/IChoosedMessage';
 import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 import { Container } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
 import GuildInfo from '../globalComponents/guildInfo';
-import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
 import MessageSteps from './components/MessageSteps';
+import { useMyContext } from 'Context';
+import ConfigurationModal from './components/ConfigurationModal';
 import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
 
 export default function GameContainer() {
+  const { switchValues } = useMyContext();
   const router = useRouter();
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
   const [answers, setAnswers] = useState<I.IAnswer[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
   const [activeTabKey, setActiveTabKey] = useState<number>(1);
   const [usedHint, setUsedHint] = useState<boolean>(false);
-  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [openWarnExistsHint, setWarnExistsHint] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<IChoosedMessage[]>([]);
-  const [switchValues, setSwitchValues] = useState<I.ISwitchValues | undefined>(
-    undefined
-  );
 
   useEffect(() => {
     if (router.isReady) {
       const { channelId, guildId, code } = router.query;
 
       if (channelId && guildId && code) {
-        DiscordleInstaceApi.GetSwitchDiscordleInstance({
-          code: code.toString(),
-          guildId: guildId.toString(),
-          channelId: channelId.toString(),
-        })
+        DiscordGameApi.VerifyAlreadyAnswered(
+          channelId.toString(),
+          code.toString()
+        )
           .then((data) => {
-            setSwitchValues(data);
-
-            DiscordleGameAPI.VerifyIfIsDiscordleOwner(guildId.toString()).then(
-              (isOwner) => setIsOwner(isOwner)
-            );
-
-            DiscordGameApi.VerifyAlreadyAnswered(
-              channelId.toString(),
-              code.toString()
-            ).then((data) => {
-              const latestAnswer = data[data.length - 1];
-              if (latestAnswer) {
-                if (latestAnswer.UsedHint) {
-                  setUsedHint(true);
-                  setActiveTabKey(data.length);
-                } else {
-                  setActiveTabKey(data.length + 1);
-                }
+            const latestAnswer = data[data.length - 1];
+            if (latestAnswer) {
+              if (latestAnswer.UsedHint) {
+                setUsedHint(true);
+                setActiveTabKey(data.length);
+              } else {
+                setActiveTabKey(data.length + 1);
               }
+            }
 
-              setAnswers(data);
+            setAnswers(data);
 
-              const alreadyAnswered =
-                data.length === 5 && !latestAnswer?.UsedHint;
+            const alreadyAnswered =
+              data.length === 5 && !latestAnswer?.UsedHint;
 
-              setAlreadyAnswered(alreadyAnswered);
+            setAlreadyAnswered(alreadyAnswered);
 
-              if (!alreadyAnswered) {
-                DiscordGameApi.GetChoosedMessages(
-                  channelId.toString(),
-                  code.toString()
-                ).then(({ Messages, Authors }) => {
-                  setAuthors(Authors);
+            if (!alreadyAnswered) {
+              DiscordGameApi.GetChoosedMessages(
+                channelId.toString(),
+                code.toString()
+              ).then(({ Messages, Authors }) => {
+                setAuthors(Authors);
 
-                  const filteredMessagesArray: IChoosedMessage[] = Messages.map(
-                    (message) => filterMessage(message, MessageLevelEnum.isMain)
-                  );
+                const filteredMessagesArray: IChoosedMessage[] = Messages.map(
+                  (message) => filterMessage(message, MessageLevelEnum.isMain)
+                );
 
-                  setChoosedMessages(filteredMessagesArray);
-                });
-              }
-            });
+                setChoosedMessages(filteredMessagesArray);
+              });
+            }
           })
           .then(() => setLoading(false));
       }
@@ -152,29 +137,6 @@ export default function GameContainer() {
     }
   }
 
-  function getItem(
-    label: React.ReactNode,
-    key: React.Key,
-    icon?: React.ReactNode,
-    onClick?: () => void
-  ): I.MenuItem {
-    return {
-      key,
-      icon,
-      label,
-      onClick,
-    } as I.MenuItem;
-  }
-
-  const moreItems: I.MenuItem[] = [];
-
-  if (isOwner)
-    moreItems.push(
-      getItem('Configurações', '1', <FeatherIcons icon="settings" />, () =>
-        setOpenModal(!openModal)
-      )
-    );
-
   return (
     <Container
       margin="25px"
@@ -186,7 +148,9 @@ export default function GameContainer() {
         <title>Discordle | Game</title>
       </Head>
 
-      <GuildInfo moreItems={moreItems} openModal={openModal} />
+      <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
+
+      <GuildInfo openModal={openModal} setOpenModal={setOpenModal} />
 
       <Fragment>
         {!alreadyAnswered ? (
@@ -195,15 +159,12 @@ export default function GameContainer() {
             choosedMessages={choosedMessages}
             switchValues={switchValues}
             activeTabKey={activeTabKey}
-            openModal={openModal}
             usedHint={usedHint}
             loading={loading}
             answers={answers}
             authors={authors}
             saveScore={saveScore}
             setUsedHint={setUsedHint}
-            setOpenModal={setOpenModal}
-            setSwitchValues={setSwitchValues}
             setActiveTabKey={setActiveTabKey}
             setWarnExistsHint={setWarnExistsHint}
           />

@@ -9,6 +9,8 @@ import { MessageContainer } from 'globalStyles/global';
 import { Container } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
 import Head from 'next/head';
 import GuildInfo from '../globalComponents/guildInfo';
+import { useMyContext } from 'Context';
+import ConfigurationModal from '../game/components/ConfigurationModal';
 import {
   IRankingTableData,
   IUserScoreDetail,
@@ -24,9 +26,12 @@ import {
 } from 'antd_components';
 
 export default function Ranking() {
+  const { windowWidth } = useMyContext();
+  const isMobile = windowWidth <= 405;
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
   const router = useRouter();
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
@@ -177,8 +182,10 @@ export default function Ranking() {
         <title>Discordle | Ranking</title>
       </Head>
 
+      <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
+
       <MessageContainer width="100%">
-        <GuildInfo />
+        <GuildInfo openModal={openModal} setOpenModal={setOpenModal} />
 
         <S.ClassificationTitle justify="center">
           Ranking geral
@@ -243,7 +250,7 @@ export default function Ranking() {
               backgroundcolor={theme.discordleColors.primary}
               color={theme.discordleColors.text}
               icon={<FeatherIcons icon="arrow-left" size={18} />}
-              width={120}
+              width={!isMobile ? 120 : ''}
             >
               <S.UserSpan>Voltar</S.UserSpan>
             </Button>
@@ -253,7 +260,7 @@ export default function Ranking() {
               backgroundcolor={theme.discordleColors.primary}
               color={theme.discordleColors.text}
               icon={<FeatherIcons icon="rotate-cw" size={18} />}
-              width={140}
+              width={!isMobile ? 140 : ''}
             >
               <S.UserSpan>Recarregar</S.UserSpan>
             </Button>

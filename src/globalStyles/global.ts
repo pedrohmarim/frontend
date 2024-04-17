@@ -141,10 +141,6 @@ export default createGlobalStyle`
     color: ${(props) => props.theme.discordleColors.text} !important;
   }
 
-  .ant-tabs-tab {
-    pointer-events: none;
-  }
-
   .ant-dropdown-menu-item {
     padding: 0 !important;
   }
@@ -152,6 +148,10 @@ export default createGlobalStyle`
   .ant-dropdown-menu {
     border-radius: 0 !important;
     padding: 0 !important;
+  }
+
+  .ant-tabs-tab {
+    color: ${(props) => props.theme.discordleColors.text} !important;
   }
   
   .ant-select-selector {

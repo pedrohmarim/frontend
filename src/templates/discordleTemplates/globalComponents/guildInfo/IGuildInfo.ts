@@ -1,6 +1,4 @@
-import { MenuItem } from 'templates/discordleTemplates/game/IGame';
-
 export interface IGuildInfo {
-  moreItems?: MenuItem[];
   openModal?: boolean;
+  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
 }
