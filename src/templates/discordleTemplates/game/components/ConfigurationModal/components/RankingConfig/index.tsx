@@ -82,7 +82,7 @@ export default function RankingConfig() {
       </S.Row>
 
       <Divider
-        style={{ borderColor: 'rgba(255, 255, 255, 0.1)', marginTop: '15px' }}
+        style={{ borderColor: 'rgba(255, 255, 255, 0.1)', marginTop: '26.5px' }}
       />
     </Fragment>
   );

@@ -63,6 +63,28 @@ const ApiAuth = {
     );
     return response.data;
   },
+  UpdateShowDiscordOnHomeGuild: async function (
+    value: boolean,
+    guildId: string
+  ) {
+    const response: AxiosResponse = await http.post(
+      `${baseUrl}/UpdateShowDiscordOnHomeGuild`,
+      {
+        Value: value,
+        GuildId: guildId,
+      }
+    );
+    return response.data;
+  },
+  GetShowDiscordOnHomeGuild: async function (guildId: string) {
+    const response: AxiosResponse<boolean> = await http.post(
+      `${baseUrl}/GetShowDiscordOnHomeGuild`,
+      {
+        GuildId: guildId,
+      }
+    );
+    return response.data;
+  },
 };
 
 export default ApiAuth;
