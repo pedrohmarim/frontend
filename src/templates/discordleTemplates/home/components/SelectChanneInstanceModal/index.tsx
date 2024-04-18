@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import DiscordleInstanceApi from 'services/DiscordleService/DiscordleInstance';
-import notification from 'antd_components/Notification/Notification.component';
 import { Form, Tooltip } from 'antd';
 import theme from 'globalStyles/theme';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
@@ -93,7 +92,7 @@ export default function SelectChanneInstanceModal({
                   pathname: '/discordle/game',
                   query,
                 });
-            } else notification.error('Erro', 'Código Inválido');
+            }
           }
         );
       }
@@ -220,7 +219,7 @@ export default function SelectChanneInstanceModal({
                 <Form.Item
                   tooltip="Usado para entrar no Discordle do canal através da página inicial"
                   name="channelCode"
-                  label="Senha:"
+                  label="Código da sala:"
                   required
                   rules={[requiredRules]}
                   initialValue={router.query.code}

@@ -76,11 +76,34 @@ const ApiAuth = {
     );
     return response.data;
   },
-  GetShowDiscordOnHomeGuild: async function (guildId: string) {
+  GetShowDiscordOnHomeGuild: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
     const response: AxiosResponse<boolean> = await http.post(
       `${baseUrl}/GetShowDiscordOnHomeGuild`,
       {
         GuildId: guildId,
+        ChannelId: channelId,
+        Code: code,
+      }
+    );
+    return response.data;
+  },
+  UpdateDiscordleInstanceCode: async function (
+    guildId: string,
+    channelId: string,
+    code: string,
+    value: string
+  ) {
+    const response: AxiosResponse = await http.post(
+      `${baseUrl}/UpdateDiscordleInstanceCode`,
+      {
+        GuildId: guildId,
+        ChannelId: channelId,
+        Code: code,
+        Value: value,
       }
     );
     return response.data;
