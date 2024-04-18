@@ -17,6 +17,7 @@ import {
 import {
   Modal,
   List,
+  Checkbox,
   Input,
   Select,
   Row,
@@ -77,8 +78,8 @@ export default function SelectChanneInstanceModal({
               const token = getDiscordleToken();
 
               const query = {
-                channelId,
                 guildId,
+                channelId,
                 code,
               };
 
@@ -124,7 +125,7 @@ export default function SelectChanneInstanceModal({
   function onSubmit(values: I.IFormValues) {
     if (router.isReady) {
       const { guild_id } = router.query;
-      const { channelCode, channelId } = values;
+      const { channelCode, channelId, showDiscordOnHome } = values;
 
       if (guild_id && channelId && channelCode) {
         const guildId = guild_id.toString();
@@ -132,13 +133,14 @@ export default function SelectChanneInstanceModal({
         DiscordInstanceApi.CreateDiscordleInstance(
           channelId,
           guildId,
-          channelCode
+          channelCode,
+          showDiscordOnHome
         ).then(() =>
           router.push({
             pathname: '/discordle/chooseProfile',
             query: {
-              channelId,
               guildId,
+              channelId,
               code: channelCode,
             },
           })
@@ -229,6 +231,16 @@ export default function SelectChanneInstanceModal({
                     onClick={(e) => e.stopPropagation()}
                     size="middle"
                   />
+                </Form.Item>
+              </Col>
+
+              <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
+                <Form.Item
+                  tooltip="Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar)"
+                  name="showDiscordOnHome"
+                  label="Exibir servidor na listagem da página inicial:"
+                >
+                  <Checkbox defaultChecked>Habilitar exibição</Checkbox>
                 </Form.Item>
               </Col>
 

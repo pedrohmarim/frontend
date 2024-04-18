@@ -18,4 +18,5 @@ export interface IShowInputsState {
 export interface IFormValues {
   channelId: string;
   channelCode: string;
+  showDiscordOnHome: boolean;
 }

@@ -164,8 +164,8 @@ export default function Ranking() {
     router.push({
       pathname: '/discordle/game',
       query: {
-        channelId,
         guildId,
+        channelId,
         code,
       },
     });

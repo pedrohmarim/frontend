@@ -3,6 +3,7 @@ import * as I from './IConfigurationModal';
 import * as S from './styles';
 import theme from 'globalStyles/theme';
 import GameConfig from './components/GameConfig';
+import PrivacyConfig from './components/PrivacyConfig';
 import RankingConfig from './components/RankingConfig';
 import { Button, Modal, Row, FeatherIcons, Tabs } from 'antd_components';
 import { TabsProps } from 'antd';
@@ -14,18 +15,18 @@ export default function ConfigurationModal({
   const items: TabsProps['items'] = [
     {
       key: '1',
+      label: 'Privacidade',
+      children: <PrivacyConfig />,
+    },
+    {
+      key: '2',
       label: 'Jogo',
       children: <GameConfig />,
     },
     {
-      key: '2',
+      key: '3',
       label: 'Ranking',
       children: <RankingConfig />,
-    },
-    {
-      key: '3',
-      label: 'Tab 3',
-      children: 'Content of Tab Pane 3',
     },
   ];
 

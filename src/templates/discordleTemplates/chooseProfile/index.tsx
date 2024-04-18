@@ -126,8 +126,8 @@ export default function ChooseProfile() {
             router.push({
               pathname: '/discordle/game',
               query: {
-                channelId,
                 guildId,
+                channelId,
                 code,
               },
             });
