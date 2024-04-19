@@ -5,14 +5,8 @@ import DiscordleInstance from 'services/DiscordleService/DiscordleInstance';
 import { useRouter } from 'next/router';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import notification from 'antd_components/Notification/Notification.component';
-import {
-  Checkbox,
-  Col,
-  Divider,
-  FeatherIcons,
-  Input,
-  Tooltip,
-} from 'antd_components';
+import { Checkbox, Col, Divider, FeatherIcons, Tooltip } from 'antd_components';
+import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/deboucedTextInput';
 
 export default function PrivacyConfig() {
   const router = useRouter();
@@ -80,27 +74,6 @@ export default function PrivacyConfig() {
     [router]
   );
 
-  const debounce = useCallback(
-    (func: (value: string) => void, delay: number) => {
-      let timerId: NodeJS.Timeout;
-
-      return function (value: string) {
-        if (timerId) clearTimeout(timerId);
-
-        timerId = setTimeout(() => {
-          func(value);
-        }, delay);
-      };
-    },
-    []
-  );
-
-  const debouncedFilter = debounce(handleDebounce, 1000);
-
-  function filter(value: string) {
-    debouncedFilter(value);
-  }
-
   return (
     <Fragment>
       <S.Container>
@@ -142,9 +115,10 @@ export default function PrivacyConfig() {
         </Tooltip>
       </S.Container>
 
-      <Input
+      <DebouncedTextInput
+        size="middle"
         placeholder="Código da sala"
-        onChange={(event) => filter(event.target.value)}
+        handleDebounce={handleDebounce}
         defaultValue={router.query.code}
       />
 

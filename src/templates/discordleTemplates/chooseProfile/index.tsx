@@ -8,15 +8,6 @@ import React, {
 import { IMember } from 'services/DiscordleService/IDiscordleService';
 import * as S from './styles';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
-import {
-  Image,
-  Row,
-  Col,
-  Button,
-  Input,
-  FeatherIcons,
-  Skeleton,
-} from 'antd_components';
 import { useRouter } from 'next/router';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
@@ -26,11 +17,20 @@ import theme from 'globalStyles/theme';
 import { Description } from '../home/components/SelectChanneInstanceModal/styles';
 import GuildInfo from '../globalComponents/guildInfo';
 import { useMyContext } from 'Context';
+import { deleteDiscordleToken } from 'utils/localStorage/User';
+import DebouncedTextInput from '../globalComponents/deboucedTextInput';
 import {
   Container,
   InputContainer,
 } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
-import { deleteDiscordleToken } from 'utils/localStorage/User';
+import {
+  Image,
+  Row,
+  Col,
+  Button,
+  FeatherIcons,
+  Skeleton,
+} from 'antd_components';
 
 export default function ChooseProfile() {
   const router = useRouter();
@@ -38,6 +38,7 @@ export default function ChooseProfile() {
   const isMobile = windowWidth <= 875;
   const [members, setMembers] = useState<IMember[]>([]);
   const [validToken, setValidToken] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [showTokenInput, setShowTokenInput] = useState<{
     view: boolean;
     userId: string;
@@ -49,6 +50,8 @@ export default function ChooseProfile() {
   });
 
   function getMembers() {
+    setLoading(true);
+
     if (router.isReady) {
       const { channelId, code } = router.query;
 
@@ -59,6 +62,8 @@ export default function ChooseProfile() {
         ).then((members) => setMembers(members));
       }
     }
+
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -166,7 +171,7 @@ export default function ChooseProfile() {
     }
   };
 
-  const handleDebouncedSearch = useCallback(
+  const handleDebounce = useCallback(
     async (searchValue: string) => {
       setShowTokenInput({
         view: false,
@@ -178,38 +183,22 @@ export default function ChooseProfile() {
         const { channelId, code } = router.query;
 
         if (channelId && code) {
+          setLoading(true);
+
           DiscordMembersApi.GetChannelMemberBySearchValue(
             searchValue,
             channelId.toString(),
             code.toString()
-          ).then((members) => setMembers(members));
+          ).then((members) => {
+            setLoading(false);
+            setMembers(members);
+          });
         }
       } else getMembers();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [router]
   );
-
-  const debounceSearchMember = useCallback(
-    (func: (value: string) => void, delay: number) => {
-      let timerId: NodeJS.Timeout;
-
-      return function (value: string) {
-        if (timerId) clearTimeout(timerId);
-
-        timerId = setTimeout(() => {
-          func(value);
-        }, delay);
-      };
-    },
-    []
-  );
-
-  const debouncedFilter = debounceSearchMember(handleDebouncedSearch, 1000);
-
-  function filter(searchValue: string) {
-    debouncedFilter(searchValue);
-  }
 
   if (
     router.isReady &&
@@ -251,10 +240,11 @@ export default function ChooseProfile() {
         </Row>
 
         <InputContainer ismobile={isMobile}>
-          <Input
-            onChange={(event) => filter(event.target.value)}
+          <DebouncedTextInput
+            handleDebounce={handleDebounce}
             placeholder="Filtrar"
             suffix={<FeatherIcons icon="search" size={18} />}
+            size="middle"
           />
         </InputContainer>
       </S.Row>
@@ -264,13 +254,10 @@ export default function ChooseProfile() {
           onlyOneMember={members.length === 1}
           ref={memberRowRef}
           onMouseDown={handleMouseDown}
-          showSkeleton={!Boolean(members.length)}
+          showSkeleton={loading}
           empty={members.length === 0}
         >
-          <Skeleton
-            loading={!Boolean(members.length)}
-            active={!Boolean(members.length)}
-          >
+          <Skeleton loading={loading} active={loading}>
             {members.length ? (
               members.map(({ AvatarUrl, Id, Username }, index) => (
                 <S.Card

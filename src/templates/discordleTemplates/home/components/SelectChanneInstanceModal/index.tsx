@@ -25,6 +25,7 @@ import {
   Button,
   FeatherIcons,
 } from 'antd_components';
+import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/deboucedTextInput';
 
 export default function SelectChanneInstanceModal({
   selectedGuildName,
@@ -41,8 +42,11 @@ export default function SelectChanneInstanceModal({
 
   const router = useRouter();
   const [showInputs, setShowInputs] = useState<I.IShowInputsState>({});
+  const [channelId, setChannelId] = useState<string>();
 
   const toggleInput = (channelId: string) => {
+    setChannelId(channelId);
+
     setShowInputs((prev) => {
       const updatedInputsState: I.IShowInputsState = {};
       const anyInputVisible = Object.values(prev).some((value) => value);
@@ -66,9 +70,9 @@ export default function SelectChanneInstanceModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guildId, router.isReady, setInstanceChannels]);
 
-  const handleDebouncedOnChange = useCallback(
-    async (code: string, channelId: string) => {
-      if (code.length) {
+  const handleDebounce = useCallback(
+    async (code: string) => {
+      if (code.length && channelId && channelId.length) {
         deleteDiscordleToken();
 
         DiscordleInstanceApi.ValidateCode(code, guildId, channelId).then(
@@ -97,29 +101,8 @@ export default function SelectChanneInstanceModal({
         );
       }
     },
-    [guildId, router]
+    [guildId, router, channelId]
   );
-
-  const debounce = useCallback(
-    (func: (code: string, channelId: string) => void, delay: number) => {
-      let timerId: NodeJS.Timeout;
-
-      return function (code: string, channelId: string) {
-        if (timerId) clearTimeout(timerId);
-
-        timerId = setTimeout(() => {
-          func(code, channelId);
-        }, delay);
-      };
-    },
-    []
-  );
-
-  const debouncedOnChange = debounce(handleDebouncedOnChange, 1000);
-
-  function onChange(code: string, channelId: string) {
-    debouncedOnChange(code, channelId);
-  }
 
   function onSubmit(values: I.IFormValues) {
     if (router.isReady) {
@@ -293,9 +276,9 @@ export default function SelectChanneInstanceModal({
                     {!showInputs[ChannelId] ? (
                       <S.SpanList>Selecionar</S.SpanList>
                     ) : (
-                      <Input
+                      <DebouncedTextInput
                         autoFocus
-                        onChange={(e) => onChange(e.target.value, ChannelId)}
+                        handleDebounce={handleDebounce}
                         placeholder="Informe o código da sala"
                         style={{ maxWidth: '60%' }}
                         onClick={(e) => e.stopPropagation()}

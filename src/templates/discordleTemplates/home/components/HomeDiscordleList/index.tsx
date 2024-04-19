@@ -6,9 +6,10 @@ import DiscordGuildApi from 'services/DiscordleService/DiscordleGuilds';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Animation from 'assets/homeAnimation.json';
 import SelectChanneInstanceModal from '../SelectChanneInstanceModal';
-import { Row, Avatar, FeatherIcons, Input, Col } from 'antd_components';
+import { Row, Avatar, FeatherIcons, Col } from 'antd_components';
 import { useRouter } from 'next/router';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
+import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/deboucedTextInput';
 import {
   IGuildsDto,
   IInstanceChannels,
@@ -50,7 +51,7 @@ export default function HomeDiscordleList({
     );
   }, [pageNumber, pageSize, noMoreDataToFetch]);
 
-  const handleDebouncedSearch = useCallback(async (searchValue: string) => {
+  const handleDebounce = useCallback(async (searchValue: string) => {
     if (searchValue.length)
       DiscordGuildApi.SearchGuildsByValue(searchValue).then((guilds) =>
         setGuilds(guilds)
@@ -61,27 +62,6 @@ export default function HomeDiscordleList({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const debounce = useCallback(
-    (func: (value: string) => void, delay: number) => {
-      let timerId: NodeJS.Timeout;
-
-      return function (value: string) {
-        if (timerId) clearTimeout(timerId);
-
-        timerId = setTimeout(() => {
-          func(value);
-        }, delay);
-      };
-    },
-    []
-  );
-
-  const debouncedFilter = debounce(handleDebouncedSearch, 1000);
-
-  function filter(searchValue: string) {
-    debouncedFilter(searchValue);
-  }
 
   useEffect(() => {
     GetGuilds();
@@ -193,10 +173,11 @@ export default function HomeDiscordleList({
             )}
 
             <S.InputContainer ismobile={isMobile}>
-              <Input
-                onChange={(event) => filter(event.target.value)}
-                placeholder="Filtrar"
+              <DebouncedTextInput
+                size="middle"
                 suffix={<FeatherIcons icon="search" size={18} />}
+                placeholder="Filtrar"
+                handleDebounce={handleDebounce}
               />
             </S.InputContainer>
           </Row>
