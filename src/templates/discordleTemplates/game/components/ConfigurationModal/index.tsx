@@ -7,6 +7,7 @@ import PrivacyConfig from './components/PrivacyConfig';
 import RankingConfig from './components/RankingConfig';
 import { Button, Modal, Row, FeatherIcons, Tabs } from 'antd_components';
 import { TabsProps } from 'antd';
+import FormCreateDiscordleChannel from 'templates/discordleTemplates/globalComponents/formCreateDiscordleChannel';
 
 export default function ConfigurationModal({
   openModal,
@@ -15,16 +16,21 @@ export default function ConfigurationModal({
   const items: TabsProps['items'] = [
     {
       key: '1',
+      label: 'Criação',
+      children: <FormCreateDiscordleChannel />,
+    },
+    {
+      key: '2',
       label: 'Privacidade',
       children: <PrivacyConfig />,
     },
     {
-      key: '2',
+      key: '3',
       label: 'Jogo',
       children: <GameConfig />,
     },
     {
-      key: '3',
+      key: '4',
       label: 'Ranking',
       children: <RankingConfig />,
     },
@@ -34,7 +40,6 @@ export default function ConfigurationModal({
     <Modal
       open={openModal}
       footer={false}
-      closable={false}
       destroyOnClose
       onCancel={() => setOpenModal(!openModal)}
       title={
@@ -58,7 +63,7 @@ export default function ConfigurationModal({
           color={theme.discordleColors.text}
           backgroundcolor={theme.discordleColors.primary}
         >
-          Voltar
+          Fechar
         </Button>
       </Row>
     </Modal>

@@ -38,7 +38,7 @@ const AuthorSelect = ({
         setActiveTabKey((prev: number) => prev + 1);
       }}
     >
-      {authors?.map(({ Avatar, Username, Id }) => (
+      {authors.map(({ Avatar, Username, Id }) => (
         <Select.Option key={Id}>
           <Row align="middle">
             <Image

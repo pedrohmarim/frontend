@@ -1,7 +1,10 @@
 import { ReactNode } from 'react';
-import { ISessionUser } from 'services/DiscordleService/IDiscordleService';
 import { IGetUserByTokenResponse } from 'services/Login/ILoginService';
 import { ISwitchValues } from 'templates/discordleTemplates/game/IGame';
+import {
+  IInstanceChannels,
+  ISessionUser,
+} from 'services/DiscordleService/IDiscordleService';
 
 export interface IContextProps {
   login: IGetUserByTokenResponse | null;
@@ -14,6 +17,10 @@ export interface IContextProps {
     ServerName: string;
     ServerIcon: string;
   };
+  instanceChannels: IInstanceChannels[];
+  setInstanceChannels: React.Dispatch<
+    React.SetStateAction<IInstanceChannels[]>
+  >;
   setSwitchValues: React.Dispatch<React.SetStateAction<ISwitchValues>>;
   updateLogin: (token: string) => void;
   setSessionUser: React.Dispatch<React.SetStateAction<ISessionUser | null>>;

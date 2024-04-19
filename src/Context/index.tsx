@@ -5,10 +5,13 @@ import { useRouter } from 'next/router';
 import LoginApi from 'services/Login/';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
 import DiscordMemberApi from 'services/DiscordleService/DiscordleMembers';
-import { ISessionUser } from 'services/DiscordleService/IDiscordleService';
 import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import { ISwitchValues } from 'templates/discordleTemplates/game/IGame';
 import DiscordleGameAPI from 'services/DiscordleService/DiscordleGame';
+import {
+  IInstanceChannels,
+  ISessionUser,
+} from 'services/DiscordleService/IDiscordleService';
 
 const MyContext = createContext<I.IContextProps | undefined>(undefined);
 
@@ -26,6 +29,9 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   }>({} as { ServerName: string; ServerIcon: string });
   const [switchValues, setSwitchValues] = useState<ISwitchValues>(
     {} as ISwitchValues
+  );
+  const [instanceChannels, setInstanceChannels] = useState<IInstanceChannels[]>(
+    []
   );
 
   function updateLogin(token: string) {
@@ -103,17 +109,19 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
   return (
     <MyContext.Provider
       value={{
-        guildInfoLoading,
-        switchValues,
+        login,
+        isOwner,
         windowWidth,
         sessionUser,
         serverInfos,
-        isOwner,
-        login,
+        switchValues,
+        guildInfoLoading,
+        instanceChannels,
         setLogin,
         updateLogin,
         setSessionUser,
         setSwitchValues,
+        setInstanceChannels,
       }}
     >
       {children}
