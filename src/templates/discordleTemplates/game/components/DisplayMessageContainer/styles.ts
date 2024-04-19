@@ -66,10 +66,10 @@ export const Container = styled.div<{ fromResult: boolean }>`
   ${({ fromResult }) => {
     if (fromResult) {
       return css`
-        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        height: 100%;
       `;
     }
   }}
@@ -86,9 +86,24 @@ export const Message = styled.div<{ fromResult: boolean }>`
     if (fromResult) {
       return css`
         text-align: center;
-        height: 100%;
         display: flex;
+        height: 100%;
+        overflow-y: auto;
         flex-direction: column;
+
+        ::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background-color: ${(props) =>
+            props.theme.discordleColors.background} !important;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background-color: ${(props) =>
+            props.theme.discordleColors.primary} !important;
+        }
       `;
     }
   }}
