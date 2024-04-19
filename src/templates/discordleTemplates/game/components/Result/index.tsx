@@ -85,14 +85,21 @@ export default function Result({
   return (
     <Fragment>
       <Skeleton loading={guildInfoLoading} active={guildInfoLoading}>
-        <Row justify="center">
-          <FeatherIcons icon="star" size={26} />
+        <Skeleton
+          paragraph={false}
+          style={{ width: '300px', marginBottom: '25px' }}
+          loading={!Boolean(totalScore)}
+          active={!Boolean(totalScore)}
+        >
           {totalScore && (
-            <S.Subtitle>
-              Pontuação final: {score}/{totalScore * 5}
-            </S.Subtitle>
+            <Row justify="center">
+              <FeatherIcons icon="star" size={26} />
+              <S.Subtitle>
+                Pontuação final: {score}/{totalScore * 5}
+              </S.Subtitle>
+            </Row>
           )}
-        </Row>
+        </Skeleton>
 
         <S.Container isMobile={isMobile}>
           <S.Span>Próxima atualização em:</S.Span>
@@ -142,7 +149,6 @@ export default function Result({
                   minHeigth="350px"
                   maxHeigth="350px"
                   margin="10px 0 0 0"
-                  padding="10px"
                 >
                   <DisplayMessageContainer
                     {...filterMessage(

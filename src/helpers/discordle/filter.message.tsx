@@ -31,7 +31,6 @@ export default function filterMessage(
           preview={false}
           src={Url}
           alt={`image_${index}_muito_antiga_ou_corrompida`}
-          height={500}
           width="100%"
         />
       );

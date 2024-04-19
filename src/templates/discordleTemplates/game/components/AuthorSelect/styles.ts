@@ -14,10 +14,6 @@ export const Select = styled(SelectAntd)<{
 `;
 
 export const AuthorName = styled.span`
-  white-space: nowrap;
-  width: 85%;
-  overflow: hidden;
-  text-overflow: ellipsis;
   margin-left: 10px;
   font-size: 13pt;
   font-weight: 500;
