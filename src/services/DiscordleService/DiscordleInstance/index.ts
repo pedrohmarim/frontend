@@ -12,7 +12,8 @@ const ApiAuth = {
     channelId: string,
     guildId: string,
     code: string,
-    showDiscordOnHome: boolean
+    showDiscordOnHome: boolean,
+    updateCheckBoxValue: boolean
   ) {
     const response: AxiosResponse = await http.post(
       `${baseUrl}/CreateDiscordleInstance`,
@@ -21,6 +22,7 @@ const ApiAuth = {
         GuildId: guildId,
         Code: code,
         ShowDiscordOnHome: showDiscordOnHome,
+        UpdateCheckBoxValue: updateCheckBoxValue,
       }
     );
     return response.data;

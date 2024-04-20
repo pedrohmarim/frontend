@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as I from './IFormCreateDiscordleChannel';
 import { Form, Tooltip } from 'antd';
 import theme from 'globalStyles/theme';
@@ -31,29 +31,33 @@ export default function FormCreateDiscordleChannel({
 
       DiscordGuildsApi.GetGuildChannels(
         guild_id?.toString() || guildId?.toString() || '',
-        getChannelsWithoutDiscordleInstance
+        true
       ).then((channels) => setInstanceChannels(channels));
     }
   }
 
+  useEffect(() => {
+    getChannels();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function onSubmit(values: I.IFormValues) {
     if (router.isReady) {
-      const { guild_id } = router.query;
+      const { guild_id, guildId } = router.query;
       const { channelCode, channelId, showDiscordOnHome } = values;
 
-      if (guild_id && channelId && channelCode) {
-        const guildId = guild_id.toString();
-
+      if ((guild_id || guildId) && channelId && channelCode) {
         DiscordInstanceApi.CreateDiscordleInstance(
           channelId,
-          guildId,
+          guild_id?.toString() ?? guildId?.toString() ?? '',
           channelCode,
-          showDiscordOnHome
+          showDiscordOnHome,
+          getChannelsWithoutDiscordleInstance
         ).then(() =>
           router.push({
             pathname: '/discordle/chooseProfile',
             query: {
-              guildId,
+              guildId: guild_id?.toString() ?? guildId?.toString() ?? '',
               channelId,
               code: channelCode,
             },
@@ -74,6 +78,10 @@ export default function FormCreateDiscordleChannel({
         }),
       }}
     >
+      <S.Row justify="center">
+        <h2>Criar novo Discordle</h2>
+      </S.Row>
+
       <Row align="middle" justify="center">
         <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
           <Form.Item
@@ -136,16 +144,18 @@ export default function FormCreateDiscordleChannel({
           </Form.Item>
         </Col>
 
-        <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
-          <Form.Item
-            tooltip="Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar)"
-            name="showDiscordOnHome"
-            label="Exibir servidor na listagem da página inicial:"
-            valuePropName="checked"
-          >
-            <Checkbox>Habilitar exibição</Checkbox>
-          </Form.Item>
-        </Col>
+        {getChannelsWithoutDiscordleInstance && (
+          <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
+            <Form.Item
+              tooltip="Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar)"
+              name="showDiscordOnHome"
+              label="Exibir servidor na listagem da página inicial:"
+              valuePropName="checked"
+            >
+              <Checkbox>Habilitar exibição</Checkbox>
+            </Form.Item>
+          </Col>
+        )}
 
         <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
           <Button
