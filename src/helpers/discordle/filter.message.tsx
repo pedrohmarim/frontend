@@ -43,11 +43,12 @@ export default function filterMessage(
   if (message.Embeds.length) {
     response.messageType = MessageTypeEnum.isEmbed;
 
-    message.Embeds.forEach(({ Video, Type }) => {
+    message.Embeds.forEach(({ Video, Type }, index) => {
       switch (Type.toLowerCase()) {
         case EmbedTypeEnum.Gifv:
           response.formattedAttachs.push(
             <video
+              key={`gif_${message.Id}_${index}`}
               height="100%"
               width="100%"
               src={Video.Url}
@@ -60,6 +61,7 @@ export default function filterMessage(
         case EmbedTypeEnum.Video:
           response.formattedAttachs.push(
             <iframe
+              key={`video_${message.Id}_${index}`}
               src={Video.Url}
               allowFullScreen
               height="600px"
@@ -67,6 +69,7 @@ export default function filterMessage(
             />
           );
         default:
+          return;
       }
     });
   }

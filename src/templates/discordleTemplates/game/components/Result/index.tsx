@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Button, Skeleton } from 'antd_components';
-import countdown from 'helpers/discordle/formatDate';
 import { Row, FeatherIcons } from 'antd_components';
 import { useRouter } from 'next/router';
 import * as S from './styles';
 import * as I from './IResult';
+import Timer from 'templates/discordleTemplates/globalComponents/timer';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
 import theme from 'globalStyles/theme';
 import { HomeSpan, MessageContainer } from 'globalStyles/global';
@@ -29,27 +29,6 @@ export default function Result({
   const score = answers.reduce((accumulator, curValue) => {
     return accumulator + curValue.Score;
   }, 0);
-
-  const [timer, setTimer] = useState<string>('Carregando...');
-
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
-    const startCountdown = () => {
-      intervalId = setInterval(() => {
-        setTimer(countdown());
-      }, 1000);
-    };
-
-    const { channelId, guildId } = router.query;
-
-    if (router.isReady && channelId && guildId) {
-      setTimer(countdown());
-      startCountdown();
-    }
-
-    return () => clearInterval(intervalId);
-  }, [router]);
 
   function toRanking() {
     const { channelId, guildId, code } = router.query;
@@ -104,7 +83,9 @@ export default function Result({
         <S.Container isMobile={isMobile}>
           <S.Span>Próxima atualização em:</S.Span>
 
-          <S.TimerContainer>{timer}</S.TimerContainer>
+          <S.TimerContainer>
+            <Timer />
+          </S.TimerContainer>
 
           <Row justify="end">
             <Description fontSize="10.5pt" fontStyle="italic">
