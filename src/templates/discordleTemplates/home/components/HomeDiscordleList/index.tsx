@@ -194,8 +194,9 @@ export default function HomeDiscordleList({
               <Row
                 style={{ padding: isMobile ? '2%' : '10px' }}
                 justify={guilds.length ? 'start' : 'center'}
+                align="middle"
               >
-                {guilds.length ? (
+                {guilds.length > 0 &&
                   guilds.map(({ GuildName, Icon, GuildId }, index) => (
                     <Col
                       key={index}
@@ -225,20 +226,19 @@ export default function HomeDiscordleList({
                               marginBottom: '10px',
                             }}
                           />
+
                           <S.GuildName>
                             {GuildName.length <= (!isMobile ? 50 : 90)
                               ? GuildName
                               : GuildName.substring(0, !isMobile ? 50 : 90) +
                                 '...'}
                           </S.GuildName>
+
                           <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>
                         </S.InfoContainer>
                       </S.GuildItem>
                     </Col>
-                  ))
-                ) : (
-                  <>Nenhum discordle encontrado.</>
-                )}
+                  ))}
               </Row>
             </InfiniteScroll>
           </S.ListContainer>

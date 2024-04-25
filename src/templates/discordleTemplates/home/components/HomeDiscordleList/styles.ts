@@ -109,7 +109,8 @@ export const Container = styled.div<{
 
 export const ListContainer = styled.div`
   border-radius: 10px;
-  height: 100%;
+  min-height: 350px;
+  max-height: 100%;
   margin: 15px 0;
   background-color: #17171a;
   border: solid 1px rgba(255, 255, 255, 0.08);
