@@ -107,14 +107,20 @@ export const Container = styled.div<{
   height: ${({ height }) => height};
 `;
 
-export const ListContainer = styled.div`
+export const ListContainer = styled.div<{ emptyList: boolean }>`
   border-radius: 10px;
-  min-height: 350px;
   max-height: 100%;
   margin: 15px 0;
   background-color: #17171a;
   border: solid 1px rgba(255, 255, 255, 0.08);
   overflow-y: auto;
+
+  ${({ emptyList }) => {
+    if (emptyList)
+      return css`
+        min-height: 350px;
+      `;
+  }}
 
   ::-webkit-scrollbar {
     width: 5px;

@@ -183,7 +183,7 @@ export default function HomeDiscordleList({
             </S.InputContainer>
           </Row>
 
-          <S.ListContainer id="container">
+          <S.ListContainer id="container" emptyList={guilds.length === 0}>
             <InfiniteScroll
               dataLength={guilds.length}
               next={GetGuilds}
