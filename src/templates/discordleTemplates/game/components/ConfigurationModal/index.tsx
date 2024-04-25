@@ -7,7 +7,7 @@ import PrivacyConfig from './components/PrivacyConfig';
 import RankingConfig from './components/RankingConfig';
 import { Button, Modal, Row, FeatherIcons, Tabs } from 'antd_components';
 import { TabsProps } from 'antd';
-import FormCreateDiscordleChannel from 'templates/discordleTemplates/globalComponents/formCreateDiscordleChannel';
+import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComponents/formCreateDiscordleInstance';
 
 export default function ConfigurationModal({
   openModal,
@@ -17,7 +17,7 @@ export default function ConfigurationModal({
     {
       key: '1',
       label: 'Criação',
-      children: <FormCreateDiscordleChannel />,
+      children: <FormCreateDiscordleInstance />,
     },
     {
       key: '2',

@@ -5,7 +5,7 @@ import * as G from 'globalStyles/global';
 import { useRouter } from 'next/router';
 import DiscordleInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/deboucedTextInput';
-import FormCreateDiscordleChannel from 'templates/discordleTemplates/globalComponents/formCreateDiscordleChannel';
+import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComponents/formCreateDiscordleInstance';
 import { Modal, List, Row } from 'antd_components';
 import { useMyContext } from 'Context';
 import {
@@ -93,7 +93,7 @@ export default function SelectChanneInstanceModal({
     >
       {fromGuildParam ? (
         <Fragment>
-          <FormCreateDiscordleChannel getChannelsWithoutDiscordleInstance />
+          <FormCreateDiscordleInstance getChannelsWithoutDiscordleInstance />
 
           <Row justify="center">
             <S.Description fontSize="13pt">

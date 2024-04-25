@@ -4,6 +4,6 @@ export interface IFormValues {
   showDiscordOnHome: boolean;
 }
 
-export interface IFormCreateDiscordleChannel {
+export interface IFormCreateDiscordleInstance {
   getChannelsWithoutDiscordleInstance?: boolean;
 }

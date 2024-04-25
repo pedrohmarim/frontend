@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import * as I from './IFormCreateDiscordleChannel';
+import * as I from './IFormCreateDiscordleInstance';
 import { Form, Tooltip } from 'antd';
 import theme from 'globalStyles/theme';
 import * as S from './styles';
@@ -19,9 +19,9 @@ import {
   FeatherIcons,
 } from 'antd_components';
 
-export default function FormCreateDiscordleChannel({
+export default function FormCreateDiscordleInstance({
   getChannelsWithoutDiscordleInstance = false,
-}: I.IFormCreateDiscordleChannel) {
+}: I.IFormCreateDiscordleInstance) {
   const router = useRouter();
   const { instanceChannels, setInstanceChannels } = useMyContext();
 
