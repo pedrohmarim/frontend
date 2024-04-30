@@ -289,9 +289,13 @@ export default createGlobalStyle`
     color: ${(props) => props.theme.discordleColors.text} !important;
   }
 
-  .ant-table-content{
+  .ant-table-content {
     background-color: ${(props) =>
       props.theme.discordleColors.background} !important;
+  }
+
+  .ant-notification {
+    z-index: 999999
   }
 `;
 

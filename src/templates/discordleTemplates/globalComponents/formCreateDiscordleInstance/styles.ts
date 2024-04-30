@@ -4,7 +4,7 @@ import { Row as AntdRow } from 'antd_components';
 export const ButtonContainer = styled.div<{ fromGame: boolean }>`
   position: absolute;
   right: ${({ fromGame }) => (!fromGame ? '-15px' : '8px')};
-  top: ${({ fromGame }) => (!fromGame ? '72px' : '165px')};
+  top: ${({ fromGame }) => (!fromGame ? '72px' : '122px')};
 `;
 
 export const Row = styled(AntdRow)`

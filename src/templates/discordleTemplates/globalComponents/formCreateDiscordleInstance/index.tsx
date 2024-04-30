@@ -37,7 +37,7 @@ export default function FormCreateDiscordleInstance({
   }
 
   useEffect(() => {
-    getChannels();
+    if (!getChannelsWithoutDiscordleInstance) getChannels();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,9 +78,11 @@ export default function FormCreateDiscordleInstance({
         }),
       }}
     >
-      <S.Row justify="center">
-        <h2>Criar novo Discordle</h2>
-      </S.Row>
+      {!getChannelsWithoutDiscordleInstance && (
+        <S.Row justify="center">
+          <h2>Criar novo Discordle</h2>
+        </S.Row>
+      )}
 
       <Row align="middle" justify="center">
         <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
