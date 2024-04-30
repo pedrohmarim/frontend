@@ -50,9 +50,11 @@ export const EmptyContent = styled(Row)`
 export const Description = styled.span<{
   fontSize?: string;
   fontStyle?: string;
+  margin?: string;
 }>`
   text-align: center;
   color: ${(props) => props.theme.discordleColors.text};
   font-size: ${({ fontSize }) => fontSize};
   font-style: ${({ fontStyle }) => fontStyle};
+  margin: ${({ margin }) => margin};
 `;

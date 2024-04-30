@@ -65,7 +65,7 @@ export default function HowWorks({ width, botButton }: I.IHowWorks) {
       </S.Row>
 
       <Container
-        margin="50px 25px 0 25px"
+        margin="30px 25px 0 25px"
         maxHeight="100%"
         padding="20px 20px 0 20px"
       >

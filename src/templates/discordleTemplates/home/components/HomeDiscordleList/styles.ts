@@ -24,6 +24,7 @@ export const Description = styled(Row)<{
   font-size: ${({ fontSize }) => fontSize};
   width: ${({ width }) => width};
   font-style: ${({ fontStyle }) => fontStyle};
+  z-index: 9;
 `;
 
 export const ApresentationContainer = styled.div<{ isMobile: boolean }>`

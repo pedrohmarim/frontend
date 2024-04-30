@@ -249,7 +249,7 @@ export default function ChooseProfile() {
         </InputContainer>
       </S.Row>
 
-      <MessageContainer maxWidth="100%" margin="10px 0 0 0">
+      <Fragment>
         <S.MemberRow
           onlyOneMember={members.length === 1}
           ref={memberRowRef}
@@ -296,44 +296,37 @@ export default function ChooseProfile() {
           <Fragment>
             <Divider />
 
-            <Row justify="center" align="middle" gutter={[16, 16]}>
-              <Col span={24}>
-                <Description fontSize="12pt">
-                  Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto
-                  #{serverInfos.ServerName.split('#')[1]}
-                  <br /> <br />
-                  para gerar seu token.
-                </Description>
-              </Col>
+            <Row justify="center" align="middle">
+              <Description fontSize="12pt" margin="0 0 15px 0">
+                Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto #
+                {serverInfos.ServerName.split('#')[1]}
+                <br /> <br />
+                para gerar seu token.
+              </Description>
+            </Row>
 
-              <Row justify="center">
-                <Col span={24}>
-                  <ReactCodeInput
-                    onChange={() => setValidToken(true)}
-                    disabled={secondsRemaining != null}
-                    className="codeInput"
-                    onComplete={debouncedHandleSaveUser}
-                    fields={5}
-                  />
+            <Row justify="center">
+              <ReactCodeInput
+                onChange={() => setValidToken(true)}
+                disabled={secondsRemaining != null}
+                className="codeInput"
+                onComplete={debouncedHandleSaveUser}
+                fields={5}
+              />
+            </Row>
 
-                  {!validToken && (
-                    <S.InvalidText>Codigo Inválido!</S.InvalidText>
-                  )}
+            <Row justify="center">
+              {!validToken && <S.InvalidText>Codigo Inválido!</S.InvalidText>}
 
-                  {secondsRemaining && (
-                    <Row justify="center">
-                      <S.TimerText>
-                        Tente novamente em{' '}
-                        <HomeSpan>{secondsRemaining}</HomeSpan>
-                      </S.TimerText>
-                    </Row>
-                  )}
-                </Col>
-              </Row>
+              {secondsRemaining && (
+                <S.TimerText>
+                  Tente novamente em <HomeSpan>{secondsRemaining}</HomeSpan>
+                </S.TimerText>
+              )}
             </Row>
           </Fragment>
         )}
-      </MessageContainer>
+      </Fragment>
     </Container>
   );
 }

@@ -336,6 +336,7 @@ export const CenteredContainer = styled.div`
 
 export const MessageContainer = styled.div<{
   width?: string;
+  height?: string;
   margin?: string;
   maxWidth?: string;
   minWidth?: string;
@@ -346,6 +347,7 @@ export const MessageContainer = styled.div<{
   padding: ${({ padding }) => padding || '20px'};
   text-align: center;
   width: ${({ width }) => width};
+  height: ${({ height }) => height};
   max-width: ${({ maxWidth }) => maxWidth};
   min-width: ${({ minWidth }) => minWidth};
   min-height: ${({ minHeigth }) => minHeigth};

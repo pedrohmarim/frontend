@@ -170,11 +170,7 @@ export default function FormCreateDiscordleInstance({
         </Col>
       </Row>
 
-      <Divider
-        style={{
-          borderColor: 'rgba(255, 255, 255, 0.1)',
-        }}
-      />
+      <Divider style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }} />
     </Form>
   );
 }

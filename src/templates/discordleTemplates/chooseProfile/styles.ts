@@ -11,9 +11,10 @@ export const Card = styled.div`
   width: fit-content;
   border: solid 1px rgba(255, 255, 255, 0.1);
   transition: all 0.2s;
-  margin: 0px 20px 20px 0px;
   min-width: 180px;
   max-width: 180px;
+  height: 220px;
+  margin: 25px 10px;
 
   :hover {
     cursor: pointer;
@@ -36,6 +37,9 @@ export const Username = styled.span`
 export const TimerText = styled.span`
   font-weight: 400;
   font-size: 11pt;
+  text-align: center;
+  width: 100%;
+  margin-top: 10px;
 `;
 
 export const InvalidText = styled.span`
@@ -58,15 +62,20 @@ export const MemberRow = styled.div<{
   showSkeleton: boolean;
 }>`
   overflow-x: auto;
-  padding: 20px;
   display: flex;
+  padding: 15px;
+  margin-top: 10px;
   align-items: ${({ showSkeleton }) => (showSkeleton ? 'center' : '')};
   justify-content: ${({ onlyOneMember }) =>
     onlyOneMember ? 'center' : 'start'};
+  font-size: 15pt;
+  font-weight: 500;
+  color: ${(props) => props.theme.discordleColors.text};
+  background-color: #17171a;
+  border-radius: 8px;
   scroll-snap-type: x mandatory;
   transition: scroll-left 0.5s ease-out;
   max-width: 100vw;
-  height: 300px;
   cursor: ${({ empty }) => (empty ? 'default' : 'grab')} !important;
 
   ::-webkit-scrollbar {
