@@ -102,7 +102,7 @@ export const OnlyLogoRow = styled.div`
   margin-top: 25px;
   margin-left: 25px;
   justify-content: start;
-  z-index: 999999;
+  z-index: 99;
   position: relative;
 `;
 
