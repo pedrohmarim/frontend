@@ -108,6 +108,12 @@ export default function HomeDiscordleList({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
+  function onClose() {
+    setSelectedGuildName(null);
+    setOpen(!open);
+    router.push({ query: '' });
+  }
+
   return (
     <Fragment>
       {selectedGuildId && (
@@ -115,11 +121,7 @@ export default function HomeDiscordleList({
           open={open}
           selectedGuildName={selectedGuildName}
           guildId={selectedGuildId}
-          onClose={() => {
-            setSelectedGuildName(null);
-            setOpen(!open);
-            router.push({ query: '' });
-          }}
+          onClose={onClose}
         />
       )}
 
