@@ -69,17 +69,17 @@ export default function HomeDiscordleList({
 
     if (totalGuilds === 1)
       return (
-        <>
+        <Fragment>
           <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
           servidor registrado.
-        </>
+        </Fragment>
       );
 
     return (
-      <>
+      <Fragment>
         <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
         servidores registrados.
-      </>
+      </Fragment>
     );
   }
 
