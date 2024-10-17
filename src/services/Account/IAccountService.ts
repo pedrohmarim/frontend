@@ -7,7 +7,7 @@ export interface ICreateAccountRequest {
 export interface IAccountResponse {
   Id: number;
 }
-
+//teste
 export interface IValidateEmailResponse {
   Message: string;
   IsValid: boolean;
