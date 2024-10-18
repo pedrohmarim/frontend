@@ -103,27 +103,38 @@ export default function Ranking() {
       title: 'Membro',
       dataIndex: 'Member',
       render: ({ Username, AvatarUrl }, record) => {
-        console.log(Username, record, sessionUser?.MemberId);
+        // console.log(Username, record, sessionUser?.MemberId);
+
+        const isLoggedUserFirst =
+          record.Position === 1 && record.Member.Id === sessionUser?.MemberId;
+
+        console.log(
+          sessionUser?.MemberId,
+          record.Position > 1,
+          !isLoggedUserFirst
+        );
 
         return (
           <S.TableRow align="middle" justify="start">
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {(record.Position > 1 ||
-              !record.Member.Id.includes(sessionUser?.MemberId ?? '')) && (
-              <S.TableButton
-                onClick={() =>
-                  setShowModalChangeNickname({
-                    show: !showModalChangeNickame.show,
-                    memberId: record.Member.Id,
-                    memberUsername: record.Member.Username,
-                  })
-                }
-              >
-                Alterar Apelido
-              </S.TableButton>
-            )}
+            {/* Exibe o botão apenas se o usuário logado for o primeiro, mas não em seu próprio registro */}
+            {sessionUser?.MemberId &&
+              record.Position > 1 &&
+              !isLoggedUserFirst && (
+                <S.TableButton
+                  onClick={() =>
+                    setShowModalChangeNickname({
+                      show: !showModalChangeNickame.show,
+                      memberId: record.Member.Id,
+                      memberUsername: record.Member.Username,
+                    })
+                  }
+                >
+                  Alterar Apelido
+                </S.TableButton>
+              )}
           </S.TableRow>
         );
       },
