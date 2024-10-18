@@ -120,21 +120,19 @@ export default function Ranking() {
             <S.UserSpan>{Username}</S.UserSpan>
 
             {/* Exibe o botão apenas se o usuário logado for o primeiro, mas não em seu próprio registro */}
-            {sessionUser?.MemberId &&
-              record.Position > 1 &&
-              !isLoggedUserFirst && (
-                <S.TableButton
-                  onClick={() =>
-                    setShowModalChangeNickname({
-                      show: !showModalChangeNickame.show,
-                      memberId: record.Member.Id,
-                      memberUsername: record.Member.Username,
-                    })
-                  }
-                >
-                  Alterar Apelido
-                </S.TableButton>
-              )}
+            {!isLoggedUserFirst && (
+              <S.TableButton
+                onClick={() =>
+                  setShowModalChangeNickname({
+                    show: !showModalChangeNickame.show,
+                    memberId: record.Member.Id,
+                    memberUsername: record.Member.Username,
+                  })
+                }
+              >
+                Alterar Apelido
+              </S.TableButton>
+            )}
           </S.TableRow>
         );
       },
