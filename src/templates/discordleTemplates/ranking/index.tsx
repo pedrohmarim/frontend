@@ -103,19 +103,19 @@ export default function Ranking() {
       title: 'Membro',
       dataIndex: 'Member',
       render: ({ Username, AvatarUrl }, record) => {
-        const isLoggedUserFirst = dataSource.some(
-          (item) =>
-            item.Position === 1 && item.Member.Id === sessionUser?.MemberId
-        );
+        // const isLoggedUserFirst = dataSource.some(
+        //   (item) =>
+        //     item.Position === 1 && item.Member.Id === sessionUser?.MemberId
+        // );
 
-        const isOwnRecord = record.Member.Id === sessionUser?.MemberId;
+        // const isOwnRecord = record.Member.Id === sessionUser?.MemberId;
 
         return (
           <S.TableRow align="middle" justify="start">
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {isLoggedUserFirst && !isOwnRecord && (
+            {false && (
               <S.TableButton
                 onClick={() =>
                   setShowModalChangeNickname({
