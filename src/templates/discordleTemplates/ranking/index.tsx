@@ -227,6 +227,7 @@ export default function Ranking() {
 
       <ChangeNickNameModal
         gridReload={gridReload}
+        userIdThatChangedNickname={sessionUser?.MemberId ?? ''}
         username={showModalChangeNickame.memberUsername}
         memberId={showModalChangeNickame.memberId}
         openModal={showModalChangeNickame.show}

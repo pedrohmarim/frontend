@@ -14,6 +14,7 @@ export default function ConfigurationModal({
   openModal,
   username,
   memberId,
+  userIdThatChangedNickname,
   gridReload,
   setOpenModal,
 }: I.IConfigurationModal) {
@@ -28,7 +29,8 @@ export default function ConfigurationModal({
         channelId.toString(),
         code.toString(),
         memberId,
-        values.newNickname
+        values.newNickname,
+        userIdThatChangedNickname
       ).then(() => {
         gridReload();
         notification.success(

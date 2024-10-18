@@ -2,6 +2,7 @@ export interface IConfigurationModal {
   gridReload(): void;
   openModal: boolean;
   username: string;
+  userIdThatChangedNickname: string;
   memberId: string;
   setOpenModal: React.Dispatch<
     React.SetStateAction<{

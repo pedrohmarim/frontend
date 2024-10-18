@@ -58,7 +58,8 @@ const ApiAuth = {
     channelId: string,
     code: string,
     memberId: string,
-    newNickName: string
+    newNickName: string,
+    userIdThatChangedNickname: string
   ) {
     await http.post(`${baseUrl}/ChangeNickname`, {
       ChannelId: channelId,
@@ -66,6 +67,7 @@ const ApiAuth = {
       Code: code,
       MemberId: memberId,
       NewNickName: newNickName,
+      UserIdThatChangedNickname: userIdThatChangedNickname,
     });
   },
 };
