@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordleService/DiscordleRanking';
@@ -108,20 +108,21 @@ export default function Ranking() {
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {/* {!record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
+            {!record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
               record.Position === 1 && (
-                <S.TableButton
-                  onClick={() =>
-                    setShowModalChangeNickname({
-                      show: !showModalChangeNickame.show,
-                      memberId: record.Member.Id,
-                      memberUsername: record.Member.Username,
-                    })
-                  }
-                >
-                  Alterar Apelido
-                </S.TableButton>
-              )} */}
+                // <S.TableButton
+                //   onClick={() =>
+                //     setShowModalChangeNickname({
+                //       show: !showModalChangeNickame.show,
+                //       memberId: record.Member.Id,
+                //       memberUsername: record.Member.Username,
+                //     })
+                //   }
+                // >
+                //   Alterar Apelido
+                // </S.TableButton>
+                <Fragment />
+              )}
           </S.TableRow>
         );
       },
