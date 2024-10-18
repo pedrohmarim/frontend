@@ -110,20 +110,20 @@ export default function Ranking() {
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {record.Position > 1 &&
-              !record.Member.Id.includes(sessionUser?.MemberId ?? '') && (
-                <S.TableButton
-                  onClick={() =>
-                    setShowModalChangeNickname({
-                      show: !showModalChangeNickame.show,
-                      memberId: record.Member.Id,
-                      memberUsername: record.Member.Username,
-                    })
-                  }
-                >
-                  Alterar Apelido
-                </S.TableButton>
-              )}
+            {(record.Position > 1 ||
+              !record.Member.Id.includes(sessionUser?.MemberId ?? '')) && (
+              <S.TableButton
+                onClick={() =>
+                  setShowModalChangeNickname({
+                    show: !showModalChangeNickame.show,
+                    memberId: record.Member.Id,
+                    memberUsername: record.Member.Username,
+                  })
+                }
+              >
+                Alterar Apelido
+              </S.TableButton>
+            )}
           </S.TableRow>
         );
       },
