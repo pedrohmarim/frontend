@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ColumnsType } from 'antd/es/table';
 import * as S from './styles';
 import DiscordMessagesApi from 'services/DiscordleService/DiscordleRanking';
@@ -13,6 +13,7 @@ import { useMyContext } from 'Context';
 import ConfigurationModal from '../game/components/ConfigurationModal';
 import * as G from 'globalStyles/global';
 import ChangeNickNameModal from '../game/components/ChangeNicknameModal';
+import notification from 'antd_components/Notification/Notification.component';
 import {
   IRankingTableData,
   IUserScoreDetail,
@@ -25,6 +26,7 @@ import {
   Button,
   Empty,
   Table,
+  Checkbox,
 } from 'antd_components';
 
 export default function Ranking() {
@@ -39,6 +41,7 @@ export default function Ranking() {
     memberUsername: string;
   }>({ memberUsername: '', show: false, memberId: '' });
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [checkBox, setCheckBox] = useState<boolean>(true);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
   const router = useRouter();
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
@@ -103,19 +106,19 @@ export default function Ranking() {
       title: 'Membro',
       dataIndex: 'Member',
       render: ({ Username, AvatarUrl }, record) => {
-        // const isLoggedUserFirst = dataSource.some(
-        //   (item) =>
-        //     item.Position === 1 && item.Member.Id === sessionUser?.MemberId
-        // );
+        const isLoggedUserFirst = dataSource.some(
+          (item) =>
+            item.Position === 1 && item.Member.Id === sessionUser?.MemberId
+        );
 
-        // const isOwnRecord = record.Member.Id === sessionUser?.MemberId;
+        const isOwnRecord = record.Member.Id === sessionUser?.MemberId;
 
         return (
           <S.TableRow align="middle" justify="start">
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {false && (
+            {isLoggedUserFirst && !isOwnRecord && (
               <S.TableButton
                 onClick={() =>
                   setShowModalChangeNickname({
@@ -125,7 +128,14 @@ export default function Ranking() {
                   })
                 }
               >
-                Alterar Apelido
+                <Row align="middle">
+                  <FeatherIcons
+                    icon="edit"
+                    size={16}
+                    style={{ marginRight: '5px' }}
+                  />
+                  Alterar Apelido
+                </Row>
               </S.TableButton>
             )}
           </S.TableRow>
@@ -202,14 +212,48 @@ export default function Ranking() {
   function toGame() {
     const { channelId, guildId, code } = router.query;
 
-    router.push({
-      pathname: '/discordle/game',
-      query: {
-        guildId,
-        channelId,
-        code,
-      },
-    });
+    if (channelId && guildId && code)
+      router.push({
+        pathname: '/discordle/game',
+        query: {
+          guildId,
+          channelId,
+          code,
+        },
+      });
+  }
+
+  useEffect(() => {
+    const { channelId, guildId, code } = router.query;
+
+    if (channelId && guildId && code && sessionUser?.MemberId)
+      DiscordMessagesApi.GetCheckBoxRanking(
+        code?.toString(),
+        channelId?.toString(),
+        guildId?.toString(),
+        sessionUser.MemberId
+      ).then((value) => setCheckBox(value));
+  }, [router.query, sessionUser]);
+
+  function changeCheckBox() {
+    const { channelId, guildId, code } = router.query;
+
+    if (channelId && guildId && code && sessionUser?.MemberId)
+      DiscordMessagesApi.UpdateCheckBoxRanking(
+        code?.toString(),
+        channelId?.toString(),
+        guildId?.toString(),
+        sessionUser.MemberId,
+        !checkBox
+      ).then(() => {
+        setCheckBox(!checkBox);
+        notification.success(
+          'Sucesso',
+          `Você ${
+            checkBox ? 'não' : 'agora'
+          } participará das iterações do ranking.`
+        );
+      });
   }
 
   return (
@@ -245,6 +289,12 @@ export default function Ranking() {
           <G.HomeSpan margin="0 5px 0 0 ">Nota: </G.HomeSpan> O primeiro
           colocado terá algumas vantagens administrativas, mesmo fora do
           Discord. Aproveite o topo do pódio! 🎉
+        </S.Description>
+
+        <S.Description justify="end">
+          <Checkbox checked={checkBox} onChange={changeCheckBox}>
+            Participar das iterações de ranking
+          </Checkbox>
         </S.Description>
 
         <S.TableContainer>

@@ -21,6 +21,38 @@ const ApiAuth = {
     );
     return response.data;
   },
+  GetCheckBoxRanking: async function (
+    code: string,
+    channelId: string,
+    guildId: string,
+    memberId: string
+  ) {
+    const response: AxiosResponse<boolean> = await http.post(
+      `${baseUrl}/GetCheckBoxRanking`,
+      {
+        GuildId: guildId,
+        Code: code,
+        ChannelId: channelId,
+        MemberId: memberId,
+      }
+    );
+    return response.data;
+  },
+  UpdateCheckBoxRanking: async function (
+    code: string,
+    channelId: string,
+    guildId: string,
+    memberId: string,
+    value: boolean
+  ) {
+    await http.post(`${baseUrl}/UpdateCheckBoxRanking`, {
+      GuildId: guildId,
+      Code: code,
+      ChannelId: channelId,
+      MemberId: memberId,
+      Value: value,
+    });
+  },
   GetUserScoreDetail: async function (
     userId: string,
     channelId: string,
