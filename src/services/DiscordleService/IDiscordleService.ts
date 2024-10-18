@@ -8,6 +8,7 @@ export interface IGuildInfoGet {
 export interface ISessionUser {
   AvatarUrl: string;
   Username: string;
+  MemberId: string;
 }
 
 export interface IMessageInstance {

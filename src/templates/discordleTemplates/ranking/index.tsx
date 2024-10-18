@@ -28,7 +28,7 @@ import {
 } from 'antd_components';
 
 export default function Ranking() {
-  const { windowWidth } = useMyContext();
+  const { windowWidth, sessionUser } = useMyContext();
   const isMobile = windowWidth <= 405;
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -108,19 +108,20 @@ export default function Ranking() {
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {record.Position !== 1 && (
-              <S.TableButton
-                onClick={() =>
-                  setShowModalChangeNickname({
-                    show: !showModalChangeNickame.show,
-                    memberId: record.Member.Id,
-                    memberUsername: record.Member.Username,
-                  })
-                }
-              >
-                Alterar Apelido
-              </S.TableButton>
-            )}
+            {!record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
+              record.Position !== 1 && (
+                <S.TableButton
+                  onClick={() =>
+                    setShowModalChangeNickname({
+                      show: !showModalChangeNickame.show,
+                      memberId: record.Member.Id,
+                      memberUsername: record.Member.Username,
+                    })
+                  }
+                >
+                  Alterar Apelido
+                </S.TableButton>
+              )}
           </S.TableRow>
         );
       },
