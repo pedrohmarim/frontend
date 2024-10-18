@@ -32,7 +32,7 @@ export default function ConfigurationModal({
       )
         .then(() => {
           gridReload();
-
+          //
           notification.success(
             'Sucesso',
             `O apelido de '${username}', foi alterado para '${values.newNickname}'`
