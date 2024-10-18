@@ -1,11 +1,40 @@
 import styled from 'styled-components';
 import { Row as AntdRow, Modal as AntdModal } from 'antd_components';
+import { Button as AntdButton } from 'antd';
 
 export const TableContainer = styled.div``;
 
 export const ClassificationTitle = styled(AntdRow)`
   font-size: 20pt;
   margin-bottom: 20px;
+`;
+
+export const Description = styled(AntdRow)`
+  font-size: 12pt;
+  margin-bottom: 20px;
+`;
+
+export const TableButton = styled(AntdButton)`
+  display: none;
+  margin-left: 20px;
+  border-color: ${(props) => props.theme.discordleColors.primary};
+  background-color: ${(props) => props.theme.discordleColors.primary};
+  color: ${(props) => props.theme.discordleColors.text};
+
+  :hover {
+    border-color: ${(props) => props.theme.discordleColors.primary} !important;
+    background-color: ${(props) =>
+      props.theme.discordleColors.primary} !important;
+    color: ${(props) => props.theme.discordleColors.text} !important;
+  }
+`;
+
+export const TableRow = styled(AntdRow)`
+  :hover {
+    & ${TableButton} {
+      display: block;
+    }
+  }
 `;
 
 export const Row = styled(AntdRow)`

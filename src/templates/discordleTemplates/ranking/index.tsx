@@ -11,6 +11,8 @@ import Head from 'next/head';
 import GuildInfo from '../globalComponents/guildInfo';
 import { useMyContext } from 'Context';
 import ConfigurationModal from '../game/components/ConfigurationModal';
+import * as G from 'globalStyles/global';
+import ChangeNickNameModal from '../game/components/ChangeNicknameModal';
 import {
   IRankingTableData,
   IUserScoreDetail,
@@ -31,6 +33,11 @@ export default function Ranking() {
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
+  const [showModalChangeNickame, setShowModalChangeNickname] = useState<{
+    show: boolean;
+    memberId: string;
+    memberUsername: string;
+  }>({ memberUsername: '', show: false, memberId: '' });
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
   const router = useRouter();
@@ -79,17 +86,44 @@ export default function Ranking() {
       align: 'center',
       width: 80,
       dataIndex: 'Position',
-      render: (value) => <>{value}</>,
+      render: (value) => {
+        switch (value) {
+          case 1:
+            return <FeatherIcons icon="star" color="yellow" size={27} />;
+          case 2:
+            return <FeatherIcons icon="star" color="silver" size={27} />;
+          case 3:
+            return <FeatherIcons icon="star" color="coral" size={27} />;
+          default:
+            return value;
+        }
+      },
     },
     {
       title: 'Membro',
       dataIndex: 'Member',
-      render: ({ Username, AvatarUrl }) => (
-        <Row align="middle">
-          {AvatarUrl && <Avatar src={AvatarUrl} />}
-          <S.UserSpan>{Username}</S.UserSpan>
-        </Row>
-      ),
+      render: ({ Username, AvatarUrl }, record) => {
+        return (
+          <S.TableRow align="middle" justify="start">
+            {AvatarUrl && <Avatar src={AvatarUrl} />}
+            <S.UserSpan>{Username}</S.UserSpan>
+
+            {record.Position !== 1 && (
+              <S.TableButton
+                onClick={() =>
+                  setShowModalChangeNickname({
+                    show: !showModalChangeNickame.show,
+                    memberId: record.Member.Id,
+                    memberUsername: record.Member.Username,
+                  })
+                }
+              >
+                Alterar Apelido
+              </S.TableButton>
+            )}
+          </S.TableRow>
+        );
+      },
     },
     {
       title: 'Total de pontos',
@@ -184,12 +218,26 @@ export default function Ranking() {
 
       <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
 
+      <ChangeNickNameModal
+        gridReload={gridReload}
+        username={showModalChangeNickame.memberUsername}
+        memberId={showModalChangeNickame.memberId}
+        openModal={showModalChangeNickame.show}
+        setOpenModal={setShowModalChangeNickname}
+      />
+
       <MessageContainer width="100%">
         <GuildInfo openModal={openModal} setOpenModal={setOpenModal} />
 
         <S.ClassificationTitle justify="center">
-          Ranking geral
+          Ranking Geral
         </S.ClassificationTitle>
+
+        <S.Description justify="center" align="middle">
+          <G.HomeSpan margin="0 5px 0 0 ">Nota: </G.HomeSpan> O primeiro
+          colocado terá algumas vantagens administrativas, mesmo fora do
+          Discord. Aproveite o topo do pódio! 🎉
+        </S.Description>
 
         <S.TableContainer>
           <Table

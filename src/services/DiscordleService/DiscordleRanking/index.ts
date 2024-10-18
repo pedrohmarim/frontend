@@ -53,6 +53,21 @@ const ApiAuth = {
     );
     return response.data;
   },
+  ChangeNickname: async function (
+    guildId: string,
+    channelId: string,
+    code: string,
+    memberId: string,
+    newNickName: string
+  ) {
+    await http.post(`${baseUrl}/ChangeNickname`, {
+      ChannelId: channelId,
+      GuildId: guildId,
+      Code: code,
+      MemberId: memberId,
+      NewNickName: newNickName,
+    });
+  },
 };
 
 export default ApiAuth;
