@@ -108,8 +108,8 @@ export default function Ranking() {
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {!record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
-              record.Position !== 1 && (
+            {record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
+              record.Position === 1 && (
                 <S.TableButton
                   onClick={() =>
                     setShowModalChangeNickname({
