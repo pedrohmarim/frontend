@@ -103,25 +103,27 @@ export default function Ranking() {
       title: 'Membro',
       dataIndex: 'Member',
       render: ({ Username, AvatarUrl }, record) => {
+        console.log(Username, record, sessionUser?.MemberId);
+
         return (
           <S.TableRow align="middle" justify="start">
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {(!record.Member.Id.includes(sessionUser?.MemberId ?? '') ||
-              record.Position !== 1) && (
-              <S.TableButton
-                onClick={() =>
-                  setShowModalChangeNickname({
-                    show: !showModalChangeNickame.show,
-                    memberId: record.Member.Id,
-                    memberUsername: record.Member.Username,
-                  })
-                }
-              >
-                Alterar Apelido
-              </S.TableButton>
-            )}
+            {record.Position > 1 &&
+              !record.Member.Id.includes(sessionUser?.MemberId ?? '') && (
+                <S.TableButton
+                  onClick={() =>
+                    setShowModalChangeNickname({
+                      show: !showModalChangeNickame.show,
+                      memberId: record.Member.Id,
+                      memberUsername: record.Member.Username,
+                    })
+                  }
+                >
+                  Alterar Apelido
+                </S.TableButton>
+              )}
           </S.TableRow>
         );
       },
