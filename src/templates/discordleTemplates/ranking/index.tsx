@@ -103,15 +103,11 @@ export default function Ranking() {
       title: 'Membro',
       dataIndex: 'Member',
       render: ({ Username, AvatarUrl }, record) => {
-        console.log(Username, record, sessionUser?.MemberId);
-
-        // Verifica se o usuário logado está em primeiro lugar
         const isLoggedUserFirst = dataSource.some(
           (item) =>
             item.Position === 1 && item.Member.Id === sessionUser?.MemberId
         );
 
-        // Verifica se este registro é do próprio usuário logado
         const isOwnRecord = record.Member.Id === sessionUser?.MemberId;
 
         return (
@@ -119,7 +115,6 @@ export default function Ranking() {
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {/* Renderiza o botão somente se o usuário logado estiver em primeiro lugar e não for seu próprio registro */}
             {isLoggedUserFirst && !isOwnRecord && (
               <S.TableButton
                 onClick={() =>

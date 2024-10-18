@@ -29,21 +29,13 @@ export default function ConfigurationModal({
         code.toString(),
         memberId,
         values.newNickname
-      )
-        .then(() => {
-          gridReload();
-          //
-          notification.success(
-            'Sucesso',
-            `O apelido de '${username}', foi alterado para '${values.newNickname}'`
-          );
-        })
-        .catch((err) =>
-          notification.error(
-            'Erro',
-            'Não foi possível alterar o apelido.' + err
-          )
+      ).then(() => {
+        gridReload();
+        notification.success(
+          'Sucesso',
+          `O apelido de '${username}', foi alterado para '${values.newNickname}'`
         );
+      });
 
     setOpenModal({ memberId: '', memberUsername: '', show: !openModal });
   }
