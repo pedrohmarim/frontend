@@ -109,19 +109,18 @@ export default function Ranking() {
             <S.UserSpan>{Username}</S.UserSpan>
 
             {!record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
-              record.Position === 1 && (
-                // <S.TableButton
-                //   onClick={() =>
-                //     setShowModalChangeNickname({
-                //       show: !showModalChangeNickame.show,
-                //       memberId: record.Member.Id,
-                //       memberUsername: record.Member.Username,
-                //     })
-                //   }
-                // >
-                //   Alterar Apelido
-                // </S.TableButton>
-                <Fragment />
+              record.Position !== 1 && (
+                <S.TableButton
+                  onClick={() =>
+                    setShowModalChangeNickname({
+                      show: !showModalChangeNickame.show,
+                      memberId: record.Member.Id,
+                      memberUsername: record.Member.Username,
+                    })
+                  }
+                >
+                  Alterar Apelido
+                </S.TableButton>
               )}
           </S.TableRow>
         );
