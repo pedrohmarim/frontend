@@ -108,7 +108,7 @@ export default function Ranking() {
             {AvatarUrl && <Avatar src={AvatarUrl} />}
             <S.UserSpan>{Username}</S.UserSpan>
 
-            {!record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
+            {/* {!record.Member.Id.includes(sessionUser?.MemberId ?? '') &&
               record.Position === 1 && (
                 <S.TableButton
                   onClick={() =>
@@ -121,7 +121,7 @@ export default function Ranking() {
                 >
                   Alterar Apelido
                 </S.TableButton>
-              )}
+              )} */}
           </S.TableRow>
         );
       },
