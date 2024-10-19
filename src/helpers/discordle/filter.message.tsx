@@ -49,7 +49,7 @@ export default function filterMessage(
           response.formattedAttachs.push(
             <video
               key={`gif_${message.Id}_${index}`}
-              height="100%"
+              height="350px"
               width="100%"
               src={Video.Url}
               loop
