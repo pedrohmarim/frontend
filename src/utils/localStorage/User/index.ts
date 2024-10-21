@@ -29,3 +29,9 @@ export const deleteDiscordleToken = () => {
 export const deleteRememberMe = () => {
   localStorage.removeItem('rememberme');
 };
+
+export const getItem = (item: string) => {
+  if (typeof window === 'undefined') return;
+
+  return localStorage.getItem(item);
+};

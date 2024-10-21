@@ -1,0 +1,9 @@
+{
+  "headerFirstListItem": "Home",
+  "headerSecondItem": "How it works",
+
+  "presentationFirstMessage": "Welcome to",
+  "presentationSecondMessage": "Test your skills by trying to identify who wrote one of the five random phrases generated daily from a text channel on your Discord server and challenge your friends in the race for the top of the leaderboard!",
+  "btnInviteBot": "Invite bot",
+  "italicSpan": "*Make sure to log in with the account that holds the server owner role"
+}

@@ -12,12 +12,15 @@ import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/de
 import { IGuildsDto } from 'services/DiscordleService/IDiscordleService';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import { useMyContext } from 'Context';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 
 export default function HomeDiscordleList({
   width,
   botButton,
 }: I.IHomeDiscordleList) {
   const router = useRouter();
+  const { i18n, t } = useTranslation('Home');
   const { setInstanceChannels } = useMyContext();
   const isMobile = width < 875;
   const pageSize = 18;
@@ -30,6 +33,11 @@ export default function HomeDiscordleList({
   const [selectedGuildName, setSelectedGuildName] = useState<string | null>(
     null
   );
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   const GetGuilds = useCallback(() => {
     if (noMoreDataToFetch) return;
@@ -128,7 +136,7 @@ export default function HomeDiscordleList({
       <S.AnimationContainer>
         <S.ApresentationContainer isMobile={isMobile}>
           <S.Title justify="end">
-            Bem-vindo ao
+            {t('presentationFirstMessage')}
             <G.HomeSpan margin="0 0 0 10px">Discordle</G.HomeSpan>
           </S.Title>
 
@@ -137,10 +145,7 @@ export default function HomeDiscordleList({
             justify="end"
             fontSize="16pt"
           >
-            Teste suas habilidades ao tentar identificar quem escreveu uma das
-            cinco frases aleatórias geradas diariamente a partir de um canal de
-            texto de seu servidor do Discord e desafie seus amigos na disputa
-            pelo topo do ranking!
+            {t('presentationSecondMessage')}
           </S.Description>
 
           {botButton()}
@@ -151,8 +156,7 @@ export default function HomeDiscordleList({
             fontSize="11pt"
             fontStyle="italic"
           >
-            *Certifique-se de entrar com a conta que possui o cargo de dono do
-            servidor
+            {t('italicSpan')}
           </S.Description>
         </S.ApresentationContainer>
 

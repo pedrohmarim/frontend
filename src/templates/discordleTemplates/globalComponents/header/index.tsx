@@ -5,8 +5,17 @@ import * as S from './styles';
 import * as I from './IHeader';
 import theme from 'globalStyles/theme';
 import Logo from 'assets/logo.png';
-import { Button, FeatherIcons, Row, Image } from 'antd_components';
 import { useMyContext } from 'Context';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
+import {
+  Button,
+  FeatherIcons,
+  Row,
+  Image,
+  Select,
+  Avatar,
+} from 'antd_components';
 
 export default function Header({
   current,
@@ -15,9 +24,14 @@ export default function Header({
   setAnimationActive,
 }: I.IHeader) {
   const { windowWidth } = useMyContext();
-
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const { i18n, t } = useTranslation('Home');
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -36,11 +50,11 @@ export default function Header({
 
   const items: MenuProps['items'] = [
     {
-      label: 'Início',
+      label: t('headerFirstListItem'),
       key: 'home',
     },
     {
-      label: 'Como funciona',
+      label: t('headerSecondItem'),
       key: 'howworks',
     },
   ];
@@ -77,12 +91,36 @@ export default function Header({
             style={{ marginLeft: '25px', cursor: 'pointer' }}
           />
 
-          <S.DesktopMenu
-            onClick={onClickMenu}
-            selectedKeys={[current]}
-            mode="horizontal"
-            items={items}
-          />
+          <Row align="bottom">
+            <S.Select
+              defaultValue={getItem('i18nextLng') ?? 'pt'}
+              onChange={(value) => i18n.changeLanguage(String(value))}
+              style={{
+                marginBottom: '20px',
+              }}
+              dropdownStyle={{
+                backgroundColor: theme.discordleColors.background,
+              }}
+            >
+              <Select.Option value="en">
+                <Avatar src="https://flagcdn.com/w320/us.png" alt="usa_flag" />
+              </Select.Option>
+
+              <Select.Option value="pt">
+                <Avatar
+                  src="https://flagcdn.com/w320/br.png"
+                  alt="brazil_flag"
+                />
+              </Select.Option>
+            </S.Select>
+
+            <S.DesktopMenu
+              onClick={onClickMenu}
+              selectedKeys={[current]}
+              mode="horizontal"
+              items={items}
+            />
+          </Row>
         </S.Row>
       ) : (
         <Fragment>

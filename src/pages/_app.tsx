@@ -8,6 +8,7 @@ import Icon from 'assets/icon.png';
 import Header from 'templates/discordleTemplates/globalComponents/header';
 import GlobalStyle, { CenteredContainer } from 'globalStyles/global';
 import Head from 'next/head';
+import 'i18n';
 // import Announcement from 'templates/discordleTemplates/globalComponents/announcement';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps, router }) => {

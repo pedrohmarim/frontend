@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HomeDiscordleList from './components/HomeDiscordleList';
 import Head from 'next/head';
 import Header from '../globalComponents/header';
@@ -7,11 +7,19 @@ import { useMyContext } from 'Context';
 import HowWorks from './components/HowWorks';
 import { Button, Row } from 'antd_components';
 import theme from 'globalStyles/theme';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 
 export default function Home() {
   const [current, setCurrent] = useState('home');
   const [animationActive, setAnimationActive] = useState(true);
   const { windowWidth } = useMyContext();
+  const { i18n, t } = useTranslation('Home');
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function onClick() {
     const clientIdBot = '1089918362311733378';
@@ -35,7 +43,7 @@ export default function Home() {
         backgroundcolor={theme.discordleColors.primary}
         color={theme.discordleColors.text}
       >
-        Convidar Bot
+        {t('btnInviteBot')}
       </Button>
     </Row>
   );
