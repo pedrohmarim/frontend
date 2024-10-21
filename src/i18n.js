@@ -20,7 +20,7 @@ if (!i18n.isInitialized) {
       fallbackLng: 'pt', // Idioma padrão
       ns: ['Home'], // Múltiplos namespaces
       defaultNS: 'Home', // Namespace padrão
-      debug: true,
+      debug: false,
       interpolation: {
         escapeValue: false, // Evita escape de HTML
       },
