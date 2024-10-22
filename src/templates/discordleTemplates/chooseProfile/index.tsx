@@ -17,8 +17,9 @@ import theme from 'globalStyles/theme';
 import { Description } from '../home/components/SelectChanneInstanceModal/styles';
 import GuildInfo from '../globalComponents/guildInfo';
 import { useMyContext } from 'Context';
-import { deleteDiscordleToken } from 'utils/localStorage/User';
+import { deleteDiscordleToken, getItem } from 'utils/localStorage/User';
 import DebouncedTextInput from '../globalComponents/deboucedTextInput';
+import { useTranslation } from 'react-i18next';
 import {
   Container,
   InputContainer,
@@ -34,6 +35,7 @@ import {
 
 export default function ChooseProfile() {
   const router = useRouter();
+  const { i18n, t } = useTranslation('ChooseProfile');
   const { windowWidth, serverInfos } = useMyContext();
   const isMobile = windowWidth <= 875;
   const [members, setMembers] = useState<IMember[]>([]);
@@ -48,6 +50,11 @@ export default function ChooseProfile() {
     userId: '',
     selectedItemIndex: null,
   });
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function getMembers() {
     setLoading(true);
@@ -206,12 +213,10 @@ export default function ChooseProfile() {
   )
     return (
       <MessageContainer>
-        <Description>Não há membros á serem exibidos</Description>
+        <Description>{t('noMembers')}</Description>
 
         <Col>
-          <Description>
-            Parâmetro ID do canal/código da sala inválidos ou inexistentes
-          </Description>
+          <Description>{t('description')}</Description>
         </Col>
 
         <Row justify="center">
@@ -222,7 +227,7 @@ export default function ChooseProfile() {
             color={theme.discordleColors.text}
             onClick={() => router.back()}
           >
-            Voltar
+            {t('back')}
           </Button>
         </Row>
       </MessageContainer>
@@ -234,15 +239,13 @@ export default function ChooseProfile() {
 
       <S.Row justify="space-between">
         <Row justify="center" align="middle">
-          <GameTitle margin="0 6px 0 0">
-            Escolha seu perfil para começar a jogar
-          </GameTitle>
+          <GameTitle margin="0 6px 0 0">{t('gameTitle')}</GameTitle>
         </Row>
 
         <InputContainer ismobile={isMobile}>
           <DebouncedTextInput
             handleDebounce={handleDebounce}
-            placeholder="Filtrar"
+            placeholder={t('filterPlaceholder')}
             suffix={<FeatherIcons icon="search" size={18} />}
             size="middle"
           />
@@ -287,7 +290,7 @@ export default function ChooseProfile() {
                 </S.Card>
               ))
             ) : (
-              <S.Empty>Nenhum resultado encontrado.</S.Empty>
+              <S.Empty>{t('noResultFound')}</S.Empty>
             )}
           </Skeleton>
         </S.MemberRow>
@@ -298,10 +301,10 @@ export default function ChooseProfile() {
 
             <Row justify="center" align="middle">
               <Description fontSize="12pt" margin="0 0 15px 0">
-                Digite o comando <HomeSpan>/code</HomeSpan> no canal de texto #
+                {t('firstDescriptionCode')}
                 {serverInfos.ServerName.split('#')[1]}
                 <br /> <br />
-                para gerar seu token.
+                {t('secondDescriptionCode')}
               </Description>
             </Row>
 
@@ -316,11 +319,11 @@ export default function ChooseProfile() {
             </Row>
 
             <Row justify="center">
-              {!validToken && <S.InvalidText>Codigo Inválido!</S.InvalidText>}
+              {!validToken && <S.InvalidText>{t('invalidCode')}</S.InvalidText>}
 
               {secondsRemaining && (
                 <S.TimerText>
-                  Tente novamente em <HomeSpan>{secondsRemaining}</HomeSpan>
+                  {t('tryAgain')} <HomeSpan>{secondsRemaining}</HomeSpan>
                 </S.TimerText>
               )}
             </Row>

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { SwitchNameEnum } from './switchNameEnum';
 import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import Image1 from 'assets/image_1.png';
@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
 import { useMyContext } from 'Context';
 import * as S from './styles';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 import {
   Col,
   Row,
@@ -21,11 +23,17 @@ import {
 } from 'antd_components';
 
 export default function GameConfig() {
+  const { i18n, t } = useTranslation('GuildInfo');
   const [loadingSwitch, setLoadingSwitch] = useState(false);
   const { switchValues, setSwitchValues, windowWidth } = useMyContext();
   const switches: I.ISwitches[] = [];
   const router = useRouter();
   const isMobile = windowWidth < 375;
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   async function updateSwitchValue(
     value: number,
@@ -50,7 +58,7 @@ export default function GameConfig() {
   if (guildId && channelId && isLoadingSwitchValues) {
     switches.push(
       {
-        label: 'Mostrar autores de dicas.',
+        label: t('label1'),
         img: Image1,
         value: switchValues.ShowHintsAuthors,
         type: SwitchNameEnum.ShowHintsAuthors,
@@ -65,7 +73,7 @@ export default function GameConfig() {
           ),
       },
       {
-        label: 'Mostrar respostas de mensagens.',
+        label: t('label2'),
         img: Image2,
         type: SwitchNameEnum.ShowReferencedMessage,
         value: switchValues.ShowReferencedMessage,
@@ -83,7 +91,7 @@ export default function GameConfig() {
           ),
       },
       {
-        label: 'Pontos por acerto. (Dica valerá metade dos pontos).',
+        label: t('label3'),
         type: SwitchNameEnum.PointsPerCorrectAnswer,
         value: switchValues.PointsPerCorrectAnswer,
         onChange: (value: number) =>
@@ -139,7 +147,7 @@ export default function GameConfig() {
                 />
               </Popover>
             ) : (
-              <Tooltip title="Cada pergunta respondida corretamente terá o valor escolhido, mas se a resposta estiver correta e for dada uma dica, o valor será reduzido pela metade.">
+              <Tooltip title={t('tooltip')}>
                 <FeatherIcons
                   style={{ cursor: 'help' }}
                   icon="help-circle"
@@ -179,7 +187,7 @@ export default function GameConfig() {
                   onChange={(value) => onChange(Number(value))}
                   style={{ marginTop: '10px', width: '30%' }}
                   size="middle"
-                  notFoundContent={<Row justify="center">Sem dados</Row>}
+                  notFoundContent={<Row justify="center">{t('noData')}</Row>}
                   placeholder="Pontos por acerto"
                 >
                   {[2, 4, 6, 8, 10].map((value) => (

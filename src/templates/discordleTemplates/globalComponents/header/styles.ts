@@ -3,30 +3,7 @@ import {
   Menu as AntdMenu,
   Row as RowAntd,
   Drawer as DrawerAntd,
-  Select as AntdSelect,
 } from 'antd_components';
-
-export const Label = styled.span`
-  margin-left: 5px;
-`;
-
-export const Select = styled(AntdSelect)`
-  margin-bottom: 40px !important;
-  margin-right: 15px;
-
-  .ant-select-selector {
-    background-color: transparent !important;
-    border: none !important;
-  }
-
-  .ant-select-selection-item {
-    padding: 5px !important;
-  }
-
-  .ant-select-arrow {
-    display: none;
-  }
-`;
 
 export const DesktopMenu = styled(AntdMenu)`
   margin: 25px 0;
@@ -112,21 +89,19 @@ const slideInFromRight = keyframes`
     }
 `;
 
+export const HeaderRow = styled(RowAntd)`
+  width: 100%;
+  z-index: 99;
+  position: relative;
+  margin-top: 25px;
+  padding: 0 25px;
+`;
+
 export const Row = styled(RowAntd)`
   width: 100%;
   z-index: 999;
   position: relative;
   animation: ${slideInFromRight} 1.5s ease-in-out forwards;
-`;
-
-export const OnlyLogoRow = styled.div`
-  cursor: pointer;
-  display: flex;
-  margin-top: 25px;
-  margin-left: 25px;
-  justify-content: start;
-  z-index: 99;
-  position: relative;
 `;
 
 export const DrawerTitle = styled.span`

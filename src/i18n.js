@@ -12,13 +12,17 @@ if (!i18n.isInitialized) {
       resources: {
         pt: {
           Home: require('./assets/i18next/Home/pt.json'),
+          ChooseProfile: require('./assets/i18next/ChooseProfile/pt.json'),
+          GuildInfo: require('./assets/i18next/GuildInfo/pt.json'),
         },
         en: {
           Home: require('./assets/i18next/Home/en.json'),
+          ChooseProfile: require('./assets/i18next/ChooseProfile/en.json'),
+          GuildInfo: require('./assets/i18next/GuildInfo/en.json'),
         },
       },
       fallbackLng: 'pt', // Idioma padrão
-      ns: ['Home'], // Múltiplos namespaces
+      ns: ['Home', 'ChooseProfile', 'GuildInfo'], // Múltiplos namespaces
       defaultNS: 'Home', // Namespace padrão
       debug: false,
       interpolation: {

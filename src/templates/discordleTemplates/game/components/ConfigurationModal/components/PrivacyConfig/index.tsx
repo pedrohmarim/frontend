@@ -7,10 +7,18 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import notification from 'antd_components/Notification/Notification.component';
 import { Checkbox, Col, Divider, FeatherIcons, Tooltip } from 'antd_components';
 import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/deboucedTextInput';
+import { getItem } from 'utils/localStorage/User';
+import { useTranslation } from 'react-i18next';
 
 export default function PrivacyConfig() {
   const router = useRouter();
+  const { i18n, t } = useTranslation('GuildInfo');
   const [value, setValue] = useState<boolean>();
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function onChangeCheckBox({ target }: CheckboxChangeEvent) {
     if (router.isReady) {
@@ -22,11 +30,16 @@ export default function PrivacyConfig() {
           target.checked,
           guildId.toString()
         ).then(() => {
-          const description = `A guild ${
-            value ? 'não será mais' : 'será'
-          } listada na página inicial.`;
-
-          notification.success('Sucesso', description);
+          if (value)
+            notification.success(
+              t('notificationTitle'),
+              t('notificationDescription')
+            );
+          else
+            notification.success(
+              t('notificationTitle'),
+              t('notificationDescription2')
+            );
         });
       }
     }
@@ -66,20 +79,27 @@ export default function PrivacyConfig() {
               },
             });
 
-            notification.success('Sucesso', 'Código atualizado com sucesso.');
+            notification.success(
+              t('notificationTitle'),
+              t('notificationDescription3')
+            );
           });
-      } else notification.error('Erro', 'Valor inválido');
+      } else
+        notification.error(
+          t('errorNotificationTitle'),
+          t('notificationDescription4')
+        );
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },
-    [router]
+    [router, t]
   );
 
   return (
     <Fragment>
       <S.Container>
-        <S.Span>Exibir servidor na listagem da página inicial.</S.Span>
+        <S.Span>{t('span')}</S.Span>
 
-        <Tooltip title="Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar).">
+        <Tooltip title={t('tooltipTitle')}>
           <FeatherIcons
             style={{ cursor: 'help' }}
             icon="help-circle"
@@ -91,7 +111,7 @@ export default function PrivacyConfig() {
 
       <Col span={24}>
         <Checkbox checked={value} onChange={onChangeCheckBox}>
-          Habilitar exibição
+          {t('checkboxLabel')}
         </Checkbox>
       </Col>
 
@@ -103,9 +123,9 @@ export default function PrivacyConfig() {
       />
 
       <S.Container>
-        <S.Span>Código da sala.</S.Span>
+        <S.Span>{t('roomCode')}.</S.Span>
 
-        <Tooltip title="Usado para entrar no Discordle do canal através da página inicial">
+        <Tooltip title={t('tooltipTitle2')}>
           <FeatherIcons
             style={{ cursor: 'help' }}
             icon="help-circle"
@@ -117,7 +137,7 @@ export default function PrivacyConfig() {
 
       <DebouncedTextInput
         size="middle"
-        placeholder="Código da sala"
+        placeholder={t('roomCode')}
         handleDebounce={handleDebounce}
         defaultValue={router.query.code}
       />

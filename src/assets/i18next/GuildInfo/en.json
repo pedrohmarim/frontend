@@ -1,0 +1,43 @@
+{
+  "logOut": "Log Out",
+  "settings": "Settings",
+  "codeRoom": "Room Code:",
+  "copied": "Copied",
+  "copy": "Copy Code",
+
+  "configTabModal1": "Creation",
+  "configTabModal2": "Privacy",
+  "configTabModal3": "Game",
+  "configTabModal4": "Ranking",
+
+  "modalTitle": "Settings",
+  "closeBtn": "Close",
+
+  "notificationTitle": "Success",
+  "errorNotificationTitle": "Error",
+  "notificationDescription": "The guild will no longer be listed on the home page",
+  "notificationDescription2": "The guild will be listed on the home page",
+
+  "notificationDescription3": "Code successfully updated.",
+  "notificationDescription4": "Invalid value",
+
+  "span": "Display server in the home page listing.",
+  "tooltipTitle": "On Discordle’s homepage, your server will be listed, allowing the public to see that your server is part of Discordle (Only users with the server password will be able to access it).",
+  "checkboxLabel": "Enable display",
+
+  "roomCode": "Room Code",
+  "tooltipTitle2": "Used to enter the channel's Discordle from the home page",
+
+  "label1": "Show hint authors.",
+  "label2": "Show message replies.",
+  "label3": "Points per correct answer. (Hint will be worth half the points).",
+
+  "tooltip": "Each correctly answered question will have the chosen point value, but if a hint is used and the answer is correct, the point value will be halved.",
+  "noData": "No data",
+
+  "successMessage": "Ranking reset",
+  "popConfirmTitle": "Are you sure you want to reset the ranking?",
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "resetRanking": "Reset ranking"
+}

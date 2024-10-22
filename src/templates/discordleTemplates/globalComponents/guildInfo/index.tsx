@@ -1,13 +1,14 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import * as S from './styles';
 import Image from 'next/image';
 import copy from 'clipboard-copy';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
 import { HomeSpan } from 'globalStyles/global';
-import { deleteDiscordleToken } from 'utils/localStorage/User';
+import { deleteDiscordleToken, getItem } from 'utils/localStorage/User';
 import { MenuProps } from 'antd';
 import * as I from './IGuildInfo';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Col,
@@ -25,6 +26,12 @@ export default function GuildInfo({
 }: I.IGuildInfo) {
   const [stateCopy, setStateCopy] = useState<boolean>(false);
   const router = useRouter();
+  const { i18n, t } = useTranslation('GuildInfo');
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   const {
     isOwner,
@@ -62,7 +69,7 @@ export default function GuildInfo({
 
   type MenuItem = Required<MenuProps>['items'][number];
 
-  function getItem(
+  function getMenuItem(
     label: React.ReactNode,
     key: React.Key,
     icon?: React.ReactNode,
@@ -77,12 +84,17 @@ export default function GuildInfo({
   }
 
   const items: MenuItem[] = [
-    getItem('Sair', '1', <FeatherIcons icon="log-out" />, handleLogout),
+    getMenuItem(
+      t('logOut'),
+      '1',
+      <FeatherIcons icon="log-out" />,
+      handleLogout
+    ),
   ];
 
   if (isOwner && setOpenModal)
     items.push(
-      getItem('Configurações', '2', <FeatherIcons icon="settings" />, () =>
+      getMenuItem(t('settings'), '2', <FeatherIcons icon="settings" />, () =>
         setOpenModal(!openModal)
       )
     );
@@ -124,10 +136,10 @@ export default function GuildInfo({
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={24}>
                   <Row justify={isMobile ? 'center' : 'start'}>
                     <S.ServerCode isMobile={isMobile}>
-                      Código da sala: <HomeSpan>{router.query.code}</HomeSpan>
+                      {t('codeRoom')} <HomeSpan>{router.query.code}</HomeSpan>
                     </S.ServerCode>
 
-                    <Tooltip title={stateCopy ? 'Copiado!' : 'Copiar código'}>
+                    <Tooltip title={stateCopy ? t('copied') : t('copy')}>
                       <S.Clipboard
                         onClick={handleCopy}
                         onMouseLeave={() => setStateCopy(false)}

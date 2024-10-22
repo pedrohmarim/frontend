@@ -1,0 +1,12 @@
+{
+  "noMembers": "Não há membros á serem exibidos",
+  "description": "Parâmetro ID do canal/código da sala inválidos ou inexistentes",
+  "back": "Voltar",
+  "gameTitle": "Escolha seu perfil para começar a jogar",
+  "filterPlaceholder": "Filtrar",
+  "noResultFound": "Nenhum resultado encontrado.",
+  "firstDescriptionCode": "Digite o comando /code no canal de texto #",
+  "secondDescriptionCode": "para gerar seu token.",
+  "invalidCode": "Codigo Inválido!",
+  "tryAgain": "Tente novamente em"
+}

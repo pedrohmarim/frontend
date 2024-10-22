@@ -1,0 +1,12 @@
+{
+  "noMembers": "No members to display",
+  "description": "Invalid or non-existent channel ID/room code parameters",
+  "back": "Back",
+  "gameTitle": "Choose your profile to start playing",
+  "filterPlaceholder": "Filter",
+  "noResultFound": "No results found.",
+  "firstDescriptionCode": "Type the /code command in the #",
+  "secondDescriptionCode": "text channel to generate your token.",
+  "invalidCode": "Invalid Code!",
+  "tryAgain": "Try again in"
+}

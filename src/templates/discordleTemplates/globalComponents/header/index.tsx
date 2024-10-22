@@ -8,14 +8,8 @@ import Logo from 'assets/logo.png';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
 import { getItem } from 'utils/localStorage/User';
-import {
-  Button,
-  FeatherIcons,
-  Row,
-  Image,
-  Select,
-  Avatar,
-} from 'antd_components';
+import ChangeLanguage from '../changeLanguage';
+import { Button, FeatherIcons, Row, Image } from 'antd_components';
 
 export default function Header({
   current,
@@ -43,9 +37,18 @@ export default function Header({
 
   if (!setAnimationActive || !setCurrent || !current || !isHome)
     return (
-      <S.OnlyLogoRow onClick={() => router.push('/discordle/home')}>
-        <Image src={Logo.src} alt="logo" preview={false} height={60} />
-      </S.OnlyLogoRow>
+      <S.HeaderRow align="middle" justify="space-between">
+        <Image
+          src={Logo.src}
+          alt="logo"
+          preview={false}
+          height={60}
+          style={{ cursor: 'pointer' }}
+          onClick={() => router.push('/discordle/home')}
+        />
+
+        <ChangeLanguage fromHome={false} />
+      </S.HeaderRow>
     );
 
   const items: MenuProps['items'] = [
@@ -92,27 +95,7 @@ export default function Header({
           />
 
           <Row align="bottom">
-            <S.Select
-              defaultValue={getItem('i18nextLng') ?? 'pt'}
-              onChange={(value) => i18n.changeLanguage(String(value))}
-              style={{
-                marginBottom: '20px',
-              }}
-              dropdownStyle={{
-                backgroundColor: theme.discordleColors.background,
-              }}
-            >
-              <Select.Option value="en">
-                <Avatar src="https://flagcdn.com/w320/us.png" alt="usa_flag" />
-              </Select.Option>
-
-              <Select.Option value="pt">
-                <Avatar
-                  src="https://flagcdn.com/w320/br.png"
-                  alt="brazil_flag"
-                />
-              </Select.Option>
-            </S.Select>
+            <ChangeLanguage fromHome />
 
             <S.DesktopMenu
               onClick={onClickMenu}

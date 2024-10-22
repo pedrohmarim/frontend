@@ -1,0 +1,43 @@
+{
+  "logOut": "Sair",
+  "settings": "Configurações",
+  "codeRoom": " Código da sala:",
+  "copied": "Copiado",
+  "copy": "Copiar código",
+
+  "configTabModal1": "Criação",
+  "configTabModal2": "Privacidade",
+  "configTabModal3": "Jogo",
+  "configTabModal4": "Ranking",
+
+  "modalTitle": "Configurações",
+  "closeBtn": "Fechar",
+
+  "notificationTitle": "Sucesso",
+  "errorNotificationTitle": "Erro",
+  "notificationDescription": "A guild não será mais listada na página inicial",
+  "notificationDescription2": "A guild será listada na página inicial",
+
+  "notificationDescription3": "Código atualizado com sucesso.",
+  "notificationDescription4": "Valor inválido",
+
+  "span": "Exibir servidor na listagem da página inicial.",
+  "tooltipTitle": "Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar).",
+  "checkboxLabel": "Habilitar exibição",
+
+  "roomCode": "Código da sala",
+  "tooltipTitle2": "Usado para entrar no Discordle do canal através da página inicial",
+
+  "label1": "Mostrar autores de dicas.",
+  "label2": "Mostrar respostas de mensagens.",
+  "label3": "Pontos por acerto. (Dica valerá metade dos pontos).",
+
+  "tooltip": "Cada pergunta respondida corretamente terá o valor escolhido, mas se a resposta estiver correta e for dada uma dica, o valor será reduzido pela metade.",
+  "noData": "Sem dados",
+
+  "successMessage": "Ranking resetado",
+  "popConfirmTitle": "Tem certeza que deseja resetar o ranking?",
+  "confirm": "Confirmar",
+  "cancel": "Cancelar",
+  "resetRanking": "Resetar ranking"
+}
