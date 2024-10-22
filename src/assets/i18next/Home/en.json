@@ -5,5 +5,57 @@
   "presentationFirstMessage": "Welcome to",
   "presentationSecondMessage": "Test your skills by trying to identify who wrote one of the five random phrases selected daily from a text channel on your Discord server and challenge your friends in the race for the top of the leaderboard!",
   "btnInviteBot": "Invite bot",
-  "italicSpan": "*Make sure to log in with the account that holds the server owner role"
+  "italicSpan": "*Make sure to log in with the account that holds the server owner role",
+
+  "titleDiscordleLists": "Created Discordles",
+  "filterPlaceholder": "Filter",
+  "hoverGuildItem": "Click to enter",
+  "emptyGuildList": "No server registered",
+  "totalCreatedDiscordlesSingular": "registered server",
+  "totalCreatedDiscordles": "registered servers",
+
+  "titleHowItWorks": "Discordle Guide in Your Server: Uncover Daily Mysteries!",
+  "descriptionHowItWorks": "Discover how to turn your Discord server into an investigation arena with our exclusive guessing game. Test your skills daily as you try to figure out who sent the mysterious messages randomly chosen by the bot. Friendly competition, guaranteed fun, and exciting challenges await you!",
+
+  "firstCardTitle": "Bot Setup",
+  "firstDescriptionTitle": "Invite our bot to your Discord server and choose the text channel you want to include in the game.",
+
+  "secondCardTitle": "Daily Draw",
+  "secondDescriptionTitle": "During the game creation, the Bot will randomly select 5 messages, and the same event will occur every day at 11:59 PM (America/Sao_Paulo).",
+
+  "thirdCardTitle": "Customization",
+  "thirdDescriptionTitle": "The server owner has the freedom to determine the point values assigned to each message and can also choose to increase the game’s difficulty by hiding certain clues.",
+
+  "fourthCardTitle": "Choose Your Profile",
+  "fourthDescriptionTitle": "After completing the Discord setup for the selected channel, choose your profile and confirm your verification code.",
+
+  "fifthCardTitle": "Guess Who Sent the Messages",
+  "fifthDescriptionTitle": "Use your skills to figure out who sent each message and accumulate points to climb the leaderboard.",
+
+  "sixthCardTitle": "Friendly Competition",
+  "sixthDescriptionTitle": "Engage in friendly competition with friends to compete for the top spot on the leaderboard.",
+
+  "selectChannelInstanceModalTitle": "Create Instance",
+  "secondSelectChannelInstanceModalTitle": "Instances of",
+
+  "modalSpan1": "Additional Information:",
+  "modalDescription1": "Make sure to select a channel with a significant volume and a wide variety of messages, as text channels with few messages or limited variety will not be created.",
+
+  "noData": "No data",
+  "select": "Select",
+  "inputPlaceholder": "Enter the room code",
+
+  "formCreateDiscordleInstanceTooltip": "If the channels don't appear, refresh using the button on the right.",
+  "formCreateDiscordleInstanceLabel": "Text channel:",
+  "formCreateDiscordleInstanceNoDataPlaceholder": "No channels to display.",
+  "formCreateDiscordleButtonTooltip": "Refresh",
+
+  "formCreateDiscordleTooltipFormItem": "Used to join the channel’s Discordle via the homepage.",
+  "formCreateDiscordleLabelFormItem": "Room code:",
+  "formCreateDiscordlePlaceholderFormItem": "Enter the room code:",
+
+  "secondFormCreateDiscordleTooltipFormItem": "On the Discordle homepage, your server will be listed, allowing the public to see that your server is part of Discordle (Only users with the server password will be able to access).",
+  "secondFormCreateDiscordleLabelFormItem": "Show server in homepage listing:",
+  "labelCheckbox": "Enable display",
+  "confirm": "Confirm"
 }

@@ -8,6 +8,8 @@ import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import { useRouter } from 'next/router';
 import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import { useMyContext } from 'Context';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 import {
   Checkbox,
   Input,
@@ -24,6 +26,13 @@ export default function FormCreateDiscordleInstance({
 }: I.IFormCreateDiscordleInstance) {
   const router = useRouter();
   const { instanceChannels, setInstanceChannels } = useMyContext();
+
+  const { i18n, t } = useTranslation('Home');
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function getChannels() {
     if (router.isReady) {
@@ -87,9 +96,9 @@ export default function FormCreateDiscordleInstance({
       <Row align="middle" justify="center">
         <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
           <Form.Item
-            tooltip="Caso não apareça os canais, atualize usando o botão á direita"
+            tooltip={t('formCreateDiscordleInstanceTooltip')}
             name="channelId"
-            label="Canal de texto:"
+            label={t('formCreateDiscordleInstanceLabel')}
             required
             rules={[requiredRules]}
           >
@@ -97,11 +106,11 @@ export default function FormCreateDiscordleInstance({
               allowClear
               disabled={!instanceChannels.length}
               showSearch
-              notFoundContent={<Row justify="center">Sem dados</Row>}
+              notFoundContent={<Row justify="center">{t('noData')}</Row>}
               placeholder={
                 instanceChannels.length
-                  ? 'Selecionar'
-                  : 'Não há canais a serem exibidos'
+                  ? t('select')
+                  : t('formCreateDiscordleInstanceNoDataPlaceholder')
               }
               filterOption={(inputValue, option) => {
                 const searchValue = `${option?.children[0]}${option?.children[1]}`;
@@ -119,7 +128,7 @@ export default function FormCreateDiscordleInstance({
         </Col>
 
         <S.ButtonContainer fromGame={getChannelsWithoutDiscordleInstance}>
-          <Tooltip title="Atualizar">
+          <Tooltip title={t('formCreateDiscordleButtonTooltip')}>
             <Button
               onClick={getChannels}
               backgroundcolor="transparent"
@@ -131,15 +140,15 @@ export default function FormCreateDiscordleInstance({
 
         <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
           <Form.Item
-            tooltip="Usado para entrar no Discordle do canal através da página inicial"
+            tooltip={t('formCreateDiscordleTooltipFormItem')}
             name="channelCode"
-            label="Código da sala:"
+            label={t('formCreateDiscordleLabelFormItem')}
             required
             rules={[requiredRules]}
           >
             <Input
               maxLength={255}
-              placeholder="Informe o código da sala"
+              placeholder={t('formCreateDiscordlePlaceholderFormItem')}
               onClick={(e) => e.stopPropagation()}
               size="middle"
             />
@@ -149,12 +158,12 @@ export default function FormCreateDiscordleInstance({
         {getChannelsWithoutDiscordleInstance && (
           <Col xs={21} sm={21} md={21} lg={22} xl={22} xxl={22}>
             <Form.Item
-              tooltip="Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar)"
+              tooltip={t('secondFormCreateDiscordleTooltipFormItem')}
               name="showDiscordOnHome"
-              label="Exibir servidor na listagem da página inicial:"
+              label={t('secondFormCreateDiscordleLabelFormItem')}
               valuePropName="checked"
             >
-              <Checkbox>Habilitar exibição</Checkbox>
+              <Checkbox>{t('labelCheckbox')}</Checkbox>
             </Form.Item>
           </Col>
         )}
@@ -165,7 +174,7 @@ export default function FormCreateDiscordleInstance({
             backgroundcolor={theme.discordleColors.primary}
             htmlType="submit"
           >
-            Confirmar
+            {t('confirm')}
           </Button>
         </Col>
       </Row>

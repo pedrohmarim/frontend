@@ -1,4 +1,4 @@
-import React, { useState, useCallback, Fragment } from 'react';
+import React, { useState, useCallback, Fragment, useEffect } from 'react';
 import * as I from './ISelectChannelInstanceModal';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
@@ -8,6 +8,8 @@ import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/de
 import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComponents/formCreateDiscordleInstance';
 import { Modal, List, Row } from 'antd_components';
 import { useMyContext } from 'Context';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 import {
   deleteDiscordleToken,
   getDiscordleToken,
@@ -19,10 +21,17 @@ export default function SelectChanneInstanceModal({
   open,
   onClose,
 }: I.ISelectChannelInstanceModal) {
+  const { i18n, t } = useTranslation('Home');
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
+
   const fromGuildParam = !Boolean(selectedGuildName);
   const title = !selectedGuildName
-    ? 'Discordle | Criar Instância'
-    : `Instâncias de ${selectedGuildName}`;
+    ? `Discordle | ${t('selectChannelInstanceModalTitle')}`
+    : `${t('secondSelectChannelInstanceModalTitle')} ${selectedGuildName}`;
 
   const router = useRouter();
   const [showInputs, setShowInputs] = useState<I.IShowInputsState>({});
@@ -97,13 +106,11 @@ export default function SelectChanneInstanceModal({
 
           <Row justify="center">
             <S.Description fontSize="13pt">
-              <G.HomeSpan>Informações adicionais:</G.HomeSpan>
+              <G.HomeSpan>{t('modalSpan1')}</G.HomeSpan>
             </S.Description>
 
             <S.Description fontSize="11.5pt">
-              Certifique-se de selecionar um canal com um volume significativo e
-              uma ampla variedade de mensagens, pois não serão criados canais de
-              texto com poucas mensagens ou variedade limitada.
+              {t('modalDescription1')}
             </S.Description>
           </Row>
         </Fragment>
@@ -113,7 +120,7 @@ export default function SelectChanneInstanceModal({
           dataSource={instanceChannels}
           locale={{
             emptyText: (
-              <S.EmptyContent justify="center">Sem dados</S.EmptyContent>
+              <S.EmptyContent justify="center">{t('noData')}</S.EmptyContent>
             ),
           }}
           renderItem={({ ChannelName, ChannelId }) => (
@@ -124,12 +131,12 @@ export default function SelectChanneInstanceModal({
                     <S.ChannelName>#{ChannelName}</S.ChannelName>
 
                     {!showInputs[ChannelId] ? (
-                      <S.SpanList>Selecionar</S.SpanList>
+                      <S.SpanList>{t('select')}</S.SpanList>
                     ) : (
                       <DebouncedTextInput
                         autoFocus
                         handleDebounce={handleDebounce}
-                        placeholder="Informe o código da sala"
+                        placeholder={t('inputPlaceholder')}
                         style={{ maxWidth: '60%' }}
                         onClick={(e) => e.stopPropagation()}
                         size="middle"

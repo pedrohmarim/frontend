@@ -5,5 +5,57 @@
   "presentationFirstMessage": "Bem-vindo ao",
   "presentationSecondMessage": "Teste suas habilidades ao tentar identificar quem escreveu uma das cinco frases aleatórias escolhidas diariamente a partir de um canal de texto de seu servidor do Discord e desafie seus amigos na disputa pelo topo do ranking!",
   "btnInviteBot": "Convidar bot",
-  "italicSpan": "*Certifique-se de entrar com a conta que possui o cargo de dono do servidor"
+  "italicSpan": "*Certifique-se de entrar com a conta que possui o cargo de dono do servidor",
+
+  "titleDiscordleLists": "Discordles criados",
+  "filterPlaceholder": "Filtrar",
+  "hoverGuildItem": "Clique para entrar",
+  "emptyGuildList": "Nenhum servidor registrado",
+  "totalCreatedDiscordlesSingular": "servidor registrado",
+  "totalCreatedDiscordles": "servidores registrados",
+
+  "titleHowItWorks": "Guia do Discordle em seu Servidor: Desvende Mistérios Diários!",
+  "descriptionHowItWorks": "Descubra como transformar seu servidor Discord em uma arena de investigação com nosso jogo de adivinhação exclusivo. Teste suas habilidades diariamente ao tentar desvendar quem enviou mensagens misteriosas sorteadas pelo bot. Competição amigável, diversão garantida e desafios emocionantes esperam por você!",
+
+  "firstCardTitle": "Configuração do Bot",
+  "firstDescriptionTitle": "Convide nosso bot para o seu servidor do Discord e escolha o canal de texto que deseja incluir no jogo",
+
+  "secondCardTitle": "Sorteio Diário",
+  "secondDescriptionTitle": "Durante a criação do jogo, o Bot irá sortear 5 mensagens aleatórias, após isso o mesmo evento ocorrerá todos os dias ás 23:59 (América/São_Paulo).",
+
+  "thirdCardTitle": "Customização",
+  "thirdDescriptionTitle": "O dono do servidor terá a liberdade de determinar o valor de pontos atribuídos a cada mensagem, além de poder optar por aumentar a dificuldade do jogo ao ocultar certas dicas.",
+
+  "fourthCardTitle": "Escolha seu perfil",
+  "fourthDescriptionTitle": "Após concluir a criação do Discord para o canal selecionado, escolha seu perfil e confirme seu código de verificação.",
+
+  "fifthCardTitle": "Adivinhe quem mandou mensagens",
+  "fifthDescriptionTitle": "Use suas habilidades para descobrir quem enviou cada mensagem e acumule pontos para subir no ranking.",
+
+  "sixthCardTitle": "Competição Amigável",
+  "sixthDescriptionTitle": "Envolva-se em uma competição amigável com amigos para disputar o topo do ranking.",
+
+  "selectChannelInstanceModalTitle": "Criar instância",
+  "secondSelectChannelInstanceModalTitle": "Instâncias de",
+
+  "modalSpan1": "Informações adicionais:",
+  "modalDescription1": " Certifique-se de selecionar um canal com um volume significativo e uma ampla variedade de mensagens, pois não serão criados canais de texto com poucas mensagens ou variedade limitada.",
+
+  "noData": "Sem dados",
+  "select": "Selecionar",
+  "inputPlaceholder": "Informe o código da sala",
+
+  "formCreateDiscordleInstanceTooltip": "Caso não apareça os canais, atualize usando o botão á direita",
+  "formCreateDiscordleInstanceLabel": "Canal de texto:",
+  "formCreateDiscordleInstanceNoDataPlaceholder": "Não há canais a serem exibidos",
+  "formCreateDiscordleButtonTooltip": "Atualizar",
+
+  "formCreateDiscordleTooltipFormItem": "Usado para entrar no Discordle do canal através da página inicial",
+  "formCreateDiscordleLabelFormItem": "Código da sala:",
+  "formCreateDiscordlePlaceholderFormItem": "Informe o código da sala:",
+
+  "secondFormCreateDiscordleTooltipFormItem": "Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar)",
+  "secondFormCreateDiscordleLabelFormItem": "Exibir servidor na listagem da página inicial:",
+  "labelCheckbox": "Habilitar exibição",
+  "confirm": "Confirmar"
 }

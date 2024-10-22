@@ -73,20 +73,20 @@ export default function HomeDiscordleList({
   }, []);
 
   function handleFormatLabel() {
-    if (totalGuilds === 0) return 'Nenhum servidor registrado.';
+    if (totalGuilds === 0) return t('emptyGuildList');
 
     if (totalGuilds === 1)
       return (
         <Fragment>
           <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
-          servidor registrado.
+          {t('totalCreatedDiscordlesSingular')}
         </Fragment>
       );
 
     return (
       <Fragment>
         <S.PrimaryTextColor>{totalGuilds}</S.PrimaryTextColor>
-        servidores registrados.
+        {t('totalCreatedDiscordles')}
       </Fragment>
     );
   }
@@ -173,17 +173,17 @@ export default function HomeDiscordleList({
             {!isMobile ? (
               <S.EmptyContainer>
                 <FeatherIcons icon="trending-up" />
-                <S.ListTitle>Discordles Criados</S.ListTitle>
+                <S.ListTitle>{t('titleDiscordleLists')}</S.ListTitle>
               </S.EmptyContainer>
             ) : (
-              <S.ListTitle>Discordles Criados</S.ListTitle>
+              <S.ListTitle>{t('titleDiscordleLists')}</S.ListTitle>
             )}
 
             <S.InputContainer ismobile={isMobile}>
               <DebouncedTextInput
                 size="middle"
                 suffix={<FeatherIcons icon="search" size={18} />}
-                placeholder="Filtrar"
+                placeholder={t('filterPlaceholder')}
                 handleDebounce={handleDebounce}
               />
             </S.InputContainer>
@@ -240,7 +240,9 @@ export default function HomeDiscordleList({
                                 '...'}
                           </S.GuildName>
 
-                          <S.SpanEnterRoom>Clique para entrar</S.SpanEnterRoom>
+                          <S.SpanEnterRoom>
+                            {t('hoverGuildItem')}
+                          </S.SpanEnterRoom>
                         </S.InfoContainer>
                       </S.GuildItem>
                     </Col>
