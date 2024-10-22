@@ -12,7 +12,7 @@ export default function ChangeLanguage({ fromHome }: I.IChangeLanguage) {
   return (
     <S.Select
       fromhome={fromHome}
-      defaultValue={getItem('i18nextLng')}
+      defaultValue={getItem('i18nextLng') ?? 'pt'}
       onChange={(value) => i18n.changeLanguage(String(value))}
       dropdownStyle={{
         backgroundColor: theme.discordleColors.background,

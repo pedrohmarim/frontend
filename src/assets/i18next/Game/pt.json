@@ -31,5 +31,7 @@
   "finalScore": "Pontuação final:",
   "nextUpdate": "Próxima atualização em:",
   "descriptionUpdate": "Atualização todos os dias ás",
-  "ranking": "Classificação"
+  "ranking": "Classificação",
+
+  "placeholderSelect": "Selecione um membro"
 }

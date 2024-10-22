@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Select, Image } from 'antd_components';
 import * as S from './styles';
 import * as I from './IAuthorSelect';
 import { useMyContext } from 'Context';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 
 const AuthorSelect = ({
   activeTabKey,
@@ -16,6 +18,12 @@ const AuthorSelect = ({
 }: I.IAuthorSelect) => {
   const { windowWidth } = useMyContext();
   const isMobile = windowWidth <= 875;
+  const { i18n, t } = useTranslation('Game');
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   return (
     <S.Select
@@ -23,7 +31,7 @@ const AuthorSelect = ({
       isMobile={isMobile}
       disabled={!authors?.length}
       allowClear
-      placeholder="Selecione um membro"
+      placeholder={t('placeholderSelect')}
       showSearch
       notFoundContent={<Row justify="center">Sem dados</Row>}
       filterOption={(inputValue, option) => {

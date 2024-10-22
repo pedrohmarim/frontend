@@ -31,5 +31,7 @@
   "finalScore": "Final score:",
   "nextUpdate": "Next update in:",
   "descriptionUpdate": "Update every day at",
-  "ranking": "Ranking"
+  "ranking": "Ranking",
+
+  "placeholderSelect": "Choose a member"
 }
