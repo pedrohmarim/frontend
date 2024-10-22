@@ -15,12 +15,15 @@ import GuildInfo from '../globalComponents/guildInfo';
 import MessageSteps from './components/MessageSteps';
 import { useMyContext } from 'Context';
 import ConfigurationModal from './components/ConfigurationModal';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 import {
   IAuthor,
   IScoreInstance,
 } from 'services/DiscordleService/IDiscordleService';
 
 export default function GameContainer() {
+  const { i18n, t } = useTranslation('Game');
   const { switchValues } = useMyContext();
   const router = useRouter();
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
@@ -32,6 +35,11 @@ export default function GameContainer() {
   const [loading, setLoading] = useState<boolean>(true);
   const [openWarnExistsHint, setWarnExistsHint] = useState<boolean>(false);
   const [choosedMessages, setChoosedMessages] = useState<IChoosedMessage[]>([]);
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   useEffect(() => {
     if (router.isReady) {
@@ -119,16 +127,24 @@ export default function GameContainer() {
             const description: JSX.Element = (
               <Fragment>
                 {Success
-                  ? 'Quem mandou essa mensagem foi '
-                  : 'A resposta certa era '}
+                  ? t('correctAwnserNotificationDescription')
+                  : t('wrongAwnserNotificationDescription')}
                 <AuthorHighlight color={theme.discordleColors.primary}>
                   {Username}
                 </AuthorHighlight>
               </Fragment>
             );
 
-            if (Success) Notification.success('Acertou!', description);
-            else Notification.error('Errou!', description);
+            if (Success)
+              Notification.success(
+                t('correctAwnserNotificationTitle'),
+                description
+              );
+            else
+              Notification.error(
+                t('wrongAwnserNotificationTitle'),
+                description
+              );
 
             if (!Success && activeTabKey === 1 && !usedHint)
               setWarnExistsHint(true);
@@ -146,7 +162,7 @@ export default function GameContainer() {
       alignItems="center"
     >
       <Head>
-        <title>Discordle | Game</title>
+        <title>Discordle | {t('tabTitle')}</title>
       </Head>
 
       <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />

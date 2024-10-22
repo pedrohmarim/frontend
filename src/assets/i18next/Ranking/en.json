@@ -1,0 +1,47 @@
+{
+  "titleTable1": "Position",
+  "titleTable2": "Member",
+  "titleTable3": "Total points",
+  "titleTable4": "Actions",
+
+  "tooltipAction": "View details",
+
+  "modalTitleTable1": "Date",
+  "modalTitleTable2": "Day details",
+
+  "message": "Message",
+  "score": "Score",
+
+  "descriptionScore1": "Right",
+  "descriptionScore2": "(Hint)",
+  "descriptionScore3": "Wrong",
+
+  "success": "Sucess",
+
+  "onRankingInteration": "You will now participate in ranking iterations.",
+  "outRankingInteration": "You will not participate in ranking iterations.",
+
+  "ranking": "Ranking",
+  "punish": "Do you want to punish",
+
+  "formItemTooltip1": "The selected user will be able to remove the nickname if they wish in the Server settings on Discord.",
+  "formItemLabel1": "Give them a new nickname on the server!",
+  "formItemPlaceholder1": "New nickname",
+  "confirm": "Confirm",
+
+  "rankingTitle": "Overall Ranking",
+  "rankingDescription1": "Score:",
+  "rankingDescription2": "The first place will have some administrative advantages, even outside of Discord. Enjoy the top of the podium! 🎉",
+
+  "checkBoxLabel": "Participate in ranking iterations",
+
+  "paginationDescription1": "Total of",
+  "paginationDescription2": "record(s)",
+
+  "modalTitle": "Details of",
+  "back": "Back",
+  "emptyData": "No data",
+  "reload": "Reload",
+
+  "changeNickName": "Change Nickname"
+}

@@ -1,0 +1,35 @@
+{
+  "tabTitle": "Jogo",
+  "correctAwnserNotificationTitle": "Acertou!",
+  "correctAwnserNotificationDescription": "Quem mandou essa mensagem foi ",
+
+  "wrongAwnserNotificationTitle": "Errou!",
+  "wrongAwnserNotificationDescription": "A resposta certa era ",
+
+  "message": "Mensagem",
+  "loadResult": "Gerando resultado ...",
+
+  "previousMessageNotFound": "Não existe uma mensagem anterior à escolhida.",
+  "consecutiveMessageNotFound": "Não existe uma mensagem consecutiva à escolhida.",
+
+  "tourTitle": "Mensagem muito difícil?",
+  "tourDescription": "Experimente usar uma dica. 😁",
+  "confirmTour": "Entendido",
+
+  "score": "Pontuação:",
+
+  "popConfirm1": "Aviso! Ao mostrar uma dica, a resposta correta",
+  "popConfirm2": "valerá 1 ponto ao invés de 2.",
+  "popConfirmShow": "Mostrar",
+  "cancel": "Cancelar",
+  "showHint": "Mostrar Dica",
+  "hint": "Dica",
+
+  "previousMessage": "Mensagem anterior:",
+  "consecutiveMessage": "Próxima mensagem:",
+
+  "finalScore": "Pontuação final:",
+  "nextUpdate": "Próxima atualização em:",
+  "descriptionUpdate": "Atualização todos os dias ás",
+  "ranking": "Classificação"
+}

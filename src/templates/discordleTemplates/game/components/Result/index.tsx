@@ -14,17 +14,26 @@ import filterMessage from 'helpers/discordle/filter.message';
 import { IMessage } from 'services/DiscordleService/IDiscordleService';
 import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 import DisplayMessageContainer from '../DisplayMessageContainer';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 
 export default function Result({
   answers,
   totalScore,
   switchValues,
 }: I.IResult) {
+  const { i18n, t } = useTranslation('Game');
+
   const router = useRouter();
   const [resultDetails, setResultDetails] = useState<IMessage[]>([]);
   const [guildInfoLoading, setGuildInfoLoading] = useState<boolean>(true);
   const { windowWidth } = useMyContext();
   const isMobile = windowWidth <= 875;
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   const score = answers.reduce((accumulator, curValue) => {
     return accumulator + curValue.Score;
@@ -59,6 +68,18 @@ export default function Result({
     }
   }, [router]);
 
+  function handleTitle(tabKey: number) {
+    const language = getItem('i18nextLng');
+
+    if (language === 'pt') return `${tabKey}º ${t('message')}`;
+
+    if (tabKey === 1) return `1st ${t('message')}`;
+    if (tabKey === 2) return `2nd ${t('message')}`;
+    if (tabKey === 3) return `3rd ${t('message')}`;
+    if (tabKey === 4) return `4th ${t('message')}`;
+    if (tabKey === 5) return `5th ${t('message')}`;
+  }
+
   if (!resultDetails.length) return <Fragment />;
 
   return (
@@ -74,14 +95,14 @@ export default function Result({
             <Row justify="center">
               <FeatherIcons icon="star" size={26} />
               <S.Subtitle>
-                Pontuação final: {score}/{totalScore * 5}
+                {t('finalScore')} {score}/{totalScore * 5}
               </S.Subtitle>
             </Row>
           )}
         </Skeleton>
 
         <S.Container isMobile={isMobile}>
-          <S.Span>Próxima atualização em:</S.Span>
+          <S.Span>{t('nextUpdate')}</S.Span>
 
           <S.TimerContainer>
             <Timer />
@@ -89,8 +110,8 @@ export default function Result({
 
           <Row justify="end">
             <Description fontSize="10.5pt" fontStyle="italic">
-              Atualização todos os dias ás
-              <HomeSpan> 23:59 </HomeSpan>
+              {t('descriptionUpdate')}
+              <HomeSpan> 23:59PM (America/Sao_Paulo). </HomeSpan>
             </Description>
           </Row>
         </S.Container>
@@ -106,7 +127,7 @@ export default function Result({
           onClick={toRanking}
           icon={<FeatherIcons icon="award" size={20} />}
         >
-          Ranking
+          {t('ranking')}
         </Button>
       </Row>
 
@@ -122,7 +143,7 @@ export default function Result({
                   <S.AnswerItem success={Success} score={Score}>
                     <FeatherIcons icon={Success ? 'check' : 'x'} />
                   </S.AnswerItem>
-                  {TabKey}º Mensagem
+                  {handleTitle(TabKey)}
                 </S.Row>
 
                 <MessageContainer

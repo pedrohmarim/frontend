@@ -20,6 +20,7 @@ import { useMyContext } from 'Context';
 import { deleteDiscordleToken, getItem } from 'utils/localStorage/User';
 import DebouncedTextInput from '../globalComponents/deboucedTextInput';
 import { useTranslation } from 'react-i18next';
+import Head from 'next/head';
 import {
   Container,
   InputContainer,
@@ -212,124 +213,137 @@ export default function ChooseProfile() {
     (!router.query.code || !router.query.channelId || !router.query.guildId)
   )
     return (
-      <MessageContainer>
-        <Description>{t('noMembers')}</Description>
+      <Fragment>
+        <Head>
+          <title>Discordle | {t('tabTitle')}</title>
+        </Head>
 
-        <Col>
-          <Description>{t('description')}</Description>
-        </Col>
+        <MessageContainer>
+          <Description>{t('noMembers')}</Description>
 
-        <Row justify="center">
-          <Button
-            margin="20px 0 0 0"
-            width={200}
-            backgroundcolor={theme.discordleColors.primary}
-            color={theme.discordleColors.text}
-            onClick={() => router.back()}
-          >
-            {t('back')}
-          </Button>
-        </Row>
-      </MessageContainer>
+          <Col>
+            <Description>{t('description')}</Description>
+          </Col>
+
+          <Row justify="center">
+            <Button
+              margin="20px 0 0 0"
+              width={200}
+              backgroundcolor={theme.discordleColors.primary}
+              color={theme.discordleColors.text}
+              onClick={() => router.back()}
+            >
+              {t('back')}
+            </Button>
+          </Row>
+        </MessageContainer>
+      </Fragment>
     );
 
   return (
-    <Container margin="25px" maxHeight="100%" padding="20px">
-      <GuildInfo />
+    <Fragment>
+      <Head>
+        <title>Discordle | {t('tabTitle')}</title>
+      </Head>
+      <Container margin="25px" maxHeight="100%" padding="20px">
+        <GuildInfo />
 
-      <S.Row justify="space-between">
-        <Row justify="center" align="middle">
-          <GameTitle margin="0 6px 0 0">{t('gameTitle')}</GameTitle>
-        </Row>
+        <S.Row justify="space-between">
+          <Row justify="center" align="middle">
+            <GameTitle margin="0 6px 0 0">{t('gameTitle')}</GameTitle>
+          </Row>
 
-        <InputContainer ismobile={isMobile}>
-          <DebouncedTextInput
-            handleDebounce={handleDebounce}
-            placeholder={t('filterPlaceholder')}
-            suffix={<FeatherIcons icon="search" size={18} />}
-            size="middle"
-          />
-        </InputContainer>
-      </S.Row>
+          <InputContainer ismobile={isMobile}>
+            <DebouncedTextInput
+              handleDebounce={handleDebounce}
+              placeholder={t('filterPlaceholder')}
+              suffix={<FeatherIcons icon="search" size={18} />}
+              size="middle"
+            />
+          </InputContainer>
+        </S.Row>
 
-      <Fragment>
-        <S.MemberRow
-          onlyOneMember={members.length === 1}
-          ref={memberRowRef}
-          onMouseDown={handleMouseDown}
-          showSkeleton={loading}
-          empty={members.length === 0}
-        >
-          <Skeleton loading={loading} active={loading}>
-            {members.length ? (
-              members.map(({ AvatarUrl, Id, Username }, index) => (
-                <S.Card
-                  className={
-                    showTokenInput.selectedItemIndex === index
-                      ? 'active-item-row '
-                      : ''
-                  }
-                  key={index}
-                  onClick={() =>
-                    setShowTokenInput({
-                      view: true,
-                      userId: Id,
-                      selectedItemIndex: index,
-                    })
-                  }
-                >
-                  <Image
-                    alt="avatarUrl"
-                    src={AvatarUrl}
-                    preview={false}
-                    width={130}
-                    style={{ borderRadius: '4px' }}
-                  />
+        <Fragment>
+          <S.MemberRow
+            onlyOneMember={members.length === 1}
+            ref={memberRowRef}
+            onMouseDown={handleMouseDown}
+            showSkeleton={loading}
+            empty={members.length === 0}
+          >
+            <Skeleton loading={loading} active={loading}>
+              {members.length ? (
+                members.map(({ AvatarUrl, Id, Username }, index) => (
+                  <S.Card
+                    className={
+                      showTokenInput.selectedItemIndex === index
+                        ? 'active-item-row '
+                        : ''
+                    }
+                    key={index}
+                    onClick={() =>
+                      setShowTokenInput({
+                        view: true,
+                        userId: Id,
+                        selectedItemIndex: index,
+                      })
+                    }
+                  >
+                    <Image
+                      alt="avatarUrl"
+                      src={AvatarUrl}
+                      preview={false}
+                      width={130}
+                      style={{ borderRadius: '4px' }}
+                    />
 
-                  <S.Username>{Username}</S.Username>
-                </S.Card>
-              ))
-            ) : (
-              <S.Empty>{t('noResultFound')}</S.Empty>
-            )}
-          </Skeleton>
-        </S.MemberRow>
-
-        {members.length > 0 && showTokenInput.view && (
-          <Fragment>
-            <Divider />
-
-            <Row justify="center" align="middle">
-              <Description fontSize="12pt" margin="0 0 15px 0">
-                {t('firstDescriptionCode')}
-                {serverInfos.ServerName.split('#')[1]}
-                <br /> <br />
-                {t('secondDescriptionCode')}
-              </Description>
-            </Row>
-
-            <Row justify="center">
-              <ReactCodeInput
-                onChange={() => setValidToken(true)}
-                disabled={secondsRemaining != null}
-                className="codeInput"
-                onComplete={debouncedHandleSaveUser}
-                fields={5}
-              />
-            </Row>
-
-            <Row justify="center">
-              {!validToken && <S.InvalidText>{t('invalidCode')}</S.InvalidText>}
-
-              {secondsRemaining && (
-                <S.TimerText>
-                  {t('tryAgain')} <HomeSpan>{secondsRemaining}</HomeSpan>
-                </S.TimerText>
+                    <S.Username>{Username}</S.Username>
+                  </S.Card>
+                ))
+              ) : (
+                <S.Empty>{t('noResultFound')}</S.Empty>
               )}
-            </Row>
-          </Fragment>
-        )}
-      </Fragment>
-    </Container>
+            </Skeleton>
+          </S.MemberRow>
+
+          {members.length > 0 && showTokenInput.view && (
+            <Fragment>
+              <Divider />
+
+              <Row justify="center" align="middle">
+                <Description fontSize="12pt" margin="0 0 15px 0">
+                  {t('firstDescriptionCode')}
+                  {serverInfos.ServerName.split('#')[1]}
+                  <br /> <br />
+                  {t('secondDescriptionCode')}
+                </Description>
+              </Row>
+
+              <Row justify="center">
+                <ReactCodeInput
+                  onChange={() => setValidToken(true)}
+                  disabled={secondsRemaining != null}
+                  className="codeInput"
+                  onComplete={debouncedHandleSaveUser}
+                  fields={5}
+                />
+              </Row>
+
+              <Row justify="center">
+                {!validToken && (
+                  <S.InvalidText>{t('invalidCode')}</S.InvalidText>
+                )}
+
+                {secondsRemaining && (
+                  <S.TimerText>
+                    {t('tryAgain')} <HomeSpan>{secondsRemaining}</HomeSpan>
+                  </S.TimerText>
+                )}
+              </Row>
+            </Fragment>
+          )}
+        </Fragment>
+      </Container>
+    </Fragment>
   );
 }

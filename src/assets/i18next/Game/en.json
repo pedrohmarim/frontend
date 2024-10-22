@@ -1,0 +1,35 @@
+{
+  "tabTitle": "Game",
+  "correctAwnserNotificationTitle": "Correct!",
+  "correctAwnserNotificationDescription": "Who sent this message was ",
+
+  "wrongAwnserNotificationTitle": "Wrong!",
+  "wrongAwnserNotificationDescription": "The correct answer was ",
+
+  "message": "Message",
+  "loadResult": "Generating result...",
+
+  "previousMessageNotFound": "There is no previous message to the selected one.",
+  "consecutiveMessageNotFound": "There is no consecutive message to the selected one.",
+
+  "tourTitle": "Message too difficult?",
+  "tourDescription": "Try using a hint. 😁",
+  "confirmTour": "Understood",
+
+  "score": "Score:",
+
+  "popConfirm1": "Warning! By showing a hint, the correct answer",
+  "popConfirm2": "will be worth 1 point instead of 2.",
+  "popConfirmShow": "Show",
+  "cancel": "Cancel",
+  "showHint": "Show Hint",
+  "hint": "Hint",
+
+  "previousMessage": "Previous message:",
+  "consecutiveMessage": "Next message:",
+
+  "finalScore": "Final score:",
+  "nextUpdate": "Next update in:",
+  "descriptionUpdate": "Update every day at",
+  "ranking": "Ranking"
+}

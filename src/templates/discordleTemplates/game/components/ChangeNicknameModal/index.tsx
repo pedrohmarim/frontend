@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as I from './IChangeNicknameModal';
 import theme from 'globalStyles/theme';
 import { Form, Input } from 'antd';
@@ -9,6 +9,8 @@ import * as S from './styles';
 import * as G from 'globalStyles/global';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
 import notification from 'antd_components/Notification/Notification.component';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 
 export default function ConfigurationModal({
   openModal,
@@ -18,7 +20,22 @@ export default function ConfigurationModal({
   gridReload,
   setOpenModal,
 }: I.IConfigurationModal) {
+  const { i18n, t } = useTranslation('Ranking');
   const router = useRouter();
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
+
+  function handleDescription(username: string, newNickname: string) {
+    const language = getItem('i18nextLng');
+
+    if (language === 'pt')
+      return `O apelido de '${username}', foi alterado para `;
+    else
+      return `The '${username}' nickname has been changed to '${newNickname}'.`;
+  }
 
   function onSubmit(values: I.IFormValues) {
     const { channelId, guildId, code } = router.query;
@@ -34,8 +51,8 @@ export default function ConfigurationModal({
       ).then(() => {
         gridReload();
         notification.success(
-          'Sucesso',
-          `O apelido de '${username}', foi alterado para '${values.newNickname}'`
+          t('success'),
+          handleDescription(username, values.newNickname)
         );
       });
 
@@ -52,7 +69,7 @@ export default function ConfigurationModal({
       }
       title={
         <S.ModalTitle>
-          Deseja castigar <G.HomeSpan>{username}</G.HomeSpan> ?
+          {t('punish')} <G.HomeSpan>{username}</G.HomeSpan> ?
         </S.ModalTitle>
       }
     >
@@ -64,15 +81,15 @@ export default function ConfigurationModal({
         }}
       >
         <Form.Item
-          tooltip="O usuário selecionado poderá remover o apelido caso quiser nas configurações do Servidor no Discord."
+          tooltip={t('formItemTooltip1')}
           name="newNickname"
-          label="Dê um novo apelido a ele(a) no servidor!"
+          label={t('formItemLabel1')}
           required
           rules={[requiredRules]}
         >
           <Input
             maxLength={50}
-            placeholder="Novo apelido"
+            placeholder={t('formItemPlaceholder1')}
             onClick={(e) => e.stopPropagation()}
             size="middle"
           />
@@ -85,7 +102,7 @@ export default function ConfigurationModal({
             color={theme.discordleColors.text}
             backgroundcolor={theme.discordleColors.primary}
           >
-            Confirmar
+            {t('confirm')}
           </Button>
         </Row>
       </Form>

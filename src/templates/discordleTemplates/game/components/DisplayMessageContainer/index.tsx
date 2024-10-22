@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import * as S from './styles';
 import * as I from './IReferencedMessage';
 import Link from 'next/link';
@@ -6,6 +6,8 @@ import { FeatherIcons, Row } from 'antd_components';
 import { useMyContext } from 'Context';
 import { IChoosedMessage } from 'templates/discordleTemplates/game/components/ChoosedMessage/IChoosedMessage';
 import { Divider } from '../Result/styles';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 import {
   MessageTypeEnum,
   MessageLevelEnum,
@@ -24,15 +26,21 @@ export default function DisplayMessageContainer({
   fromResult = false,
 }: IChoosedMessage) {
   const { windowWidth } = useMyContext();
+  const { i18n, t } = useTranslation('Game');
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function titleMessage() {
     switch (messageLevel) {
       case MessageLevelEnum.isConsecutive:
-        return 'Mensagem anterior:';
+        return t('previousMessage');
       case MessageLevelEnum.isPrevious:
-        return 'Próxima mensagem:';
+        return t('consecutiveMessage');
       default:
-        return 'Mensagem:';
+        return `${t('message')}:`;
     }
   }
 

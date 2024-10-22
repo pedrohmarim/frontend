@@ -9,6 +9,8 @@ import { IChoosedMessage } from './IChoosedMessage';
 import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleService';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 import {
   Button,
   FeatherIcons,
@@ -33,6 +35,7 @@ export default function ChoosedMessage({
   setUsedHint,
   setWarnExistsHint,
 }: I.IChoosedMessageComponent) {
+  const { i18n, t } = useTranslation('Game');
   const ref = useRef(null);
   const router = useRouter();
   const { windowWidth } = useMyContext();
@@ -43,6 +46,11 @@ export default function ChoosedMessage({
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     message,
   ]);
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function handleGetHints(fromClick?: boolean) {
     if (router.isReady) {
@@ -74,8 +82,7 @@ export default function ChoosedMessage({
               MessageLevelEnum.isPrevious
             );
           } else {
-            previousMessage.content =
-              'Não existe uma mensagem anterior à escolhida.';
+            previousMessage.content = t('previousMessageNotFound');
             previousMessage.messageLevel = MessageLevelEnum.isPrevious;
             previousMessage.messageType = MessageTypeEnum.isText;
           }
@@ -86,8 +93,7 @@ export default function ChoosedMessage({
               MessageLevelEnum.isConsecutive
             );
           } else {
-            consecutiveMessage.content =
-              'Não existe uma mensagem consecutiva à escolhida.';
+            consecutiveMessage.content = t('consecutiveMessageNotFound');
             consecutiveMessage.messageLevel = MessageLevelEnum.isConsecutive;
             consecutiveMessage.messageType = MessageTypeEnum.isText;
           }
@@ -123,12 +129,12 @@ export default function ChoosedMessage({
         onClose={() => setWarnExistsHint(!openWarnExistsHint)}
         steps={[
           {
-            title: 'Mensagem muito difícil?',
-            description: 'Experimente usar uma dica. 😁',
+            title: t('tourTitle'),
+            description: t('tourDescription'),
             closable: true,
             onClose: () => setWarnExistsHint(false),
             nextButtonProps: {
-              children: 'Entendido',
+              children: t('confirmTour'),
               style: {
                 backgroundColor: theme.discordleColors.primary,
                 color: theme.discordleColors.text,
@@ -158,7 +164,7 @@ export default function ChoosedMessage({
           {switchValues && (
             <S.ScoreTextContainer isMobile={isMobile} usedHint={usedHint}>
               <S.ScoreText>
-                Pontuação: {score}/{switchValues.PointsPerCorrectAnswer * 5}
+                {t('score')} {score}/{switchValues.PointsPerCorrectAnswer * 5}
               </S.ScoreText>
             </S.ScoreTextContainer>
           )}
@@ -169,12 +175,13 @@ export default function ChoosedMessage({
             <PopConfirm
               title={
                 <>
-                  Aviso! Ao mostrar uma dica, a resposta correta <br></br>
-                  valerá 1 ponto ao invés de 2.
+                  {t('popConfirm1')}
+                  <br></br>
+                  {t('popConfirm2')}
                 </>
               }
-              okText="Mostrar"
-              cancelText="Cancelar"
+              okText={t('popConfirmShow')}
+              cancelText={t('cancel')}
               onConfirm={confirm}
               getPopupContainer={(trigger) => trigger}
               onCancel={() => setOpenPopConfirm(false)}
@@ -216,7 +223,7 @@ export default function ChoosedMessage({
                   />
                 }
               >
-                {!isMobile ? 'Mostrar Dica' : 'Dica'}
+                {!isMobile ? t('showHint') : t('hint')}
               </Button>
             </PopConfirm>
           )}

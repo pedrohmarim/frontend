@@ -32,6 +32,7 @@ export default function filterMessage(
           src={Url}
           alt={`image_${index}_muito_antiga_ou_corrompida`}
           width="100%"
+          height="400px"
         />
       );
     });

@@ -1,0 +1,46 @@
+{
+  "titleTable1": "Posição",
+  "titleTable2": "Membro",
+  "titleTable3": "Total de pontos",
+  "titleTable4": "Ações",
+
+  "tooltipAction": "Ver detalhes",
+
+  "modalTitleTable1": "Data",
+  "modalTitleTable2": "Detalhes do dia",
+
+  "message": "Mensagem",
+  "score": "Pontuação",
+
+  "descriptionScore1": "Acertou",
+  "descriptionScore2": "(Dica)",
+  "descriptionScore3": "Errou",
+
+  "success": "Sucesso",
+  "onRankingInteration": "Você agora participará das iterações do ranking.",
+  "outRankingInteration": "Você não participará das iterações do ranking.",
+
+  "ranking": "Classificação",
+  "punish": "Deseja castigar",
+
+  "formItemTooltip1": "O usuário selecionado poderá remover o apelido caso quiser nas configurações do Servidor no Discord.",
+  "formItemLabel1": "Dê um novo apelido a ele(a) no servidor!",
+  "formItemPlaceholder1": "Novo apelido",
+  "confirm": "Confirmar",
+
+  "rankingTitle": "Classificação Geral",
+  "rankingDescription1": "Nota:",
+  "rankingDescription2": "O primeiro colocado terá algumas vantagens administrativas, mesmo fora do Discord. Aproveite o topo do pódio! 🎉",
+
+  "checkBoxLabel": "Participar das iterações de ranking",
+
+  "paginationDescription1": "Total de",
+  "paginationDescription2": "registro(s)",
+
+  "modalTitle": "Detalhes de",
+  "back": "Voltar",
+  "emptyData": "Sem dados",
+  "reload": "Recarregar",
+
+  "changeNickName": "Alterar Apelido"
+}

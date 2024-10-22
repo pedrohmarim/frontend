@@ -12,6 +12,8 @@ import GuildInfo from '../globalComponents/guildInfo';
 import { useMyContext } from 'Context';
 import ConfigurationModal from '../game/components/ConfigurationModal';
 import * as G from 'globalStyles/global';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 import ChangeNickNameModal from '../game/components/ChangeNicknameModal';
 import notification from 'antd_components/Notification/Notification.component';
 import {
@@ -30,6 +32,7 @@ import {
 } from 'antd_components';
 
 export default function Ranking() {
+  const { i18n, t } = useTranslation('Ranking');
   const { windowWidth, sessionUser } = useMyContext();
   const isMobile = windowWidth <= 405;
   const [dataSource, setDataSource] = useState<IRankingTableData[]>([]);
@@ -45,6 +48,11 @@ export default function Ranking() {
   const [nameModalTitle, setNameModalTitle] = useState<string>('');
   const router = useRouter();
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function getDiscordleHistory(
     code: string,
@@ -85,7 +93,7 @@ export default function Ranking() {
 
   const columns: ColumnsType<IRankingTableData> = [
     {
-      title: 'Posição',
+      title: t('titleTable1'),
       align: 'center',
       width: 80,
       dataIndex: 'Position',
@@ -103,7 +111,7 @@ export default function Ranking() {
       },
     },
     {
-      title: 'Membro',
+      title: t('titleTable2'),
       dataIndex: 'Member',
       render: ({ Username, AvatarUrl }, record) => {
         const isLoggedUserFirst = dataSource.some(
@@ -134,7 +142,7 @@ export default function Ranking() {
                     size={16}
                     style={{ marginRight: '5px' }}
                   />
-                  Alterar Apelido
+                  {t('changeNickName')}
                 </Row>
               </S.TableButton>
             )}
@@ -143,20 +151,20 @@ export default function Ranking() {
       },
     },
     {
-      title: 'Total de pontos',
+      title: t('titleTable3'),
       align: 'center',
       width: 150,
       dataIndex: 'TotalScore',
     },
     {
-      title: 'Ações',
+      title: t('titleTable4'),
       align: 'center',
       fixed: 'right',
       width: 80,
       key: 'operation',
       render: ({ Member }) => {
         return (
-          <Tooltip title="Ver detalhes">
+          <Tooltip title={t('tooltipAction')}>
             <S.Row
               justify="center"
               onClick={() => {
@@ -172,24 +180,42 @@ export default function Ranking() {
     },
   ];
 
+  function handleFirstDescription(tabKey: number) {
+    const language = getItem('i18nextLng');
+
+    if (language === 'pt') return `${tabKey}º ${t('message')} -`;
+
+    if (tabKey === 1) return `1st ${t('message')} -`;
+    if (tabKey === 2) return `2nd ${t('message')} -`;
+    if (tabKey === 3) return `3rd ${t('message')} -`;
+    if (tabKey === 4) return `4th ${t('message')} -`;
+    if (tabKey === 5) return `5th ${t('message')} -`;
+  }
+
   const modalColumns: ColumnsType<IUserScoreDetail> = [
     {
-      title: 'Data',
+      title: t('modalTitleTable1'),
       width: 100,
       dataIndex: 'Date',
       align: 'center',
       render: (value) => <>{value}</>,
     },
     {
-      title: 'Detalhes do dia',
+      title: t('modalTitleTable2'),
       dataIndex: 'ScoreDetails',
       render: (scoreDetails) =>
         scoreDetails.map(({ Score, Success, TabKey }: IAnswer, key: number) => (
           <Row align="middle" key={key}>
-            <S.UserSpan>{TabKey}º Pergunta -</S.UserSpan>
-            <S.UserSpan>Pontuação: {Score} -</S.UserSpan>
+            <S.UserSpan>{handleFirstDescription(TabKey)}</S.UserSpan>
             <S.UserSpan>
-              {Success ? `Acertou ${Score === 1 ? '(dica)' : ''}` : 'Errou'}
+              {t('score')}: {Score} -
+            </S.UserSpan>
+            <S.UserSpan>
+              {Success
+                ? `${t('descriptionScore1')} ${
+                    Score === 1 ? t('descriptionScore2') : ''
+                  }`
+                : t('descriptionScore3')}
             </S.UserSpan>
           </Row>
         )),
@@ -248,10 +274,8 @@ export default function Ranking() {
       ).then(() => {
         setCheckBox(!checkBox);
         notification.success(
-          'Sucesso',
-          `Você ${
-            checkBox ? 'não' : 'agora'
-          } participará das iterações do ranking.`
+          t('success'),
+          checkBox ? t('outRankingInteration') : t('onRankingInteration')
         );
       });
   }
@@ -264,7 +288,7 @@ export default function Ranking() {
       alignItems="center"
     >
       <Head>
-        <title>Discordle | Ranking</title>
+        <title>Discordle | {t('ranking')}</title>
       </Head>
 
       <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
@@ -282,18 +306,17 @@ export default function Ranking() {
         <GuildInfo openModal={openModal} setOpenModal={setOpenModal} />
 
         <S.ClassificationTitle justify="center">
-          Ranking Geral
+          {t('rankingTitle')}
         </S.ClassificationTitle>
 
         <S.Description justify="center" align="middle">
-          <G.HomeSpan margin="0 5px 0 0 ">Nota: </G.HomeSpan> O primeiro
-          colocado terá algumas vantagens administrativas, mesmo fora do
-          Discord. Aproveite o topo do pódio! 🎉
+          <G.HomeSpan margin="0 5px 0 0">{t('rankingDescription1')}</G.HomeSpan>
+          {t('rankingDescription2')}
         </S.Description>
 
         <S.Description justify="end">
           <Checkbox checked={checkBox} onChange={changeCheckBox}>
-            Participar das iterações de ranking
+            {t('checkBoxLabel')}
           </Checkbox>
         </S.Description>
 
@@ -311,7 +334,10 @@ export default function Ranking() {
               hideOnSinglePage: true,
               style: { color: theme.discordleColors.text },
               total: dataSource.length,
-              showTotal: (total) => `Total de ${total} registros`,
+              showTotal: (total) =>
+                `${t('paginationDescription1')} ${total} ${t(
+                  'paginationDescription2'
+                )}`,
             }}
           />
 
@@ -319,10 +345,14 @@ export default function Ranking() {
             destroyOnClose
             open={open}
             style={{ top: '5%' }}
-            title={<S.ModalTitle>Detalhes de {nameModalTitle}</S.ModalTitle>}
+            title={
+              <S.ModalTitle>
+                {t('modalTitle')} {nameModalTitle}
+              </S.ModalTitle>
+            }
             onCancel={() => setOpen(false)}
             onOk={() => setOpen(false)}
-            okText="Voltar"
+            okText={t('back')}
             cancelButtonProps={{ style: { display: 'none' } }}
             okButtonProps={{
               style: {
@@ -335,7 +365,7 @@ export default function Ranking() {
             <Table
               scroll={{ x: 450 }}
               loading={loading}
-              locale={{ emptyText: <Empty description="Sem registros" /> }}
+              locale={{ emptyText: <Empty description={t('emptyData')} /> }}
               size="small"
               columns={modalColumns}
               dataSource={scoreDetail}
@@ -345,7 +375,10 @@ export default function Ranking() {
                 hideOnSinglePage: true,
                 style: { color: theme.discordleColors.text },
                 total: scoreDetail.length,
-                showTotal: (total) => `Total de ${total} registros`,
+                showTotal: (total) =>
+                  `${t('paginationDescription1')} ${total} ${t(
+                    'paginationDescription2'
+                  )}`,
               }}
             />
           </S.Modal>
@@ -358,7 +391,7 @@ export default function Ranking() {
               icon={<FeatherIcons icon="arrow-left" size={18} />}
               width={!isMobile ? 120 : ''}
             >
-              <S.UserSpan>Voltar</S.UserSpan>
+              <S.UserSpan>{t('back')}</S.UserSpan>
             </Button>
 
             <Button
@@ -368,7 +401,7 @@ export default function Ranking() {
               icon={<FeatherIcons icon="rotate-cw" size={18} />}
               width={!isMobile ? 140 : ''}
             >
-              <S.UserSpan>Recarregar</S.UserSpan>
+              <S.UserSpan>{t('reload')}</S.UserSpan>
             </Button>
           </S.ButtonRow>
         </S.TableContainer>

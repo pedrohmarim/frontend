@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { FeatherIcons, Skeleton } from 'antd_components';
 import * as S from './styles';
 import * as I from './IMessageSteps';
@@ -7,6 +7,8 @@ import ChoosedMessage from 'templates/discordleTemplates/game/components/Choosed
 import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSelect';
 import { MessageContainer } from 'globalStyles/global';
 import { LoadingOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
+import { getItem } from 'utils/localStorage/User';
 
 export default function MessageSteps({
   openWarnExistsHint,
@@ -22,7 +24,13 @@ export default function MessageSteps({
   setActiveTabKey,
   setWarnExistsHint,
 }: I.IMessageSteps) {
+  const { i18n, t } = useTranslation('Game');
   const [authorSelected, setAuthorSelected] = useState<string>('');
+
+  useEffect(() => {
+    const result = getItem('i18nextLng');
+    if (result) i18n.changeLanguage(result);
+  }, [i18n]);
 
   function handleIcon(index: number, current: number, color: string) {
     let icon = '';
@@ -57,7 +65,9 @@ export default function MessageSteps({
 
   const steps = choosedMessages.map((choosedMessage, index) => {
     return {
-      title: <S.MessageTabTitle>{`Mensagem ${index + 1}`}</S.MessageTabTitle>,
+      title: (
+        <S.MessageTabTitle>{`${t('message')} ${index + 1}`}</S.MessageTabTitle>
+      ),
       icon: handleIcon(
         index,
         index + 1,
@@ -111,7 +121,7 @@ export default function MessageSteps({
                   marginRight: '15px',
                 }}
               />
-              Gerando resultado ...
+              {t('loadResult')}
             </S.Load>
           ) : (
             steps.map((step, index) => {

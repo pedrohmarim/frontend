@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <S.ContainerWrapper isAnimationActive={animationActive}>
       <Head>
-        <title>Discordle | Home</title>
+        <title>Discordle | {t('tabTitle')}</title>
       </Head>
 
       <Header
