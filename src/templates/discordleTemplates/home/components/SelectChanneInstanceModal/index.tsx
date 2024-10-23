@@ -1,4 +1,4 @@
-import React, { useState, useCallback, Fragment, useEffect } from 'react';
+import React, { useState, useCallback, Fragment } from 'react';
 import * as I from './ISelectChannelInstanceModal';
 import * as S from './styles';
 import * as G from 'globalStyles/global';
@@ -9,7 +9,6 @@ import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComp
 import { Modal, List, Row } from 'antd_components';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 import {
   deleteDiscordleToken,
   getDiscordleToken,
@@ -21,12 +20,7 @@ export default function SelectChanneInstanceModal({
   open,
   onClose,
 }: I.ISelectChannelInstanceModal) {
-  const { i18n, t } = useTranslation('Home');
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
+  const { t } = useTranslation('Home');
 
   const fromGuildParam = !Boolean(selectedGuildName);
   const title = !selectedGuildName

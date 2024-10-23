@@ -13,14 +13,13 @@ import { IGuildsDto } from 'services/DiscordleService/IDiscordleService';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 
 export default function HomeDiscordleList({
   width,
   botButton,
 }: I.IHomeDiscordleList) {
   const router = useRouter();
-  const { i18n, t } = useTranslation('Home');
+  const { t } = useTranslation('Home');
   const { setInstanceChannels } = useMyContext();
   const isMobile = width < 875;
   const pageSize = 18;
@@ -33,11 +32,6 @@ export default function HomeDiscordleList({
   const [selectedGuildName, setSelectedGuildName] = useState<string | null>(
     null
   );
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
 
   const GetGuilds = useCallback(() => {
     if (noMoreDataToFetch) return;

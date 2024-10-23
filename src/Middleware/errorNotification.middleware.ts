@@ -3,9 +3,14 @@ import {
   deleteDiscordleToken,
   deleteUser,
   getDiscordleToken,
+  getItem,
   getUserToken,
 } from 'utils/localStorage/User';
-import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 
 function ActiveLoading() {
   const loaderElement = document.getElementById('loader');
@@ -94,7 +99,7 @@ export const errorRequestInterceptor = (errorRequest: unknown) => {
   return Promise.reject(errorRequest);
 };
 
-export const errorResponseInterceptor = (
+export const errorResponseInterceptor = async (
   error: AxiosError<{
     Message: string;
     error_description: string;
@@ -104,16 +109,37 @@ export const errorResponseInterceptor = (
   activeRequests--;
   DisableLoading();
 
-  const description =
+  let description =
     error.response?.data.Message ??
     error.response?.data.error_description ??
     'Não foi possível conectar-se ao servidor.';
 
   const statusCode = error.response?.status ?? error.response?.data.Status;
 
-  if (statusCode === 401 || description.includes('Não autorizado'))
+  const language = getItem('i18nextLng');
+
+  if (language === 'en') description = await translateToEnglish(description);
+
+  if (
+    statusCode === 401 ||
+    description.includes('Não autorizado') ||
+    description.includes('Not authorized')
+  )
     RedirectLogin(description);
-  else Notification.error('Erro!', description);
+  else Notification.error('Error!', description);
 
   return Promise.reject(error);
 };
+
+async function translateToEnglish(text: string): Promise<string> {
+  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+    text
+  )}&langpair=pt|en`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data.responseData.translatedText;
+  } catch (error) {
+    return text;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as I from './IChangeNicknameModal';
 import theme from 'globalStyles/theme';
 import { Form, Input } from 'antd';
@@ -20,13 +20,8 @@ export default function ConfigurationModal({
   gridReload,
   setOpenModal,
 }: I.IConfigurationModal) {
-  const { i18n, t } = useTranslation('Ranking');
+  const { t } = useTranslation('Ranking');
   const router = useRouter();
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
 
   function handleDescription(username: string, newNickname: string) {
     const language = getItem('i18nextLng');

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as I from './IConfigurationModal';
 import * as S from './styles';
 import theme from 'globalStyles/theme';
@@ -9,18 +9,12 @@ import { Button, Modal, Row, FeatherIcons, Tabs } from 'antd_components';
 import { TabsProps } from 'antd';
 import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComponents/formCreateDiscordleInstance';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 
 export default function ConfigurationModal({
   openModal,
   setOpenModal,
 }: I.IConfigurationModal) {
-  const { i18n, t } = useTranslation('GuildInfo');
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
+  const { t } = useTranslation('GuildInfo');
 
   const items: TabsProps['items'] = [
     {

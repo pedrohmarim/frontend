@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { Select as SelectAntd } from 'antd_components';
 
-export const Select = styled(SelectAntd)<{
-  isMobile: boolean;
-  usedHint: boolean;
-}>`
+export const Select = styled(SelectAntd).withConfig({
+  shouldForwardProp: (prop) =>
+    !['isMobile'].includes(prop) && !['usedHint'].includes(prop),
+})<{ isMobile: boolean; usedHint: boolean }>`
   margin-top: ${({ usedHint }) => (usedHint ? '30px' : '0px')};
   width: ${({ isMobile }) => (isMobile ? '100%' : '300px')};
 

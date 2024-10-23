@@ -22,18 +22,13 @@ export default function Result({
   totalScore,
   switchValues,
 }: I.IResult) {
-  const { i18n, t } = useTranslation('Game');
+  const { t } = useTranslation('Game');
 
   const router = useRouter();
   const [resultDetails, setResultDetails] = useState<IMessage[]>([]);
   const [guildInfoLoading, setGuildInfoLoading] = useState<boolean>(true);
   const { windowWidth } = useMyContext();
   const isMobile = windowWidth <= 875;
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
 
   const score = answers.reduce((accumulator, curValue) => {
     return accumulator + curValue.Score;

@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import DiscordInstanceApi from 'services/DiscordleService/DiscordleInstance';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 import {
   Checkbox,
   Input,
@@ -27,12 +26,7 @@ export default function FormCreateDiscordleInstance({
   const router = useRouter();
   const { instanceChannels, setInstanceChannels } = useMyContext();
 
-  const { i18n, t } = useTranslation('Home');
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
+  const { t } = useTranslation('Home');
 
   function getChannels() {
     if (router.isReady) {

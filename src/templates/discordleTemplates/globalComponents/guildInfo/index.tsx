@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import * as S from './styles';
 import Image from 'next/image';
 import copy from 'clipboard-copy';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
 import { HomeSpan } from 'globalStyles/global';
-import { deleteDiscordleToken, getItem } from 'utils/localStorage/User';
+import { deleteDiscordleToken } from 'utils/localStorage/User';
 import { MenuProps } from 'antd';
 import * as I from './IGuildInfo';
 import { useTranslation } from 'react-i18next';
@@ -26,12 +26,7 @@ export default function GuildInfo({
 }: I.IGuildInfo) {
   const [stateCopy, setStateCopy] = useState<boolean>(false);
   const router = useRouter();
-  const { i18n, t } = useTranslation('GuildInfo');
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
+  const { t } = useTranslation('GuildInfo');
 
   const {
     isOwner,

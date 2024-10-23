@@ -7,18 +7,12 @@ import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import notification from 'antd_components/Notification/Notification.component';
 import { Checkbox, Col, Divider, FeatherIcons, Tooltip } from 'antd_components';
 import DebouncedTextInput from 'templates/discordleTemplates/globalComponents/deboucedTextInput';
-import { getItem } from 'utils/localStorage/User';
 import { useTranslation } from 'react-i18next';
 
 export default function PrivacyConfig() {
   const router = useRouter();
-  const { i18n, t } = useTranslation('GuildInfo');
+  const { t } = useTranslation('GuildInfo');
   const [value, setValue] = useState<boolean>();
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
 
   function onChangeCheckBox({ target }: CheckboxChangeEvent) {
     if (router.isReady) {

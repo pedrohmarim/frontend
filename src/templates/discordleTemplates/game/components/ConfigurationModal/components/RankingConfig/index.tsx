@@ -2,23 +2,17 @@ import { useMyContext } from 'Context';
 import theme from 'globalStyles/theme';
 import DiscordleRankingApi from 'services/DiscordleService/DiscordleRanking';
 import { useRouter } from 'next/router';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import notification from 'antd_components/Notification/Notification.component';
 import * as S from './styles';
 import { Button, Divider, FeatherIcons, PopConfirm } from 'antd_components';
-import { getItem } from 'utils/localStorage/User';
 import { useTranslation } from 'react-i18next';
 
 export default function RankingConfig() {
   const router = useRouter();
   const { windowWidth, serverInfos } = useMyContext();
   const isMobile = windowWidth <= 875;
-  const { i18n, t } = useTranslation('GuildInfo');
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
+  const { t } = useTranslation('GuildInfo');
 
   function resetRanking() {
     if (router.isReady) {

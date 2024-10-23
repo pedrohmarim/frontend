@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { SwitchNameEnum } from './switchNameEnum';
 import DiscordleInstaceApi from 'services/DiscordleService/DiscordleInstance';
 import Image1 from 'assets/image_1.png';
@@ -9,7 +9,6 @@ import theme from 'globalStyles/theme';
 import { useMyContext } from 'Context';
 import * as S from './styles';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 import {
   Col,
   Row,
@@ -23,17 +22,12 @@ import {
 } from 'antd_components';
 
 export default function GameConfig() {
-  const { i18n, t } = useTranslation('GuildInfo');
+  const { t } = useTranslation('GuildInfo');
   const [loadingSwitch, setLoadingSwitch] = useState(false);
   const { switchValues, setSwitchValues, windowWidth } = useMyContext();
   const switches: I.ISwitches[] = [];
   const router = useRouter();
   const isMobile = windowWidth < 375;
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
 
   async function updateSwitchValue(
     value: number,

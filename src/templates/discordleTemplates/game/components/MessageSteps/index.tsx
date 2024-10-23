@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { FeatherIcons, Skeleton } from 'antd_components';
 import * as S from './styles';
 import * as I from './IMessageSteps';
@@ -8,7 +8,6 @@ import AuthorSelect from 'templates/discordleTemplates/game/components/AuthorSel
 import { MessageContainer } from 'globalStyles/global';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 
 export default function MessageSteps({
   openWarnExistsHint,
@@ -26,11 +25,6 @@ export default function MessageSteps({
 }: I.IMessageSteps) {
   const { i18n, t } = useTranslation('Game');
   const [authorSelected, setAuthorSelected] = useState<string>('');
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
 
   function handleIcon(index: number, current: number, color: string) {
     let icon = '';
@@ -63,10 +57,22 @@ export default function MessageSteps({
     return accumulator + curValue.Score;
   }, 0);
 
+  function handleMessageTitle(tabKey: number) {
+    if (i18n.language === 'pt-BR') return `${t('message')} ${tabKey}`;
+
+    if (tabKey === 1) return `1st ${t('message')}`;
+    if (tabKey === 2) return `2nd ${t('message')}`;
+    if (tabKey === 3) return `3rd ${t('message')}`;
+    if (tabKey === 4) return `4th ${t('message')}`;
+    if (tabKey === 5) return `5th ${t('message')}`;
+  }
+
   const steps = choosedMessages.map((choosedMessage, index) => {
     return {
       title: (
-        <S.MessageTabTitle>{`${t('message')} ${index + 1}`}</S.MessageTabTitle>
+        <S.MessageTabTitle key={index}>
+          {handleMessageTitle(index + 1)}
+        </S.MessageTabTitle>
       ),
       icon: handleIcon(
         index,
@@ -74,7 +80,7 @@ export default function MessageSteps({
         index + 1 === activeTabKey ? theme.discordleColors.primary : '#fff'
       ),
       content: (
-        <Fragment>
+        <Fragment key={index}>
           <ChoosedMessage
             authorSelected={authorSelected}
             score={score}

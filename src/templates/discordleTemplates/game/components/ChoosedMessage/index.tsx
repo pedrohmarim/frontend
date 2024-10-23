@@ -10,7 +10,6 @@ import { IDiscordHintsRequest } from 'services/DiscordleService/IDiscordleServic
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 import {
   Button,
   FeatherIcons,
@@ -35,7 +34,7 @@ export default function ChoosedMessage({
   setUsedHint,
   setWarnExistsHint,
 }: I.IChoosedMessageComponent) {
-  const { i18n, t } = useTranslation('Game');
+  const { t } = useTranslation('Game');
   const ref = useRef(null);
   const router = useRouter();
   const { windowWidth } = useMyContext();
@@ -46,11 +45,6 @@ export default function ChoosedMessage({
   const [totalMessages, setTotalMessages] = useState<IChoosedMessage[]>([
     message,
   ]);
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
 
   function handleGetHints(fromClick?: boolean) {
     if (router.isReady) {

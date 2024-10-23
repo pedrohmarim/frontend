@@ -53,6 +53,7 @@ export default function ChooseProfile() {
   });
 
   const [languageLoaded, setLanguageLoaded] = useState(false);
+
   useEffect(() => {
     const result = getItem('i18nextLng');
     if (result) i18n.changeLanguage(result).then(() => setLanguageLoaded(true));

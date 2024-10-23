@@ -1,19 +1,13 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import * as I from './IHowWorks';
 import * as S from './styles';
 import { Container } from '../HomeDiscordleList/styles';
 import { Col, FeatherIcons, Row } from 'antd_components';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 
 export default function HowWorks({ width, botButton }: I.IHowWorks) {
   const isMobile = width <= 875;
-  const { i18n, t } = useTranslation('Home');
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
-  }, [i18n]);
+  const { t } = useTranslation('Home');
 
   const cards: I.IHowWorksCard[] = [
     {

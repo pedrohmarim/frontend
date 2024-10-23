@@ -7,7 +7,6 @@ import theme from 'globalStyles/theme';
 import Logo from 'assets/logo.png';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
 import ChangeLanguage from '../changeLanguage';
 import { Button, FeatherIcons, Row, Image } from 'antd_components';
 
@@ -21,14 +20,7 @@ export default function Header({
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  const { i18n, t } = useTranslation('Home');
-  const [languageLoaded, setLanguageLoaded] = useState(false);
-
-  useEffect(() => {
-    const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result).then(() => setLanguageLoaded(true));
-    else setLanguageLoaded(true);
-  }, [i18n]);
+  const { t } = useTranslation('Home');
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -37,8 +29,6 @@ export default function Header({
 
     return () => clearTimeout(timeout);
   }, [setAnimationActive]);
-
-  if (!languageLoaded) return null;
 
   if (!setAnimationActive || !setCurrent || !current || !isHome)
     return (
