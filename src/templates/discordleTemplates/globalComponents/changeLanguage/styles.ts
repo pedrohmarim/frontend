@@ -5,7 +5,9 @@ export const Label = styled.span`
   margin-left: 5px;
 `;
 
-export const Select = styled(AntdSelect)<{ fromhome?: boolean }>`
+export const Select = styled(AntdSelect).withConfig({
+  shouldForwardProp: (prop) => !['fromhome'].includes(prop),
+})<{ fromhome?: boolean }>`
   ${({ fromhome }) => {
     if (fromhome)
       return css`
@@ -17,7 +19,7 @@ export const Select = styled(AntdSelect)<{ fromhome?: boolean }>`
         margin: 0px !important;
         padding: 0px;
       `;
-  }};
+  }}
 
   .ant-select-selector {
     background-color: transparent !important;

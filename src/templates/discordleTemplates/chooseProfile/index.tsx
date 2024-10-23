@@ -52,9 +52,11 @@ export default function ChooseProfile() {
     selectedItemIndex: null,
   });
 
+  const [languageLoaded, setLanguageLoaded] = useState(false);
   useEffect(() => {
     const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
+    if (result) i18n.changeLanguage(result).then(() => setLanguageLoaded(true));
+    else setLanguageLoaded(true);
   }, [i18n]);
 
   function getMembers() {
@@ -207,6 +209,8 @@ export default function ChooseProfile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [router]
   );
+
+  if (!languageLoaded) return null;
 
   if (
     router.isReady &&

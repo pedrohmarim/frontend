@@ -49,9 +49,12 @@ export default function Ranking() {
   const router = useRouter();
   const [scoreDetail, setScoreDetail] = useState<IUserScoreDetail[]>([]);
 
+  const [languageLoaded, setLanguageLoaded] = useState(false);
+
   useEffect(() => {
     const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
+    if (result) i18n.changeLanguage(result).then(() => setLanguageLoaded(true));
+    else setLanguageLoaded(true);
   }, [i18n]);
 
   function getDiscordleHistory(
@@ -183,7 +186,7 @@ export default function Ranking() {
   function handleFirstDescription(tabKey: number) {
     const language = getItem('i18nextLng');
 
-    if (language === 'pt') return `${tabKey}º ${t('message')} -`;
+    if (language === 'pt-BR') return `${tabKey}º ${t('message')} -`;
 
     if (tabKey === 1) return `1st ${t('message')} -`;
     if (tabKey === 2) return `2nd ${t('message')} -`;
@@ -279,6 +282,8 @@ export default function Ranking() {
         );
       });
   }
+
+  if (!languageLoaded) return null;
 
   return (
     <Container

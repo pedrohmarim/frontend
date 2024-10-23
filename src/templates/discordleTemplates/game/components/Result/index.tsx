@@ -71,7 +71,7 @@ export default function Result({
   function handleTitle(tabKey: number) {
     const language = getItem('i18nextLng');
 
-    if (language === 'pt') return `${tabKey}º ${t('message')}`;
+    if (language === 'pt-BR') return `${tabKey}º ${t('message')}`;
 
     if (tabKey === 1) return `1st ${t('message')}`;
     if (tabKey === 2) return `2nd ${t('message')}`;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChangeLanguage';
 import { Select, Avatar } from 'antd_components';
@@ -8,12 +8,21 @@ import theme from 'globalStyles/theme';
 
 export default function ChangeLanguage({ fromHome }: I.IChangeLanguage) {
   const { i18n } = useTranslation('Home');
+  const [selectedLanguage, setSelectedLanguage] = useState('pt-BR');
+
+  useEffect(() => {
+    const savedLanguage = getItem('i18nextLng') ?? 'pt-BR';
+    setSelectedLanguage(savedLanguage);
+  }, []);
 
   return (
     <S.Select
       fromhome={fromHome}
-      defaultValue={getItem('i18nextLng') ?? 'pt'}
-      onChange={(value) => i18n.changeLanguage(String(value))}
+      value={selectedLanguage}
+      onChange={(value) => {
+        i18n.changeLanguage(String(value));
+        setSelectedLanguage(String(value));
+      }}
       dropdownStyle={{
         backgroundColor: theme.discordleColors.background,
       }}
@@ -22,7 +31,7 @@ export default function ChangeLanguage({ fromHome }: I.IChangeLanguage) {
         <Avatar src="https://flagcdn.com/w320/us.png" alt="usa_flag" />
       </Select.Option>
 
-      <Select.Option value="pt">
+      <Select.Option value="pt-BR">
         <Avatar src="https://flagcdn.com/w320/br.png" alt="brazil_flag" />
       </Select.Option>
     </S.Select>

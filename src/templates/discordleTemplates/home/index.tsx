@@ -15,10 +15,12 @@ export default function Home() {
   const [animationActive, setAnimationActive] = useState(true);
   const { windowWidth } = useMyContext();
   const { i18n, t } = useTranslation('Home');
+  const [languageLoaded, setLanguageLoaded] = useState(false);
 
   useEffect(() => {
     const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
+    if (result) i18n.changeLanguage(result).then(() => setLanguageLoaded(true));
+    else setLanguageLoaded(true);
   }, [i18n]);
 
   function onClick() {
@@ -58,6 +60,8 @@ export default function Home() {
         break;
     }
   }
+
+  if (!languageLoaded) return null;
 
   return (
     <S.ContainerWrapper isAnimationActive={animationActive}>

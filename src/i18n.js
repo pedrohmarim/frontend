@@ -25,7 +25,7 @@ if (!i18n.isInitialized) {
           Ranking: require('./assets/i18next/Ranking/en.json'),
         },
       },
-      fallbackLng: 'pt', // Idioma padrão
+      fallbackLng: 'pt-BR', // Idioma padrão
       ns: ['Home', 'ChooseProfile', 'GuildInfo', 'Game', 'Ranking'], // Múltiplos namespaces
       defaultNS: 'Home', // Namespace padrão
       debug: false,

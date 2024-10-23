@@ -22,9 +22,12 @@ export default function Header({
   const [open, setOpen] = useState(false);
 
   const { i18n, t } = useTranslation('Home');
+  const [languageLoaded, setLanguageLoaded] = useState(false);
+
   useEffect(() => {
     const result = getItem('i18nextLng');
-    if (result) i18n.changeLanguage(result);
+    if (result) i18n.changeLanguage(result).then(() => setLanguageLoaded(true));
+    else setLanguageLoaded(true);
   }, [i18n]);
 
   useEffect(() => {
@@ -34,6 +37,8 @@ export default function Header({
 
     return () => clearTimeout(timeout);
   }, [setAnimationActive]);
+
+  if (!languageLoaded) return null;
 
   if (!setAnimationActive || !setCurrent || !current || !isHome)
     return (

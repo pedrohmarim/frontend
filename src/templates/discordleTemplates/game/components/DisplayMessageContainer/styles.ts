@@ -42,7 +42,9 @@ export const ReferecendMessageContent = styled.div<{ width: number }>`
   justify-content: space-between;
 `;
 
-export const AuthorContainer = styled(Row)<{ fromresult: boolean }>`
+export const AuthorContainer = styled(Row).withConfig({
+  shouldForwardProp: (prop) => !['fromresult'].includes(prop),
+})<{ fromresult?: boolean }>`
   width: ${({ fromresult }) => (fromresult ? '100%' : 'fit-content')};
   background-color: ${(props) => props.theme.discordleColors.background};
   border-bottom: ${({ fromresult }) =>
