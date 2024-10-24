@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { IMember } from 'services/DiscordleService/IDiscordleService';
 import * as S from './styles';
+import * as G from 'globalStyles/global';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
 import { useRouter } from 'next/router';
 import { GameTitle } from 'templates/discordleTemplates/game/components/ChoosedMessage/styles';
@@ -317,10 +318,20 @@ export default function ChooseProfile() {
 
               <Row justify="center" align="middle">
                 <Description fontSize="12pt" margin="0 0 15px 0">
-                  {t('firstDescriptionCode')}
-                  {serverInfos.ServerName.split('#')[1]}
-                  <br /> <br />
-                  {t('secondDescriptionCode')}
+                  {i18n.language === 'pt-BR' ? (
+                    <>
+                      Digite o comando <G.HomeSpan>/code</G.HomeSpan> no canal
+                      de texto #{serverInfos.ServerName.split('#')[1]} <br />
+                      <br />
+                      para gerar seu token.
+                    </>
+                  ) : (
+                    <>
+                      Type the <G.HomeSpan>/code</G.HomeSpan> command in the #
+                      {serverInfos.ServerName.split('#')[1]} <br /> <br /> text
+                      channel to generate your token.
+                    </>
+                  )}
                 </Description>
               </Row>
 

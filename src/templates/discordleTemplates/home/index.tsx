@@ -25,7 +25,7 @@ export default function Home() {
 
   function onClick() {
     const clientIdBot = '1089918362311733378';
-    const permissions = '8'; //'75824';
+    const permissions = '2349018128'; //'8' ADMINISTRADOR;
 
     const redirectUri = encodeURIComponent(window.location.href);
 

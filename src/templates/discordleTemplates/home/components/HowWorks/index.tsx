@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
 import * as I from './IHowWorks';
 import * as S from './styles';
+import * as G from 'globalStyles/global';
 import { Container } from '../HomeDiscordleList/styles';
 import { Col, FeatherIcons, Row } from 'antd_components';
 import { useTranslation } from 'react-i18next';
 
 export default function HowWorks({ width, botButton }: I.IHowWorks) {
   const isMobile = width <= 875;
-  const { t } = useTranslation('Home');
+  const { t, i18n } = useTranslation('Home');
 
   const cards: I.IHowWorksCard[] = [
     {
@@ -45,7 +46,19 @@ export default function HowWorks({ width, botButton }: I.IHowWorks) {
   return (
     <Fragment>
       <S.Row gutter={[0, 16]} isMobile={isMobile}>
-        <S.Title>{t('titleHowItWorks')}</S.Title>
+        <S.Title>
+          {i18n.language === 'pt-BR' ? (
+            <>
+              Guia do <G.HomeSpan>Discordle</G.HomeSpan> em seu Servidor:
+              Desvende Mistérios Diários!
+            </>
+          ) : (
+            <>
+              <G.HomeSpan>Discordle</G.HomeSpan> Guide in Your Server: Uncover
+              Daily Mysteries!
+            </>
+          )}
+        </S.Title>
 
         <S.Description>{t('descriptionHowItWorks')}</S.Description>
       </S.Row>
