@@ -33,5 +33,7 @@
   "descriptionUpdate": "Update every day at",
   "ranking": "Ranking",
 
-  "placeholderSelect": "Choose a member"
+  "placeholderSelect": "Choose a member",
+
+  "creatingInstance": "Please wait, we are generating a new instance of Discordle. Refresh the page in a few moments."
 }

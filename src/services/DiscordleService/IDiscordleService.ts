@@ -14,8 +14,7 @@ export interface ISessionUser {
 export interface IMessageInstance {
   Messages: IMessage[];
   Authors: IAuthor[];
-  ChannelId: string;
-  GuildId: string;
+  NotCreatedYet: boolean;
 }
 
 export interface IGetDiscordHintsResponse {

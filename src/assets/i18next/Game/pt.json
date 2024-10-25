@@ -33,5 +33,7 @@
   "descriptionUpdate": "Atualização todos os dias ás",
   "ranking": "Classificação",
 
-  "placeholderSelect": "Selecione um membro"
+  "placeholderSelect": "Selecione um membro",
+
+  "creatingInstance": "Aguarde, estamos gerando uma nova instância do Discordle. Atualize a página em alguns instantes"
 }
