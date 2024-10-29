@@ -57,5 +57,7 @@
   "secondFormCreateDiscordleTooltipFormItem": "Na página inicial do Discordle, seu servidor será listado, permitindo a visualização de que seu servidor faz parte do Discordle para o público (Apenas usuários com a senha do servidor poderão acessar)",
   "secondFormCreateDiscordleLabelFormItem": "Exibir servidor na listagem da página inicial:",
   "labelCheckbox": "Habilitar exibição",
-  "confirm": "Confirmar"
+  "confirm": "Confirmar",
+
+  "footer": "Todos os direitos reservados."
 }

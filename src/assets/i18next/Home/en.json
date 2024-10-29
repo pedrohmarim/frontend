@@ -58,5 +58,7 @@
   "secondFormCreateDiscordleTooltipFormItem": "On the Discordle homepage, your server will be listed, allowing the public to see that your server is part of Discordle (Only users with the server password will be able to access).",
   "secondFormCreateDiscordleLabelFormItem": "Show server in homepage listing:",
   "labelCheckbox": "Enable display",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+
+  "footer": "All rights reserved"
 }
