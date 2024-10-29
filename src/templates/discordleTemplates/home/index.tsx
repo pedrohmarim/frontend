@@ -9,10 +9,12 @@ import { Button, Row } from 'antd_components';
 import theme from 'globalStyles/theme';
 import { useTranslation } from 'react-i18next';
 import { getItem } from 'utils/localStorage/User';
+import TermsOfUseModal from './components/TermsOfUseModal';
 
 export default function Home() {
   const [current, setCurrent] = useState('home');
   const [animationActive, setAnimationActive] = useState(true);
+  const [open, setOpen] = useState(false);
   const { windowWidth } = useMyContext();
   const { i18n, t } = useTranslation('Home');
   const [languageLoaded, setLanguageLoaded] = useState(false);
@@ -24,15 +26,7 @@ export default function Home() {
   }, [i18n]);
 
   function onClick() {
-    const clientIdBot = '1089918362311733378';
-    const permissions = '2349018128'; //'8' ADMINISTRADOR;
-
-    const redirectUri = encodeURIComponent(window.location.href);
-
-    const responseType = 'code';
-    const url = `https://discord.com/api/oauth2/authorize?client_id=${clientIdBot}&permissions=${permissions}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=connections%20bot`;
-
-    window.open(url);
+    setOpen(!open);
   }
 
   const BotButton = () => (
@@ -68,6 +62,8 @@ export default function Home() {
       <Head>
         <title>Discordle | {t('tabTitle')}</title>
       </Head>
+
+      <TermsOfUseModal open={open} setOpen={setOpen} />
 
       <Header
         isHome

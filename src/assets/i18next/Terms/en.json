@@ -1,0 +1,23 @@
+{
+  "pageTitle1": "Welcome to Discordle! By accessing and using our platform, you agree to comply with and be bound by the following Terms of Use.",
+  "pageTitle2": "If you do not agree to these terms, please do not use our services.",
+  "title1": "1. Acceptance of Terms",
+  "description1": "By using Discordle, you agree to abide by all the terms and conditions outlined here. These Terms of Use may be updated periodically, and it is your responsibility to check this page to stay informed of any changes.",
+  "title2": "2. Service Description",
+  "description2": "Discordle is a guessing game integrated into Discord text channels, where players try to guess mysterious messages. Each day, the game is refreshed with five new messages, which are stored in our database and automatically deleted the next day.",
+  "title3": "3. Bot Usage",
+  "description3": "To play, the server owner must invite our bot to the server. The bot requires admin permissions to function properly. By inviting the bot, you agree to grant the necessary permissions.",
+  "title4": "4. Scoring and Ranking",
+  "description4": "Players earn points with each correct guess, and a ranking system is available to showcase the top players. Ranking leaders may receive simple administrative perks, such as the ability to change nicknames on the server and, in the future, mute members for a few seconds.",
+  "title5": "5. Custom Settings",
+  "description5": "Server owners have access to an exclusive settings tab in the application, where they can adjust the game's rules and parameters according to their preferences.",
+  "title6": "6. Testing Phase",
+  "description6": "The application is currently in a testing phase, which means there may be instabilities and bugs. By using Discordle, you accept that service functionality and performance may vary during this testing period.",
+  "title7": "7. User Responsibility",
+  "description7": "You agree to use the platform in a responsible and respectful manner, following all Discord community guidelines. Discordle reserves the right to ban users who do not adhere to these guidelines.",
+  "title8": "8. Disclaimer",
+  "description8": "By using the service, you acknowledge that Discordle is not responsible for any damages or losses resulting from the use of the platform.",
+  "title9": "9. Contact",
+  "description9": "If you have questions or concerns about these Terms of Use, please contact us through our support channel.",
+  "btnLabel": "Home"
+}

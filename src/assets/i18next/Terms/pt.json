@@ -1,0 +1,23 @@
+{
+  "pageTitle1": "Bem-vindo ao Discordle! Ao acessar e utilizar a nossa plataforma, você concorda em cumprir e estar vinculado aos seguintes Termos de Uso.",
+  "pageTitle2": "Se você não concordar com estes termos, por favor, não utilize nossos serviços.",
+  "title1": "1. Aceitação dos Termos",
+  "description1": "Ao utilizar o Discordle, você concorda em respeitar todos os termos e condições aqui descritos. Estes Termos de Uso podem ser atualizados periodicamente, e é sua responsabilidade verificar esta página para se manter informado sobre quaisquer alterações.",
+  "title2": "2. Descrição do Serviço",
+  "description2": "O Discordle é um jogo de adivinhação integrado aos canais de texto do Discord, onde os jogadores tentam adivinhar mensagens misteriosas. A cada dia, o jogo é renovado com cinco novas mensagens, que são armazenadas em nosso banco de dados e excluídas automaticamente no dia seguinte.",
+  "title3": "3. Uso do Bot",
+  "description3": "Para jogar, o dono do servidor deve convidar o nosso bot para o servidor. O bot requer permissões de administrador para funcionar corretamente. Ao convidar o bot, você concorda em conceder as permissões necessárias.",
+  "title4": "4. Pontuação e Ranking",
+  "description4": "Os jogadores acumulam pontos a cada acerto, e um sistema de ranking está disponível para mostrar os melhores jogadores. Os líderes do ranking podem receber vantagens administrativas simples, como a capacidade de alterar apelidos no servidor e, futuramente, mutar membros por alguns segundos.",
+  "title5": "5. Configuração Personalizada",
+  "description5": "Os donos dos servidores têm acesso a uma aba exclusiva de configurações na aplicação, onde podem ajustar as regras e parâmetros do jogo de acordo com suas preferências.",
+  "title6": "6. Fase de Testes",
+  "description6": "A aplicação está atualmente em fase de testes, o que significa que podem ocorrer instabilidades e bugs. Ao usar o Discordle, você aceita que as funcionalidades e a performance do serviço podem variar durante este período de testes.",
+  "title7": "7. Responsabilidade do Usuário",
+  "description7": "Você concorda em usar a plataforma de maneira responsável e respeitosa, seguindo todas as diretrizes da comunidade do Discord. O Discordle se reserva o direito de banir usuários que não respeitem estas diretrizes.",
+  "title8": "8. Isenção de Responsabilidade",
+  "description8": "Ao utilizar o serviço, você reconhece que o Discordle não é responsável por quaisquer danos ou perdas decorrentes do uso da plataforma",
+  "title9": "9. Contato",
+  "description9": "Se você tiver dúvidas ou preocupações sobre estes Termos de Uso, entre em contato conosco através do nosso canal de suporte.",
+  "btnLabel": "Início"
+}

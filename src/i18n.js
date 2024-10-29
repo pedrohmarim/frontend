@@ -16,6 +16,7 @@ if (!i18n.isInitialized) {
           GuildInfo: require('./assets/i18next/GuildInfo/pt.json'),
           Game: require('./assets/i18next/Game/pt.json'),
           Ranking: require('./assets/i18next/Ranking/pt.json'),
+          Terms: require('./assets/i18next/Terms/pt.json'),
         },
         en: {
           Home: require('./assets/i18next/Home/en.json'),
@@ -23,10 +24,11 @@ if (!i18n.isInitialized) {
           GuildInfo: require('./assets/i18next/GuildInfo/en.json'),
           Game: require('./assets/i18next/Game/en.json'),
           Ranking: require('./assets/i18next/Ranking/en.json'),
+          Terms: require('./assets/i18next/Terms/en.json'),
         },
       },
       fallbackLng: 'pt-BR', // Idioma padrão
-      ns: ['Home', 'ChooseProfile', 'GuildInfo', 'Game', 'Ranking'], // Múltiplos namespaces
+      ns: ['Home', 'ChooseProfile', 'GuildInfo', 'Game', 'Ranking', 'Terms'], // Múltiplos namespaces
       defaultNS: 'Home', // Namespace padrão
       debug: false,
       interpolation: {

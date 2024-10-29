@@ -28,6 +28,14 @@ export default createGlobalStyle`
   nextjs-portal {
     display: none;
   }
+
+  .next-error-h1{
+    border-color:  ${(props) => props.theme.discordleColors.text} !important;
+  }
+
+  #__next{
+    color:  ${(props) => props.theme.discordleColors.text} !important;
+  }
   
   .ant-divider-inner-text{
     color: ${(props) => props.theme.colors.textSecondary};
