@@ -1,4 +1,6 @@
 import { Notification } from 'antd_components';
+import baseService from '../services/api';
+
 import {
   deleteDiscordleToken,
   deleteUser,
@@ -24,20 +26,20 @@ function DisableLoading() {
   }, 1000);
 }
 
-function RedirectLogin(description: string) {
+function RedirectLogin() {
   deleteUser();
   deleteDiscordleToken();
 
-  alert(`${description}`);
+  // alert(description);
 
   if (typeof window !== 'undefined') {
     if (window.location.pathname.includes('discordle')) {
-      const channelId = window.location.search
+      const guildId = window.location.search
         .replace('?', '')
         .split('&')[0]
         .split('=')[1];
 
-      const guildId = window.location.search
+      const channelId = window.location.search
         .replace('?', '')
         .split('&')[1]
         .split('=')[1];
@@ -64,7 +66,26 @@ export const responseInterceptor = (responseConfig: AxiosResponse) => {
   return responseConfig;
 };
 
-export const requestInterceptor = (
+let isRehydrating = false;
+
+async function rehydrateToken(token: string) {
+  isRehydrating = true;
+
+  const http = baseService();
+  const baseUrl = 'DiscordleMembers';
+
+  const response: AxiosResponse<string> = await http.get(
+    `${baseUrl}/ReyhdrateDiscordleMemberToken`,
+    {
+      params: {
+        token: token,
+      },
+    }
+  );
+  return response.data;
+}
+
+export const requestInterceptor = async (
   requestConfig: InternalAxiosRequestConfig
 ) => {
   const token = getUserToken();
@@ -72,22 +93,33 @@ export const requestInterceptor = (
 
   if (token) {
     const Authorization = `Bearer ${token}`;
-
-    requestConfig.headers = requestConfig.headers || {};
-
     requestConfig.headers['Authorization'] = Authorization as string;
   }
 
   if (discordleToken) {
-    const Authorization = `Bearer discordle ${discordleToken}`;
+    if (!isRehydrating) {
+      try {
+        const newToken = await rehydrateToken(discordleToken);
 
-    requestConfig.headers = requestConfig.headers || {};
-
-    requestConfig.headers['Authorization'] = Authorization as string;
+        if (newToken) {
+          window.localStorage.setItem('discordleToken', newToken);
+          requestConfig.headers[
+            'Authorization'
+          ] = `Bearer discordle ${newToken}`;
+        } else {
+          requestConfig.headers[
+            'Authorization'
+          ] = `Bearer discordle ${discordleToken}`;
+        }
+      } catch {}
+    } else {
+      requestConfig.headers[
+        'Authorization'
+      ] = `Bearer discordle ${discordleToken}`;
+    }
   }
 
   activeRequests++;
-
   ActiveLoading();
 
   return requestConfig;
@@ -124,9 +156,10 @@ export const errorResponseInterceptor = async (
     statusCode === 401 ||
     description.includes('Não autorizado') ||
     description.includes('Not authorized')
-  )
-    RedirectLogin(description);
-  else Notification.error('Error!', description);
+  ) {
+    RedirectLogin();
+  } else
+    Notification.error(language === 'en' ? 'Error!' : 'Erro!', description);
 
   return Promise.reject(error);
 };

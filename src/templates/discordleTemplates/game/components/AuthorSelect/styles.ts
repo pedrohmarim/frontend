@@ -14,11 +14,17 @@ export const Select = styled(SelectAntd).withConfig({
 `;
 
 export const AuthorName = styled.span`
+  display: inline-block;
   margin-left: 10px;
   font-size: 13pt;
   font-weight: 500;
   text-align: left;
   color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 85%;
+  vertical-align: middle;
 `;
 
 export const AuthorHighlight = styled.span`
