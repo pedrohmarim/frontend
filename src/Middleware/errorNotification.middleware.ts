@@ -1,6 +1,6 @@
 import { Notification } from 'antd_components';
+import Swal from 'sweetalert2';
 import baseService from '../services/api';
-
 import {
   deleteDiscordleToken,
   deleteUser,
@@ -26,34 +26,45 @@ function DisableLoading() {
   }, 1000);
 }
 
-function RedirectLogin() {
+let redirectPromise: Promise<void> | null = null;
+
+function RedirectLogin(description: string) {
   deleteUser();
   deleteDiscordleToken();
 
-  // alert(description);
+  if (!redirectPromise) {
+    redirectPromise = new Promise<void>((resolve) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Não autorizado!',
+        text: description ?? 'Sua sessão expirou, realize o login novamente.',
+        confirmButtonText: 'OK',
+        allowOutsideClick: true,
+      }).then((result) => {
+        if (result.isConfirmed || result.isDismissed) {
+          if (typeof window !== 'undefined') {
+            if (window.location.pathname.includes('discordle')) {
+              const params = new URLSearchParams(window.location.search);
 
-  if (typeof window !== 'undefined') {
-    if (window.location.pathname.includes('discordle')) {
-      const guildId = window.location.search
-        .replace('?', '')
-        .split('&')[0]
-        .split('=')[1];
+              const guildId = params.get('guildId');
+              const channelId = params.get('channelId');
+              const code = params.get('code');
 
-      const channelId = window.location.search
-        .replace('?', '')
-        .split('&')[1]
-        .split('=')[1];
+              const backRoute = encodeURIComponent(window.location.href);
 
-      const code = window.location.search
-        .replace('?', '')
-        .split('&')[2]
-        .split('=')[1];
-
-      const backRoute = encodeURIComponent(window.location.href);
-
-      window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}&code=${code}&backRoute=${backRoute}`;
-    } else window.location.href = '/login';
+              window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}&code=${code}&backRoute=${backRoute}`;
+            } else {
+              window.location.href = '/login';
+            }
+          }
+        }
+        resolve();
+        redirectPromise = null;
+      });
+    });
   }
+
+  return redirectPromise;
 }
 
 let activeRequests = 0;
@@ -97,7 +108,9 @@ export const requestInterceptor = async (
   }
 
   if (discordleToken) {
-    if (!isRehydrating) {
+    const isOnChooseProfile = window.location.href.includes('chooseProfile');
+
+    if (!isRehydrating && !isOnChooseProfile) {
       try {
         const newToken = await rehydrateToken(discordleToken);
 
@@ -152,12 +165,19 @@ export const errorResponseInterceptor = async (
 
   if (language === 'en') description = await translateToEnglish(description);
 
-  if (
+  const isUnauthorized =
     statusCode === 401 ||
     description.includes('Não autorizado') ||
-    description.includes('Not authorized')
-  ) {
-    RedirectLogin();
+    description.includes('Not authorized');
+
+  const fromReyhdrateToken = error.request.responseURL.includes(
+    'ReyhdrateDiscordleMemberToken'
+  );
+
+  const isOnChooseProfile = window.location.href.includes('chooseProfile');
+
+  if (isUnauthorized && !fromReyhdrateToken && !isOnChooseProfile) {
+    RedirectLogin(description);
   } else
     Notification.error(language === 'en' ? 'Error!' : 'Erro!', description);
 
