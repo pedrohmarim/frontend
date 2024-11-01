@@ -71,7 +71,7 @@ export default function Terms() {
       <G.MessageContainer margin="30px 25px 30px 25px">
         <S.PageTitle>
           {t('pageTitle1')}
-          <br></br>
+          <br></br> <br></br>
           {t('pageTitle2')}
         </S.PageTitle>
 

@@ -6,7 +6,10 @@ import { getItem } from 'utils/localStorage/User';
 import { useTranslation } from 'react-i18next';
 import theme from 'globalStyles/theme';
 
-export default function ChangeLanguage({ fromHome }: I.IChangeLanguage) {
+export default function ChangeLanguage({
+  fromHome,
+  isMobile,
+}: I.IChangeLanguage) {
   const { i18n } = useTranslation('Home');
   const [selectedLanguage, setSelectedLanguage] = useState('pt-BR');
 
@@ -18,6 +21,7 @@ export default function ChangeLanguage({ fromHome }: I.IChangeLanguage) {
   return (
     <S.Select
       fromhome={fromHome}
+      ismobile={isMobile}
       value={selectedLanguage}
       onChange={(value) => {
         i18n.changeLanguage(String(value));

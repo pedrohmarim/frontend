@@ -42,7 +42,7 @@ export default function Header({
           onClick={() => router.push('/discordle/home')}
         />
 
-        <ChangeLanguage fromHome={false} />
+        <ChangeLanguage fromHome={false} isMobile={false} />
       </S.HeaderRow>
     );
 
@@ -90,7 +90,7 @@ export default function Header({
           />
 
           <Row align="bottom">
-            <ChangeLanguage fromHome />
+            <ChangeLanguage fromHome isMobile={false} />
 
             <S.DesktopMenu
               onClick={onClickMenu}
@@ -102,7 +102,7 @@ export default function Header({
         </S.Row>
       ) : (
         <Fragment>
-          <Row justify="end">
+          <Row justify="space-between">
             <Button
               margin="15px"
               onClick={() => setOpen(!open)}
@@ -117,6 +117,8 @@ export default function Header({
                 />
               }
             />
+
+            <ChangeLanguage fromHome={false} isMobile />
           </Row>
 
           <S.Drawer

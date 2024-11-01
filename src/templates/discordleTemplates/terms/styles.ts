@@ -6,13 +6,16 @@ export const Row = styled(AntdRow)`
   padding: 20px;
   border-radius: 8px;
   width: 50%;
+
+  @media screen and (max-width: 1500px) {
+    width: 100%;
+  }
   word-break: keep-all;
   margin: 0 auto 20px auto;
   text-align: left;
 `;
 
 export const PageTitle = styled.h4`
-  word-break: keep-all;
   line-height: 30px;
   margin-bottom: 20px !important;
 `;
@@ -21,4 +24,7 @@ export const Title = styled.h1`
   margin-bottom: 10px;
 `;
 
-export const Description = styled.span``;
+export const Description = styled.span`
+  text-align: justify;
+  font-size: 12pt;
+`;
