@@ -7,18 +7,25 @@ export const Label = styled.span`
 
 export const Select = styled(AntdSelect).withConfig({
   shouldForwardProp: (prop) =>
-    !['fromhome'].includes(prop) || !['ismobile'].includes(prop),
-})<{ fromhome?: boolean; ismobile?: boolean }>`
-  ${({ fromhome, ismobile }) => {
+    !['fromhome'].includes(prop) ||
+    !['ismobile'].includes(prop) ||
+    !['sessionuser'].includes(prop),
+})<{ fromhome?: boolean; ismobile?: boolean; sessionuser?: boolean }>`
+  ${({ fromhome, ismobile, sessionuser }) => {
     if (fromhome)
       return css`
         margin-bottom: 40px !important;
         margin-right: 15px;
       `;
 
-    if (ismobile)
+    if (ismobile && !sessionuser)
       return css`
         margin-top: 15px;
+      `;
+
+    if (ismobile && sessionuser)
+      return css`
+        margin-right: 70px;
       `;
 
     return css`

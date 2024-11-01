@@ -16,9 +16,12 @@ export default function Header({
   setCurrent,
   setAnimationActive,
 }: I.IHeader) {
-  const { windowWidth } = useMyContext();
+  const { windowWidth, sessionUser } = useMyContext();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const isUserLogged = Boolean(Object.values(sessionUser ?? {}).length);
+  const isMobile = windowWidth <= 875;
 
   const { t } = useTranslation('Home');
 
@@ -42,7 +45,11 @@ export default function Header({
           onClick={() => router.push('/discordle/home')}
         />
 
-        <ChangeLanguage fromHome={false} isMobile={false} />
+        <ChangeLanguage
+          fromHome={false}
+          isMobile={isMobile}
+          sessionUser={isUserLogged}
+        />
       </S.HeaderRow>
     );
 
@@ -90,7 +97,11 @@ export default function Header({
           />
 
           <Row align="bottom">
-            <ChangeLanguage fromHome isMobile={false} />
+            <ChangeLanguage
+              fromHome
+              isMobile={isMobile}
+              sessionUser={isUserLogged}
+            />
 
             <S.DesktopMenu
               onClick={onClickMenu}
@@ -118,7 +129,11 @@ export default function Header({
               }
             />
 
-            <ChangeLanguage fromHome={false} isMobile />
+            <ChangeLanguage
+              fromHome={false}
+              isMobile={isMobile}
+              sessionUser={isUserLogged}
+            />
           </Row>
 
           <S.Drawer

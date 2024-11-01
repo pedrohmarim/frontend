@@ -9,6 +9,7 @@ import theme from 'globalStyles/theme';
 export default function ChangeLanguage({
   fromHome,
   isMobile,
+  sessionUser,
 }: I.IChangeLanguage) {
   const { i18n } = useTranslation('Home');
   const [selectedLanguage, setSelectedLanguage] = useState('pt-BR');
@@ -20,6 +21,7 @@ export default function ChangeLanguage({
 
   return (
     <S.Select
+      sessionuser={sessionUser}
       fromhome={fromHome}
       ismobile={isMobile}
       value={selectedLanguage}
