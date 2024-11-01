@@ -27,7 +27,7 @@ export default function ConfigurationModal({
     const language = getItem('i18nextLng');
 
     if (language === 'pt-BR')
-      return `O apelido de '${username}', foi alterado para `;
+      return `O apelido de '${username}', foi alterado para '${newNickname}'.`;
     else
       return `The '${username}' nickname has been changed to '${newNickname}'.`;
   }

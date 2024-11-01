@@ -19,5 +19,10 @@
   "description8": "Reservamo-nos o direito de modificar estes Termos de Uso a qualquer momento, e tais alterações entrarão em vigor imediatamente após a publicação. Recomendamos que revise regularmente os Termos para estar ciente das atualizações.",
   "title9": "9. Disposições Finais",
   "description9": "Estes Termos são regidos pela legislação aplicável ao consumidor e visam manter a transparência e a segurança jurídica para ambas as partes. Em caso de dúvidas ou para relatar problemas, entre em contato por meio de nossos canais de suporte.",
-  "btnLabel": "Início"
+  "btnLabel": "Início",
+
+  "modalTitle": "Antes de começar a usar o Discordle, por favor, leia atentamente nossos Termos de Uso. Eles contêm informações importantes sobre seus direitos e responsabilidades ao utilizar nossa plataforma, incluindo detalhes sobre o funcionamento do jogo, uso do bot e diretrizes da comunidade. Ao clicar em &quot;Concordo&quot;, você aceita todos os termos estabelecidos. Leia aqui os",
+  "modalTitle2": "Termos de uso",
+  "btn1": "Eu concordo",
+  "btn2": "Não concordo"
 }

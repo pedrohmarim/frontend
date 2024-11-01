@@ -1,4 +1,3 @@
-import { Notification } from 'antd_components';
 import Swal from 'sweetalert2';
 import baseService from '../services/api';
 import {
@@ -159,6 +158,8 @@ export const errorResponseInterceptor = async (
     error.response?.data.error_description ??
     'Não foi possível conectar-se ao servidor.';
 
+  description = description.replace(/'([^']*)'/g, '<b>$1</b>');
+
   const statusCode = error.response?.status ?? error.response?.data.Status;
 
   const language = getItem('i18nextLng');
@@ -179,7 +180,11 @@ export const errorResponseInterceptor = async (
   if (isUnauthorized && !fromReyhdrateToken && !isOnChooseProfile) {
     RedirectLogin(description);
   } else
-    Notification.error(language === 'en' ? 'Error!' : 'Erro!', description);
+    Swal.fire({
+      icon: 'error',
+      title: language === 'en' ? 'Error!' : 'Erro!',
+      html: description,
+    });
 
   return Promise.reject(error);
 };

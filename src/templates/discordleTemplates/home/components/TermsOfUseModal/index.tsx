@@ -3,8 +3,11 @@ import * as I from './ITermsOfUse';
 import * as S from './styles';
 import { Button, Modal, Row } from 'antd_components';
 import theme from 'globalStyles/theme';
+import { useTranslation } from 'react-i18next';
 
 export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
+  const { t } = useTranslation('Terms');
+
   const footer = () => (
     <Row justify="end">
       <Button
@@ -13,7 +16,7 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
         backgroundcolor={theme.discordleColors.text}
         onClick={() => setOpen(!open)}
       >
-        Não concordo
+        {t('btn2')}
       </Button>
 
       <Button
@@ -21,7 +24,7 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
           setOpen(!open);
 
           const clientIdBot = '1089918362311733378';
-          const permissions = '2349018128'; //'8' ADMINISTRADOR;
+          const permissions = '2281770000'; //'8' ADMINISTRADOR;
 
           const redirectUri = encodeURIComponent(window.location.href);
 
@@ -35,7 +38,7 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
         backgroundcolor={theme.discordleColors.primary}
         color={theme.discordleColors.text}
       >
-        Eu concordo
+        {t('btn1')}
       </Button>
     </Row>
   );
@@ -46,17 +49,12 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
       footer={footer}
       maskClosable
       onCancel={() => setOpen(!open)}
-      title={<S.ModalTitle>Termos de Uso</S.ModalTitle>}
+      title={<S.ModalTitle>{t('modalTitle2')}</S.ModalTitle>}
     >
       <S.Span>
-        Antes de começar a usar o Discordle, por favor, leia atentamente nossos
-        Termos de Uso. Eles contêm informações importantes sobre seus direitos e
-        responsabilidades ao utilizar nossa plataforma, incluindo detalhes sobre
-        o funcionamento do jogo, uso do bot e diretrizes da comunidade. Ao
-        clicar em &quot;Concordo&quot;, você aceita todos os termos
-        estabelecidos. Leia aqui os{' '}
+        {t('modalTitle')}{' '}
         <a href={window.location.href.replace('home', 'terms')} target="_blank">
-          Termos de uso
+          {t('modalTitle2')}
         </a>
         .
       </S.Span>

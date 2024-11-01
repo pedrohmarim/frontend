@@ -19,5 +19,10 @@
   "description8": "We reserve the right to modify these Terms of Use at any time, and such changes will take effect immediately upon publication. We recommend that you regularly review the Terms to stay informed about updates.",
   "title9": "9. Final Provisions",
   "description9": "These Terms are governed by applicable consumer law and aim to ensure transparency and legal security for both parties. If you have any questions or wish to report issues, please contact us through our support channels.",
-  "btnLabel": "Home"
+  "btnLabel": "Home",
+
+  "modalTitle": "Before you start using Discordle, please carefully read our Terms of Use. They contain important information about your rights and responsibilities while using our platform, including details on game mechanics, bot usage, and community guidelines. By clicking \"I Agree,\" you accept all the terms outlined. Read the",
+  "modalTitle2": "Terms of Use",
+  "btn1": "I Agree",
+  "btn2": "I Don't Agree"
 }
