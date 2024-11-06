@@ -28,6 +28,12 @@ export const Title = styled.h2`
   margin-bottom: 10px;
 `;
 
+export const TitleDescriptions = styled.h4`
+  word-break: keep-all;
+  margin: 0 auto 15px auto;
+  width: 80%;
+`;
+
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.discordleColors.background};
   border-radius: 8px;

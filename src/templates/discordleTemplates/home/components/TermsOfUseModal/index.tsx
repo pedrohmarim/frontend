@@ -47,6 +47,10 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
       label: t('permission_label5'),
       value: t('permission_description5'),
     },
+    {
+      label: t('permission_label6'),
+      value: t('permission_description6'),
+    },
   ] as I.IDescriptions[];
 
   const footer = () =>
@@ -109,9 +113,18 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
         setShowDescriptions(!showDescriptions);
       }}
       title={
-        <S.ModalTitle>
-          {!showDescriptions ? t('modalTitle2') : t('modalTitleDescriptions')}
-        </S.ModalTitle>
+        <Fragment>
+          <S.ModalTitle>
+            {!showDescriptions ? t('modalTitle2') : t('modalTitleDescriptions')}
+          </S.ModalTitle>
+
+          <Divider
+            style={{
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              marginBottom: '-15px',
+            }}
+          />
+        </Fragment>
       }
     >
       {!showDescriptions ? (
@@ -127,13 +140,11 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
         </S.Span>
       ) : (
         <Fragment>
-          <Divider
-            style={{
-              borderColor: 'rgba(255, 255, 255, 0.2)',
-            }}
-          />
-
           <G.MessageContainer>
+            <S.TitleDescriptions>
+              {t('modalTitle2Descriptions')}
+            </S.TitleDescriptions>
+
             <Row gutter={[16, 16]}>
               {description.map(({ label, value }, index) => (
                 <Col xs={24} sm={12} md={8} key={index}>

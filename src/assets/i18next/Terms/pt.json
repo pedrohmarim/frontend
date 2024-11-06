@@ -27,6 +27,7 @@
   "btn2": "Não concordo",
 
   "modalTitleDescriptions": "Descrição de permissões que serão concedidas ao bot",
+  "modalTitle2Descriptions": "O bot precisa de algumas permissões administrativas, que são importantes para seu funcionamento correto. Abaixo, explicamos a razão de cada uma para evitar dúvidas.",
   "permission_label1": "Gerenciar Canais",
   "permission_description1": "Necessário para criar o canal 'daily-discordle' ao entrar no servidor. Este canal será usado para informar sobre eventos, como a criação do jogo, atualização das mensagens diárias, e quando alguém completa o Discordle do dia.",
   "permission_label2": "Gerenciar Apelidos",
@@ -37,6 +38,8 @@
   "permission_description4": "Necessário para que o bot se comunique no canal 'daily-discordle'.",
   "permission_label5": "Visualizar Histórico de Mensagens",
   "permission_description5": "Habilita o bot a ler mensagens anteriores para selecioná-las no jogo.",
+  "permission_label6": "Usar comandos de aplicativos",
+  "permission_description6": "O bot retorna um token de acesso ao digitar '/code' no canal do Discordle criado, para o respectivo usuário realizar um rápido login.",
 
   "btn3": "Fechar",
   "btn4": "Convidar bot"
