@@ -6,13 +6,13 @@ export const Row = styled(AntdRow)`
   padding: 20px;
   border-radius: 8px;
   width: 50%;
+  word-break: keep-all;
+  margin: 0 auto 20px auto;
+  text-align: left;
 
   @media screen and (max-width: 1500px) {
     width: 100%;
   }
-  word-break: keep-all;
-  margin: 0 auto 20px auto;
-  text-align: left;
 `;
 
 export const PageTitle = styled.h4`

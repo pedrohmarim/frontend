@@ -21,8 +21,23 @@
   "description9": "These Terms are governed by applicable consumer law and aim to ensure transparency and legal security for both parties. If you have any questions or wish to report issues, please contact us through our support channels.",
   "btnLabel": "Home",
 
-  "modalTitle": "Before you start using Discordle, please carefully read our Terms of Use. They contain important information about your rights and responsibilities while using our platform, including details on game mechanics, bot usage, and community guidelines. By clicking \"I Agree,\" you accept all the terms outlined. Read the",
+  "modalTitle": "Before you start using Discordle, please carefully read our Terms of Use. They contain important information about your rights and responsibilities while using our platform, including details on game mechanics, bot usage, and community guidelines. By clicking \"I Agree\", you accept all the terms outlined. Read the",
   "modalTitle2": "Terms of Use",
   "btn1": "I Agree",
-  "btn2": "I Don't Agree"
+  "btn2": "I Don't Agree",
+
+  "modalTitleDescriptions": "Description of the permissions that will be granted to the bot",
+  "permission_label1": "Manage Channels",
+  "permission_description1": "Required to create the 'daily-discordle' channel upon joining the server. This channel will be used to inform about events, such as game creation, daily message updates, and when someone completes the daily Discordle.",
+  "permission_label2": "Manage Nicknames",
+  "permission_description2": "Allows the top-ranked player to change friends' nicknames on the server. This function is optional for participants and may include the option to temporarily mute a friend in the future.",
+  "permission_label3": "View Channels",
+  "permission_description3": "Enables the bot to list all text channels, allowing the user to select which channel the game will be configured from.",
+  "permission_label4": "Send Messages",
+  "permission_description4": "Required for the bot to communicate in the 'daily-discordle' channel.",
+  "permission_label5": "View Message History",
+  "permission_description5": "Enables the bot to read previous messages to select them for the game.",
+
+  "btn3": "Close",
+  "btn4": "Invite bot"
 }

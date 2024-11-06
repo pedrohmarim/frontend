@@ -21,8 +21,23 @@
   "description9": "Estes Termos são regidos pela legislação aplicável ao consumidor e visam manter a transparência e a segurança jurídica para ambas as partes. Em caso de dúvidas ou para relatar problemas, entre em contato por meio de nossos canais de suporte.",
   "btnLabel": "Início",
 
-  "modalTitle": "Antes de começar a usar o Discordle, por favor, leia atentamente nossos Termos de Uso. Eles contêm informações importantes sobre seus direitos e responsabilidades ao utilizar nossa plataforma, incluindo detalhes sobre o funcionamento do jogo, uso do bot e diretrizes da comunidade. Ao clicar em &quot;Concordo&quot;, você aceita todos os termos estabelecidos. Leia aqui os",
+  "modalTitle": "Antes de começar a usar o Discordle, por favor, leia atentamente nossos Termos de Uso. Eles contêm informações importantes sobre seus direitos e responsabilidades ao utilizar nossa plataforma, incluindo detalhes sobre o funcionamento do jogo, uso do bot e diretrizes da comunidade. Ao clicar em \"Concordo\", você aceita todos os termos estabelecidos. Leia aqui os",
   "modalTitle2": "Termos de uso",
   "btn1": "Eu concordo",
-  "btn2": "Não concordo"
+  "btn2": "Não concordo",
+
+  "modalTitleDescriptions": "Descrição de permissões que serão concedidas ao bot",
+  "permission_label1": "Gerenciar Canais",
+  "permission_description1": "Necessário para criar o canal 'daily-discordle' ao entrar no servidor. Este canal será usado para informar sobre eventos, como a criação do jogo, atualização das mensagens diárias, e quando alguém completa o Discordle do dia.",
+  "permission_label2": "Gerenciar Apelidos",
+  "permission_description2": "Permite que o jogador com mais pontos altere apelidos de amigos no servidor. Essa função é opcional para os participantes e, no futuro, pode incluir a opção de mutar um amigo temporariamente.",
+  "permission_label3": "Visualizar Canais",
+  "permission_description3": "Autoriza o bot a listar todos os canais de texto, permitindo que o usuário escolha de qual canal o jogo será configurado.",
+  "permission_label4": "Enviar Mensagens",
+  "permission_description4": "Necessário para que o bot se comunique no canal 'daily-discordle'.",
+  "permission_label5": "Visualizar Histórico de Mensagens",
+  "permission_description5": "Habilita o bot a ler mensagens anteriores para selecioná-las no jogo.",
+
+  "btn3": "Fechar",
+  "btn4": "Convidar bot"
 }

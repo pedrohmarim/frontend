@@ -27,7 +27,7 @@ function DisableLoading() {
 
 let redirectPromise: Promise<void> | null = null;
 
-function RedirectLogin(description: string) {
+function RedirectLogin(description: string, language: string) {
   deleteUser();
   deleteDiscordleToken();
 
@@ -35,8 +35,8 @@ function RedirectLogin(description: string) {
     redirectPromise = new Promise<void>((resolve) => {
       Swal.fire({
         icon: 'error',
-        title: 'Não autorizado!',
-        text: description ?? 'Sua sessão expirou, realize o login novamente.',
+        title: language === 'en' ? 'Not authorized!' : 'Não autorizado!',
+        text: description,
         confirmButtonText: 'OK',
         allowOutsideClick: true,
       }).then((result) => {
@@ -52,9 +52,7 @@ function RedirectLogin(description: string) {
               const backRoute = encodeURIComponent(window.location.href);
 
               window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}&code=${code}&backRoute=${backRoute}`;
-            } else {
-              window.location.href = '/login';
-            }
+            } else window.location.href = '/login';
           }
         }
         resolve();
@@ -178,7 +176,7 @@ export const errorResponseInterceptor = async (
   const isOnChooseProfile = window.location.href.includes('chooseProfile');
 
   if (isUnauthorized && !fromReyhdrateToken && !isOnChooseProfile) {
-    RedirectLogin(description);
+    RedirectLogin(description, language ?? 'pt-BR');
   } else
     Swal.fire({
       icon: 'error',
