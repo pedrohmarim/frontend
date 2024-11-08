@@ -13,7 +13,8 @@ export const Card = styled.div`
   transition: all 0.2s;
   min-width: 180px;
   max-width: 180px;
-  height: 220px;
+  min-height: fit-content;
+  max-height: 280px;
   margin: 25px 10px;
 
   :hover {
@@ -31,6 +32,7 @@ export const Username = styled.span`
   margin-top: 10px;
   max-width: 100%;
   word-break: break-all;
+  text-align: center;
   font-size: 14pt;
 `;
 
