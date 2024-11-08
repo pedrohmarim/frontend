@@ -110,7 +110,7 @@ export default function TermsOfUseModal({ open, setOpen }: I.ITermsOfUse) {
       maskClosable
       onCancel={() => {
         setOpen(!open);
-        setShowDescriptions(!showDescriptions);
+        setShowDescriptions(false);
       }}
       title={
         <Fragment>
