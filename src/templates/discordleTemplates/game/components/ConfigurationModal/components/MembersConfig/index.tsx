@@ -1,5 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
+import { IMember } from 'services/DiscordleService/IDiscordleService';
+import * as S from './styles';
+import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
+import { Form } from 'antd';
+import theme from 'globalStyles/theme';
+import Swal from 'sweetalert2';
 import {
   Avatar,
   Button,
@@ -8,13 +15,6 @@ import {
   Row,
   Select,
 } from 'antd_components';
-import { useTranslation } from 'react-i18next';
-import { IMember } from 'services/DiscordleService/IDiscordleService';
-import * as S from './styles';
-import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
-import { Form } from 'antd';
-import theme from 'globalStyles/theme';
-import Swal from 'sweetalert2';
 
 export default function MembersConfig() {
   const router = useRouter();
@@ -47,8 +47,8 @@ export default function MembersConfig() {
     if (isOwner) {
       Swal.fire({
         icon: 'warning',
-        title: 'Atenção',
-        text: 'O dono do servidor sempre precisa estar presente na instância.',
+        title: t('warnTitle'),
+        text: t('warnDescription'),
         confirmButtonText: 'OK',
         allowOutsideClick: true,
       });
@@ -66,8 +66,8 @@ export default function MembersConfig() {
     if (membersSelected.length === 0)
       Swal.fire({
         icon: 'warning',
-        title: 'Atenção',
-        text: 'Selecione pelo menos um usuário',
+        title: t('warnTitle'),
+        text: t('warnDescription2'),
         confirmButtonText: 'OK',
         allowOutsideClick: true,
       });
@@ -78,10 +78,10 @@ export default function MembersConfig() {
       if (channelId && code && guildId) {
         Swal.fire({
           icon: 'warning',
-          title: 'Atenção',
-          text: 'Usuários serão adicionados e removidos da instância, os removidos perderão os seus pontos no ranking! E caso um membro removido tiver uma mensagem escolhida na instância atual, a instância será resetada!',
-          confirmButtonText: 'Quero continuar',
-          cancelButtonText: 'Cancelar',
+          title: t('warnTitle'),
+          text: t('warnDescription3'),
+          confirmButtonText: t('btnText1'),
+          cancelButtonText: t('btnText2'),
           showCancelButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
@@ -91,7 +91,10 @@ export default function MembersConfig() {
               code.toString(),
               membersSelected
             ).then(() =>
-              Notification.success('Succeso', 'Lista de membros atualizada.')
+              Notification.success(
+                t('notificationTitle'),
+                t('notificationDesc')
+              )
             );
           }
         });
@@ -125,12 +128,12 @@ export default function MembersConfig() {
   return (
     <Fragment>
       <Form layout="vertical">
-        <Form.Item label="Lista de membros da instância do Discordle">
+        <Form.Item label={t('formItemLabel')}>
           <Select
             showSearch={false}
             mode="multiple"
             value={membersSelected}
-            placeholder="Escolha os usuários que irão participar do Discordle"
+            placeholder={t('formItemPlaceholder')}
             style={{ width: '100%' }}
             onDeselect={(memberId) => handleDeselect(memberId as string)}
             onChange={handleChange}
@@ -162,7 +165,7 @@ export default function MembersConfig() {
           color={theme.discordleColors.text}
           onClick={onSubmit}
         >
-          Confirmar
+          {t('confirm')}
         </Button>
       </Row>
 

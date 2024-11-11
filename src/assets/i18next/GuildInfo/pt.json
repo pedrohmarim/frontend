@@ -40,5 +40,15 @@
   "popConfirmTitle": "Tem certeza que deseja resetar o ranking?",
   "confirm": "Confirmar",
   "cancel": "Cancelar",
-  "resetRanking": "Resetar ranking"
+  "resetRanking": "Resetar ranking",
+
+  "warnTitle": "Aviso!",
+  "warnDescription": "O dono do servidor sempre precisa estar presente na instância.",
+  "warnDescription2": "Selecione pelo menos um usuário",
+  "warnDescription3": "Usuários serão adicionados e removidos da instância, os removidos perderão os seus pontos no ranking! E caso um membro removido tiver uma mensagem escolhida na instância atual, a instância será resetada!",
+  "btnText": "Quero continuar",
+  "btnText2": "Cancelar",
+  "notificationDesc": "Lista de membros atualizada.",
+  "formItemLabel": "Lista de membros da instância do Discordle",
+  "formItemPlaceholder": "Escolha os usuários que irão participar do Discordle"
 }

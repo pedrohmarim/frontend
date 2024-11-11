@@ -40,5 +40,15 @@
   "popConfirmTitle": "Are you sure you want to reset the ranking?",
   "confirm": "Confirm",
   "cancel": "Cancel",
-  "resetRanking": "Reset ranking"
+  "resetRanking": "Reset ranking",
+
+  "warnTitle": "Warning!",
+  "warnDescription": "The server owner must always be present in the instance.",
+  "warnDescription2": "Select at least one user",
+  "warnDescription3": "Users will be added and removed from the instance, and those removed will lose their ranking points! If a removed member has a selected message in the current instance, the instance will be reset!",
+  "btnText": "I want to continue",
+  "btnText2": "Cancel",
+  "notificationDesc": "Member list updated.",
+  "formItemLabel": "Discordle instance member list",
+  "formItemPlaceholder": "Choose the users who will participate in Discordle"
 }
