@@ -98,10 +98,16 @@ export interface IGuildsDto {
   Icon: string;
 }
 
+export interface IGetAllChannelMembersForSelectComponent {
+  Members: IMember[];
+  MembersIdsSelected: string[];
+}
+
 export interface IMember {
   Id: string;
   Username: string;
   AvatarUrl: string;
+  IsOwner: boolean;
 }
 
 export interface IRankingTableData {

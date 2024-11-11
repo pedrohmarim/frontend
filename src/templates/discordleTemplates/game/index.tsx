@@ -169,12 +169,10 @@ export default function GameContainer() {
       <Head>
         <title>Discordle | {t('tabTitle')}</title>
       </Head>
-
       <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
-
       <GuildInfo openModal={openModal} setOpenModal={setOpenModal} />
 
-      {notCreatedYet ? (
+      {notCreatedYet && (
         <MessageContainer width="100%" height="300px" margin="10px 0 0 0">
           <S.Container>
             <LoadingOutlined
@@ -185,7 +183,9 @@ export default function GameContainer() {
             {t('creatingInstance')}
           </S.Container>
         </MessageContainer>
-      ) : (
+      )}
+
+      {!notCreatedYet && (
         <Fragment>
           {!alreadyAnswered ? (
             <MessageSteps

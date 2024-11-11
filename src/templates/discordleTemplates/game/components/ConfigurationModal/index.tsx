@@ -2,13 +2,14 @@ import React from 'react';
 import * as I from './IConfigurationModal';
 import * as S from './styles';
 import theme from 'globalStyles/theme';
-import GameConfig from './components/GameConfig';
-import PrivacyConfig from './components/PrivacyConfig';
-import RankingConfig from './components/RankingConfig';
 import { Button, Modal, Row, FeatherIcons, Tabs } from 'antd_components';
 import { TabsProps } from 'antd';
-import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComponents/formCreateDiscordleInstance';
 import { useTranslation } from 'react-i18next';
+import GameConfig from './components/GameConfig';
+import MembersConfig from './components/MembersConfig';
+import PrivacyConfig from './components/PrivacyConfig';
+import RankingConfig from './components/RankingConfig';
+import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComponents/formCreateDiscordleInstance';
 
 export default function ConfigurationModal({
   openModal,
@@ -18,9 +19,19 @@ export default function ConfigurationModal({
 
   const items: TabsProps['items'] = [
     {
-      key: '1',
-      label: t('configTabModal1'),
-      children: <FormCreateDiscordleInstance />,
+      key: '3',
+      label: t('configTabModal3'),
+      children: <GameConfig />,
+    },
+    {
+      key: '5',
+      label: t('configTabModal5'),
+      children: <MembersConfig />,
+    },
+    {
+      key: '4',
+      label: t('configTabModal4'),
+      children: <RankingConfig />,
     },
     {
       key: '2',
@@ -28,20 +39,15 @@ export default function ConfigurationModal({
       children: <PrivacyConfig />,
     },
     {
-      key: '3',
-      label: t('configTabModal3'),
-      children: <GameConfig />,
-    },
-    {
-      key: '4',
-      label: t('configTabModal4'),
-      children: <RankingConfig />,
+      key: '1',
+      label: t('configTabModal1'),
+      children: <FormCreateDiscordleInstance />,
     },
   ];
 
   return (
     <Modal
-      open={openModal}
+      open
       footer={false}
       destroyOnClose
       onCancel={() => setOpenModal(!openModal)}
@@ -57,7 +63,7 @@ export default function ConfigurationModal({
         </Row>
       }
     >
-      <Tabs defaultActiveKey="1" items={items} />
+      <Tabs defaultActiveKey="3" items={items} />
 
       <Row justify="center">
         <Button

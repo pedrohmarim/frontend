@@ -1,6 +1,10 @@
 import baseService from '../../api';
 import { AxiosResponse } from 'axios';
-import { IMember, ISessionUser } from '../IDiscordleService';
+import {
+  IGetAllChannelMembersForSelectComponent,
+  IMember,
+  ISessionUser,
+} from '../IDiscordleService';
 
 const http = baseService();
 const baseUrl = 'DiscordleMembers';
@@ -15,6 +19,32 @@ const ApiAuth = {
       }
     );
     return response.data;
+  },
+  GetAllChannelMembersForSelectComponent: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
+    const response: AxiosResponse<IGetAllChannelMembersForSelectComponent> =
+      await http.post(`${baseUrl}/GetAllChannelMembersForSelectComponent`, {
+        GuildId: guildId,
+        ChannelId: channelId,
+        Code: code,
+      });
+    return response.data;
+  },
+  UpdateChannelMembers: async function (
+    guildId: string,
+    channelId: string,
+    code: string,
+    membersIds: string[]
+  ) {
+    await http.post(`${baseUrl}/UpdateChannelMembers`, {
+      GuildId: guildId,
+      ChannelId: channelId,
+      Code: code,
+      MembersIds: membersIds,
+    });
   },
   GetChannelMemberBySearchValue: async function (
     searchValue: string,
