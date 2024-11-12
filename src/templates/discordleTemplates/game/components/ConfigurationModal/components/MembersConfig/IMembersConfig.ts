@@ -1,3 +1,3 @@
 export interface IMembersConfig {
-  loadChoosedMessages(): void;
+  loadChoosedMessages?(): void;
 }

@@ -99,7 +99,7 @@ export default function MembersConfig({
                 t('notificationDesc')
               );
 
-              if (reloadInstance) loadChoosedMessages();
+              if (reloadInstance && loadChoosedMessages) loadChoosedMessages();
             });
           }
         });
