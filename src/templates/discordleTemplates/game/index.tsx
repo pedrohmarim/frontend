@@ -45,7 +45,7 @@ export default function GameContainer() {
     if (result) i18n.changeLanguage(result);
   }, [i18n]);
 
-  useEffect(() => {
+  function LoadChoosedMessages() {
     if (router.isReady) {
       const { channelId, guildId, code } = router.query;
 
@@ -92,6 +92,10 @@ export default function GameContainer() {
           .then(() => setLoading(false));
       }
     }
+  }
+
+  useEffect(() => {
+    LoadChoosedMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
@@ -169,7 +173,13 @@ export default function GameContainer() {
       <Head>
         <title>Discordle | {t('tabTitle')}</title>
       </Head>
-      <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
+
+      <ConfigurationModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        loadChoosedMessages={LoadChoosedMessages}
+      />
+
       <GuildInfo openModal={openModal} setOpenModal={setOpenModal} />
 
       {notCreatedYet && (

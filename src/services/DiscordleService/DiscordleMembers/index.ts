@@ -39,12 +39,16 @@ const ApiAuth = {
     code: string,
     membersIds: string[]
   ) {
-    await http.post(`${baseUrl}/UpdateChannelMembers`, {
-      GuildId: guildId,
-      ChannelId: channelId,
-      Code: code,
-      MembersIds: membersIds,
-    });
+    const response: AxiosResponse<boolean> = await http.post(
+      `${baseUrl}/UpdateChannelMembers`,
+      {
+        GuildId: guildId,
+        ChannelId: channelId,
+        Code: code,
+        MembersIds: membersIds,
+      }
+    );
+    return response.data;
   },
   GetChannelMemberBySearchValue: async function (
     searchValue: string,

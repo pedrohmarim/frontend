@@ -46,7 +46,7 @@
   "warnDescription": "O dono do servidor sempre precisa estar presente na instância.",
   "warnDescription2": "Selecione pelo menos um usuário",
   "warnDescription3": "Usuários serão adicionados e removidos da instância, os removidos perderão os seus pontos no ranking! E caso um membro removido tiver uma mensagem escolhida na instância atual, a instância será resetada!",
-  "btnText": "Quero continuar",
+  "btnText1": "Quero continuar",
   "btnText2": "Cancelar",
   "notificationDesc": "Lista de membros atualizada.",
   "formItemLabel": "Lista de membros da instância do Discordle",

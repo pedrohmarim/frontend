@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { IMember } from 'services/DiscordleService/IDiscordleService';
 import * as S from './styles';
+import * as I from './IMembersConfig';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
 import { Form } from 'antd';
 import theme from 'globalStyles/theme';
@@ -16,7 +17,9 @@ import {
   Select,
 } from 'antd_components';
 
-export default function MembersConfig() {
+export default function MembersConfig({
+  loadChoosedMessages,
+}: I.IMembersConfig) {
   const router = useRouter();
   const { t } = useTranslation('GuildInfo');
 
@@ -90,12 +93,14 @@ export default function MembersConfig() {
               channelId.toString(),
               code.toString(),
               membersSelected
-            ).then(() =>
+            ).then((reloadInstance) => {
               Notification.success(
                 t('notificationTitle'),
                 t('notificationDesc')
-              )
-            );
+              );
+
+              if (reloadInstance) loadChoosedMessages();
+            });
           }
         });
       }

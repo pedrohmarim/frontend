@@ -13,6 +13,7 @@ import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComp
 
 export default function ConfigurationModal({
   openModal,
+  loadChoosedMessages,
   setOpenModal,
 }: I.IConfigurationModal) {
   const { t } = useTranslation('GuildInfo');
@@ -26,7 +27,7 @@ export default function ConfigurationModal({
     {
       key: '5',
       label: t('configTabModal5'),
-      children: <MembersConfig />,
+      children: <MembersConfig loadChoosedMessages={loadChoosedMessages} />,
     },
     {
       key: '4',
@@ -47,7 +48,7 @@ export default function ConfigurationModal({
 
   return (
     <Modal
-      open={openModal}
+      open
       footer={false}
       destroyOnClose
       onCancel={() => setOpenModal(!openModal)}
