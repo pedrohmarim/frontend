@@ -48,7 +48,7 @@ export default function ConfigurationModal({
 
   return (
     <Modal
-      open
+      open={openModal}
       footer={false}
       destroyOnClose
       onCancel={() => setOpenModal(!openModal)}
