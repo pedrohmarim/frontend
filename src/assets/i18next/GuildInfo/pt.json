@@ -50,5 +50,7 @@
   "btnText2": "Cancelar",
   "notificationDesc": "Lista de membros atualizada.",
   "formItemLabel": "Lista de membros da instância do Discordle",
-  "formItemPlaceholder": "Escolha os usuários que irão participar do Discordle"
+  "formItemPlaceholder": "Escolha os usuários que irão participar do Discordle",
+
+  "descriptionTitle": "Selecione abaixo os usuários que irão fazer parte do Discordle"
 }

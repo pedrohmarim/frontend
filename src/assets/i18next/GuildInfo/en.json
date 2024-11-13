@@ -50,5 +50,7 @@
   "btnText2": "Cancel",
   "notificationDesc": "Member list updated.",
   "formItemLabel": "Discordle instance member list",
-  "formItemPlaceholder": "Choose the users who will participate in Discordle"
+  "formItemPlaceholder": "Choose the users who will participate in Discordle",
+
+  "descriptionTitle": "Select the users below who will participate in Discordle"
 }

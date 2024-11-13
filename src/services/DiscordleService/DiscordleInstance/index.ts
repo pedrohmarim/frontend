@@ -27,6 +27,21 @@ const ApiAuth = {
     );
     return response.data;
   },
+  GetDiscordleInstanceStatus: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
+    const response: AxiosResponse<number> = await http.post(
+      `${baseUrl}/GetDiscordleInstanceStatus`,
+      {
+        GuildId: guildId,
+        ChannelId: channelId,
+        Code: code,
+      }
+    );
+    return response.data;
+  },
   UpdateSwitchDiscordleInstance: async function (data: IChangeSwitchRequest) {
     const response: AxiosResponse<void> = await http.post(
       `${baseUrl}/UpdateSwitchDiscordleInstance`,

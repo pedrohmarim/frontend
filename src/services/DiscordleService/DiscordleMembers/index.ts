@@ -37,7 +37,8 @@ const ApiAuth = {
     guildId: string,
     channelId: string,
     code: string,
-    membersIds: string[]
+    membersIds: string[],
+    fromChooseprofile: boolean
   ) {
     const response: AxiosResponse<boolean> = await http.post(
       `${baseUrl}/UpdateChannelMembers`,
@@ -46,6 +47,7 @@ const ApiAuth = {
         ChannelId: channelId,
         Code: code,
         MembersIds: membersIds,
+        FromChooseprofile: fromChooseprofile,
       }
     );
     return response.data;
