@@ -20,8 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { getItem } from 'utils/localStorage/User';
 import { MessageContainer } from 'globalStyles/global';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useWebSocket } from 'utils/websocket';
-import { IWebSocketResponse } from 'utils/websocket/IWebSocketResponse';
+import { GetWebSocketMessage } from 'utils/websocket';
 import {
   IAuthor,
   IScoreInstance,
@@ -31,7 +30,7 @@ export default function GameContainer() {
   const { i18n, t } = useTranslation('Game');
   const { switchValues } = useMyContext();
   const router = useRouter();
-  const websocket = useWebSocket();
+  const webSocketMessage = GetWebSocketMessage();
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
   const [answers, setAnswers] = useState<I.IAnswer[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
@@ -105,32 +104,15 @@ export default function GameContainer() {
   }, [router]);
 
   useEffect(() => {
-    if (!websocket) return;
+    if (!webSocketMessage) return;
 
-    websocket.onmessage = (event) => {
-      const message: IWebSocketResponse = JSON.parse(event.data);
+    if (webSocketMessage.TriggerGetChoosedMessages) {
+      setNotCreatedYet(false);
+      LoadChoosedMessages();
+    }
 
-      if (router.isReady) {
-        const { channelId, guildId, code } = router.query;
-
-        if (channelId && guildId && code) {
-          const isValidGuild = message.GuildId.includes(guildId.toString());
-          const isValidCode = message.Code.includes(code.toString());
-          const isValidChannel = message.ChannelId.includes(
-            channelId.toString()
-          );
-
-          if (isValidChannel && isValidGuild && isValidCode) {
-            if (message.TriggerGetChoosedMessages) {
-              setNotCreatedYet(false);
-              LoadChoosedMessages();
-            }
-            if (message.InstanceNotCreatedYet) setNotCreatedYet(true);
-          }
-        }
-      }
-    };
-  }, [router, websocket, LoadChoosedMessages]);
+    if (webSocketMessage.InstanceNotCreatedYet) setNotCreatedYet(true);
+  }, [webSocketMessage, LoadChoosedMessages]);
 
   async function saveScore(
     messageId: string,

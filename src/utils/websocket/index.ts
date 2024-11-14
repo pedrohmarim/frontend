@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
+import { IWebSocketResponse } from './IWebSocketResponse';
+import { useRouter } from 'next/router';
 
-export const useWebSocket = () => {
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+export const GetWebSocketMessage = () => {
+  const router = useRouter();
+  const [filteredMessage, setFilteredMessage] =
+    useState<IWebSocketResponse | null>(null);
 
   useEffect(() => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/socket`;
@@ -10,7 +14,6 @@ export const useWebSocket = () => {
 
     newSocket.onopen = () => {
       console.log('Conectado ao servidor WebSocket');
-      setSocket(newSocket);
     };
 
     newSocket.onerror = (error) => {
@@ -19,13 +22,31 @@ export const useWebSocket = () => {
 
     newSocket.onclose = () => {
       console.log('Conexão com o WebSocket foi fechada');
-      setSocket(null);
+    };
+
+    newSocket.onmessage = (event) => {
+      const message: IWebSocketResponse = JSON.parse(event.data);
+
+      if (router.isReady) {
+        const { channelId, guildId, code } = router.query;
+
+        if (channelId && guildId && code) {
+          const isValidGuild = message.GuildId.includes(guildId.toString());
+          const isValidCode = message.Code.includes(code.toString());
+          const isValidChannel = message.ChannelId.includes(
+            channelId.toString()
+          );
+
+          if (isValidChannel && isValidGuild && isValidCode)
+            setFilteredMessage(message);
+        }
+      }
     };
 
     return () => {
       if (newSocket) newSocket.close();
     };
-  }, []);
+  }, [router]);
 
-  return socket;
+  return filteredMessage;
 };
