@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useCallback } from 'react';
 import * as I from './IGame';
 import * as S from './styles';
 import DiscordGameApi from 'services/DiscordleService/DiscordleGame';
@@ -20,6 +20,8 @@ import { useTranslation } from 'react-i18next';
 import { getItem } from 'utils/localStorage/User';
 import { MessageContainer } from 'globalStyles/global';
 import { LoadingOutlined } from '@ant-design/icons';
+import { useWebSocket } from 'utils/websocket';
+import { IWebSocketResponse } from 'utils/websocket/IWebSocketResponse';
 import {
   IAuthor,
   IScoreInstance,
@@ -29,6 +31,7 @@ export default function GameContainer() {
   const { i18n, t } = useTranslation('Game');
   const { switchValues } = useMyContext();
   const router = useRouter();
+  const websocket = useWebSocket();
   const [alreadyAnswered, setAlreadyAnswered] = useState<boolean>(false);
   const [answers, setAnswers] = useState<I.IAnswer[]>([]);
   const [authors, setAuthors] = useState<IAuthor[]>([]);
@@ -45,11 +48,14 @@ export default function GameContainer() {
     if (result) i18n.changeLanguage(result);
   }, [i18n]);
 
-  function LoadChoosedMessages() {
+  const LoadChoosedMessages = useCallback(() => {
     if (router.isReady) {
       const { channelId, guildId, code } = router.query;
 
       if (channelId && guildId && code) {
+        setChoosedMessages([]);
+        setActiveTabKey(1);
+
         DiscordGameApi.VerifyAlreadyAnswered(
           channelId.toString(),
           code.toString()
@@ -77,8 +83,7 @@ export default function GameContainer() {
               DiscordGameApi.GetChoosedMessages(
                 channelId.toString(),
                 code.toString()
-              ).then(({ Messages, Authors, NotCreatedYet }) => {
-                setNotCreatedYet(NotCreatedYet);
+              ).then(({ Messages, Authors }) => {
                 setAuthors(Authors);
 
                 const filteredMessagesArray: IChoosedMessage[] = Messages.map(
@@ -92,12 +97,40 @@ export default function GameContainer() {
           .then(() => setLoading(false));
       }
     }
-  }
+  }, [router]);
 
   useEffect(() => {
     LoadChoosedMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
+
+  useEffect(() => {
+    if (!websocket) return;
+
+    websocket.onmessage = (event) => {
+      const message: IWebSocketResponse = JSON.parse(event.data);
+
+      if (router.isReady) {
+        const { channelId, guildId, code } = router.query;
+
+        if (channelId && guildId && code) {
+          const isValidGuild = message.GuildId.includes(guildId.toString());
+          const isValidCode = message.Code.includes(code.toString());
+          const isValidChannel = message.ChannelId.includes(
+            channelId.toString()
+          );
+
+          if (isValidChannel && isValidGuild && isValidCode) {
+            if (message.TriggerGetChoosedMessages) {
+              setNotCreatedYet(false);
+              LoadChoosedMessages();
+            }
+            if (message.InstanceNotCreatedYet) setNotCreatedYet(true);
+          }
+        }
+      }
+    };
+  }, [router, websocket, LoadChoosedMessages]);
 
   async function saveScore(
     messageId: string,
@@ -174,11 +207,7 @@ export default function GameContainer() {
         <title>Discordle | {t('tabTitle')}</title>
       </Head>
 
-      <ConfigurationModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        loadChoosedMessages={LoadChoosedMessages}
-      />
+      <ConfigurationModal openModal={openModal} setOpenModal={setOpenModal} />
 
       <GuildInfo openModal={openModal} setOpenModal={setOpenModal} />
 

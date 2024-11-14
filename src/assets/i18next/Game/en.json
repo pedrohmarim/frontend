@@ -35,6 +35,6 @@
 
   "placeholderSelect": "Choose a member",
 
-  "creatingInstance": "Please wait, we are generating a new instance of Discordle. Refresh the page in a few moments.",
+  "creatingInstance": "Please wait, we are generating a new instance of Discordle",
   "blockedInstance": "The instance is blocked today because the member list has been updated! Come back tomorrow."
 }

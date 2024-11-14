@@ -48,7 +48,8 @@
   "warnDescription3": "Users will be added and removed from the instance, and those removed will lose their ranking points! If a removed member has a selected message in the current instance, the instance will be reset!",
   "btnText1": "I want to continue",
   "btnText2": "Cancel",
-  "notificationDesc": "Member list updated.",
+  "notificationDesc1": "Member list updated, and a new game has been created. All today's answers have been reset.",
+  "notificationDesc2": "Member list updated.",
   "formItemLabel": "Discordle instance member list",
   "formItemPlaceholder": "Choose the users who will participate in Discordle",
 

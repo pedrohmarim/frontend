@@ -1,17 +1,11 @@
 import React, { Fragment } from 'react';
-import * as I from './IMembersConfig';
 import MembersSelect from 'templates/discordleTemplates/globalComponents/membersSelect';
 import { Divider } from 'antd_components';
 
-export default function MembersConfig({
-  loadChoosedMessages,
-}: I.IMembersConfig) {
+export default function MembersConfig() {
   return (
     <Fragment>
-      <MembersSelect
-        loadChoosedMessages={loadChoosedMessages}
-        fromChooseprofile={false}
-      />
+      <MembersSelect fromChooseprofile={false} />
 
       <Divider
         style={{

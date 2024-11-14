@@ -10,10 +10,7 @@ import theme from 'globalStyles/theme';
 import Swal from 'sweetalert2';
 import { Avatar, Button, Notification, Row, Select } from 'antd_components';
 
-export default function MembersSelect({
-  fromChooseprofile,
-  loadChoosedMessages,
-}: I.IMembersSelect) {
+export default function MembersSelect({ fromChooseprofile }: I.IMembersSelect) {
   const router = useRouter();
   const { t } = useTranslation('GuildInfo');
 
@@ -92,11 +89,10 @@ export default function MembersSelect({
               ).then((reloadInstance) => {
                 Notification.success(
                   t('notificationTitle'),
-                  t('notificationDesc')
+                  reloadInstance
+                    ? t('notificationDesc1')
+                    : t('notificationDesc2')
                 );
-
-                if (reloadInstance && loadChoosedMessages)
-                  loadChoosedMessages();
               });
             }
           });

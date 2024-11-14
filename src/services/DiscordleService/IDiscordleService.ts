@@ -14,7 +14,6 @@ export interface ISessionUser {
 export interface IMessageInstance {
   Messages: IMessage[];
   Authors: IAuthor[];
-  NotCreatedYet: boolean;
 }
 
 export interface IGetDiscordHintsResponse {

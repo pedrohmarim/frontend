@@ -35,6 +35,6 @@
 
   "placeholderSelect": "Selecione um membro",
 
-  "creatingInstance": "Aguarde, estamos gerando uma nova instância do Discordle. Atualize a página em alguns instantes",
+  "creatingInstance": "Aguarde, estamos gerando uma nova instância do Discordle",
   "blockedInstance": "A instância está bloqueda hoje pois, a lista de membros foi atualizada! Volte amanhã."
 }
