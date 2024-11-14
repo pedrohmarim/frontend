@@ -5,7 +5,7 @@ import { MessageContainer } from 'globalStyles/global';
 import theme from 'globalStyles/theme';
 import { Description } from '../home/components/SelectChanneInstanceModal/styles';
 import GuildInfo from '../globalComponents/guildInfo';
-import { getItem } from 'utils/localStorage/User';
+import { deleteDiscordleToken, getItem } from 'utils/localStorage/User';
 import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
 import { Container } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';
@@ -13,12 +13,14 @@ import { Row, Col, Button } from 'antd_components';
 import { StatusInstanceEnum } from './statusInstanceEnum';
 import MemberList from './components/memberList';
 import SelectMembersToCreateDiscordleGameInstance from './components/selectMembersToCreateGameInstance';
+import { useMyContext } from 'Context';
 
 export default function ChooseProfile() {
   const router = useRouter();
   const { i18n, t } = useTranslation('ChooseProfile');
   const [renderSelectInput, setRenderSelectInput] = useState<boolean>(false);
   const [languageLoaded, setLanguageLoaded] = useState(false);
+  const { setSessionUser } = useMyContext();
 
   useEffect(() => {
     const result = getItem('i18nextLng');
@@ -43,6 +45,11 @@ export default function ChooseProfile() {
       }
     }
   }
+
+  useEffect(() => {
+    deleteDiscordleToken();
+    setSessionUser(null);
+  }, [setSessionUser]);
 
   useEffect(() => {
     getDiscordleInstanceStatus();
