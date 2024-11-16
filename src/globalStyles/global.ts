@@ -29,6 +29,25 @@ export default createGlobalStyle`
     display: none;
   }
 
+  .is-new {
+    animation: scaleUpAndSparkle 1s ease-out forwards; 
+    position: relative; 
+
+    @keyframes scaleUpAndSparkle {
+      0% {
+        transform: scale(0); 
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1); 
+      }
+    }
+  }
+
   .next-error-h1{
     border-color:  ${(props) => props.theme.discordleColors.text} !important;
   }

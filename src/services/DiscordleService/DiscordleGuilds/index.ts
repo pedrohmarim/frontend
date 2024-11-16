@@ -19,10 +19,16 @@ const ApiAuth = {
     );
     return response.data;
   },
-  GetGuilds: async function (pageSize: number, pageNumber: number) {
+  GetGuildsPaginated: async function (pageSize: number, pageNumber: number) {
     const response: AxiosResponse<I.IGuildsResponse> = await http.post(
       `${baseUrl}/GetGuilds`,
       { Pagesize: pageSize, Pagenumber: pageNumber }
+    );
+    return response.data;
+  },
+  GetAllGuilds: async function () {
+    const response: AxiosResponse<I.IGuildsResponse> = await http.post(
+      `${baseUrl}/GetAllGuilds`
     );
     return response.data;
   },

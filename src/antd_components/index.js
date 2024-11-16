@@ -38,8 +38,10 @@ import List from './List/List.component';
 import Tour from './Tour/Tour.component';
 import Steps from './Steps/Steps.component';
 import Skeleton from './Skeleton/Skeleton.component';
+import Badge from './Badge/Badge.component';
 
 export {
+  Badge,
   Steps,
   Skeleton,
   Tour,

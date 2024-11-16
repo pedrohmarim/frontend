@@ -95,6 +95,7 @@ export interface IGuildsDto {
   GuildName: string;
   GuildId: string;
   Icon: string;
+  isNew: boolean;
 }
 
 export interface IGetAllChannelMembersForSelectComponent {

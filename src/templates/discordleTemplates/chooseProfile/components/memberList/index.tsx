@@ -260,14 +260,14 @@ export default function MemberList() {
                 {i18n.language === 'pt-BR' ? (
                   <>
                     Digite o comando <G.HomeSpan>/code</G.HomeSpan> no canal de
-                    texto #{serverInfos.ServerName.split('#')[1]} <br />
+                    texto #{serverInfos.ServerName?.split('#')[1]} <br />
                     <br />
                     para gerar seu token.
                   </>
                 ) : (
                   <>
                     Type the <G.HomeSpan>/code</G.HomeSpan> command in the #
-                    {serverInfos.ServerName.split('#')[1]} <br /> <br /> text
+                    {serverInfos.ServerName?.split('#')[1]} <br /> <br /> text
                     channel to generate your token.
                   </>
                 )}

@@ -16,6 +16,19 @@ export const Title = styled(Row)`
   margin-bottom: 10px;
 `;
 
+export const IsNew = styled.div`
+  z-index: 999999;
+  position: absolute;
+  top: 15px;
+  right: 5px;
+  font-size: 13pt;
+  color: ${(props) => props.theme.discordleColors.text};
+  background-color: ${(props) => props.theme.discordleColors.primary};
+  padding: 5px;
+  border-radius: 8px;
+  transform: rotate(29deg);
+`;
+
 export const Description = styled(Row)<{
   width: string;
   fontSize: string;

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { IWebSocketResponse } from './IWebSocketResponse';
 import { useRouter } from 'next/router';
+import { IWebSocketMessage } from './IWebSocketMessage';
 
 export const GetWebSocketMessage = () => {
   const router = useRouter();
   const [filteredMessage, setFilteredMessage] =
-    useState<IWebSocketResponse | null>(null);
+    useState<IWebSocketMessage | null>(null);
 
   useEffect(() => {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/socket`;
@@ -25,22 +25,30 @@ export const GetWebSocketMessage = () => {
     };
 
     newSocket.onmessage = (event) => {
-      const message: IWebSocketResponse = JSON.parse(event.data);
+      const message: IWebSocketMessage = JSON.parse(event.data);
 
-      if (router.isReady) {
-        const { channelId, guildId, code } = router.query;
+      if (message.IsBroadCast) handleBroadcastMessage(message);
+      else handleGuildSpecificMessage(message);
+    };
 
-        if (channelId && guildId && code) {
-          const isValidGuild = message.GuildId.includes(guildId.toString());
-          const isValidCode = message.Code.includes(code.toString());
-          const isValidChannel = message.ChannelId.includes(
-            channelId.toString()
-          );
+    const handleBroadcastMessage = (message: IWebSocketMessage) => {
+      setFilteredMessage(message);
+    };
 
-          if (isValidChannel && isValidGuild && isValidCode)
-            setFilteredMessage(message);
-        }
-      }
+    const handleGuildSpecificMessage = (message: IWebSocketMessage) => {
+      if (!router.isReady) return;
+
+      const { channelId, guildId, code } = router.query;
+
+      if (!channelId || !guildId || !code) return;
+
+      const isValid = [
+        message.GuildId.includes(guildId.toString()),
+        message.Code.includes(code.toString()),
+        message.ChannelId.includes(channelId.toString()),
+      ].every(Boolean);
+
+      if (isValid) setFilteredMessage(message);
     };
 
     return () => {

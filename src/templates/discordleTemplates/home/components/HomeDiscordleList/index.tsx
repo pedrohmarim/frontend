@@ -13,12 +13,14 @@ import { IGuildsDto } from 'services/DiscordleService/IDiscordleService';
 import DiscordGuildsApi from 'services/DiscordleService/DiscordleGuilds';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
+import { GetWebSocketMessage } from 'utils/websocket';
 
 export default function HomeDiscordleList({
   width,
   botButton,
 }: I.IHomeDiscordleList) {
   const router = useRouter();
+  const webSocketMessage = GetWebSocketMessage();
   const { t } = useTranslation('Home');
   const { setInstanceChannels } = useMyContext();
   const isMobile = width < 875;
@@ -33,10 +35,10 @@ export default function HomeDiscordleList({
     null
   );
 
-  const GetGuilds = useCallback(() => {
+  const GetGuildsInfiniteScroll = useCallback(() => {
     if (noMoreDataToFetch) return;
 
-    DiscordGuildApi.GetGuilds(pageSize, pageNumber).then(
+    DiscordGuildApi.GetGuildsPaginated(pageSize, pageNumber).then(
       ({ Guilds, Count }) => {
         setGuilds((prevGuilds) => [...prevGuilds, ...Guilds]);
 
@@ -56,15 +58,55 @@ export default function HomeDiscordleList({
       );
     else {
       setGuilds([]);
-      GetGuilds();
+      GetGuildsInfiniteScroll();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    GetGuilds();
+    GetGuildsInfiniteScroll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!webSocketMessage) return;
+
+    if (webSocketMessage.ReloadHomeGuildList) {
+      DiscordGuildApi.GetAllGuilds().then(({ Guilds, Count }) => {
+        setGuilds((prevGuilds) => {
+          const newGuilds = Guilds.filter(
+            (newGuild) =>
+              !prevGuilds.some(
+                (existingGuild) => existingGuild.GuildId === newGuild.GuildId
+              )
+          );
+
+          const removedGuilds = prevGuilds.filter(
+            (existingGuild) =>
+              !Guilds.some(
+                (newGuild) => newGuild.GuildId === existingGuild.GuildId
+              )
+          );
+
+          const updatedNewGuilds = newGuilds.map((guild) => ({
+            ...guild,
+            isNew: true,
+          }));
+
+          const updatedGuilds = prevGuilds.filter(
+            (guild) =>
+              !removedGuilds.some(
+                (removed) => removed.GuildId === guild.GuildId
+              )
+          );
+
+          return [...updatedGuilds, ...updatedNewGuilds];
+        });
+
+        setTotalGuilds(Count);
+      });
+    }
+  }, [webSocketMessage]);
 
   function handleFormatLabel() {
     if (totalGuilds === 0) return t('emptyGuildList');
@@ -115,6 +157,50 @@ export default function HomeDiscordleList({
     setOpen(!open);
     router.push({ query: '' });
   }
+
+  const GuildCard = ({ GuildId, GuildName, Icon, isNew }: IGuildsDto) => (
+    <Col
+      xs={24}
+      sm={12}
+      md={8}
+      lg={8}
+      xl={6}
+      xxl={4}
+      className={isNew ? 'is-new' : ''}
+    >
+      {isNew && <S.IsNew>{t('new')}</S.IsNew>}
+
+      <S.GuildItem
+        onClick={() => {
+          setSelectedGuildName(GuildName);
+          setSelectedGuildId(GuildId);
+          getGuildChannels(GuildId, false);
+        }}
+      >
+        <S.GuildItemBackgroundImage icon={Icon} />
+
+        <S.InfoContainer>
+          <Avatar
+            src={Icon}
+            alt="image"
+            style={{
+              height: '130px',
+              width: 'auto',
+              marginBottom: '10px',
+            }}
+          />
+
+          <S.GuildName>
+            {GuildName.length <= (!isMobile ? 50 : 90)
+              ? GuildName
+              : GuildName.substring(0, !isMobile ? 50 : 90) + '...'}
+          </S.GuildName>
+
+          <S.SpanEnterRoom>{t('hoverGuildItem')}</S.SpanEnterRoom>
+        </S.InfoContainer>
+      </S.GuildItem>
+    </Col>
+  );
 
   return (
     <Fragment>
@@ -186,7 +272,7 @@ export default function HomeDiscordleList({
           <S.ListContainer id="container" emptyList={guilds.length === 0}>
             <InfiniteScroll
               dataLength={guilds.length}
-              next={GetGuilds}
+              next={GetGuildsInfiniteScroll}
               hasMore
               loader={<Fragment />}
               scrollableTarget="container"
@@ -197,49 +283,14 @@ export default function HomeDiscordleList({
                 align="middle"
               >
                 {guilds.length > 0 &&
-                  guilds.map(({ GuildName, Icon, GuildId }, index) => (
-                    <Col
+                  guilds.map(({ GuildId, GuildName, Icon, isNew }, index) => (
+                    <GuildCard
+                      GuildId={GuildId}
+                      GuildName={GuildName}
+                      Icon={Icon}
+                      isNew={isNew}
                       key={index}
-                      xs={24}
-                      sm={12}
-                      md={8}
-                      lg={8}
-                      xl={6}
-                      xxl={4}
-                    >
-                      <S.GuildItem
-                        onClick={() => {
-                          setSelectedGuildName(GuildName);
-                          setSelectedGuildId(GuildId);
-                          getGuildChannels(GuildId, false);
-                        }}
-                      >
-                        <S.GuildItemBackgroundImage icon={Icon} />
-
-                        <S.InfoContainer>
-                          <Avatar
-                            src={Icon}
-                            alt="image"
-                            style={{
-                              height: '130px',
-                              width: 'auto',
-                              marginBottom: '10px',
-                            }}
-                          />
-
-                          <S.GuildName>
-                            {GuildName.length <= (!isMobile ? 50 : 90)
-                              ? GuildName
-                              : GuildName.substring(0, !isMobile ? 50 : 90) +
-                                '...'}
-                          </S.GuildName>
-
-                          <S.SpanEnterRoom>
-                            {t('hoverGuildItem')}
-                          </S.SpanEnterRoom>
-                        </S.InfoContainer>
-                      </S.GuildItem>
-                    </Col>
+                    />
                   ))}
               </Row>
             </InfiniteScroll>
