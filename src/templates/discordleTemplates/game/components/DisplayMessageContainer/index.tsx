@@ -29,9 +29,9 @@ export default function DisplayMessageContainer({
 
   function titleMessage() {
     switch (messageLevel) {
-      case MessageLevelEnum.isConsecutive:
-        return t('previousMessage');
       case MessageLevelEnum.isPrevious:
+        return t('previousMessage');
+      case MessageLevelEnum.isConsecutive:
         return t('consecutiveMessage');
       default:
         return `${t('message')}:`;
@@ -98,7 +98,9 @@ export default function DisplayMessageContainer({
           <S.Title
             isHint={
               messageLevel !== MessageLevelEnum.isMain &&
-              Boolean(switchValues?.ShowHintsAuthors)
+              Boolean(switchValues?.ShowHintsAuthors) &&
+              author != null &&
+              Object.values(author).length > 0
             }
           >
             {titleMessage()}

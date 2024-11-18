@@ -92,7 +92,7 @@ export default function ChoosedMessage({
             consecutiveMessage.messageType = MessageTypeEnum.isText;
           }
 
-          setTotalMessages([consecutiveMessage, message, previousMessage]);
+          setTotalMessages([previousMessage, message, consecutiveMessage]);
         })
         .finally(() => setLoadingHint(false));
     }
