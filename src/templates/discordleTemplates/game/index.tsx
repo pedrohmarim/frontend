@@ -82,8 +82,11 @@ export default function GameContainer() {
               DiscordGameApi.GetChoosedMessages(
                 channelId.toString(),
                 code.toString()
-              ).then(({ Messages, Authors }) => {
-                setAuthors(Authors);
+              ).then((Messages) => {
+                DiscordGameApi.GetAuthors(
+                  channelId.toString(),
+                  code.toString()
+                ).then((authors) => setAuthors(authors));
 
                 const filteredMessagesArray: IChoosedMessage[] = Messages.map(
                   (message) => filterMessage(message, MessageLevelEnum.isMain)
@@ -97,6 +100,18 @@ export default function GameContainer() {
       }
     }
   }, [router]);
+
+  useEffect(() => {
+    if (!webSocketMessage) return;
+
+    const { channelId, code } = router.query;
+
+    if (webSocketMessage.ReloadAuthors && channelId && code) {
+      DiscordGameApi.GetAuthors(channelId.toString(), code.toString()).then(
+        (authors) => setAuthors(authors)
+      );
+    }
+  }, [webSocketMessage, router]);
 
   useEffect(() => {
     LoadChoosedMessages();

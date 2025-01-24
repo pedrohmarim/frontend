@@ -6,4 +6,5 @@ export interface IWebSocketMessage {
   TriggerGetChoosedMessages: boolean;
   InstanceNotCreatedYet: boolean;
   ReloadHomeGuildList: boolean;
+  ReloadAuthors: boolean;
 }

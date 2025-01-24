@@ -11,11 +11,6 @@ export interface ISessionUser {
   MemberId: string;
 }
 
-export interface IMessageInstance {
-  Messages: IMessage[];
-  Authors: IAuthor[];
-}
-
 export interface IGetDiscordHintsResponse {
   PreviousPosition?: IMessage;
   ConsecutivePosition?: IMessage;
