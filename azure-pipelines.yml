@@ -21,8 +21,8 @@ steps:
 
 - script: |
     pushd $(uiSource)
-    npm install
-    npm run build
+    yarn i
+    yarn build
     popd
   displayName: 'npm install and build'
   
