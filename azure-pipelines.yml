@@ -1,14 +1,9 @@
-# Node.js with React
-# Build a Node.js project that uses React.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - discordle
 
 variables:
-  uiSource: 'src'
-  uiBuild: '$(uiSource)/build'
+  uiSource: 'src'        # Diretório onde está seu package.json e a aplicação Next.js
+  uiBuild: '$(uiSource)/.next'
 
 pool:
   vmImage: ubuntu-latest
@@ -20,19 +15,22 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    set -e
     pushd $(uiSource)
-    yarn i
-    yarn build
+    npm install
+    npm run build
     popd
-  displayName: 'npm install and build'
-  
+  displayName: 'npm install e build'
+
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(uiBuild)'
+    rootFolderOrFile: '$(uiSource)'  # Arquiva a pasta inteira, incluindo .next, package.json, etc.
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+    # Opcional: excluir node_modules se não quiser arquivar
+    # excludePatterns: '**/node_modules/**'
 
 - task: PublishBuildArtifacts@1
   inputs:
