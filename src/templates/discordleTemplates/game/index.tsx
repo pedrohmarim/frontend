@@ -56,6 +56,7 @@ export default function GameContainer() {
         setActiveTabKey(1);
 
         DiscordGameApi.VerifyAlreadyAnswered(
+          guildId.toString(),
           channelId.toString(),
           code.toString()
         )

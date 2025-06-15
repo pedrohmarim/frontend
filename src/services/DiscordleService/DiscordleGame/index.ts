@@ -27,10 +27,15 @@ const ApiAuth = {
     );
     return response.data;
   },
-  VerifyAlreadyAnswered: async function (channelId: string, code: string) {
+  VerifyAlreadyAnswered: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
     const response: AxiosResponse<IAnswer[]> = await http.post(
       `${baseUrl}/VerifyAlreadyAnswered`,
       {
+        GuildId: guildId,
         ChannelId: channelId,
         Code: code,
       }

@@ -41,20 +41,17 @@ function RedirectLogin(description: string, language: string) {
         allowOutsideClick: true,
       }).then((result) => {
         if (result.isConfirmed || result.isDismissed) {
-          if (typeof window !== 'undefined') {
-            if (window.location.pathname.includes('discordle')) {
-              const params = new URLSearchParams(window.location.search);
+          const params = new URLSearchParams(window.location.search);
 
-              const guildId = params.get('guildId');
-              const channelId = params.get('channelId');
-              const code = params.get('code');
+          const guildId = params.get('guildId');
+          const channelId = params.get('channelId');
+          const code = params.get('code');
 
-              const backRoute = encodeURIComponent(window.location.href);
+          const backRoute = encodeURIComponent(window.location.href);
 
-              window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}&code=${code}&backRoute=${backRoute}`;
-            } else window.location.href = '/login';
-          }
+          window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}&code=${code}&backRoute=${backRoute}`;
         }
+
         resolve();
         redirectPromise = null;
       });

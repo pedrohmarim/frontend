@@ -9,10 +9,7 @@ import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComp
 import { Modal, List, Row } from 'antd_components';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import {
-  deleteDiscordleToken,
-  getDiscordleToken,
-} from 'utils/localStorage/User';
+import { deleteDiscordleToken } from 'utils/localStorage/User';
 
 export default function SelectChanneInstanceModal({
   selectedGuildName,
@@ -52,30 +49,18 @@ export default function SelectChanneInstanceModal({
       if (code.length && channelId && channelId.length) {
         deleteDiscordleToken();
 
-        DiscordleInstanceApi.ValidateCode(code, guildId, channelId).then(
-          (validCode) => {
-            if (validCode) {
-              const token = getDiscordleToken();
+        DiscordleInstanceApi.ValidateCode(code, guildId, channelId).then(() => {
+          const query = {
+            guildId,
+            channelId,
+            code,
+          };
 
-              const query = {
-                guildId,
-                channelId,
-                code,
-              };
-
-              if (!token)
-                router.push({
-                  pathname: '/discordle/chooseProfile',
-                  query,
-                });
-              else
-                router.push({
-                  pathname: '/discordle/game',
-                  query,
-                });
-            }
-          }
-        );
+          router.push({
+            pathname: '/discordle/chooseProfile',
+            query,
+          });
+        });
       }
     },
     [guildId, router, channelId]
