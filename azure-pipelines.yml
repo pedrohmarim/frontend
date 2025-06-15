@@ -1,0 +1,39 @@
+trigger:
+- discordle
+
+variables:
+  uiSource: 'src'        # Diretório onde está seu package.json e a aplicação Next.js
+  uiBuild: '$(uiSource)/.next'
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    set -e
+    pushd $(uiSource)
+    npm install --legacy-peer-deps
+    npm run build
+    popd
+  displayName: 'npm install e build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(uiSource)'  # Arquiva a pasta inteira, incluindo .next, package.json, etc.
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+    # Opcional: excluir node_modules se não quiser arquivar
+    # excludePatterns: '**/node_modules/**'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
