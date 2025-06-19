@@ -49,7 +49,7 @@ function RedirectLogin(description: string, language: string) {
 
           const backRoute = encodeURIComponent(window.location.href);
 
-          window.location.href = `/discordle/chooseProfile?channelId=${channelId}&guildId=${guildId}&code=${code}&backRoute=${backRoute}`;
+          window.location.href = `/chooseProfile?channelId=${channelId}&guildId=${guildId}&code=${code}&backRoute=${backRoute}`;
         }
 
         resolve();

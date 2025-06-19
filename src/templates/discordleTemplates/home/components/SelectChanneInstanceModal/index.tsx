@@ -57,7 +57,7 @@ export default function SelectChanneInstanceModal({
           };
 
           router.push({
-            pathname: '/discordle/chooseProfile',
+            pathname: '/chooseProfile',
             query,
           });
         });

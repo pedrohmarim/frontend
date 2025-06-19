@@ -42,7 +42,7 @@ export default function Header({
           preview={false}
           height={60}
           style={{ cursor: 'pointer' }}
-          onClick={() => router.push('/discordle/home')}
+          onClick={() => router.push('/home')}
         />
 
         <ChangeLanguage

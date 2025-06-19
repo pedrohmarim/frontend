@@ -243,7 +243,7 @@ export default function Ranking() {
 
     if (channelId && guildId && code)
       router.push({
-        pathname: '/discordle/game',
+        pathname: '/game',
         query: {
           guildId,
           channelId,

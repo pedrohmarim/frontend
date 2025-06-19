@@ -58,7 +58,7 @@ export default function FormCreateDiscordleInstance({
           getChannelsWithoutDiscordleInstance
         ).then(() =>
           router.push({
-            pathname: '/discordle/chooseProfile',
+            pathname: '/chooseProfile',
             query: {
               guildId: guild_id?.toString() ?? guildId?.toString() ?? '',
               channelId,

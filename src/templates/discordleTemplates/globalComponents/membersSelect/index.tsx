@@ -105,7 +105,7 @@ export default function MembersSelect({ fromChooseprofile }: I.IMembersSelect) {
             fromChooseprofile
           ).then(() => {
             router.push({
-              pathname: '/discordle/chooseProfile',
+              pathname: '/chooseProfile',
               query: {
                 guildId: guildId?.toString() ?? guildId?.toString() ?? '',
                 channelId: channelId.toString(),

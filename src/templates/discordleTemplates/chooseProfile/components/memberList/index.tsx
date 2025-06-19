@@ -98,7 +98,7 @@ export default function MemberList() {
           if (backRoute) window.location.href = backRoute.toString();
           else
             router.push({
-              pathname: '/discordle/game',
+              pathname: '/game',
               query: {
                 guildId,
                 channelId,

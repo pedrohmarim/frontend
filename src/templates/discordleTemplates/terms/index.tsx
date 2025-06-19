@@ -86,7 +86,7 @@ export default function Terms() {
           <Button
             width={180}
             height={35}
-            onClick={() => router.push('/discordle/home')}
+            onClick={() => router.push('/home')}
             margin="20px 0 20px 0"
             backgroundcolor={theme.discordleColors.primary}
             color={theme.discordleColors.text}

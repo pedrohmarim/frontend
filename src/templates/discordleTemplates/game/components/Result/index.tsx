@@ -38,7 +38,7 @@ export default function Result({
     const { channelId, guildId, code } = router.query;
 
     router.push({
-      pathname: '/discordle/ranking',
+      pathname: '/ranking',
       query: {
         channelId,
         guildId,

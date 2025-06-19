@@ -78,7 +78,7 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
               ServerName,
             });
 
-            if (!window.location.pathname.includes('/discordle/chooseProfile'))
+            if (!window.location.pathname.includes('/chooseProfile'))
               DiscordMemberApi.GetUserByToken(
                 guildId.toString(),
                 channelId.toString(),
@@ -86,7 +86,7 @@ export const ContextProvider: React.FC<I.IContextProviderProps> = ({
               ).then((data) => setSessionUser(data));
           })
           .then(() => {
-            if (!window.location.pathname.includes('/discordle/chooseProfile'))
+            if (!window.location.pathname.includes('/chooseProfile'))
               DiscordleGameAPI.VerifyIfIsDiscordleOwner(
                 guildId.toString()
               ).then((isOwner) => {
