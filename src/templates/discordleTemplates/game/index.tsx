@@ -17,7 +17,7 @@ import MessageSteps from './components/MessageSteps';
 import { useMyContext } from 'Context';
 import ConfigurationModal from './components/ConfigurationModal';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 import { MessageContainer } from 'globalStyles/global';
 import { LoadingOutlined } from '@ant-design/icons';
 import { GetWebSocketMessage } from 'utils/websocket';
@@ -81,10 +81,12 @@ export default function GameContainer() {
 
             if (!alreadyAnswered) {
               DiscordGameApi.GetChoosedMessages(
+                guildId.toString(),
                 channelId.toString(),
                 code.toString()
               ).then((Messages) => {
                 DiscordGameApi.GetAuthors(
+                  guildId.toString(),
                   channelId.toString(),
                   code.toString()
                 ).then((authors) => setAuthors(authors));
@@ -105,12 +107,14 @@ export default function GameContainer() {
   useEffect(() => {
     if (!webSocketMessage) return;
 
-    const { channelId, code } = router.query;
+    const { channelId, code, guildId } = router.query;
 
-    if (webSocketMessage.ReloadAuthors && channelId && code) {
-      DiscordGameApi.GetAuthors(channelId.toString(), code.toString()).then(
-        (authors) => setAuthors(authors)
-      );
+    if (webSocketMessage.ReloadAuthors && guildId && channelId && code) {
+      DiscordGameApi.GetAuthors(
+        guildId?.toString(),
+        channelId.toString(),
+        code.toString()
+      ).then((authors) => setAuthors(authors));
     }
   }, [webSocketMessage, router]);
 

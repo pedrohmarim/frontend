@@ -13,7 +13,7 @@ import { useMyContext } from 'Context';
 import ConfigurationModal from '../game/components/ConfigurationModal';
 import * as G from 'globalStyles/global';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 import ChangeNickNameModal from '../game/components/ChangeNicknameModal';
 import notification from 'antd_components/Notification/Notification.component';
 import {

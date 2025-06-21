@@ -9,7 +9,7 @@ import FormCreateDiscordleInstance from 'templates/discordleTemplates/globalComp
 import { Modal, List, Row } from 'antd_components';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import { deleteDiscordleToken } from 'utils/localStorage/User';
+import { deleteDiscordleToken } from 'utils/localStorage';
 
 export default function SelectChanneInstanceModal({
   selectedGuildName,

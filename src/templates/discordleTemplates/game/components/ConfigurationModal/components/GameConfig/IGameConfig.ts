@@ -6,6 +6,7 @@ export interface IChangeSwitchRequest {
   switch: SwitchNameEnum;
   guildId: string;
   channelId: string;
+  code: string;
 }
 
 export interface ISwitches {

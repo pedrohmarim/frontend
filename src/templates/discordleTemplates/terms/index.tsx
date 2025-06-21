@@ -5,7 +5,7 @@ import * as G from 'globalStyles/global';
 import { Button, Row } from 'antd_components';
 import { useRouter } from 'next/router';
 import theme from 'globalStyles/theme';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
 

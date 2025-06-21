@@ -24,7 +24,7 @@ import {
   Col,
   Divider,
 } from 'antd_components';
-import { deleteRememberMe } from 'utils/localStorage/User';
+import { deleteRememberMe } from 'utils/localStorage';
 
 export default function LoginContainer() {
   const [showImage, setShowImage] = useState(true);

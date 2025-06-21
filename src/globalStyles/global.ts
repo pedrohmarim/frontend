@@ -348,19 +348,6 @@ export const DynamicWidth = styled.div<{ width: string }>`
   width: ${({ width }) => width};
 `;
 
-export const CenteredContainer = styled.div`
-  @media screen and (max-width: 875px) {
-    margin-top: 20px;
-  }
-
-  @media screen and (min-width: 876px) {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
 export const MessageContainer = styled.div<{
   width?: string;
   height?: string;

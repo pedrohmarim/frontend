@@ -5,7 +5,7 @@ import { MessageContainer } from 'globalStyles/global';
 import theme from 'globalStyles/theme';
 import { Description } from '../home/components/SelectChanneInstanceModal/styles';
 import GuildInfo from '../globalComponents/guildInfo';
-import { deleteDiscordleToken, getItem } from 'utils/localStorage/User';
+import { deleteDiscordleToken, getItem } from 'utils/localStorage';
 import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
 import { Container } from 'templates/discordleTemplates/home/components/HomeDiscordleList/styles';

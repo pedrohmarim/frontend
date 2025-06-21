@@ -7,20 +7,30 @@ const http = baseService();
 const baseUrl = 'DiscordleGame';
 
 const ApiAuth = {
-  GetChoosedMessages: async function (channelId: string, code: string) {
+  GetChoosedMessages: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
     const response: AxiosResponse<I.IMessage[]> = await http.post(
       `${baseUrl}/GetChoosedMessages`,
       {
+        GuildId: guildId,
         ChannelId: channelId,
         Code: code,
       }
     );
     return response.data;
   },
-  GetAuthors: async function (channelId: string, code: string) {
+  GetAuthors: async function (
+    guildId: string,
+    channelId: string,
+    code: string
+  ) {
     const response: AxiosResponse<I.IAuthor[]> = await http.post(
       `${baseUrl}/GetAuthors`,
       {
+        GuildId: guildId,
         ChannelId: channelId,
         Code: code,
       }

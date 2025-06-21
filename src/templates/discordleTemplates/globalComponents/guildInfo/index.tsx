@@ -5,7 +5,7 @@ import copy from 'clipboard-copy';
 import { useRouter } from 'next/router';
 import { useMyContext } from 'Context';
 import { HomeSpan } from 'globalStyles/global';
-import { deleteDiscordleToken } from 'utils/localStorage/User';
+import { deleteDiscordleToken } from 'utils/localStorage';
 import { MenuProps } from 'antd';
 import * as I from './IGuildInfo';
 import { useTranslation } from 'react-i18next';

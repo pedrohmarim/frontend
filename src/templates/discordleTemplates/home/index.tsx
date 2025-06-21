@@ -8,7 +8,7 @@ import HowWorks from './components/HowWorks';
 import { Button, Row } from 'antd_components';
 import theme from 'globalStyles/theme';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 import TermsOfUseModal from './components/TermsOfUseModal';
 
 export default function Home() {

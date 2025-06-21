@@ -33,23 +33,25 @@ export default function GameConfig() {
     value: number,
     switchName: SwitchNameEnum,
     guildId: string,
-    channelId: string
+    channelId: string,
+    code: string
   ) {
     const dto: I.IChangeSwitchRequest = {
       value,
       switch: switchName,
       guildId,
       channelId,
+      code,
     };
 
     await DiscordleInstaceApi.UpdateSwitchDiscordleInstance(dto);
   }
 
-  const { guildId, channelId } = router.query;
+  const { guildId, channelId, code } = router.query;
 
   const isLoadingSwitchValues = Boolean(Object.keys(switchValues).length);
 
-  if (guildId && channelId && isLoadingSwitchValues) {
+  if (guildId && channelId && code && isLoadingSwitchValues) {
     switches.push(
       {
         label: t('label1'),
@@ -61,7 +63,8 @@ export default function GameConfig() {
             value,
             SwitchNameEnum.ShowHintsAuthors,
             guildId.toString(),
-            channelId.toString()
+            channelId.toString(),
+            code.toString()
           ).then(() =>
             setSwitchValues({ ...switchValues, ShowHintsAuthors: value })
           ),
@@ -76,7 +79,8 @@ export default function GameConfig() {
             value,
             SwitchNameEnum.ShowReferencedMessage,
             guildId.toString(),
-            channelId.toString()
+            channelId.toString(),
+            code.toString()
           ).then(() =>
             setSwitchValues({
               ...switchValues,
@@ -93,7 +97,8 @@ export default function GameConfig() {
             value,
             SwitchNameEnum.PointsPerCorrectAnswer,
             guildId.toString(),
-            channelId.toString()
+            channelId.toString(),
+            code.toString()
           ).then(() =>
             setSwitchValues({
               ...switchValues,

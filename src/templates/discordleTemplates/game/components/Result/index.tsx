@@ -15,7 +15,7 @@ import { IMessage } from 'services/DiscordleService/IDiscordleService';
 import { MessageLevelEnum } from 'helpers/discordle/filterMessageEnum';
 import DisplayMessageContainer from '../DisplayMessageContainer';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 
 export default function Result({
   answers,

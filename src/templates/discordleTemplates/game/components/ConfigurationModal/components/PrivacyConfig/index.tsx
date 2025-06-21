@@ -22,7 +22,9 @@ export default function PrivacyConfig() {
       if (guildId && channelId && code) {
         DiscordleInstance.UpdateShowDiscordOnHomeGuild(
           target.checked,
-          guildId.toString()
+          guildId.toString(),
+          channelId.toString(),
+          code.toString()
         ).then(() => {
           if (value)
             notification.success(

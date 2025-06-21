@@ -50,6 +50,7 @@ const ApiAuth = {
         Switch: data.switch,
         GuildId: data.guildId,
         ChannelId: data.channelId,
+        Code: data.code,
       }
     );
     return response.data;
@@ -78,13 +79,17 @@ const ApiAuth = {
   },
   UpdateShowDiscordOnHomeGuild: async function (
     value: boolean,
-    guildId: string
+    guildId: string,
+    channelId: string,
+    code: string
   ) {
     const response: AxiosResponse = await http.post(
       `${baseUrl}/UpdateShowDiscordOnHomeGuild`,
       {
         Value: value,
         GuildId: guildId,
+        ChannelId: channelId,
+        Code: code,
       }
     );
     return response.data;

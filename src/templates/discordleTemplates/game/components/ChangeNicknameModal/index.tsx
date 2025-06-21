@@ -10,7 +10,7 @@ import * as G from 'globalStyles/global';
 import { requiredRules } from 'antd_components/Form/formItem.rules.constants';
 import notification from 'antd_components/Notification/Notification.component';
 import { useTranslation } from 'react-i18next';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 
 export default function ConfigurationModal({
   openModal,

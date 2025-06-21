@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 import * as I from './IChangeLanguage';
 import { Select, Avatar } from 'antd_components';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 import { useTranslation } from 'react-i18next';
 import theme from 'globalStyles/theme';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as S from './styles';
-import { getItem } from 'utils/localStorage/User';
+import { getItem } from 'utils/localStorage';
 import { useTranslation } from 'react-i18next';
 
 export default function Footer() {

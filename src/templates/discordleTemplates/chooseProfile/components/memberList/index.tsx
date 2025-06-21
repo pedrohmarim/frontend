@@ -18,7 +18,7 @@ import { Image, Row, FeatherIcons, Skeleton } from 'antd_components';
 import DiscordMembersApi from 'services/DiscordleService/DiscordleMembers';
 import { useMyContext } from 'Context';
 import { useTranslation } from 'react-i18next';
-import { deleteDiscordleToken } from 'utils/localStorage/User';
+import { deleteDiscordleToken } from 'utils/localStorage';
 import { useRouter } from 'next/router';
 import { IMember } from 'services/DiscordleService/IDiscordleService';
 
@@ -90,21 +90,22 @@ export default function MemberList() {
           const isValid = Boolean(accessToken.length);
 
           setValidToken(isValid);
-
           if (!isValid) return;
 
           window.localStorage.setItem('discordleToken', accessToken);
 
-          if (backRoute) window.location.href = backRoute.toString();
-          else
-            router.push({
-              pathname: '/game',
-              query: {
-                guildId,
-                channelId,
-                code,
-              },
-            });
+          setTimeout(() => {
+            if (backRoute) window.location.href = backRoute.toString();
+            else
+              router.push({
+                pathname: '/game',
+                query: {
+                  guildId,
+                  channelId,
+                  code,
+                },
+              });
+          }, 500);
         })
         .catch(() => setValidToken(false));
     }
@@ -173,10 +174,11 @@ export default function MemberList() {
     setLoading(true);
 
     if (router.isReady) {
-      const { channelId, code } = router.query;
+      const { channelId, code, guildId } = router.query;
 
-      if (channelId && code) {
+      if (guildId && channelId && code) {
         DiscordMembersApi.GetChannelMembers(
+          guildId.toString(),
           channelId.toString(),
           code.toString()
         ).then((members) => setMembers(members));
